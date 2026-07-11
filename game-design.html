@@ -573,33 +573,40 @@ function updateValue(idx, val) {
 
 // ====== 评估逻辑 ======
 function evaluate() {
-  const labels = getLabels();
-  const avg = currentValues.reduce((a,b) => a+b, 0) / currentValues.length;
+  try {
+    var labels = getLabels();
+    var sum = 0;
+    for (var i = 0; i < currentValues.length; i++) { sum += currentValues[i]; }
+    var avg = sum / currentValues.length;
 
-  let tier, tierDesc, tierColor;
-  if (avg < 20)      { tier = '一阶'; tierDesc = '初习者或学徒，刚从觉醒中苏醒，四大板块均处于萌芽状态。需要完成公会基础训练后正式入门。'; tierColor = '#9cada4'; }
-  else if (avg < 35) { tier = '二阶'; tierDesc = '已完成至少一次实战任务，基础属性开始分化。可以独立承接低风险公会委托。'; tierColor = '#8bab6a'; }
-  else if (avg < 50) { tier = '三阶'; tierDesc = '具备独立作战能力，某单项属性可能已接近四阶水平。参考早期寰宇城传奇枪兵——他从一阶跃升至三阶正是因为技巧板块的突出表现。'; tierColor = '#c9a24d'; }
-  else if (avg < 65) { tier = '四阶'; tierDesc = '进入能力者中坚层。此时可以选择辅修第二职阶（同侧），但需注意辅修越多、主修越弱的边际递减效应。'; tierColor = '#c95d3d'; }
-  else if (avg < 78) { tier = '五阶'; tierDesc = '高阶能力者门槛。召唤师可召唤飞龙（极速63.5m/s），魔导师可短距离传送。你的名字可能已出现在地方吟游诗人的歌谣中。'; tierColor = '#b85135'; }
-  else if (avg < 90) { tier = '六阶'; tierDesc = '魔导师在此阶可学习500米短距传送。物理侧能力者的连击段数从3段解锁至5段。你可以申请成为公会任务的评估者。'; tierColor = '#7266ba'; }
-  else               { tier = '七阶+'; tierDesc = '已踏入大陆顶尖能力者行列。魔导师传送距离扩展至3公里以上。元老会议可能已注意到你的存在。十阶「神话位阶」虽遥不可及，但路已在脚下。'; tierColor = '#8b1a1a'; }
+    var tier, tierDesc, tierColor;
+    if (avg < 20)      { tier = '一阶'; tierDesc = '初习者或学徒，刚从觉醒中苏醒，四大板块均处于萌芽状态。需要完成公会基础训练后正式入门。'; tierColor = '#9cada4'; }
+    else if (avg < 35) { tier = '二阶'; tierDesc = '已完成至少一次实战任务，基础属性开始分化。可以独立承接低风险公会委托。'; tierColor = '#8bab6a'; }
+    else if (avg < 50) { tier = '三阶'; tierDesc = '具备独立作战能力，某单项属性可能已接近四阶水平。参考早期寰宇城传奇枪兵——他从一阶跃升至三阶正是因为技巧板块的突出表现。'; tierColor = '#c9a24d'; }
+    else if (avg < 65) { tier = '四阶'; tierDesc = '进入能力者中坚层。此时可以选择辅修第二职阶（同侧），但需注意辅修越多、主修越弱的边际递减效应。'; tierColor = '#c95d3d'; }
+    else if (avg < 78) { tier = '五阶'; tierDesc = '高阶能力者门槛。召唤师可召唤飞龙（极速63.5m/s），魔导师可短距离传送。你的名字可能已出现在地方吟游诗人的歌谣中。'; tierColor = '#b85135'; }
+    else if (avg < 90) { tier = '六阶'; tierDesc = '魔导师在此阶可学习500米短距传送。物理侧能力者的连击段数从3段解锁至5段。你可以申请成为公会任务的评估者。'; tierColor = '#7266ba'; }
+    else               { tier = '七阶+'; tierDesc = '已踏入大陆顶尖能力者行列。魔导师传送距离扩展至3公里以上。元老会议可能已注意到你的存在。十阶「神话位阶」虽遥不可及，但路已在脚下。'; tierColor = '#8b1a1a'; }
 
-  // 找最强/最弱属性
-  let maxIdx = 0, minIdx = 0;
-  currentValues.forEach((v, i) => { if (v > currentValues[maxIdx]) maxIdx = i; if (v < currentValues[minIdx]) minIdx = i; });
+    var maxIdx = 0, minIdx = 0;
+    for (var j = 1; j < currentValues.length; j++) {
+      if (currentValues[j] > currentValues[maxIdx]) maxIdx = j;
+      if (currentValues[j] < currentValues[minIdx]) minIdx = j;
+    }
 
-  document.getElementById('eval-result').innerHTML = `
-    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-top:4px;">
-      <div style="font-size:32px;font-weight:700;color:${tierColor};margin-bottom:4px;">${tier}</div>
-      <div style="font-size:13px;color:var(--text);line-height:1.8;">${tierDesc}</div>
-      <div style="margin-top:12px;font-size:12px;color:var(--text-dim);">
-        综合均值：<strong style="color:var(--text-bright);">${avg.toFixed(1)}</strong> 分
-        &nbsp;|&nbsp; 优势维度：<strong style="color:${tierColor};">${labels[maxIdx]}（${currentValues[maxIdx]}分）</strong>
-        &nbsp;|&nbsp; 待强化：${labels[minIdx]}（${currentValues[minIdx]}分）
-      </div>
-    </div>
-  `;
+    var html = '<div style=\"background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-top:4px;\">';
+    html += '<div style=\"font-size:32px;font-weight:700;color:' + tierColor + ';margin-bottom:4px;\">' + tier + '</div>';
+    html += '<div style=\"font-size:13px;color:var(--text);line-height:1.8;\">' + tierDesc + '</div>';
+    html += '<div style=\"margin-top:12px;font-size:12px;color:var(--text-dim);\">';
+    html += '综合均值：<strong style=\"color:var(--text-bright);\">' + avg.toFixed(1) + '</strong> 分';
+    html += ' &nbsp;|&nbsp; 优势维度：<strong style=\"color:' + tierColor + ';\">' + labels[maxIdx] + '（' + currentValues[maxIdx] + '分）</strong>';
+    html += ' &nbsp;|&nbsp; 待强化：' + labels[minIdx] + '（' + currentValues[minIdx] + '分）';
+    html += '</div></div>';
+
+    document.getElementById('eval-result').innerHTML = html;
+  } catch(e) {
+    document.getElementById('eval-result').innerHTML = '<div style=\"color:red;\">评估出错: ' + e.message + '</div>';
+  }
 }
 
 // ====== 启动 ======
