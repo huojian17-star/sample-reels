@@ -300,7 +300,7 @@
       <div id="sliders-container"></div>
 
       <!-- 评估按钮 -->
-      <button onclick="evaluate()" style="width:100%;margin-top:16px;padding:10px 0;background:var(--accent);color:#fff;border:none;border-radius:4px;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;letter-spacing:1px;">确认评估</button>
+      <button id="btn-evaluate" style="width:100%;margin-top:16px;padding:10px 0;background:var(--accent);color:#fff;border:none;border-radius:4px;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;letter-spacing:1px;">确认评估</button>
 
       <!-- 评估结果 -->
       <div id="eval-result" style="margin-top:16px;text-align:center;min-height:40px;"></div>
@@ -473,6 +473,7 @@
 
 <script>
 // ====== 雷达图状态 ======
+console.log('[game-design] 脚本开始加载');
 let currentSide = 'physical';
 const physicalLabels = ['力量', '速度', '技巧', '思维'];
 const magicLabels    = ['力量', '速度', '技巧', '思维', '掌控度', '释放威力'];
@@ -612,6 +613,18 @@ function evaluate() {
 // ====== 启动 ======
 buildSliders();
 drawRadar();
+
+// 绑定评估按钮（使用 addEventListener 更可靠）
+var evalBtn = document.getElementById('btn-evaluate');
+if (evalBtn) {
+  evalBtn.addEventListener('click', function() {
+    console.log('[game-design] 评估按钮被点击');
+    evaluate();
+  });
+} else {
+  console.error('[game-design] 找不到评估按钮 #btn-evaluate');
+}
+console.log('[game-design] 脚本加载完成');
 
 // ====== 任务派发系统 ======
 let questLog = [];
