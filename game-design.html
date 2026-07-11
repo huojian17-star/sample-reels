@@ -273,7 +273,7 @@
 
 <div class="page-hero">
   <p><a href="index.html" class="back-link">&larr; 返回首页</a></p>
-  <h1>游戏设计 · 数值与系统</h1>
+  <h1>可交互游戏原型</h1>
   <p>基于「艾瑞斯大陆」世界观的数值模型、系统机制与交互原型</p>
 </div>
 
@@ -550,12 +550,11 @@ function switchSide(side) {
 function buildSliders() {
   const labels = getLabels();
   const colors = ['#c95d3d', '#c9a24d', '#4d9b91', '#7266ba', '#b85135', '#3d857b'];
-  const icons = ['🪓', '⚡', '🎯', '🧠', '🌀', '💥'];
   const container = document.getElementById('sliders-container');
   container.innerHTML = labels.map((label, i) => `
     <div style="margin-bottom:12px;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
-        <span style="font-size:12px;color:var(--text);font-weight:500;">${icons[i]} ${label}</span>
+        <span style="font-size:12px;color:var(--text);font-weight:500;">${label}</span>
         <span style="font-size:12px;font-weight:600;color:${colors[i]};" id="val-${i}">${currentValues[i]}</span>
       </div>
       <input type="range" min="5" max="99" value="${currentValues[i]}"
