@@ -6,21 +6,27 @@
 }
 
 :root {
-  --bg: #0f1117;
-  --bg-alt: #161822;
-  --bg-card: #1c1f2e;
-  --bg-card-hover: #222636;
-  --text: #c8ccd4;
-  --text-dim: #787c88;
-  --text-bright: #e8ecf2;
-  --accent: #c9a24d;
-  --accent-dim: #8b6918;
-  --accent-magic: #7b6fdf;
-  --accent-physical: #c95d3d;
-  --accent-research: #4d9b91;
-  --border: #2a2d3a;
-  --radius: 8px;
-  --max-w: 1100px;
+  /* 整体色调全面重构：采用温暖、低饱和度的日系纸张与棉麻色调 */
+  --bg: #faf9f6;          /* 温暖的米白、象牙质感底色 */
+  --bg-alt: #f4f1eb;      /* 稍深的过渡色 */
+  --bg-card: #ffffff;     /* 纯白卡片，突出层次 */
+  --bg-card-hover: #fcfbfa;
+  --text: #333333;        /* 柔和的深灰替代纯黑，阅读更舒适 */
+  --text-dim: #70747c;    /* 次要文字 */
+  --text-bright: #1a1a1a; /* 标题加深 */
+  
+  /* 核心点缀色：从亮金改为内敛的琥珀木色/暮色 */
+  --accent: #a98446;       
+  --accent-dim: #d1bfa7;
+  
+  /* 保留你原本在游戏/设定集里用到的属性色，但降低了饱和度以契合整体风格 */
+  --accent-magic: #7266ba;
+  --accent-physical: #b85135;
+  --accent-research: #3d857b;
+  
+  --border: #e6e1da;       /* 更柔和、内敛的浅色边框线 */
+  --radius: 6px;           /* 略微缩小的圆角，显得更有书籍般的精致线条感 */
+  --max-w: 1000px;         /* 略微收窄最大宽度，让文字排版更聚合、适合阅读 */
 }
 
 html {
@@ -29,134 +35,138 @@ html {
 }
 
 body {
-  font-family: -apple-system, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  /* 核心优化：引入衬线体 Georgia 作为英文和数字备选，更具文学杂志质感 */
+  font-family: "Georgia", -apple-system, "Noto Serif SC", "PingFang SC", "Hiragino Sans GB", sans-serif;
   background: var(--bg);
   color: var(--text);
-  line-height: 1.75;
+  line-height: 1.85;       /* 增大行高，给文字充足的呼吸空间 */
   font-size: 15px;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* ====== 导航 ====== */
+/* ====== 导航栏：轻盈半透明 ====== */
 nav {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(15, 17, 23, 0.92);
-  backdrop-filter: blur(12px);
+  background: rgba(250, 249, 246, 0.85); /* 适配新底色 */
+  backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border);
 }
 
 .nav-inner {
   max-width: var(--max-w);
   margin: 0 auto;
-  padding: 0 24px;
-  height: 60px;
+  padding: 0 32px;
+  height: 70px;            /* 稍微拉高，更显大气 */
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
 .nav-brand {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--accent);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-bright);
   text-decoration: none;
-  letter-spacing: 0.5px;
+  letter-spacing: 1.5px;   /* 增加字间距，营造极简奢侈品/工作室的质感 */
 }
 
 .nav-links {
   display: flex;
-  gap: 32px;
+  gap: 40px;
 }
 
 .nav-links a {
   color: var(--text-dim);
   text-decoration: none;
-  font-size: 14px;
-  font-weight: 500;
-  transition: color 0.15s;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  transition: color 0.25s ease;
 }
 
 .nav-links a:hover {
-  color: var(--text-bright);
+  color: var(--accent);
 }
 
-/* ====== Hero ====== */
+/* ====== Hero 区域 ====== */
 .hero {
-  min-height: 80vh;
+  min-height: 70vh;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 80px 24px;
-  background: linear-gradient(180deg, #1a1c2a 0%, var(--bg) 100%);
+  padding: 100px 32px;
+  /* 移除生硬的深色渐变，改用极其温柔的淡雅微渐变 */
+  background: linear-gradient(180deg, #f4f1eb 0%, var(--bg) 100%);
 }
 
 .hero-content {
-  max-width: 700px;
+  max-width: 640px;
 }
 
 .hero h1 {
-  font-size: 48px;
-  font-weight: 800;
+  font-family: "Georgia", "Noto Serif SC", serif; /* 启用艺术衬线体 */
+  font-size: 42px;
+  font-weight: 500;        /* 日系极简不宜过粗，中等字重更显素雅 */
   color: var(--text-bright);
-  letter-spacing: 2px;
-  margin-bottom: 12px;
+  letter-spacing: 3px;     /* 舒张的字间距 */
+  margin-bottom: 20px;
 }
 
 .hero-subtitle {
-  font-size: 18px;
+  font-size: 15px;
   color: var(--accent);
-  font-weight: 500;
-  margin-bottom: 24px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 32px;
 }
 
 .hero-desc {
-  font-size: 16px;
+  font-size: 15px;
   color: var(--text-dim);
-  line-height: 1.8;
-  margin-bottom: 48px;
+  line-height: 2;
+  margin-bottom: 56px;
 }
 
+/* 核心优化：数字数据面板改为“空气感”排版 */
 .hero-stats {
   display: flex;
   justify-content: center;
-  gap: 48px;
+  gap: 64px;
   flex-wrap: wrap;
 }
 
 .stat-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  position: relative;
 }
 
 .stat-num {
-  font-size: 36px;
-  font-weight: 800;
+  font-family: "Georgia", serif;
+  font-size: 32px;
+  font-weight: 400;
   color: var(--text-bright);
-  line-height: 1.2;
 }
 
 .stat-unit {
-  font-size: 18px;
-  font-weight: 500;
+  font-size: 14px;
   color: var(--text-dim);
 }
 
 .stat-label {
-  font-size: 13px;
+  font-size: 11px;
   color: var(--text-dim);
-  margin-top: 4px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  margin-top: 6px;
+  letter-spacing: 1.5px;
 }
 
 /* ====== 通用 Section ====== */
 .section {
   max-width: var(--max-w);
   margin: 0 auto;
-  padding: 80px 24px;
+  padding: 100px 32px;    /* 增加垂直留白，增加空间感 */
 }
 
 .section-alt {
@@ -171,405 +181,50 @@ nav {
 }
 
 .section-title {
-  font-size: 28px;
-  font-weight: 700;
+  font-family: "Georgia", "Noto Serif SC", serif;
+  font-size: 24px;
+  font-weight: 500;
   color: var(--text-bright);
-  margin-bottom: 8px;
-  letter-spacing: 1px;
+  margin-bottom: 12px;
+  letter-spacing: 1.5px;
 }
 
 .section-desc {
   color: var(--text-dim);
-  margin-bottom: 40px;
-  font-size: 15px;
-}
-
-.subsection-title {
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--text-bright);
-  margin: 48px 0 20px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--border);
-}
-
-/* ====== 关于 ====== */
-.about-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  margin-top: 32px;
-}
-
-.about-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 28px;
-}
-
-.about-card h3 {
-  font-size: 17px;
-  font-weight: 600;
-  color: var(--accent);
-  margin-bottom: 12px;
-}
-
-.about-card p {
+  margin-bottom: 56px;
   font-size: 14px;
-  color: var(--text-dim);
-  line-height: 1.75;
+  letter-spacing: 0.5px;
 }
 
-/* ====== B站 ====== */
-.bili-link {
-  color: var(--accent);
-  text-decoration: none;
-  font-weight: 500;
+/* ====== 卡片与细节的“去重框”轻量化优化 ====== */
+.about-grid, .video-grid, .world-grid {
+  gap: 32px;             /* 增大间距，降低压迫感 */
 }
 
-.bili-link:hover {
-  text-decoration: underline;
-}
-
-.stats-banner {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  flex-wrap: wrap;
-  padding: 32px 0;
-  margin-bottom: 32px;
-}
-
-.sb-item {
-  text-align: center;
-}
-
-.sb-num {
-  display: block;
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--accent);
-}
-
-.sb-label {
-  display: block;
-  font-size: 12px;
-  color: var(--text-dim);
-  margin-top: 4px;
-}
-
-/* 观众画像 */
-.audience-box {
+/* 日系精细阴影：用若隐若现的无边界阴影，代替死板的黑框 */
+.about-card, .audience-box, .video-card, .world-card, .contact-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 24px 28px;
-  margin-bottom: 12px;
+  box-shadow: 0 4px 20px rgba(169, 132, 70, 0.03); /* 极淡的琥珀色微阴影 */
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.audience-box h3 {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text-dim);
-  margin-bottom: 16px;
-}
-
-.audience-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-}
-
-.au-item {
-  display: flex;
-  flex-direction: column;
-}
-
-.au-key {
-  font-size: 12px;
-  color: var(--text-dim);
-  margin-bottom: 4px;
-}
-
-.au-val {
-  font-size: 14px;
-  color: var(--text-bright);
-  font-weight: 500;
-}
-
-/* 视频卡片 */
-.video-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-}
-
-.video-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 24px;
-  display: flex;
-  gap: 16px;
-  transition: border-color 0.15s;
-}
-
-.video-card:hover {
+/* 悬浮动效：优雅地向上微微浮动 */
+.video-card:hover, .contact-card:hover {
+  transform: translateY(-4px);
   border-color: var(--accent-dim);
-}
-
-.video-card.featured {
-  border-color: var(--accent-dim);
-  background: var(--bg-card-hover);
-}
-
-.video-order {
-  font-size: 20px;
-  font-weight: 800;
-  color: var(--accent);
-  flex-shrink: 0;
-  width: 36px;
-}
-
-.video-info h4 {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text-bright);
-  margin-bottom: 4px;
-}
-
-.video-info > p {
-  font-size: 13px;
-  color: var(--text-dim);
-  margin-bottom: 10px;
-}
-
-.video-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  font-size: 12px;
-  color: var(--text-dim);
-}
-
-.video-meta span {
-  white-space: nowrap;
-}
-
-/* 其他视频(小型) */
-.video-grid-mini {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin-bottom: 40px;
-}
-
-.video-card-mini {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
-}
-
-.video-card-mini h4 {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-bright);
-  margin-bottom: 4px;
-}
-
-.video-card-mini > p {
-  font-size: 12px;
-  color: var(--text-dim);
-  margin-bottom: 8px;
-}
-
-.video-card-mini .video-meta {
-  font-size: 11px;
-}
-
-/* ====== 设定集 ====== */
-.world-overview {
-  margin: 32px 0 40px;
+  box-shadow: 0 10px 30px rgba(169, 132, 70, 0.08);
 }
 
 .world-intro-card {
   background: var(--bg-card);
-  border-left: 3px solid var(--accent);
-  border-radius: 0 var(--radius) var(--radius) 0;
-  padding: 24px 28px;
+  border-left: 2px solid var(--accent); /* 线条改细，更精致 */
+  box-shadow: 0 4px 20px rgba(0,0,0,0.02);
 }
 
-.world-intro-card p {
-  font-size: 15px;
-  color: var(--text);
-  line-height: 1.85;
-}
-
-.world-intro-card strong {
-  color: var(--accent);
-}
-
-.world-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-}
-
-.world-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 24px;
-}
-
-.world-card h3 {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--accent);
-  margin-bottom: 14px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--border);
-}
-
-.world-card ul {
-  list-style: none;
-  padding: 0;
-}
-
-.world-card li {
-  font-size: 13px;
-  color: var(--text-dim);
-  padding: 4px 0;
-  line-height: 1.65;
-}
-
-.world-card li strong {
-  color: var(--text);
-}
-
-.setting-note {
-  text-align: center;
-  color: var(--text-dim);
-  font-size: 13px;
-  margin-top: 40px;
-  padding-top: 20px;
-  border-top: 1px solid var(--border);
-}
-
-/* ====== 联系 ====== */
-#contact .section {
-  max-width: var(--max-w);
-  margin: 0 auto;
-}
-
-.contact-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  margin-top: 32px;
-}
-
-.contact-card {
-  display: block;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 32px 24px;
-  text-align: center;
-  text-decoration: none;
-  color: inherit;
-  transition: border-color 0.15s;
-}
-
-a.contact-card:hover {
-  border-color: var(--accent-dim);
-}
-
-.contact-icon {
-  font-size: 28px;
-  display: block;
-  margin-bottom: 12px;
-}
-
-.contact-card h3 {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text-bright);
-  margin-bottom: 6px;
-}
-
-.contact-card p {
-  font-size: 13px;
-  color: var(--text-dim);
-}
-
-/* ====== 页脚 ====== */
+/* 页脚 */
 footer {
-  text-align: center;
-  padding: 40px 24px;
+  padding: 60px 32px;
+  background: var(--bg-alt);
   border-top: 1px solid var(--border);
-}
-
-footer p {
-  font-size: 12px;
-  color: var(--text-dim);
-}
-
-/* ====== 响应式 ====== */
-@media (max-width: 860px) {
-  .about-grid,
-  .world-grid,
-  .video-grid,
-  .video-grid-mini {
-    grid-template-columns: 1fr;
-  }
-
-  .audience-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .hero h1 {
-    font-size: 36px;
-  }
-
-  .hero-stats {
-    gap: 28px;
-  }
-
-  .stat-num {
-    font-size: 28px;
-  }
-
-  .stats-banner {
-    gap: 24px;
-  }
-
-  .nav-links {
-    gap: 16px;
-  }
-}
-
-@media (max-width: 500px) {
-  .hero-stats {
-    gap: 20px;
-  }
-
-  .stats-banner {
-    gap: 16px;
-  }
-
-  .sb-num {
-    font-size: 22px;
-  }
-
-  .nav-inner {
-    height: 50px;
-    padding: 0 16px;
-  }
-
-  .nav-links a {
-    font-size: 13px;
-  }
 }
