@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>游戏设计 · 数值与系统 · BEST-辣椒</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* ====== 雷达图 ====== */
+.radar-section { display: flex; gap: 40px; align-items: center; flex-wrap: wrap; }
+.radar-chart { flex-shrink: 0; }
+.radar-legend { flex: 1; min-width: 200px; }
+.radar-legend h3 { font-size: 15px; color: var(--text-bright); margin-bottom: 12px; }
+.radar-legend table { width: 100%; font-size: 13px; border-collapse: collapse; }
+.radar-legend th { text-align: left; padding: 6px 10px; color: var(--text-dim); font-weight: 400; }
+.radar-legend td { padding: 6px 10px; font-weight: 600; text-align: right; }
+.legend-1 { color: #9cada4; }
+.legend-3 { color: var(--accent); }
+
+/* ====== 公式展示 ====== */
+.formula-block {
+  background: #faf8f3; border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 28px 32px; margin: 20px 0;
+  font-family: "Georgia", "Noto Serif SC", serif;
+}
+.formula-block h4 {
+  font-size: 14px; font-weight: 600; color: var(--accent);
+  margin-bottom: 16px; letter-spacing: 1px;
+}
+.formula {
+  font-size: 15px; color: var(--text-bright); line-height: 2.2;
+  padding: 12px 0;
+}
+.formula .var { color: var(--accent-magic); }
+.formula .op  { color: var(--text-dim); }
+.formula .num { color: var(--accent-physical); }
+.formula .fn  { color: var(--accent-research); }
+
+/* ====== 流程图 ====== */
+.flow-container {
+  display: flex; align-items: center; gap: 0;
+  padding: 32px 0; overflow-x: auto;
+}
+.flow-node {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px 20px; text-align: center;
+  min-width: 120px; flex-shrink: 0; font-size: 13px;
+}
+.flow-node.start { border-color: var(--accent); }
+.flow-node.battle { border-color: var(--accent-physical); }
+.flow-node.puzzle { border-color: var(--accent-magic); }
+.flow-node.reward { border-color: var(--accent-research); }
+.flow-node h4 { font-size: 13px; font-weight: 600; color: var(--text-bright); margin-bottom: 4px; }
+.flow-node p  { font-size: 11px; color: var(--text-dim); }
+.flow-arrow {
+  flex-shrink: 0; padding: 0 8px; font-size: 18px; color: var(--text-dim);
+}
+
+/* ====== 职业定位 ====== */
+.role-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin: 24px 0; }
+.role-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 28px;
+}
+.role-card h4 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+.role-tag {
+  display: inline-block; padding: 2px 10px; border-radius: 10px;
+  font-size: 10px; letter-spacing: 1px; margin-bottom: 14px;
+}
+.role-card ul { list-style: none; padding: 0; }
+.role-card li { font-size: 13px; color: var(--text-dim); padding: 4px 0; line-height: 1.6; }
+.role-card li strong { color: var(--text); }
+
+/* ====== 任务派发彩蛋 ====== */
+.quest-widget {
+  background: linear-gradient(135deg, #1c1f2e 0%, #252838 100%);
+  border-radius: var(--radius); padding: 40px 36px; margin-top: 48px;
+  color: #c8ccd4;
+}
+.quest-widget h2 {
+  font-family: "Georgia", "Noto Serif SC", serif;
+  font-size: 20px; font-weight: 500; color: #e8ecf2;
+  margin-bottom: 8px; letter-spacing: 1px;
+}
+.quest-widget .quest-subtitle { font-size: 13px; color: #787c88; margin-bottom: 28px; }
+.quest-list { display: flex; gap: 16px; flex-wrap: wrap; }
+.quest-btn {
+  flex: 1; min-width: 200px;
+  padding: 20px 24px;
+  background: #2a2d3a; border: 1px solid #3a3d4a;
+  border-radius: var(--radius); color: #c8ccd4;
+  cursor: pointer; font-family: inherit; text-align: left;
+  transition: all 0.2s;
+}
+.quest-btn:hover { border-color: var(--accent); background: #2f3240; }
+.quest-btn h4 { font-size: 14px; font-weight: 600; color: #e8ecf2; margin-bottom: 6px; }
+.quest-btn .quest-meta { font-size: 11px; color: #787c88; }
+.quest-btn .quest-risk-low  { color: #8bab6a; }
+.quest-btn .quest-risk-high { color: var(--accent-physical); }
+
+/* 弹窗反馈 */
+.quest-toast {
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  background: #1c1f2e; border: 1px solid var(--accent);
+  border-radius: var(--radius); padding: 32px 40px; text-align: center;
+  z-index: 200; color: #c8ccd4; box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  animation: toastIn 0.3s ease;
+}
+@keyframes toastIn {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+.quest-toast h4 { font-size: 20px; color: var(--accent); margin-bottom: 12px; }
+.quest-toast p { font-size: 14px; color: #c8ccd4; line-height: 1.8; margin-bottom: 6px; }
+.quest-toast .close-toast {
+  display: inline-block; margin-top: 16px; padding: 8px 28px;
+  background: var(--accent); color: #fff; border: none;
+  border-radius: 4px; cursor: pointer; font-family: inherit; font-size: 13px;
+}
+.quest-toast .progress-bar-inner {
+  height: 4px; background: #3a3d4a; border-radius: 2px; margin-top: 16px; overflow: hidden;
+}
+.quest-toast .progress-fill-inner {
+  height: 100%; background: var(--accent); border-radius: 2px;
+  transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+  z-index: 199;
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">BEST-辣椒</a>
+    <div class="nav-links">
+      <a href="about.html">关于</a>
+      <a href="bilibili.html">B站</a>
+      <a href="worldbuilding.html">设定集</a>
+      <a href="novel.html">小说</a>
+      <a href="game-design.html" style="color:var(--accent);">游戏设计</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <p><a href="index.html" class="back-link">&larr; 返回首页</a></p>
+  <h1>游戏设计 · 数值与系统</h1>
+  <p>基于「艾瑞斯大陆」世界观的数值模型、系统机制与交互原型</p>
+</div>
+
+<div class="content-section">
+
+  <!-- ====== 一、数值与经济模型 ====== -->
+  <h2>一、数值与经济模型</h2>
+
+  <h3>能力者属性雷达图：一阶 vs 三阶枪兵</h3>
+  <p>基于设定中的"力量、速度、技巧、思维"四大评估板块，绘制数值对比。三阶枪兵以"早期寰宇城传奇枪兵"为原型，在技巧维度有明显跃升。</p>
+
+  <div class="radar-section">
+    <div class="radar-chart">
+      <svg id="radar" width="340" height="340" viewBox="0 0 340 340"></svg>
+    </div>
+    <div class="radar-legend">
+      <h3>属性数据对比</h3>
+      <table>
+        <tr><th>力量 (STR)</th><td class="legend-1">42</td><td class="legend-3">58</td></tr>
+        <tr><th>速度 (SPD)</th><td class="legend-1">55</td><td class="legend-3">72</td></tr>
+        <tr><th>技巧 (TEC)</th><td class="legend-1">38</td><td class="legend-3">81</td></tr>
+        <tr><th>思维 (MND)</th><td class="legend-1">45</td><td class="legend-3">63</td></tr>
+        <tr style="border-top:1px solid var(--border);"><th>综合评级</th><td class="legend-1">一阶</td><td class="legend-3">三阶</td></tr>
+      </table>
+      <p style="font-size:11px;color:var(--text-dim);margin-top:12px;">评估依据：《艾瑞斯大陆能力者图鉴》公开部分。魔法侧额外包含"掌控度"和"释放威力"两大板块，此处以物理侧枪兵为例。</p>
+    </div>
+  </div>
+
+  <h3>经济系统数值模型</h3>
+  <p>以下是基于世界观货币体系（1金狮鹫 = 10银鹿角 = 500棕熊铜币）设计的怪物掉落与任务奖励数值逻辑。</p>
+
+  <div class="formula-block">
+    <h4>怪物掉落金币公式</h4>
+    <div class="formula">
+      <span class="fn">DropGold</span> <span class="op">=</span>
+      <span class="var">MonsterLevel</span> <span class="op">&times;</span>
+      <span class="num">3</span> <span class="op">+</span>
+      <span class="fn">Random</span><span class="op">(</span><span class="op">-</span><span class="num">2</span><span class="op">,</span> <span class="num">5</span><span class="op">)</span> <span class="op">+</span>
+      <span class="fn">Floor</span><span class="op">(</span><span class="var">Luck</span> <span class="op">&divide;</span> <span class="num">10</span><span class="op">)</span>
+    </div>
+    <p style="font-size:12px;color:var(--text-dim);margin-top:8px;">
+      其中 <span class="var">MonsterLevel</span> 为怪物等级（1-20），<span class="fn">Random(a,b)</span> 为区间随机整数，
+      <span class="var">Luck</span> 为角色幸运值（0-100）。掉落货币单位为棕熊铜币。<br>
+      示例：Lv.5 影犬 + 幸运值 35 → DropGold = 5×3 + Random(-2,5) + Floor(35÷10) = 15 + [−2~5] + 3 = 16~23 棕熊铜币。
+    </p>
+  </div>
+
+  <div class="formula-block">
+    <h4>幸运值对稀有掉落的影响</h4>
+    <div class="formula">
+      <span class="fn">RareDropRate</span> <span class="op">=</span>
+      <span class="fn">BaseRate</span> <span class="op">&times;</span>
+      <span class="op">(</span><span class="num">1</span> <span class="op">+</span> <span class="var">Luck</span> <span class="op">&divide;</span> <span class="num">200</span><span class="op">)</span>
+    </div>
+    <p style="font-size:12px;color:var(--text-dim);margin-top:8px;">
+      <span class="fn">BaseRate</span> 为基础稀有掉落率（通常3%-8%），<span class="var">Luck</span> 为角色幸运值。<br>
+      示例：BaseRate = 5%，Luck = 80 → RareDropRate = 5% × (1 + 80/200) = 5% × 1.4 = <strong>7%</strong>。
+      这使得幸运值从0到100的收益曲线为线性递增，不会出现边际递减——保证玩家对幸运属性的持续追求。
+    </p>
+  </div>
+
+  <div class="formula-block">
+    <h4>公会任务报酬定价模型</h4>
+    <div class="formula">
+      <span class="fn">TaskReward</span> <span class="op">=</span>
+      <span class="var">BaseReward</span> <span class="op">&times;</span>
+      <span class="op">(</span><span class="num">1</span> <span class="op">+</span> <span class="fn">RiskMultiplier</span><span class="op">)</span> <span class="op">&times;</span>
+      <span class="op">(</span><span class="num">1</span> <span class="op">-</span> <span class="fn">GuildCut</span><span class="op">)</span>
+    </div>
+    <p style="font-size:12px;color:var(--text-dim);margin-top:8px;">
+      其中 <span class="var">BaseReward</span> = 任务基础报酬（由威胁等级、时长、团队规模核定），<br>
+      <span class="fn">RiskMultiplier</span> = 风险系数（影犬清剿 ≈ 0.2，深渊领主讨伐 ≈ 2.5），<br>
+      <span class="fn">GuildCut</span> = 公会抽成（10%-20%，用于抚恤基金与运营）。<br>
+      示例：清剿影犬 BaseReward = 40银鹿角，RiskMultiplier = 0.2，GuildCut = 0.15<br>
+      → TaskReward = 40 × 1.2 × 0.85 = <strong>40.8 银鹿角</strong>（实际发放取整为41银鹿角）。
+    </p>
+  </div>
+
+  <!-- ====== 二、玩法与系统机制 ====== -->
+  <h2>二、玩法与系统机制</h2>
+
+  <h3>公会任务流程</h3>
+  <p>以守望堡为背景的典型任务派发与执行链路。该流程图展示从NPC交互到任务结算的完整闭环。</p>
+
+  <div class="flow-container">
+    <div class="flow-node start"><h4>NPC 安切斯特</h4><p>任务派发</p></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node"><h4>公会布告栏</h4><p>选择任务</p></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node"><h4>小队编成</h4><p>选择3人出战</p></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node battle"><h4>遭遇事件</h4><p>战斗 / 解密</p></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node puzzle"><h4>事件判定</h4><p>属性检定</p></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node reward"><h4>任务结算</h4><p>金币 / 道具 / 经验</p></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node"><h4>公会评估</h4><p>四大板块考核</p></div>
+  </div>
+
+  <p style="font-size:13px;color:var(--text-dim);">注：每次任务完成后触发四大板块考核（力量/速度/技巧/思维），通过者可晋升等级。此机制直接对应设定中的"一阶跃升至三阶枪兵"传奇案例——系统设计保证了理论上的可能性，但需要出色的任务表现。</p>
+
+  <h3>三角色职业定位设计</h3>
+  <p>基于艾瑞斯大陆的双侧体系，设计一套三人小队协作玩法。每个角色拥有独特的职业定位与技能差异，形成"侦察→突破→支援"的战术闭环。</p>
+
+  <div class="role-grid">
+    <div class="role-card">
+      <h4 style="color:var(--accent-magic);">观测者</h4>
+      <span class="role-tag" style="background:#f0edfa;color:var(--accent-magic);">侦察 · 情报 · 控制</span>
+      <ul>
+        <li><strong>定位</strong>：魔法侧幻术师/咒术师</li>
+        <li><strong>核心能力</strong>：远程感知敌人位置、揭示隐藏通道、制造幻象迷惑敌人</li>
+        <li><strong>战斗风格</strong>：不直接参与近战，通过"标记"为队友提供伤害加成。可对敌人施加减速/混乱状态</li>
+        <li><strong>设计意图</strong>：满足策略型玩家的信息优势需求。低血量、低防御，但技能决定团队的战术上限</li>
+      </ul>
+    </div>
+    <div class="role-card">
+      <h4 style="color:var(--accent-physical);">突破者</h4>
+      <span class="role-tag" style="background:#fdf0eb;color:var(--accent-physical);">近战 · 伤害 · 坦克</span>
+      <ul>
+        <li><strong>定位</strong>：物理侧剑术师/狂战士</li>
+        <li><strong>核心能力</strong>：正面突破、吸引仇恨、高爆发单体伤害</li>
+        <li><strong>战斗风格</strong>：站在队伍最前方，承受主要伤害。连击系统（3段→5段）随等级解锁。怒气值满后可释放"破甲突刺"（三阶技能）</li>
+        <li><strong>设计意图</strong>：满足动作型玩家的爽感需求。操作门槛低但上限高——高手可通过精准格挡时机实现无伤通关</li>
+      </ul>
+    </div>
+    <div class="role-card">
+      <h4 style="color:var(--accent-research);">策应者</h4>
+      <span class="role-tag" style="background:#edf7f5;color:var(--accent-research);">道具 · 治疗 · 辅助</span>
+      <ul>
+        <li><strong>定位</strong>：魔法侧治愈师 + 研究侧工程师</li>
+        <li><strong>核心能力</strong>：治疗队友、投掷道具（烟雾弹/陷阱/增益药剂）、环境互动（修复桥梁/破解机关）</li>
+        <li><strong>战斗风格</strong>：不直接攻击，但通过道具组合可以改变战场地形。例如：投掷油瓶 + 观测者的火系标记 = 范围燃烧</li>
+        <li><strong>设计意图</strong>：满足辅助型玩家的创造力需求。表面上是"混子位"，实际上道具连携是Boss战的核心解法</li>
+      </ul>
+    </div>
+  </div>
+
+  <p style="font-size:13px;color:var(--text-dim);">注：该三角色设计遵循"猜拳式克制 + 连携增益"的原则。观测者标记敌人 → 突破者享受伤害加成 → 策应者利用突破者创造的输出窗口投掷关键道具。三人同时行动时触发"羁绊技"，具体效果取决于小队编成中的侧系组合。</p>
+
+  <!-- ====== 三、互动彩蛋：公会任务派发 ====== -->
+  <div class="quest-widget">
+    <h2>公会任务派发处</h2>
+    <p class="quest-subtitle">守望堡 · 第四巡逻队任务板 | 当前在线能力者：你</p>
+
+    <div class="quest-list">
+      <button class="quest-btn" onclick="acceptQuest('清剿影犬', 50, '低', 15, 0.3)">
+        <h4>清剿影犬巢穴</h4>
+        <p class="quest-meta">
+          报酬：50 银鹿角 &nbsp;|&nbsp;
+          风险：<span class="quest-risk-low">低</span> &nbsp;|&nbsp;
+          需求：无最低等级
+        </p>
+        <p class="quest-meta" style="margin-top:4px;">描述：悲叹裂隙外围发现三只影犬的巢穴。适合新晋能力者练手。</p>
+      </button>
+
+      <button class="quest-btn" onclick="acceptQuest('探索巫毒沼泽', '未知', '极高', 80, 0.9)">
+        <h4>探索巫毒沼泽</h4>
+        <p class="quest-meta">
+          报酬：<span style="color:#c9a24d;">未知（含稀有掉落）</span> &nbsp;|&nbsp;
+          风险：<span class="quest-risk-high">极高</span> &nbsp;|&nbsp;
+          需求：三阶以上
+        </p>
+        <p class="quest-meta" style="margin-top:4px;">描述：暗界·巫毒沼泽深处侦测到异常能量波动。建议满编小队前往。</p>
+      </button>
+
+      <button class="quest-btn" onclick="acceptQuest('协防卫戍', 120, '中', 40, 0.55)">
+        <h4>守望堡协防卫戍</h4>
+        <p class="quest-meta">
+          报酬：120 银鹿角 &nbsp;|&nbsp;
+          风险：中 &nbsp;|&nbsp;
+          需求：一阶以上
+        </p>
+        <p class="quest-meta" style="margin-top:4px;">描述：周期性要塞驻防任务。由研究侧财政部直接拨款，报酬稳定。</p>
+      </button>
+    </div>
+
+    <!-- 任务日志 -->
+    <div id="quest-log" style="margin-top:24px;"></div>
+  </div>
+
+</div>
+
+<footer>
+  <p>BEST-辣椒 &copy; 2026 · 基于「艾瑞斯大陆」世界观构建</p>
+</footer>
+
+<!-- 弹窗容器 -->
+<div id="toast-container"></div>
+
+<script>
+// ====== 雷达图绘制 ======
+function drawRadar() {
+  const svg = document.getElementById('radar');
+  const cx = 170, cy = 170, r = 130;
+  const labels = ['力量', '速度', '技巧', '思维'];
+  const angles = labels.map((_, i) => -Math.PI/2 + i * 2*Math.PI/4);
+  const data1 = [0.42, 0.55, 0.38, 0.45]; // 一阶
+  const data3 = [0.58, 0.72, 0.81, 0.63]; // 三阶
+
+  // 背景网格
+  [0.25, 0.5, 0.75, 1.0].forEach(level => {
+    const pts = angles.map(a => `${cx + r*level*Math.cos(a)},${cy + r*level*Math.sin(a)}`).join(' ');
+    svg.innerHTML += `<polygon points="${pts}" fill="none" stroke="#e6e1da" stroke-width="0.5"/>`;
+  });
+
+  // 轴线
+  angles.forEach(a => {
+    svg.innerHTML += `<line x1="${cx}" y1="${cy}" x2="${cx + r*Math.cos(a)}" y2="${cy + r*Math.sin(a)}" stroke="#e6e1da" stroke-width="0.5"/>`;
+  });
+
+  // 标签
+  labels.forEach((label, i) => {
+    const lx = cx + (r+22)*Math.cos(angles[i]);
+    const ly = cy + (r+22)*Math.sin(angles[i]);
+    svg.innerHTML += `<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="middle" font-size="12" fill="#70747c" font-family="inherit">${label}</text>`;
+  });
+
+  // 一阶多边形
+  const pts1 = angles.map((a, i) => `${cx + r*data1[i]*Math.cos(a)},${cy + r*data1[i]*Math.sin(a)}`).join(' ');
+  svg.innerHTML += `<polygon points="${pts1}" fill="#9cada4" fill-opacity="0.25" stroke="#9cada4" stroke-width="1.5"/>`;
+
+  // 三阶多边形
+  const pts3 = angles.map((a, i) => `${cx + r*data3[i]*Math.cos(a)},${cy + r*data3[i]*Math.sin(a)}`).join(' ');
+  svg.innerHTML += `<polygon points="${pts3}" fill="#a98446" fill-opacity="0.3" stroke="#a98446" stroke-width="1.5"/>`;
+
+  // 数据点
+  data1.forEach((d, i) => {
+    const px = cx + r*d*Math.cos(angles[i]), py = cy + r*d*Math.sin(angles[i]);
+    svg.innerHTML += `<circle cx="${px}" cy="${py}" r="4" fill="#9cada4"/>`;
+  });
+  data3.forEach((d, i) => {
+    const px = cx + r*d*Math.cos(angles[i]), py = cy + r*d*Math.sin(angles[i]);
+    svg.innerHTML += `<circle cx="${px}" cy="${py}" r="4" fill="#a98446"/>`;
+  });
+}
+drawRadar();
+
+// ====== 任务派发系统 ======
+let questLog = [];
+let totalSilver = 0;
+let totalExp = 0;
+
+function acceptQuest(name, reward, risk, expGain, progressPct) {
+  // 避免重复接取
+  if (questLog.find(q => q.name === name && q.status === '进行中')) {
+    showToast('⚠ 任务冲突', `你已经接取了「${name}」任务。请先完成当前任务再重新接取。`);
+    return;
+  }
+
+  const silverAmount = typeof reward === 'number' ? reward : Math.floor(Math.random() * 200 + 50);
+  const actualReward = typeof reward === 'number' ? reward : silverAmount;
+
+  questLog.push({ name, reward: actualReward, risk, exp: expGain, status: '进行中', time: new Date() });
+  totalSilver += actualReward;
+  totalExp += expGain;
+
+  // 更新日志
+  renderQuestLog();
+
+  // 弹窗
+  const riskColor = risk === '低' ? '#8bab6a' : risk === '中' ? '#c9a24d' : '#b85135';
+  showToast(
+    `任务接取成功`,
+    `
+      <span style="font-size:16px;">「${name}」</span><br><br>
+      +${actualReward} <span style="color:#c9a24d;">银鹿角</span> &nbsp;|&nbsp;
+      +${expGain} 经验值 &nbsp;|&nbsp;
+      风险等级：<span style="color:${riskColor};">${risk}</span><br><br>
+      距离下次升级还需完成「力量、速度、技巧、思维」四大板块考核。<br>
+      <span style="font-size:12px;color:#787c88;">（当前累计收益：${totalSilver} 银鹿角 / ${totalExp} 经验）</span>
+    `
+  );
+}
+
+function renderQuestLog() {
+  const logDiv = document.getElementById('quest-log');
+  if (questLog.length === 0) {
+    logDiv.innerHTML = '<p style="font-size:12px;color:#787c88;">暂无已接取任务。选择一个任务开始吧。</p>';
+    return;
+  }
+  logDiv.innerHTML = `
+    <div style="font-size:12px;color:#787c88;margin-bottom:10px;letter-spacing:1px;">已接取任务 (${questLog.length}) | 累计收益：${totalSilver} 银鹿角 | ${totalExp} 经验</div>
+    ${questLog.map(q => `
+      <div style="padding:10px 14px;margin-bottom:6px;background:#2a2d3a;border-radius:4px;font-size:13px;display:flex;justify-content:space-between;align-items:center;">
+        <span><strong style="color:#e8ecf2;">${q.name}</strong> <span style="color:#787c88;font-size:11px;">${q.status}</span></span>
+        <span style="color:#c9a24d;font-size:12px;">+${q.reward}银鹿角 +${q.exp}EXP</span>
+      </div>
+    `).join('')}
+  `;
+}
+
+function showToast(title, message) {
+  const container = document.getElementById('toast-container');
+  const overlay = document.createElement('div');
+  overlay.className = 'overlay';
+  overlay.onclick = closeToast;
+
+  const toast = document.createElement('div');
+  toast.className = 'quest-toast';
+  toast.innerHTML = `
+    <h4>${title}</h4>
+    <p>${message}</p>
+    <button class="close-toast" onclick="closeToast()">确认</button>
+  `;
+
+  container.innerHTML = '';
+  container.appendChild(overlay);
+  container.appendChild(toast);
+}
+
+function closeToast() {
+  document.getElementById('toast-container').innerHTML = '';
+}
+</script>
+
+</body>
+</html>
