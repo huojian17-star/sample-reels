@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>游戏设计 · 数值与系统 · BEST-辣椒</title>
+<title>可交互游戏原型 · BEST-辣椒</title>
 <link rel="stylesheet" href="style.css">
 <style>
 /* ====== 雷达图 ====== */
@@ -579,33 +579,247 @@ function evaluate() {
     for (var i = 0; i < currentValues.length; i++) { sum += currentValues[i]; }
     var avg = sum / currentValues.length;
 
-    var tier, tierDesc, tierColor;
-    if (avg < 20)      { tier = '一阶'; tierDesc = '初习者或学徒，刚从觉醒中苏醒，四大板块均处于萌芽状态。需要完成公会基础训练后正式入门。'; tierColor = '#9cada4'; }
-    else if (avg < 35) { tier = '二阶'; tierDesc = '已完成至少一次实战任务，基础属性开始分化。可以独立承接低风险公会委托。'; tierColor = '#8bab6a'; }
-    else if (avg < 50) { tier = '三阶'; tierDesc = '具备独立作战能力，某单项属性可能已接近四阶水平。参考早期寰宇城传奇枪兵——他从一阶跃升至三阶正是因为技巧板块的突出表现。'; tierColor = '#c9a24d'; }
-    else if (avg < 65) { tier = '四阶'; tierDesc = '进入能力者中坚层。此时可以选择辅修第二职阶（同侧），但需注意辅修越多、主修越弱的边际递减效应。'; tierColor = '#c95d3d'; }
-    else if (avg < 78) { tier = '五阶'; tierDesc = '高阶能力者门槛。召唤师可召唤飞龙（极速63.5m/s），魔导师可短距离传送。你的名字可能已出现在地方吟游诗人的歌谣中。'; tierColor = '#b85135'; }
-    else if (avg < 90) { tier = '六阶'; tierDesc = '魔导师在此阶可学习500米短距传送。物理侧能力者的连击段数从3段解锁至5段。你可以申请成为公会任务的评估者。'; tierColor = '#7266ba'; }
-    else               { tier = '七阶+'; tierDesc = '已踏入大陆顶尖能力者行列。魔导师传送距离扩展至3公里以上。元老会议可能已注意到你的存在。十阶「神话位阶」虽遥不可及，但路已在脚下。'; tierColor = '#8b1a1a'; }
+    // 阶位判定
+    var tier, tierColor;
+    if (avg < 20)      { tier = '一阶'; tierColor = '#9cada4'; }
+    else if (avg < 35) { tier = '二阶'; tierColor = '#8bab6a'; }
+    else if (avg < 50) { tier = '三阶'; tierColor = '#c9a24d'; }
+    else if (avg < 65) { tier = '四阶'; tierColor = '#c95d3d'; }
+    else if (avg < 78) { tier = '五阶'; tierColor = '#b85135'; }
+    else if (avg < 90) { tier = '六阶'; tierColor = '#7266ba'; }
+    else               { tier = '七阶+'; tierColor = '#8b1a1a'; }
 
-    var maxIdx = 0, minIdx = 0;
-    for (var j = 1; j < currentValues.length; j++) {
-      if (currentValues[j] > currentValues[maxIdx]) maxIdx = j;
-      if (currentValues[j] < currentValues[minIdx]) minIdx = j;
+    // 排序找出优劣维度
+    var sorted = [];
+    for (var i = 0; i < currentValues.length; i++) {
+      sorted.push({idx: i, label: labels[i], val: currentValues[i]});
+    }
+    sorted.sort(function(a,b) { return b.val - a.val; });
+    var top1 = sorted[0], top2 = sorted[1];
+    var bot1 = sorted[sorted.length - 1], bot2 = sorted[sorted.length - 2];
+    var spread = top1.val - bot1.val; // 极差：越大越偏科
+
+    // —— 类型识别 ——
+    var archetype = '', archetypeDesc = '';
+
+    if (currentSide === 'physical') {
+      // 物理侧4维识别
+      if (top1.label === '力量' && top1.val >= 70) {
+        archetype = '重装突破者';
+        archetypeDesc = '你的力量足以正面碾碎一切障碍。在物理侧能力者中，你属于以力破巧的典型——如同古代攻城锤，不需要花哨的步法，一拳打穿防线即是你的战术。';
+      } else if (top1.label === '速度' && top1.val >= 70) {
+        archetype = '疾风游击者';
+        archetypeDesc = '来去如风，以快打慢。你追求的不是一击毙命的爆发，而是让敌人永远无法锁定的机动性。在守望堡的巡逻队中，你这样的能力者最适合担任侦察与追击任务。';
+      } else if (top1.label === '技巧' && top1.val >= 70) {
+        archetype = '武技精进者';
+        archetypeDesc = '以巧破力，以技服人。你的每一次挥砍都经过千锤百炼，连击行云流水。参考寰宇城那位从一阶跃升至三阶的传奇枪兵——正是技巧维度的突破性表现，让他跳过了常规的等级壁垒。';
+      } else if (top1.label === '思维' && top1.val >= 70) {
+        archetype = '战术指挥者';
+        archetypeDesc = '运筹帷幄，以智取胜。在物理侧能力者中偏好以脑力而非蛮力取胜的人并不多见。你不急于正面接敌，而是先读透对手的节奏与破绽——这种素质让你在小队作战中天然处于指挥位。';
+      } else if (spread <= 15) {
+        archetype = '全能均衡者';
+        archetypeDesc = '各项属性均衡发展，没有明显的短板也没有突出的锋芒。这种"水桶型"配置让你在面对不同战局时都能灵活应对，但也意味着没有任何一个维度能够成为你的王牌。';
+      } else {
+        archetype = '发展中能力者';
+        archetypeDesc = '你的属性分布尚在成长阶段，已有明显的优势倾向但尚未达到临界点。继续在优势维度上深耕，同时不要让短板拖累你的实战表现。';
+      }
+    } else {
+      // 魔法侧6维识别
+      if (top1.label === '释放威力' && top1.val >= 70) {
+        archetype = '毁灭法师';
+        archetypeDesc = '你追求的是纯粹的魔法破坏力。在魔法侧中，释放威力型的能力者最为稀少也最受忌惮——一次全力施法足以改变小型战场的地形。元老会议对这类能力者通常会建立专门档案。';
+      } else if (top1.label === '掌控度' && top1.val >= 70) {
+        archetype = '精密织法者';
+        archetypeDesc = '魔法的本质不是力量，而是控制。你深谙此道——每一丝魔力都精确投向需要的位置，几乎没有浪费。这种素质让你在同阶能力者中拥有远超同侪的持续作战能力，也让你更适合修习幻术与咒术类高阶法术。';
+      } else if (top1.label === '技巧' && top1.val >= 70) {
+        archetype = '元素塑形师';
+        archetypeDesc = '你不满足于按照教科书施法。你试图重新塑造元素本身的形态与行为逻辑——这种"不守规矩"的特质让你在实战中常常打出意料之外的效果。但请谨慎：元素塑形的失控率在所有魔法事故中排名第三。';
+      } else if (top1.label === '思维' && top1.val >= 70) {
+        archetype = '秘法学者';
+        archetypeDesc = '在魔法侧中，思维属性决定了一个法师对秘法理论的理解深度。你更像一位学者而非战士——你的价值不在前线的火力输出，而在于对古代法术的解读、对暗界能量规律的研究。研究侧的维尔学派已经注意到了像你这样的跨界人才。';
+      } else if (top1.label === '速度' && top1.val >= 70) {
+        archetype = '迅捷咏唱者';
+        archetypeDesc = '魔法对决中，咏唱速度往往决定生死。你的施法前摇远比同阶法师短——这意味着在别人还在吟诵第一段咒文时，你的火球已经脱手。但这种高速施法的代价是对掌控度的更高要求。';
+      } else if (top1.label === '力量' && top1.val >= 70) {
+        archetype = '战法师';
+        archetypeDesc = '你选择了魔法侧中一条不寻常的路——以物理力量辅助魔力输出。这种"战法双修"的配置让你的近身战斗力远超纯施法者，但也意味着你同时承受了两条成长曲线的压力。';
+      } else if (spread <= 15) {
+        archetype = '全能织法者';
+        archetypeDesc = '六维均衡，没有明显短板。这种全面的属性分布意味着你对任何魔法流派都有一定的兼容性，但也意味着你尚未在任何方向上建立起决定性的个人优势。';
+      } else {
+        archetype = '发展中施法者';
+        archetypeDesc = '属性分布尚在成长阶段。找到你最擅长的那一维并全力突破，比平均地分配精力更能让你在魔法侧中脱颖而出。';
+      }
     }
 
-    var html = '<div style=\"background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-top:4px;\">';
-    html += '<div style=\"font-size:32px;font-weight:700;color:' + tierColor + ';margin-bottom:4px;\">' + tier + '</div>';
-    html += '<div style=\"font-size:13px;color:var(--text);line-height:1.8;\">' + tierDesc + '</div>';
-    html += '<div style=\"margin-top:12px;font-size:12px;color:var(--text-dim);\">';
-    html += '综合均值：<strong style=\"color:var(--text-bright);\">' + avg.toFixed(1) + '</strong> 分';
-    html += ' &nbsp;|&nbsp; 优势维度：<strong style=\"color:' + tierColor + ';\">' + labels[maxIdx] + '（' + currentValues[maxIdx] + '分）</strong>';
-    html += ' &nbsp;|&nbsp; 待强化：' + labels[minIdx] + '（' + currentValues[minIdx] + '分）';
-    html += '</div></div>';
+    // —— 优势分析 ——
+    var strengthText = '';
+    if (currentSide === 'physical') {
+      if (top1.label === '力量') {
+        strengthText = '力量值' + top1.val + '分，位居' + tier + '中的' + (top1.val >= 70 ? '上乘' : top1.val >= 50 ? '中坚' : '成长') + '水平。近身搏杀中你的单次攻击足以击破同级对手的常规防御。建议优先选择重武器路线——战锤、巨斧、或双手大剑。在公会任务中，你最适合承担"突破位"：冲在最前，吸引火力，为队友创造输出窗口。';
+      } else if (top1.label === '速度') {
+        strengthText = '速度值' + top1.val + '分，在' + tier + '中拥有显著的机动性优势。你可以比同阶对手更快地完成位移、闪避和追击。轻甲路线是你的最优解——牺牲一部分防御换取极致的灵活性。在三人小队编成中，你天然适合"游击位"：从侧翼切入，打乱敌方阵型后迅速脱离。';
+      } else if (top1.label === '技巧') {
+        strengthText = '技巧值' + top1.val + '分，意味着你的技术精度远超同阶平均。连击的衔接、武器的掌控、发力角度的微调——这些细节在你手中已内化为肌肉记忆。剑术师工会可能会对你的资质感兴趣。建议在四阶后考虑辅修第二武器（双持或剑盾切换），技巧系的边际收益在后期会逐步放大。';
+      } else if (top1.label === '思维') {
+        strengthText = '思维值' + top1.val + '分，在物理侧能力者中尤为难得。大多数战士依赖本能与反应，而你习惯于在出手前评估敌人的意图、地形的优劣、技能的冷却。这种素质让你在团队中天然成为战术核心。在守望堡的第四巡逻队中，思维型战士通常会被优先提拔为小队副指挥。';
+      }
+    } else {
+      if (top1.label === '释放威力') {
+        strengthText = '释放威力' + top1.val + '分，你的魔法输出在同阶中具有压倒性优势。单次施法的破坏半径和穿透力远超同级平均水平。但这种"大炮型"打法对魔力储备的消耗极大——你需要在战斗中精确计算每一次施法的性价比。推荐专精火系或雷系元素法术，这两者对释放威力的加成系数最高。';
+      } else if (top1.label === '掌控度') {
+        strengthText = '掌控度' + top1.val + '分，这是魔法侧最被低估却最核心的素质。高掌控度意味着更低的魔力浪费、更精确的施法落点、以及更短的法术冷却间隔。你对幻术和咒术的适应性远高于纯输出型法师。长远来看，掌控度型法师的成长天花板远高于释放威力型——因为高阶魔法的门槛永远是"控制"而非"力量"。';
+      } else if (top1.label === '技巧') {
+        strengthText = '技巧' + top1.val + '分，代表你对法术结构的理解与重构能力。你不只是"使用"魔法——你在"改造"它。这种能力在后期的价值不可估量：同样的基础火球术，在你手中可能附加追踪、分裂或延迟引爆效果。建议关注古代法术文献中的"变造"章节。';
+      } else if (top1.label === '思维') {
+        strengthText = '思维' + top1.val + '分，意味着你对魔法理论的学术层面有深刻理解。在实战中这表现为更好的战局判断、更准确的法术克制选择、以及对敌方施法者意图的预判。研究侧的维尔学者在他的《魔力经济学》中提出过一个观点：思维型法师是"魔法侧最接近研究侧的存在"。';
+      } else if (top1.label === '速度') {
+        strengthText = '速度' + top1.val + '分——在魔法对决中，施法速度往往直接决定胜负。你的吟唱时间比同阶短约四分之一，这让你在遭遇战中几乎总能抢到先手权。但需注意：高速施法的代价是对咒文精度的潜在牺牲。建议搭配掌控度训练来弥补这一缺陷。';
+      } else if (top1.label === '力量') {
+        strengthText = '力量' + top1.val + '分，对于魔法侧能力者而言这个数据相当不寻常。高力量意味着你拥有远超纯法师的近身自保能力——当敌方的物理侧能力者试图"切后排"时，他们会发现你并不好对付。但请保持清醒：力量不是魔法侧的主赛道，它是最好的"辅修"，但不应成为你的第一优先级。';
+      }
+    }
+
+    // 次优势补充
+    var secondText = '';
+    if (top2.val >= top1.val * 0.8 && top2.idx !== top1.idx) {
+      secondText = '此外，你的「' + top2.label + '」（' + top2.val + '分）与最强维度差距极小，形成了' + (currentSide === 'physical' ? '双核驱动' : '双属性协同') + '的稀有配置。这种"第二引擎"让你的战术选择比单一特长型能力者丰富得多。';
+    }
+
+    // —— 短板分析 ——
+    var weaknessText = '';
+    if (currentSide === 'physical') {
+      if (bot1.label === '力量') {
+        weaknessText = '力量是你的明显短板（仅' + bot1.val + '分）。这意味着你在正面硬碰硬的对抗中处于劣势——对手的重击你可能无法格挡，你的攻击也可能不足以击穿重甲单位的防御。建议：通过装备（重型臂甲、力量增幅护符）来弥补面板差距，或在战术上避免正面接敌。';
+      } else if (bot1.label === '速度') {
+        weaknessText = '速度是你的薄弱环节（仅' + bot1.val + '分）。低速度意味着你容易被机动型敌人绕后，也意味着你在追击和撤退中处于被动。建议：适当投入闪避训练，或在队伍中配置一名高速队友来弥补机动性缺口。';
+      } else if (bot1.label === '技巧') {
+        weaknessText = '技巧是你的短板（仅' + bot1.val + '分）。你的攻击可能依靠蛮力或本能，但在面对高技巧型的对手时——比如一个精通格挡与反击的剑术师——你的优势会被大幅削弱。建议：每天至少投入一小时的连击靶场训练，这是提升技巧最稳定、最无捷径的方式。';
+      } else if (bot1.label === '思维') {
+        weaknessText = '思维是你最需要关注的方向（仅' + bot1.val + '分）。低思维意味着你可能在战斗中"只顾打不顾想"——面对善于布阵、利用地形、或制造陷阱的敌人时，你的其他优势会被轻易抵消。建议：在守望堡的战术沙盘室定期参加推演训练。';
+      }
+    } else {
+      if (bot1.label === '释放威力') {
+        weaknessText = '释放威力偏低（仅' + bot1.val + '分），你的魔法在单体伤害和破坏半径上落后于同阶。但这并非无法弥补——你对掌控度和技巧的投入，可以让你通过"精准命中弱点"来等效替代"大范围轰炸"。你不是炮台，你是手术刀。';
+      } else if (bot1.label === '掌控度') {
+        weaknessText = '掌控度是你的阿喀琉斯之踵（仅' + bot1.val + '分）。低掌控度意味着更高的魔力浪费率、更长的冷却间隔，以及——最致命的一点——更高的施法失控风险。魔法事故记录中，超过六成的高阶事故都与掌控度不足有关。建议：每天进行至少两小时的精准施法练习（定点小火球、悬浮水滴等基础训练即可）。';
+      } else if (bot1.label === '技巧') {
+        weaknessText = '技巧不足（仅' + bot1.val + '分）限制了你的法术创新潜力。你可能是一个"教科书式的施法者"——每一道法术都严格遵循标准咏唱，不会出错但也毫无惊喜。对抗善于解读法术套路的敌人时，这种可预测性将成为一个致命弱点。';
+      } else if (bot1.label === '思维') {
+        weaknessText = '思维属性偏低（仅' + bot1.val + '分）。在魔法侧中，这意味着你对法术的深层原理理解不足——你可能"会用"但说不清"为什么"。这在低阶时尚可应付，但到了五阶以上，几乎所有高级魔法都要求对法术理论有深刻理解。建议阅读维尔《魔力经济学》及《暗界能量基础论》。';
+      } else if (bot1.label === '速度') {
+        weaknessText = '施法速度是你的明显短板（仅' + bot1.val + '分）。你的咏唱时间比同阶长约三分之一——这在遭遇战中意味着你几乎必定失去先手。建议：携带瞬发护身符（可在守望堡魔法道具商店购买），并优先学习一到两个无需咏唱的保命法术。';
+      } else if (bot1.label === '力量') {
+        weaknessText = '力量偏低（仅' + bot1.val + '分）对纯魔法侧能力者来说并不罕见，但极端低的体力意味着你几乎无法承受任何近身攻击。一旦被敌方突破者近身，你几乎没有自保能力。建议：掌握至少一个短距传送法术，并确保小队中始终有一名可靠的突破者。';
+      }
+    }
+
+    // 极差过大警告
+    var spreadWarning = '';
+    if (spread >= 50) {
+      spreadWarning = '<p style=\"margin-top:10px;font-size:12px;color:#b85135;\">⚠ 警告：你的属性极差达到 ' + spread + ' 分（最高' + top1.label + ' vs 最低' + bot1.label + '），属于严重偏科。这种极端分布在高阶阶段风险极高——一旦对手针对你的短板发起攻击，你几乎没有反制手段。元老会议的评估档案显示：六阶以上能力者中，极差超过45分的仅占8%，且其阵亡率显著高于均衡型。建议在下一阶段优先补齐短板。</p>';
+    } else if (spread >= 30) {
+      spreadWarning = '<p style=\"margin-top:10px;font-size:12px;color:#c9a24d;\">⚡ 提示：你的属性极差为 ' + spread + ' 分，存在一定偏科倾向。适度偏科有助于形成个人风格，但请确保短板不低于同阶平均线的60%。</p>';
+    }
+
+    // —— 发展建议 ——
+    var pathAdvice = '';
+    if (currentSide === 'physical') {
+      if (top1.label === '力量' && top2.label === '技巧') {
+        pathAdvice = '推荐路线：狂战士 → 剑术师（辅修）。力量+技巧的"重武精技"组合是物理侧中最具压制力的配置之一。你可以在狂战士的怒气爆发期间打出剑术师级别的精准连击——这在同阶中几乎无解。';
+      } else if (top1.label === '速度' && top2.label === '技巧') {
+        pathAdvice = '推荐路线：游侠 → 双持剑客。速度+技巧的"鬼魅双刀"配置让你成为战场上最难被锁定的目标。你的输出节奏不是"一波爆发"而是"持续消耗"——敌人会在你无穷无尽的走位和佯攻中逐渐耗尽体力。';
+      } else if (top1.label === '力量' && top2.label === '速度') {
+        pathAdvice = '推荐路线：重骑战士。力量+速度的搭配让你兼具冲锋的爆发力和持续追击的机动性。在野外遭遇战中，你是最适合担任先手冲锋的角色——一记全速撞击足以瓦解大多数敌人的阵型。';
+      } else if (top1.label === '思维' && top2.label === '技巧') {
+        pathAdvice = '推荐路线：战术剑客 → 小队指挥官。思维+技巧的组合让你成为"用脑子打架"的典范。你善于发现对手的节奏规律并在最合适的时机切入——这种打法需要耐心，但一旦出手，几乎必定命中要害。';
+      } else if (top1.label === '思维' && top2.label === '力量') {
+        pathAdvice = '推荐路线：重装指挥官。思维+力量的搭配在物理侧中极为稀有——你既有前线冲锋的身体素质，又有运筹帷幄的战术头脑。元老会议的军事顾问团对这类能力者一直高度关注。';
+      }
+    } else {
+      if (top1.label === '释放威力' && top2.label === '掌控度') {
+        pathAdvice = '推荐路线：毁灭法师 → 大魔导师。释放威力+掌控度的经典搭配——你有毁灭的力量，也有控制的精度。这是魔法侧中最受尊敬也最受忌惮的路线。寰宇城魔法学院的院长本人就是这条路线上的七阶能力者。';
+      } else if (top1.label === '掌控度' && top2.label === '思维') {
+        pathAdvice = '推荐路线：幻术师 → 秘法学者。掌控度+思维的组合让你更适合走"智识型"路线而非"火力型"路线。幻术、结界、封印——这些对精度和理解力要求极高的法术，才是你的主场。研究侧的维尔学派对这类人才有着持续的兴趣。';
+      } else if (top1.label === '释放威力' && top2.label === '速度') {
+        pathAdvice = '推荐路线：战斗法师。释放威力+速度的搭配让你成为"速射炮台"——你可以在极短时间内倾泻大量火力，在对方法师还在吟唱时就结束战斗。但请务必把掌控度保持在40分以上，否则失控风险会急剧上升。';
+      } else if (top1.label === '技巧' && top2.label === '掌控度') {
+        pathAdvice = '推荐路线：元素塑形师 → 法术变造专家。技巧+掌控度是最适合"魔法创造者"路线的配置。你不满足于使用已有的法术——你渴望创造全新的魔法。这条路需要极高的耐心和创造力，但上限不可估量。';
+      }
+    }
+    if (!pathAdvice) {
+      pathAdvice = '当前属性分布尚未形成明确的职业倾向。建议在' + (tier === '一阶' || tier === '二阶' ? '达到三阶之前' : '下一阶段') + '集中资源强化' + top1.label + '维度，以建立个人核心竞争力。';
+    }
+
+    // —— 暗界假说提示（彩蛋） ——
+    var darkRealmHint = '';
+    if (top1.label === '思维' && top1.val >= 75 && currentSide === 'magic') {
+      darkRealmHint = '<p style=\"margin-top:12px;font-size:11px;color:#7266ba;font-style:italic;\">※ 检测到高思维值魔法侧能力者……你已满足"暗界起源假说"档案的查阅条件。该档案收录于艾瑞斯大陆设定集·最高机密卷。思维足够锐利的人，才能在暗界的信息洪流中保持清醒。</p>';
+    } else if (top1.val >= 85) {
+      darkRealmHint = '<p style=\"margin-top:12px;font-size:11px;color:#8b1a1a;font-style:italic;\">※ 你的' + top1.label + '已接近' + tier + '的极限阈值。在艾瑞斯大陆的历史上，仅有不到百人达到过这一水平。吟游诗人协会建议为你预留一首叙事歌谣的创作名额。</p>';
+    }
+
+    // —— 拼接输出 ——
+    var html = '';
+    html += '<div style=\"background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-top:4px;\">';
+
+    // 头部：阶位 + 类型
+    html += '<div style=\"display:flex;align-items:baseline;gap:16px;margin-bottom:16px;flex-wrap:wrap;\">';
+    html += '<div style=\"font-size:36px;font-weight:700;color:' + tierColor + ';\">' + tier + '</div>';
+    html += '<div style=\"font-size:16px;font-weight:600;color:var(--text-bright);letter-spacing:2px;\">' + archetype + '</div>';
+    html += '<div style=\"font-size:12px;color:var(--text-dim);\">综合均值 ' + avg.toFixed(1) + ' 分</div>';
+    html += '</div>';
+
+    // 类型描述
+    html += '<p style=\"font-size:13px;color:var(--text);line-height:1.9;margin-bottom:20px;\">' + archetypeDesc + '</p>';
+
+    // 属性条可视化
+    html += '<div style=\"background:var(--bg-page);border-radius:4px;padding:14px 16px;margin-bottom:20px;\">';
+    html += '<div style=\"font-size:11px;color:var(--text-dim);margin-bottom:10px;letter-spacing:1px;\">◆ 各维度得分</div>';
+    for (var k = 0; k < sorted.length; k++) {
+      var s = sorted[k];
+      var barColor = s.idx === top1.idx ? tierColor : s.idx === bot1.idx ? '#b0a090' : '#c4b898';
+      html += '<div style=\"display:flex;align-items:center;margin-bottom:6px;gap:8px;\">';
+      html += '<span style=\"width:60px;font-size:11px;color:var(--text-dim);text-align:right;\">' + s.label + '</span>';
+      html += '<span style=\"font-size:11px;font-weight:600;color:' + barColor + ';width:28px;\">' + s.val + '</span>';
+      html += '<div style=\"flex:1;height:6px;background:#e8e3d7;border-radius:3px;\">';
+      html += '<div style=\"height:6px;width:' + s.val + '%;background:' + barColor + ';border-radius:3px;\"></div></div>';
+      html += '</div>';
+    }
+    html += '</div>';
+
+    // 优势分析
+    html += '<div style=\"margin-bottom:16px;\">';
+    html += '<h4 style=\"font-size:13px;color:' + tierColor + ';margin-bottom:8px;letter-spacing:1px;\">▎优势分析</h4>';
+    html += '<p style=\"font-size:13px;color:var(--text);line-height:1.9;\">' + strengthText + '</p>';
+    if (secondText) {
+      html += '<p style=\"font-size:13px;color:var(--text);line-height:1.9;margin-top:6px;\">' + secondText + '</p>';
+    }
+    html += '</div>';
+
+    // 短板警示
+    html += '<div style=\"margin-bottom:16px;\">';
+    html += '<h4 style=\"font-size:13px;color:#b85135;margin-bottom:8px;letter-spacing:1px;\">▎短板警示</h4>';
+    html += '<p style=\"font-size:13px;color:var(--text);line-height:1.9;\">' + weaknessText + '</p>';
+    html += '</div>';
+
+    // 发展建议
+    html += '<div style=\"margin-bottom:8px;\">';
+    html += '<h4 style=\"font-size:13px;color:var(--accent);margin-bottom:8px;letter-spacing:1px;\">▎发展建议</h4>';
+    html += '<p style=\"font-size:13px;color:var(--text);line-height:1.9;\">' + pathAdvice + '</p>';
+    html += '</div>';
+
+    // 极差警告
+    if (spreadWarning) html += spreadWarning;
+
+    // 彩蛋
+    if (darkRealmHint) html += darkRealmHint;
+
+    html += '</div>';
 
     document.getElementById('eval-result').innerHTML = html;
   } catch(e) {
-    document.getElementById('eval-result').innerHTML = '<div style=\"color:red;\">评估出错: ' + e.message + '</div>';
+    document.getElementById('eval-result').innerHTML = '<div style=\"color:red;padding:12px;\">评估出错: ' + e.message + '</div>';
   }
 }
 
