@@ -312,9 +312,9 @@ footer p { font-size: 12px; color: var(--text-dim); }
 /* ====== 导航入口卡片（首页用） ====== */
 .nav-cards {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 28px;
-  max-width: var(--max-w);
+  max-width: 900px;
   margin: 0 auto;
   padding: 0 32px 100px;
 }
@@ -559,13 +559,10 @@ footer p { font-size: 12px; color: var(--text-dim); }
 }
 
 /* ====== 响应式补充 ====== */
-@media (max-width: 860px) {
-  .nav-cards { grid-template-columns: 1fr; }
-  .split-grid { grid-template-columns: 1fr; }
-}
-
 /* ====== 响应式 ====== */
 @media (max-width: 860px) {
+  .nav-cards { grid-template-columns: 1fr; max-width: 500px; }
+  .split-grid { grid-template-columns: 1fr; }
   .about-grid, .world-grid, .video-grid, .video-grid-mini {
     grid-template-columns: 1fr;
   }
