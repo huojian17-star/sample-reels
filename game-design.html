@@ -71,62 +71,188 @@
 .role-card li { font-size: 13px; color: var(--text-dim); padding: 4px 0; line-height: 1.6; }
 .role-card li strong { color: var(--text); }
 
-/* ====== 任务派发彩蛋 ====== */
+/* ====== 中世纪任务公告板 ====== */
 .quest-widget {
-  background: linear-gradient(135deg, #1c1f2e 0%, #252838 100%);
-  border-radius: var(--radius); padding: 40px 36px; margin-top: 48px;
-  color: #c8ccd4;
+  background:
+    /* 木纹纹理 */
+    repeating-linear-gradient(2deg, rgba(80,50,30,0) 0px, rgba(80,50,30,0) 1px, rgba(60,38,22,0.25) 1px, rgba(60,38,22,0.25) 2px),
+    repeating-linear-gradient(92deg, rgba(70,42,24,0) 0px, rgba(70,42,24,0) 3px, rgba(50,30,18,0.15) 3px, rgba(50,30,18,0.15) 6px),
+    /* 深色木底 */
+    linear-gradient(180deg, #4a2c18 0%, #3d2010 30%, #4a2c18 60%, #3a1e0e 100%);
+  border: 8px solid #2a1508;
+  border-image: linear-gradient(135deg, #3a1e0e, #5a3820, #3a1e0e) 1;
+  padding: 36px 32px 32px;
+  margin-top: 48px;
+  color: #d4c5b2;
+  position: relative;
+  /* 木板四角铆钉 */
+  box-shadow:
+    inset 0 2px 8px rgba(0,0,0,0.4),
+    0 4px 24px rgba(0,0,0,0.5),
+    /* 四角铁片装饰 */
+    12px 12px 0 -8px #2a1508,
+    -12px 12px 0 -8px #2a1508,
+    12px -12px 0 -8px #2a1508,
+    -12px -12px 0 -8px #2a1508;
 }
+/* 木板顶部悬挂铁链装饰 */
+.quest-widget::before {
+  content: '';
+  position: absolute; top: -28px; left: 50%; transform: translateX(-50%);
+  width: 120px; height: 20px;
+  background: repeating-linear-gradient(90deg, #3a1e0e 0px, #3a1e0e 6px, #4a2c18 6px, #4a2c18 8px);
+  border-radius: 3px 3px 0 0;
+}
+
 .quest-widget h2 {
   font-family: "Georgia", "Noto Serif SC", serif;
-  font-size: 20px; font-weight: 500; color: #e8ecf2;
-  margin-bottom: 8px; letter-spacing: 1px;
+  font-size: 22px; font-weight: 600; color: #e8d9c0;
+  margin-bottom: 4px; letter-spacing: 3px; text-align: center;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
-.quest-widget .quest-subtitle { font-size: 13px; color: #787c88; margin-bottom: 28px; }
-.quest-list { display: flex; gap: 16px; flex-wrap: wrap; }
-.quest-btn {
-  flex: 1; min-width: 200px;
-  padding: 20px 24px;
-  background: #2a2d3a; border: 1px solid #3a3d4a;
-  border-radius: var(--radius); color: #c8ccd4;
-  cursor: pointer; font-family: inherit; text-align: left;
-  transition: all 0.2s;
+.quest-widget .quest-subtitle {
+  font-size: 12px; color: #a8947a; margin-bottom: 28px;
+  text-align: center; letter-spacing: 1.5px; font-style: italic;
 }
-.quest-btn:hover { border-color: var(--accent); background: #2f3240; }
-.quest-btn h4 { font-size: 14px; font-weight: 600; color: #e8ecf2; margin-bottom: 6px; }
-.quest-btn .quest-meta { font-size: 11px; color: #787c88; }
-.quest-btn .quest-risk-low  { color: #8bab6a; }
-.quest-btn .quest-risk-high { color: var(--accent-physical); }
 
-/* 弹窗反馈 */
+/* 任务列表 */
+.quest-list { display: flex; gap: 16px; flex-wrap: wrap; }
+
+/* 羊皮纸任务卡片 */
+.quest-btn {
+  flex: 1; min-width: 210px;
+  padding: 22px 22px 18px;
+  background:
+    /* 羊皮纸纹理 */
+    linear-gradient(180deg, #f4e8d1 0%, #ede0c5 20%, #f2e6ce 50%, #e8d9b8 80%, #dfd0ae 100%);
+  border: 1px solid #c4a87a;
+  color: #3a2a14;
+  cursor: pointer; font-family: "Georgia", "Noto Serif SC", serif;
+  text-align: left; position: relative;
+  transition: all 0.25s ease;
+  /* 撕边效果 */
+  clip-path: polygon(
+    0% 2%, 2% 0%, 98% 1%, 100% 3%,
+    99% 97%, 97% 100%, 3% 99%, 1% 97%
+  );
+  box-shadow:
+    0 3px 10px rgba(0,0,0,0.3),
+    inset 0 1px 2px rgba(255,255,255,0.3);
+}
+/* 羊皮纸四角图钉 */
+.quest-btn::before {
+  content: '';
+  position: absolute; top: -6px; left: 50%; transform: translateX(-50%);
+  width: 10px; height: 10px;
+  background: radial-gradient(circle, #5a4a3a 20%, #2a1a0a 60%, #1a0a00 100%);
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.6);
+}
+.quest-btn::after {
+  content: '';
+  position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%);
+  width: 10px; height: 10px;
+  background: radial-gradient(circle, #5a4a3a 20%, #2a1a0a 60%, #1a0a00 100%);
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.6);
+}
+
+.quest-btn:hover {
+  transform: translateY(-3px) rotate(-0.5deg);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4), inset 0 1px 2px rgba(255,255,255,0.3);
+}
+
+.quest-btn h4 {
+  font-size: 15px; font-weight: 700; color: #2a1808;
+  margin-bottom: 6px; letter-spacing: 1px;
+  font-family: "Georgia", "Noto Serif SC", serif;
+}
+.quest-btn .quest-meta {
+  font-size: 11px; color: #6b5640; font-family: "Georgia", serif;
+  line-height: 1.6;
+}
+.quest-btn .quest-risk-low  {
+  color: #4a6b28; font-weight: 700;
+  background: rgba(74,107,40,0.10); padding: 1px 6px; border-radius: 2px;
+}
+.quest-btn .quest-risk-high {
+  color: #8b2e1a; font-weight: 700;
+  background: rgba(139,46,26,0.10); padding: 1px 6px; border-radius: 2px;
+}
+
+/* 任务日志（木板上的刻痕风格） */
+#quest-log {
+  margin-top: 28px;
+  padding: 16px 20px;
+  background: rgba(0,0,0,0.25);
+  border-top: 2px solid rgba(180,140,100,0.3);
+  font-size: 12px;
+  color: #a8947a;
+  font-family: "Georgia", "Noto Serif SC", serif;
+}
+
+/* ====== 弹窗：蜡封卷轴风 ====== */
 .quest-toast {
   position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-  background: #1c1f2e; border: 1px solid var(--accent);
-  border-radius: var(--radius); padding: 32px 40px; text-align: center;
-  z-index: 200; color: #c8ccd4; box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-  animation: toastIn 0.3s ease;
+  background:
+    linear-gradient(180deg, #f6ecd8 0%, #efe0c4 30%, #f4e8d2 60%, #e8d8b4 100%);
+  border: 3px solid #8b6918;
+  border-radius: 2px; padding: 36px 44px; text-align: center;
+  z-index: 200; color: #2a1808;
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.6),
+    inset 0 0 40px rgba(139,105,24,0.1);
+  animation: toastIn 0.35s ease;
+  max-width: 420px;
+  font-family: "Georgia", "Noto Serif SC", serif;
 }
+/* 蜡封装饰 */
+.quest-toast::before {
+  content: '★';
+  position: absolute; top: -18px; left: 50%; transform: translateX(-50%);
+  width: 34px; height: 34px;
+  background: radial-gradient(circle at 40% 35%, #c93030 0%, #8b1a1a 70%, #5a0000 100%);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #e8c080; font-size: 14px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.5);
+  text-indent: -9999px; /* 隐藏文字，用背景圆圈替代 */
+}
+/* 蜡封上压印星号 */
+.quest-toast::after {
+  content: '✦';
+  position: absolute; top: -18px; left: 50%; transform: translateX(-50%);
+  width: 34px; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  color: #e8c080; font-size: 12px;
+  z-index: 1;
+}
+
 @keyframes toastIn {
-  from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
-  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.85) rotate(-2deg); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
 }
-.quest-toast h4 { font-size: 20px; color: var(--accent); margin-bottom: 12px; }
-.quest-toast p { font-size: 14px; color: #c8ccd4; line-height: 1.8; margin-bottom: 6px; }
+.quest-toast h4 { font-size: 20px; color: #5a2a0a; margin-bottom: 14px; letter-spacing: 1px; }
+.quest-toast p { font-size: 14px; color: #3a1e0e; line-height: 2; margin-bottom: 4px; }
 .quest-toast .close-toast {
-  display: inline-block; margin-top: 16px; padding: 8px 28px;
-  background: var(--accent); color: #fff; border: none;
-  border-radius: 4px; cursor: pointer; font-family: inherit; font-size: 13px;
+  display: inline-block; margin-top: 18px; padding: 10px 32px;
+  background: linear-gradient(180deg, #5a3820, #3d2010);
+  color: #e8d9c0; border: 1px solid #6b4428;
+  border-radius: 2px; cursor: pointer; font-family: "Georgia", serif;
+  font-size: 13px; letter-spacing: 1px;
+  transition: all 0.2s;
 }
-.quest-toast .progress-bar-inner {
-  height: 4px; background: #3a3d4a; border-radius: 2px; margin-top: 16px; overflow: hidden;
-}
-.quest-toast .progress-fill-inner {
-  height: 100%; background: var(--accent); border-radius: 2px;
-  transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+.quest-toast .close-toast:hover {
+  background: linear-gradient(180deg, #6b4428, #4a2c18);
 }
 .overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+  position: fixed; inset: 0; background: rgba(0,0,0,0.6);
   z-index: 199;
+}
+/* 任务日志内部样式 */
+#quest-log > div:first-child {
+  padding-bottom: 10px; margin-bottom: 10px;
+  border-bottom: 1px solid rgba(180,140,100,0.2);
 }
 </style>
 </head>
@@ -156,23 +282,30 @@
   <!-- ====== 一、数值与经济模型 ====== -->
   <h2>一、数值与经济模型</h2>
 
-  <h3>能力者属性雷达图：一阶 vs 三阶枪兵</h3>
-  <p>基于设定中的"力量、速度、技巧、思维"四大评估板块，绘制数值对比。三阶枪兵以"早期寰宇城传奇枪兵"为原型，在技巧维度有明显跃升。</p>
+  <h3>能力者属性雷达图 · 交互评估</h3>
+  <p>拖动滑块调整各属性值，系统将基于设定中的四大（或六大）评估板块自动判定阶位。切换"物理侧/魔法侧"可体验不同的评估维度。</p>
 
   <div class="radar-section">
     <div class="radar-chart">
-      <svg id="radar" width="340" height="340" viewBox="0 0 340 340"></svg>
+      <svg id="radar" width="360" height="360" viewBox="0 0 360 360"></svg>
     </div>
     <div class="radar-legend">
-      <h3>属性数据对比</h3>
-      <table>
-        <tr><th>力量 (STR)</th><td class="legend-1">42</td><td class="legend-3">58</td></tr>
-        <tr><th>速度 (SPD)</th><td class="legend-1">55</td><td class="legend-3">72</td></tr>
-        <tr><th>技巧 (TEC)</th><td class="legend-1">38</td><td class="legend-3">81</td></tr>
-        <tr><th>思维 (MND)</th><td class="legend-1">45</td><td class="legend-3">63</td></tr>
-        <tr style="border-top:1px solid var(--border);"><th>综合评级</th><td class="legend-1">一阶</td><td class="legend-3">三阶</td></tr>
-      </table>
-      <p style="font-size:11px;color:var(--text-dim);margin-top:12px;">评估依据：《艾瑞斯大陆能力者图鉴》公开部分。魔法侧额外包含"掌控度"和"释放威力"两大板块，此处以物理侧枪兵为例。</p>
+      <!-- 侧系切换 -->
+      <div style="display:flex;gap:0;margin-bottom:24px;border:1px solid var(--border);border-radius:4px;overflow:hidden;">
+        <button id="btn-physical" class="side-toggle active" onclick="switchSide('physical')" style="flex:1;padding:8px 0;border:none;background:var(--accent);color:#fff;cursor:pointer;font-family:inherit;font-size:13px;transition:all 0.2s;">物理侧（4维）</button>
+        <button id="btn-magic" class="side-toggle" onclick="switchSide('magic')" style="flex:1;padding:8px 0;border:none;background:var(--bg-card);color:var(--text-dim);cursor:pointer;font-family:inherit;font-size:13px;transition:all 0.2s;">魔法侧（6维）</button>
+      </div>
+
+      <!-- 滑块区 -->
+      <div id="sliders-container"></div>
+
+      <!-- 评估按钮 -->
+      <button onclick="evaluate()" style="width:100%;margin-top:16px;padding:10px 0;background:var(--accent);color:#fff;border:none;border-radius:4px;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;letter-spacing:1px;">确认评估</button>
+
+      <!-- 评估结果 -->
+      <div id="eval-result" style="margin-top:16px;text-align:center;min-height:40px;"></div>
+
+      <p style="font-size:10px;color:var(--text-dim);margin-top:12px;">评估依据：《艾瑞斯大陆能力者图鉴》。魔法侧额外包含"掌控度"和"释放威力"两大板块。支持从一阶跨级跃升（参考早期寰宇城传奇枪兵案例）。</p>
     </div>
   </div>
 
@@ -339,14 +472,24 @@
 <div id="toast-container"></div>
 
 <script>
-// ====== 雷达图绘制 ======
+// ====== 雷达图状态 ======
+let currentSide = 'physical';
+const physicalLabels = ['力量', '速度', '技巧', '思维'];
+const magicLabels    = ['力量', '速度', '技巧', '思维', '掌控度', '释放威力'];
+const physicalDefaults = [42, 55, 38, 45];
+const magicDefaults    = [35, 40, 50, 55, 30, 25];
+let currentValues = [...physicalDefaults];
+
+function getLabels() { return currentSide === 'physical' ? physicalLabels : magicLabels; }
+
+// ====== 绘制雷达图 ======
 function drawRadar() {
   const svg = document.getElementById('radar');
-  const cx = 170, cy = 170, r = 130;
-  const labels = ['力量', '速度', '技巧', '思维'];
-  const angles = labels.map((_, i) => -Math.PI/2 + i * 2*Math.PI/4);
-  const data1 = [0.42, 0.55, 0.38, 0.45]; // 一阶
-  const data3 = [0.58, 0.72, 0.81, 0.63]; // 三阶
+  svg.innerHTML = '';
+  const cx = 180, cy = 180, r = 140;
+  const labels = getLabels();
+  const n = labels.length;
+  const angles = labels.map((_, i) => -Math.PI/2 + i * 2*Math.PI/n);
 
   // 背景网格
   [0.25, 0.5, 0.75, 1.0].forEach(level => {
@@ -361,29 +504,106 @@ function drawRadar() {
 
   // 标签
   labels.forEach((label, i) => {
-    const lx = cx + (r+22)*Math.cos(angles[i]);
-    const ly = cy + (r+22)*Math.sin(angles[i]);
-    svg.innerHTML += `<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="middle" font-size="12" fill="#70747c" font-family="inherit">${label}</text>`;
+    const lx = cx + (r+26)*Math.cos(angles[i]);
+    const ly = cy + (r+26)*Math.sin(angles[i]);
+    svg.innerHTML += `<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="middle" font-size="12" fill="#555" font-family="inherit">${label}</text>`;
   });
 
-  // 一阶多边形
-  const pts1 = angles.map((a, i) => `${cx + r*data1[i]*Math.cos(a)},${cy + r*data1[i]*Math.sin(a)}`).join(' ');
-  svg.innerHTML += `<polygon points="${pts1}" fill="#9cada4" fill-opacity="0.25" stroke="#9cada4" stroke-width="1.5"/>`;
-
-  // 三阶多边形
-  const pts3 = angles.map((a, i) => `${cx + r*data3[i]*Math.cos(a)},${cy + r*data3[i]*Math.sin(a)}`).join(' ');
-  svg.innerHTML += `<polygon points="${pts3}" fill="#a98446" fill-opacity="0.3" stroke="#a98446" stroke-width="1.5"/>`;
+  // 当前数据多边形
+  const data = currentValues.map(v => v / 100);
+  const pts = angles.map((a, i) => `${cx + r*data[i]*Math.cos(a)},${cy + r*data[i]*Math.sin(a)}`).join(' ');
+  svg.innerHTML += `<polygon points="${pts}" fill="#a98446" fill-opacity="0.25" stroke="#a98446" stroke-width="2"/>`;
 
   // 数据点
-  data1.forEach((d, i) => {
+  data.forEach((d, i) => {
     const px = cx + r*d*Math.cos(angles[i]), py = cy + r*d*Math.sin(angles[i]);
-    svg.innerHTML += `<circle cx="${px}" cy="${py}" r="4" fill="#9cada4"/>`;
-  });
-  data3.forEach((d, i) => {
-    const px = cx + r*d*Math.cos(angles[i]), py = cy + r*d*Math.sin(angles[i]);
-    svg.innerHTML += `<circle cx="${px}" cy="${py}" r="4" fill="#a98446"/>`;
+    svg.innerHTML += `<circle cx="${px}" cy="${py}" r="5" fill="#a98446"/>`;
+    // 数值标签
+    const tx = cx + (r*d + 14)*Math.cos(angles[i]);
+    const ty = cy + (r*d + 14)*Math.sin(angles[i]);
+    svg.innerHTML += `<text x="${tx}" y="${ty}" text-anchor="middle" dominant-baseline="middle" font-size="10" fill="#a98446" font-weight="600">${currentValues[i]}</text>`;
   });
 }
+
+// ====== 侧系切换 ======
+function switchSide(side) {
+  currentSide = side;
+  const labels = side === 'physical' ? physicalLabels : magicLabels;
+  const defaults = side === 'physical' ? physicalDefaults : magicDefaults;
+  // 保留已有值或使用默认
+  if (currentValues.length !== labels.length) {
+    currentValues = [...defaults];
+  }
+  // 按钮样式
+  document.getElementById('btn-physical').style.background = side === 'physical' ? 'var(--accent)' : 'var(--bg-card)';
+  document.getElementById('btn-physical').style.color = side === 'physical' ? '#fff' : 'var(--text-dim)';
+  document.getElementById('btn-magic').style.background = side === 'magic' ? 'var(--accent)' : 'var(--bg-card)';
+  document.getElementById('btn-magic').style.color = side === 'magic' ? '#fff' : 'var(--text-dim)';
+  // 重建滑块
+  buildSliders();
+  drawRadar();
+  document.getElementById('eval-result').innerHTML = '';
+}
+
+// ====== 构建滑块 ======
+function buildSliders() {
+  const labels = getLabels();
+  const colors = ['#c95d3d', '#c9a24d', '#4d9b91', '#7266ba', '#b85135', '#3d857b'];
+  const icons = ['🪓', '⚡', '🎯', '🧠', '🌀', '💥'];
+  const container = document.getElementById('sliders-container');
+  container.innerHTML = labels.map((label, i) => `
+    <div style="margin-bottom:12px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
+        <span style="font-size:12px;color:var(--text);font-weight:500;">${icons[i]} ${label}</span>
+        <span style="font-size:12px;font-weight:600;color:${colors[i]};" id="val-${i}">${currentValues[i]}</span>
+      </div>
+      <input type="range" min="5" max="99" value="${currentValues[i]}"
+        oninput="updateValue(${i}, this.value)"
+        style="width:100%;accent-color:${colors[i]};height:4px;" />
+    </div>
+  `).join('');
+}
+
+function updateValue(idx, val) {
+  currentValues[idx] = parseInt(val);
+  document.getElementById('val-' + idx).textContent = val;
+  drawRadar();
+  document.getElementById('eval-result').innerHTML = '';
+}
+
+// ====== 评估逻辑 ======
+function evaluate() {
+  const labels = getLabels();
+  const avg = currentValues.reduce((a,b) => a+b, 0) / currentValues.length;
+
+  let tier, tierDesc, tierColor;
+  if (avg < 20)      { tier = '一阶'; tierDesc = '初习者或学徒，刚从觉醒中苏醒，四大板块均处于萌芽状态。需要完成公会基础训练后正式入门。'; tierColor = '#9cada4'; }
+  else if (avg < 35) { tier = '二阶'; tierDesc = '已完成至少一次实战任务，基础属性开始分化。可以独立承接低风险公会委托。'; tierColor = '#8bab6a'; }
+  else if (avg < 50) { tier = '三阶'; tierDesc = '具备独立作战能力，某单项属性可能已接近四阶水平。参考早期寰宇城传奇枪兵——他从一阶跃升至三阶正是因为技巧板块的突出表现。'; tierColor = '#c9a24d'; }
+  else if (avg < 65) { tier = '四阶'; tierDesc = '进入能力者中坚层。此时可以选择辅修第二职阶（同侧），但需注意辅修越多、主修越弱的边际递减效应。'; tierColor = '#c95d3d'; }
+  else if (avg < 78) { tier = '五阶'; tierDesc = '高阶能力者门槛。召唤师可召唤飞龙（极速63.5m/s），魔导师可短距离传送。你的名字可能已出现在地方吟游诗人的歌谣中。'; tierColor = '#b85135'; }
+  else if (avg < 90) { tier = '六阶'; tierDesc = '魔导师在此阶可学习500米短距传送。物理侧能力者的连击段数从3段解锁至5段。你可以申请成为公会任务的评估者。'; tierColor = '#7266ba'; }
+  else               { tier = '七阶+'; tierDesc = '已踏入大陆顶尖能力者行列。魔导师传送距离扩展至3公里以上。元老会议可能已注意到你的存在。十阶「神话位阶」虽遥不可及，但路已在脚下。'; tierColor = '#8b1a1a'; }
+
+  // 找最强/最弱属性
+  let maxIdx = 0, minIdx = 0;
+  currentValues.forEach((v, i) => { if (v > currentValues[maxIdx]) maxIdx = i; if (v < currentValues[minIdx]) minIdx = i; });
+
+  document.getElementById('eval-result').innerHTML = `
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-top:4px;">
+      <div style="font-size:32px;font-weight:700;color:${tierColor};margin-bottom:4px;">${tier}</div>
+      <div style="font-size:13px;color:var(--text);line-height:1.8;">${tierDesc}</div>
+      <div style="margin-top:12px;font-size:12px;color:var(--text-dim);">
+        综合均值：<strong style="color:var(--text-bright);">${avg.toFixed(1)}</strong> 分
+        &nbsp;|&nbsp; 优势维度：<strong style="color:${tierColor};">${labels[maxIdx]}（${currentValues[maxIdx]}分）</strong>
+        &nbsp;|&nbsp; 待强化：${labels[minIdx]}（${currentValues[minIdx]}分）
+      </div>
+    </div>
+  `;
+}
+
+// ====== 启动 ======
+buildSliders();
 drawRadar();
 
 // ====== 任务派发系统 ======
@@ -413,12 +633,12 @@ function acceptQuest(name, reward, risk, expGain, progressPct) {
   showToast(
     `任务接取成功`,
     `
-      <span style="font-size:16px;">「${name}」</span><br><br>
-      +${actualReward} <span style="color:#c9a24d;">银鹿角</span> &nbsp;|&nbsp;
-      +${expGain} 经验值 &nbsp;|&nbsp;
-      风险等级：<span style="color:${riskColor};">${risk}</span><br><br>
-      距离下次升级还需完成「力量、速度、技巧、思维」四大板块考核。<br>
-      <span style="font-size:12px;color:#787c88;">（当前累计收益：${totalSilver} 银鹿角 / ${totalExp} 经验）</span>
+      <span style="font-size:18px;color:#5a2a0a;">「${name}」</span><br><br>
+      +${actualReward} <span style="color:#8b6918;font-weight:700;">银鹿角</span> &nbsp;|&nbsp;
+      +${expGain} 历练值 &nbsp;|&nbsp;
+      风险等级：<span style="color:${riskColor};font-weight:700;">${risk}</span><br><br>
+      距离下次晋升还需完成「力量、速度、技巧、思维」<br>四大板块考核评估。<br>
+      <span style="font-size:11px;color:#887050;">（当前累计赏金：${totalSilver} 银鹿角 / ${totalExp} 历练）</span>
     `
   );
 }
@@ -426,15 +646,15 @@ function acceptQuest(name, reward, risk, expGain, progressPct) {
 function renderQuestLog() {
   const logDiv = document.getElementById('quest-log');
   if (questLog.length === 0) {
-    logDiv.innerHTML = '<p style="font-size:12px;color:#787c88;">暂无已接取任务。选择一个任务开始吧。</p>';
+    logDiv.innerHTML = '<p style="font-size:12px;color:#a8947a;font-style:italic;text-align:center;">~ 公告板空无一物，寻找可接取的任务吧 ~</p>';
     return;
   }
   logDiv.innerHTML = `
-    <div style="font-size:12px;color:#787c88;margin-bottom:10px;letter-spacing:1px;">已接取任务 (${questLog.length}) | 累计收益：${totalSilver} 银鹿角 | ${totalExp} 经验</div>
+    <div style="font-size:11px;color:#a8947a;margin-bottom:12px;letter-spacing:2px;text-transform:uppercase;">◆ 已张贴的委托 (${questLog.length}) | 累计赏金：${totalSilver} 银鹿角 | ${totalExp} 历练</div>
     ${questLog.map(q => `
-      <div style="padding:10px 14px;margin-bottom:6px;background:#2a2d3a;border-radius:4px;font-size:13px;display:flex;justify-content:space-between;align-items:center;">
-        <span><strong style="color:#e8ecf2;">${q.name}</strong> <span style="color:#787c88;font-size:11px;">${q.status}</span></span>
-        <span style="color:#c9a24d;font-size:12px;">+${q.reward}银鹿角 +${q.exp}EXP</span>
+      <div style="padding:10px 14px;margin-bottom:8px;background:rgba(240,225,200,0.08);border-left:3px solid #8b6918;font-size:13px;display:flex;justify-content:space-between;align-items:center;">
+        <span><strong style="color:#e8d9c0;">${q.name}</strong> <span style="color:#a8947a;font-size:11px;">— ${q.status}</span></span>
+        <span style="color:#c4a060;font-size:12px;font-family:Georgia,serif;">+${q.reward}🪙 +${q.exp}✦</span>
       </div>
     `).join('')}
   `;
