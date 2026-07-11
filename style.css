@@ -222,9 +222,110 @@ nav {
   box-shadow: 0 4px 20px rgba(0,0,0,0.02);
 }
 
-/* 页脚 */
-footer {
-  padding: 60px 32px;
-  background: var(--bg-alt);
-  border-top: 1px solid var(--border);
+/* ====== 网格布局定义 ====== */
+.about-grid,
+.world-grid        { display: grid; grid-template-columns: repeat(3, 1fr); }
+.video-grid        { display: grid; grid-template-columns: repeat(3, 1fr); }
+.video-grid-mini   { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.audience-grid     { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.contact-grid      { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 40px; }
+
+/* ====== 关于卡片 ====== */
+.about-card { padding: 32px; }
+.about-card h3 {
+  font-family: "Georgia", "Noto Serif SC", serif;
+  font-size: 17px; font-weight: 600; color: var(--accent);
+  margin-bottom: 14px;
+}
+.about-card p { font-size: 14px; color: var(--text-dim); line-height: 1.85; }
+
+/* ====== B站链接 ====== */
+.bili-link { color: var(--accent); text-decoration: none; font-weight: 500; }
+.bili-link:hover { text-decoration: underline; }
+
+/* ====== 数据横幅 ====== */
+.stats-banner {
+  display: flex; justify-content: center; gap: 48px; flex-wrap: wrap;
+  padding: 40px 0;
+}
+.sb-item { text-align: center; }
+.sb-num  { display: block; font-family: "Georgia", serif; font-size: 28px; font-weight: 500; color: var(--accent); }
+.sb-label { display: block; font-size: 12px; color: var(--text-dim); margin-top: 6px; letter-spacing: 1px; }
+
+/* ====== 观众画像 ====== */
+.audience-box { padding: 28px 32px; margin-bottom: 16px; }
+.audience-box h3 { font-size: 14px; font-weight: 600; color: var(--text-dim); margin-bottom: 18px; }
+.au-item { display: flex; flex-direction: column; }
+.au-key  { font-size: 12px; color: var(--text-dim); margin-bottom: 4px; }
+.au-val  { font-size: 14px; color: var(--text-bright); font-weight: 500; }
+
+/* ====== 二级标题 ====== */
+.subsection-title {
+  font-family: "Georgia", "Noto Serif SC", serif;
+  font-size: 18px; font-weight: 600; color: var(--text-bright);
+  margin: 52px 0 24px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ====== 视频卡片 ====== */
+.video-card { padding: 28px; display: flex; gap: 18px; }
+.video-card.featured { border-color: var(--accent-dim); background: var(--bg-card-hover); }
+.video-order { font-family: "Georgia", serif; font-size: 22px; font-weight: 700; color: var(--accent); flex-shrink: 0; width: 40px; }
+.video-info h4 { font-size: 15px; font-weight: 600; color: var(--text-bright); margin-bottom: 6px; }
+.video-info > p { font-size: 13px; color: var(--text-dim); margin-bottom: 12px; }
+.video-meta { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: var(--text-dim); }
+
+/* 小型视频卡片 */
+.video-card-mini { padding: 24px; }
+.video-card-mini h4 { font-size: 14px; font-weight: 600; color: var(--text-bright); margin-bottom: 6px; }
+.video-card-mini > p { font-size: 13px; color: var(--text-dim); margin-bottom: 10px; }
+.video-card-mini .video-meta { font-size: 11px; gap: 12px; }
+
+/* ====== 设定集 ====== */
+.world-overview { margin: 40px 0 48px; }
+.world-intro-card { padding: 28px 32px; }
+.world-intro-card p { font-size: 15px; color: var(--text); line-height: 1.95; }
+.world-intro-card strong { color: var(--accent); }
+.world-card { padding: 28px; }
+.world-card h3 {
+  font-family: "Georgia", "Noto Serif SC", serif;
+  font-size: 16px; font-weight: 600; color: var(--accent);
+  margin-bottom: 16px; padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.world-card ul { list-style: none; padding: 0; }
+.world-card li { font-size: 13px; color: var(--text-dim); padding: 5px 0; line-height: 1.7; }
+.world-card li strong { color: var(--text); }
+.setting-note { text-align: center; color: var(--text-dim); font-size: 13px; margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
+
+/* ====== 联系方式 ====== */
+.contact-card { display: block; padding: 36px 28px; text-align: center; text-decoration: none; color: inherit; }
+.contact-icon { font-size: 28px; display: block; margin-bottom: 14px; }
+.contact-card h3 { font-size: 15px; font-weight: 600; color: var(--text-bright); margin-bottom: 8px; }
+.contact-card p { font-size: 13px; color: var(--text-dim); }
+
+/* ====== 页脚 ====== */
+footer { text-align: center; padding: 60px 32px; background: var(--bg-alt); border-top: 1px solid var(--border); }
+footer p { font-size: 12px; color: var(--text-dim); }
+
+/* ====== 响应式 ====== */
+@media (max-width: 860px) {
+  .about-grid, .world-grid, .video-grid, .video-grid-mini {
+    grid-template-columns: 1fr;
+  }
+  .audience-grid, .contact-grid { grid-template-columns: repeat(2, 1fr); }
+  .hero h1 { font-size: 34px; }
+  .hero-stats { gap: 32px; }
+  .stat-num { font-size: 26px; }
+  .stats-banner { gap: 28px; }
+  .nav-links { gap: 20px; }
+}
+
+@media (max-width: 500px) {
+  .hero-stats { gap: 20px; }
+  .stats-banner { gap: 18px; }
+  .sb-num { font-size: 22px; }
+  .nav-inner { height: 54px; padding: 0 16px; }
+  .nav-links a { font-size: 12px; }
 }
