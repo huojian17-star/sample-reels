@@ -31,6 +31,16 @@
 
 <div class="content-section">
 
+  <!-- 搜索栏 -->
+  <div id="world-search-bar" style="position:sticky;top:70px;z-index:50;background:var(--bg);padding:16px 0 12px;margin-bottom:8px;border-bottom:1px solid var(--border);">
+    <div style="display:flex;gap:8px;align-items:center;">
+      <input type="text" id="world-search-input" placeholder="搜索设定集内容..." style="flex:1;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);font-size:14px;font-family:inherit;background:var(--bg-card);color:var(--text);outline:none;">
+      <span id="search-count" style="font-size:11px;color:var(--text-dim);white-space:nowrap;min-width:50px;text-align:right;"></span>
+      <button id="search-prev-btn" style="background:none;border:1px solid var(--border);padding:6px 12px;border-radius:var(--radius);font-size:12px;cursor:pointer;font-family:inherit;color:var(--text-dim);line-height:1;" title="上一个匹配">↑</button>
+      <button id="search-next-btn" style="background:none;border:1px solid var(--border);padding:6px 12px;border-radius:var(--radius);font-size:12px;cursor:pointer;font-family:inherit;color:var(--text-dim);line-height:1;" title="下一个匹配">↓</button>
+    </div>
+  </div>
+
   <!-- ====== 一、世界概览 ====== -->
   <h2>一、世界概览</h2>
   <p>「艾瑞斯大陆」是一个以<strong>"物理侧""魔法侧""研究侧"</strong>三足鼎立为核心的奇幻世界。物理侧能力者利用冷/热兵器和身体强化进行战斗（职阶如剑术师、骑士、刺客等），魔法侧能力者类似哈利波特或奇异博士那样施展法术（职阶如元素法师、咒术师、幻术师等），而<strong>研究侧</strong>则是无能力的普通人——他们依靠权力、资本和制度居中制衡，主导公会系统、法律制定与经济管理。</p>
@@ -279,5 +289,112 @@
   <p>BEST-辣椒 &copy; 2026 · <a href="https://space.bilibili.com/518565512" target="_blank" rel="noopener" style="color:var(--text-dim);">B站主页</a></p>
 </footer>
 
+<script src="common.js"></script>
+<script>
+// ====== 设定集搜索 ======
+(function() {
+  var content = document.querySelector('.content-section');
+  if (!content) return;
+
+  var searchable = [];
+  var tags = ['P', 'H2', 'H3', 'H4', 'LI', 'TD', 'TH', 'DT', 'DD', 'BLOCKQUOTE', 'FIGCAPTION'];
+  var allElements = content.querySelectorAll(tags.join(','));
+  for (var i = 0; i < allElements.length; i++) {
+    if (!allElements[i].closest('#world-search-bar')) {
+      searchable.push(allElements[i]);
+    }
+  }
+
+  var originals = [];
+  var matchElements = [];
+  var currentMatch = -1;
+
+  function clearHighlights() {
+    for (var i = 0; i < searchable.length; i++) {
+      if (originals[i] !== undefined) {
+        searchable[i].innerHTML = originals[i];
+      }
+    }
+    matchElements.length = 0;
+    currentMatch = -1;
+  }
+
+  function doSearch(query) {
+    clearHighlights();
+    if (!query || query.length < 2) {
+      document.getElementById('search-count').textContent = '';
+      return;
+    }
+
+    var escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    var regex = new RegExp('(' + escaped + ')', 'gi');
+
+    for (var i = 0; i < searchable.length; i++) {
+      var el = searchable[i];
+      if (originals[i] === undefined) originals[i] = el.innerHTML;
+      var text = el.textContent || el.innerText || '';
+      if (regex.test(text)) {
+        regex.lastIndex = 0;
+        el.innerHTML = originals[i].replace(regex, '<mark style="background:#fde68a;color:#1a1a1a;padding:1px 3px;border-radius:2px;">$1</mark>');
+        var marks = el.querySelectorAll('mark');
+        for (var j = 0; j < marks.length; j++) {
+          matchElements.push(marks[j]);
+        }
+      }
+    }
+
+    document.getElementById('search-count').textContent = matchElements.length + ' 个匹配';
+    if (matchElements.length > 0) {
+      currentMatch = -1;
+      scrollToMatch(0);
+    }
+  }
+
+  function scrollToMatch(idx) {
+    if (idx < 0 || idx >= matchElements.length) return;
+    currentMatch = idx;
+    for (var i = 0; i < matchElements.length; i++) {
+      matchElements[i].style.background = '#fde68a';
+    }
+    matchElements[idx].style.background = '#f59e0b';
+    matchElements[idx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    document.getElementById('search-count').textContent = (idx + 1) + ' / ' + matchElements.length;
+  }
+
+  var input = document.getElementById('world-search-input');
+  var prevBtn = document.getElementById('search-prev-btn');
+  var nextBtn = document.getElementById('search-next-btn');
+  if (!input) return;
+
+  var timer;
+  input.addEventListener('input', function() {
+    clearTimeout(timer);
+    timer = setTimeout(function() {
+      doSearch(input.value.trim());
+    }, 200);
+  });
+
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (matchElements.length > 0) {
+        scrollToMatch((currentMatch + 1) % matchElements.length);
+      }
+    }
+  });
+
+  prevBtn.addEventListener('click', function() {
+    if (matchElements.length > 0) {
+      scrollToMatch(currentMatch <= 0 ? matchElements.length - 1 : currentMatch - 1);
+    }
+  });
+
+  nextBtn.addEventListener('click', function() {
+    if (matchElements.length > 0) {
+      scrollToMatch((currentMatch + 1) % matchElements.length);
+    }
+  });
+})();
+</script>
 </body>
 </html>
