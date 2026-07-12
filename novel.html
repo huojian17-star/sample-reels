@@ -39,8 +39,8 @@
       </div>
     </div>
     <div style="flex-shrink:0;text-align:center;">
-      <img src="raventown-cast.png" alt="渡鸦镇人物群像" style="max-width:300px;height:auto;border-radius:8px;border:1px solid var(--border);">
-      <p style="font-size:10px;color:var(--text-dim);margin-top:6px;">人物群像 · 图片由 GPT image2 生成</p>
+      <img src="raventown-cast.png" alt="渡鸦镇人物群像" id="raventown-img" style="max-width:420px;height:auto;border-radius:8px;border:1px solid var(--border);cursor:pointer;" onclick="openLightbox(this.src)" title="点击放大查看">
+      <p style="font-size:10px;color:var(--text-dim);margin-top:6px;">人物群像 · 图片由 GPT image2 生成 · 点击图片放大</p>
     </div>
   </div>
 
@@ -524,6 +524,25 @@ function showRelDetail(charId) {
 // 启动
 renderQuiz();
 drawRelMap();
+</script>
+
+<!-- Lightbox overlay -->
+<div id="lightbox-overlay" onclick="closeLightbox()" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:9999;cursor:pointer;align-items:center;justify-content:center;">
+  <img id="lightbox-img" src="" alt="" style="max-width:90vw;max-height:90vh;object-fit:contain;box-shadow:0 8px 40px rgba(0,0,0,0.6);">
+</div>
+<script>
+function openLightbox(src) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox-overlay').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('lightbox-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeLightbox();
+});
 </script>
 
 </body>
