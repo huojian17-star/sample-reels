@@ -5,6 +5,177 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BEST-辣椒 · 作品集</title>
 <link rel="stylesheet" href="style.css">
+<style>
+/* ====== 首页专用样式 ====== */
+
+/* Hero 动画数字 */
+.hero-stats { display: flex; gap: 48px; justify-content: center; margin-top: 36px; flex-wrap: wrap; }
+.stat-item { text-align: center; }
+.stat-num {
+  font-size: 42px; font-weight: 700; color: var(--accent);
+  font-family: "Georgia", "Noto Serif SC", serif;
+  display: inline-block;
+}
+.stat-unit { font-size: 22px; font-weight: 400; }
+.stat-label { display: block; font-size: 12px; color: var(--text-dim); margin-top: 4px; letter-spacing: 1px; }
+
+/* 游戏化特色横幅 */
+.featured-banner {
+  background:
+    repeating-linear-gradient(2deg, rgba(80,50,30,0) 0px, rgba(80,50,30,0) 1px, rgba(60,38,22,0.2) 1px, rgba(60,38,22,0.2) 2px),
+    linear-gradient(180deg, #3d2010 0%, #4a2c18 50%, #3a1e0e 100%);
+  border: 6px solid #2a1508;
+  border-image: linear-gradient(135deg, #3a1e0e, #5a3820, #3a1e0e) 1;
+  padding: 36px 40px;
+  margin: 48px auto;
+  max-width: 720px;
+  color: #e8d9c0;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 2px 8px rgba(0,0,0,0.3);
+}
+.featured-banner::before {
+  content: '';
+  position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
+  width: 80px; height: 14px;
+  background: repeating-linear-gradient(90deg, #3a1e0e 0px, #3a1e0e 5px, #4a2c18 5px, #4a2c18 7px);
+  border-radius: 2px;
+}
+.featured-banner h2 {
+  font-family: "Georgia", "Noto Serif SC", serif;
+  font-size: 20px; font-weight: 600; color: #e8d9c0;
+  letter-spacing: 3px; margin-bottom: 6px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+.featured-banner .banner-sub {
+  font-size: 12px; color: #a8947a; letter-spacing: 1px; margin-bottom: 16px; font-style: italic;
+}
+.featured-banner .banner-desc {
+  font-size: 14px; color: #c4b090; line-height: 1.9; margin-bottom: 20px;
+}
+.featured-banner .banner-features {
+  display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px;
+}
+.featured-banner .bf-item {
+  font-size: 11px; color: #a8947a; background: rgba(0,0,0,0.2);
+  padding: 4px 12px; border-radius: 10px; letter-spacing: 1px;
+}
+.featured-banner .banner-cta {
+  display: inline-block;
+  padding: 12px 36px;
+  background: linear-gradient(180deg, #8b6918, #6b4c10);
+  color: #e8d9c0;
+  text-decoration: none;
+  border-radius: 2px;
+  font-family: "Georgia", "Noto Serif SC", serif;
+  font-size: 14px;
+  letter-spacing: 2px;
+  transition: all 0.25s;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+.featured-banner .banner-cta:hover {
+  background: linear-gradient(180deg, #a08020, #8b6918);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+
+/* 导航卡片重设计 */
+.nav-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+@media (max-width: 768px) {
+  .nav-cards { grid-template-columns: 1fr; }
+  .hero-stats { gap: 24px; }
+  .stat-num { font-size: 32px; }
+}
+
+.nav-card {
+  display: block;
+  padding: 28px 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  text-decoration: none;
+  color: var(--text);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.nav-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+.nav-card:hover::after { transform: scaleX(1); }
+.nav-card.card-bili::after    { background: #c95d3d; }
+.nav-card.card-world::after   { background: #c9a24d; }
+.nav-card.card-novel::after   { background: #3a3a5c; }
+.nav-card.card-about::after   { background: #5a4a3a; }
+.nav-card.card-design::after  { background: var(--accent); }
+.nav-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+  border-color: var(--accent);
+}
+.nav-card .card-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-size: 9px;
+  letter-spacing: 1px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.badge-interact { background: #fdf0eb; color: #b85135; }
+.badge-data    { background: #edf7f5; color: #4d9b91; }
+.badge-read    { background: #f0edfa; color: #7266ba; }
+.badge-lore    { background: #fef9f0; color: #8b6918; }
+.nav-card .card-icon {
+  font-size: 24px; display: block; margin-bottom: 10px;
+}
+.nav-card h3 {
+  font-size: 16px; font-weight: 600; margin-bottom: 8px;
+  color: var(--text-bright);
+}
+.nav-card p {
+  font-size: 12px; color: var(--text-dim); line-height: 1.7; margin-bottom: 12px;
+}
+.nav-card .card-tease {
+  font-size: 11px; color: var(--accent); font-weight: 500;
+}
+.nav-card .card-arrow {
+  font-size: 11px; color: var(--accent);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+.nav-card:hover .card-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* 特色卡片全宽 */
+.nav-card.featured-card {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, #fef9f0 0%, var(--bg-card) 100%);
+  border-color: var(--accent);
+  padding: 32px;
+}
+.nav-card.featured-card h3 { font-size: 18px; }
+.nav-card.featured-card .card-tease {
+  font-size: 12px;
+  margin-top: 8px;
+}
+</style>
 </head>
 <body>
 
@@ -15,77 +186,170 @@
       <a href="about.html">关于</a>
       <a href="bilibili.html">B站</a>
       <a href="worldbuilding.html">设定集</a>
+      <a href="novel.html">小说</a>
+      <a href="game-design.html">游戏设计</a>
     </div>
   </div>
 </nav>
 
-<!-- ====== 首页 Hero ====== -->
+<!-- ====== Hero ====== -->
 <section class="hero">
   <div class="hero-content">
     <h1>BEST-辣椒</h1>
-    <p class="hero-subtitle">游戏考据作者 · 世界观构建者</p>
-    <p class="hero-desc">
-      挖掘被遗忘的游戏历史，记录"消失"的作品故事。<br>
-      同时构建名为「艾瑞斯大陆」的原创奇幻世界。
+    <p class="hero-subtitle" style="font-size:16px;color:var(--accent);letter-spacing:2px;">游戏考据作者 · 世界观构建者 · 交互原型设计师</p>
+    <p class="hero-desc" style="font-size:13px;color:var(--text-dim);margin-top:10px;">
+      挖掘被遗忘的游戏开发史 · 构建六万字的奇幻世界 · 把设定变成可以玩的交互原型
     </p>
     <div class="hero-stats">
       <div class="stat-item">
-        <span class="stat-num">19.5<span class="stat-unit">万</span></span>
+        <span class="stat-num"><span id="counter-plays">0</span><span class="stat-unit">万</span></span>
         <span class="stat-label">B站总播放</span>
       </div>
       <div class="stat-item">
-        <span class="stat-num">888</span>
+        <span class="stat-num" id="counter-fans">0</span>
         <span class="stat-label">粉丝</span>
       </div>
       <div class="stat-item">
-        <span class="stat-num">6<span class="stat-unit">万字+</span></span>
+        <span class="stat-num"><span id="counter-words">0</span><span class="stat-unit">万字+</span></span>
         <span class="stat-label">世界观设定</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num" id="counter-series">0</span>
+        <span class="stat-label">视频系列期数</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ====== 导航入口卡片 ====== -->
+<!-- ====== 特色交互横幅 ====== -->
+<div class="featured-banner">
+  <h2>&#9876; 可交互游戏原型</h2>
+  <p class="banner-sub">—— 不只是文档，是你可以上手玩的设计工具 ——</p>
+  <p class="banner-desc">
+    能力者属性雷达评估 &nbsp;·&nbsp; 战斗伤害公式演算 &nbsp;·&nbsp; 掉落模拟器<br>
+    公会任务交互式决策 &nbsp;·&nbsp; 中世纪告示板彩蛋
+  </p>
+  <div class="banner-features">
+    <span class="bf-item">&#9733; 雷达图评估</span>
+    <span class="bf-item">&#9876; 战斗计算器</span>
+    <span class="bf-item">&#9760; 掉落模拟</span>
+    <span class="bf-item">&#9776; 任务决策</span>
+    <span class="bf-item">&#9830; 性格测试</span>
+    <span class="bf-item">&#9672; 关系图</span>
+  </div>
+  <a href="game-design.html" class="banner-cta">&#9876; 进入交互原型</a>
+</div>
+
+<!-- ====== 导航卡片 ====== -->
 <div class="nav-cards">
-  <a href="about.html" class="nav-card">
-    <span class="nav-card-icon">&para;</span>
-    <h3>关于我</h3>
-    <p>游戏考古的创作理念、世界观构建的方法论，以及我所追求的叙事风格。</p>
-    <span class="card-arrow">了解更多 →</span>
+
+  <a href="game-design.html" class="nav-card featured-card card-design">
+    <span class="card-badge badge-interact">&#9679; 交互</span>
+    <h3>可交互游戏原型</h3>
+    <p>能力者属性雷达评估系统、战斗伤害公式实时演算器、掉落模拟器、公会任务交互式决策流程、中世纪告示板风格任务派发彩蛋。每一个模块都可以上手操作。</p>
+    <span class="card-tease">拖动滑块 → 点击评估 → 改变属性 → 观察结果变化</span><br>
+    <span class="card-arrow">开始交互 →</span>
   </a>
 
-  <a href="bilibili.html" class="nav-card">
-    <span class="nav-card-icon">&#9654;</span>
+  <a href="bilibili.html" class="nav-card card-bili">
+    <span class="card-badge badge-data">&#9679; 数据</span>
+    <span class="card-icon">&#9654;</span>
     <h3>B站内容创作</h3>
-    <p>「消失游戏开发日志」系列及其他视频作品，含数据统计与观众画像分析。</p>
+    <p>「消失游戏开发日志」系列7期，累计19.5万播放。含可排序视频对比、指标雷达图、观众画像与内容策略分析。</p>
+    <span class="card-tease">拖动排序 · 雷达对比 · 数据洞察</span>
     <span class="card-arrow">浏览作品 →</span>
   </a>
 
-  <a href="worldbuilding.html" class="nav-card">
-    <span class="nav-card-icon">&#9734;</span>
+  <a href="worldbuilding.html" class="nav-card card-world">
+    <span class="card-badge badge-lore">&#9679; 设定</span>
+    <span class="card-icon">&#9734;</span>
     <h3>艾瑞斯大陆设定集</h3>
-    <p>六万余字原创奇幻世界观：双能力体系、五大城市、经济法律、核心历史与机密档案。</p>
+    <p>六万余字原创奇幻世界观。双能力体系、五大城市、经济法律系统、核心历史、机密档案与最高机密卷宗。</p>
+    <span class="card-tease">折叠档案 · 神位阶隐藏交互</span>
     <span class="card-arrow">探索世界 →</span>
   </a>
 
-  <a href="novel.html" class="nav-card">
-    <span class="nav-card-icon">&#9733;</span>
+  <a href="novel.html" class="nav-card card-novel">
+    <span class="card-badge badge-read">&#9679; 小说</span>
+    <span class="card-icon">&#9733;</span>
     <h3>渡鸦镇</h3>
-    <p>长篇小说。哥特式小镇叙事，一场葬礼揭开一个衰败世界的裂痕。十二章，约四万一千字。</p>
+    <p>长篇小说12章，哥特式小镇叙事。含「你是渡鸦镇的谁？」性格测试与可交互人物关系图。</p>
+    <span class="card-tease">性格测试 · 人物关系图 · 十二章完整版</span>
     <span class="card-arrow">阅读小说 →</span>
   </a>
 
-  <a href="game-design.html" class="nav-card featured-card">
-    <span class="nav-card-icon">&#9881;</span>
-    <h3>游戏设计 · 数值与系统</h3>
-    <p>能力雷达图、经济公式模型、公会任务流程图、三角色职业定位设计，以及可交互的任务派发彩蛋。</p>
-    <span class="card-arrow">查看设计文档 →</span>
+  <a href="about.html" class="nav-card card-about">
+    <span class="card-badge badge-lore">&#9679; 关于</span>
+    <span class="card-icon">&para;</span>
+    <h3>关于我</h3>
+    <p>游戏考古的创作理念、世界观构建的方法论。冷峻克制的叙事风格，追求信息密度与节奏的平衡。</p>
+    <span class="card-tease">创作哲学 · 叙事方法论</span>
+    <span class="card-arrow">了解更多 →</span>
   </a>
+
 </div>
 
 <footer>
   <p>BEST-辣椒 &copy; 2026 · <a href="https://space.bilibili.com/518565512" target="_blank" rel="noopener" style="color:var(--text-dim);">B站主页</a></p>
 </footer>
+
+<script>
+// ====== 数字滚动动画 ======
+function animateCounter(id, target, duration, suffix) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  var start = 0;
+  var startTime = null;
+
+  function step(timestamp) {
+    if (!startTime) startTime = timestamp;
+    var progress = Math.min((timestamp - startTime) / duration, 1);
+    // ease-out quad
+    var eased = 1 - (1 - progress) * (1 - progress);
+    var current = Math.round(target * eased);
+    el.textContent = current + (suffix || '');
+    if (progress < 1) {
+      requestAnimationFrame(step);
+    }
+  }
+  requestAnimationFrame(step);
+}
+
+// 页面加载后启动动画
+window.addEventListener('DOMContentLoaded', function() {
+  setTimeout(function() {
+    animateCounter('counter-fans', 888, 1000, '');
+  }, 400);
+  setTimeout(function() {
+    animateCounter('counter-words', 6, 800, '');
+  }, 600);
+  setTimeout(function() {
+    animateCounter('counter-series', 7, 600, '');
+  }, 800);
+});
+
+// 修正显示：把 195万 变成 19.5万 的格式
+// 实际用简单方式：直接计数到目标值
+// counter-plays 显示 19.5（特殊处理）
+(function() {
+  var el = document.getElementById('counter-plays');
+  if (!el) return;
+  // 覆盖 animateCounter 的行为，手动做动画
+  var target = 19.5;
+  var duration = 1200;
+  var startTime = null;
+
+  function step(ts) {
+    if (!startTime) startTime = ts;
+    var progress = Math.min((ts - startTime) / duration, 1);
+    var eased = 1 - (1 - progress) * (1 - progress);
+    var current = (target * eased).toFixed(1);
+    el.textContent = current;
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  setTimeout(function() { requestAnimationFrame(step); }, 200);
+})();
+</script>
 
 </body>
 </html>
