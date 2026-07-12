@@ -81,19 +81,19 @@
 
 /* 导航卡片重设计 */
 .nav-cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 0 16px;
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 20px !important;
+  max-width: 960px !important;
+  margin: 0 auto !important;
+  padding: 0 16px !important;
 }
 .nav-card.card-about {
-  grid-column: 2; /* 顶尖居中 */
+  grid-column: 2 !important; /* 顶尖居中 */
 }
 @media (max-width: 768px) {
-  .nav-cards { grid-template-columns: 1fr; }
-  .nav-card.card-about { grid-column: auto; }
+  .nav-cards { grid-template-columns: 1fr !important; }
+  .nav-card.card-about { grid-column: auto !important; }
   .hero-stats { gap: 24px; }
   .stat-num { font-size: 32px; }
 }
