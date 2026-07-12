@@ -180,6 +180,61 @@
   margin-top: 8px;
 }
 
+/* ====== 像素小人对话框 ====== */
+.mascot-bubble {
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 10px 16px;
+  max-width: 240px;
+  min-width: 140px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.6;
+  cursor: pointer;
+  white-space: normal;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  transition: opacity 0.25s;
+  user-select: none;
+}
+.mascot-bubble::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 10px solid transparent;
+  border-top: 10px solid #fff;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.06));
+}
+/* 边框的小三角 */
+.mascot-bubble::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 11px solid transparent;
+  border-top: 11px solid var(--border);
+  margin-top: 2px;
+}
+.mascot-bubble:hover {
+  box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+}
+.mascot-bubble.pop {
+  animation: bubblePop 0.3s ease;
+}
+@keyframes bubblePop {
+  0%   { transform: translateX(-50%) scale(1); }
+  50%  { transform: translateX(-50%) scale(1.08); }
+  100% { transform: translateX(-50%) scale(1); }
+}
+
 /* 三角形布局：顶角卡片宽度 = 3列中的1列 */
 .home-triangle-top-inner {
   width: calc(33.333% - 14px);
@@ -208,7 +263,11 @@
 <!-- ====== Hero ====== -->
 <section class="hero">
   <div class="hero-content">
-    <img src="pixel-avatar-clean-small.png" alt="BEST-辣椒" style="width:100px;height:auto;margin-bottom:16px;">
+    <!-- 像素小人 + 对话框 -->
+    <div class="pixel-mascot" id="pixel-mascot" style="display:inline-block;position:relative;margin-bottom:16px;">
+      <div class="mascot-bubble" id="mascot-bubble">你好，欢迎来到我的求职个人网站！</div>
+      <img src="pixel-avatar-clean-small.png" alt="BEST-辣椒" style="width:100px;height:auto;display:block;">
+    </div>
     <h1>BEST-辣椒 · 求职作品集</h1>
     <p class="hero-subtitle" style="font-size:16px;color:var(--accent);letter-spacing:2px;">游戏考据作者 · 世界观构建者 · 交互原型设计师</p>
     <p class="hero-desc" style="font-size:13px;color:var(--text-dim);margin-top:10px;">
@@ -362,6 +421,126 @@
 </footer>
 
 <script>
+// ====== 像素小人对话框 ======
+(function() {
+  var bubble = document.getElementById('mascot-bubble');
+  var mascot = document.getElementById('pixel-mascot');
+  if (!bubble) return;
+
+  var clicks = 0;
+  var idleTimer = null;
+  var idleFired = { 30: false, 60: false, 90: false };
+
+  // 对话库
+  var normalMsgs = [
+    '你好，欢迎来到我的求职个人网站！',
+    '这里收录了我的游戏考据、世界观设定和交互原型~',
+    '随便逛逛，有疑问随时找我！呃，虽然我只是一张图……'
+  ];
+  var easterMsgs = [
+    '你知道吗？这个网站的总AI调用成本不到5块钱。',
+    '嘘……设定集里藏了一些暗界生物的秘密档案。',
+    'B站的视频拆解页里，有原游戏编剧的独家访谈翻译哦。',
+    '渡鸦镇那个页面底部有个性格测试，试试你是哪个角色？',
+    '游戏设计页里有个中世纪告示板，那是纯CSS画的。'
+  ];
+  var sillyMsgs = [
+    '你已经点了我' + '好多次了。好吧，我承认我只是个像素图。',
+    '别点了别点了！再点我就要从像素变成矢量图了！',
+    '你知道吗，我的原型是作者花了几分钟在某个像素生成器里捏出来的。',
+    '我要是能动的话早就跑了。但我是PNG格式的。PNG不支持动画。',
+    '好吧好吧，最后告诉你一个秘密：这个对话框里的逗号都是英文逗号——等等，好像确实是。'
+  ];
+  var idleMsgs = [
+    '你还在吗？……要不要去B站看看我的视频？',
+    '页面停留这么久，看来你是真的在认真看。谢谢你。',
+    '如果看完了，可以试试设定集页面的搜索功能。我做的。呃，作者做的。',
+    '还在呢？要不……再点我一下？'
+  ];
+
+  function popAnim() {
+    bubble.classList.remove('pop');
+    void bubble.offsetWidth; // reflow
+    bubble.classList.add('pop');
+  }
+
+  function say(msg) {
+    bubble.textContent = msg;
+    popAnim();
+  }
+
+  function getSillyMsg() {
+    var n = clicks - normalMsgs.length - easterMsgs.length;
+    var msg = sillyMsgs[Math.min(n, sillyMsgs.length - 1)];
+    return msg.replace('好多次', n + '次');
+  }
+
+  bubble.addEventListener('click', function(e) {
+    e.stopPropagation();
+    clicks++;
+    resetIdle();
+
+    if (clicks <= normalMsgs.length) {
+      say(normalMsgs[clicks - 1]);
+    } else if (clicks <= normalMsgs.length + easterMsgs.length) {
+      say(easterMsgs[clicks - normalMsgs.length - 1]);
+    } else {
+      say(getSillyMsg());
+    }
+  });
+
+  // 点击小人本身也可以触发
+  var avatarImg = mascot ? mascot.querySelector('img') : null;
+  if (avatarImg) {
+    avatarImg.style.cursor = 'pointer';
+    avatarImg.addEventListener('click', function(e) {
+      e.stopPropagation();
+      bubble.click();
+    });
+  }
+
+  function resetIdle() {
+    if (idleTimer) clearTimeout(idleTimer);
+    idleFired[30] = false;
+    idleFired[60] = false;
+    idleFired[90] = false;
+    idleTimer = setTimeout(checkIdle, 30000);
+  }
+
+  function checkIdle() {
+    var elapsed = 30;
+    if (!idleFired[30]) {
+      idleFired[30] = true;
+      say(idleMsgs[0]);
+      idleTimer = setTimeout(checkIdle, 30000);
+    } else if (!idleFired[60]) {
+      idleFired[60] = true;
+      say(idleMsgs[1]);
+      idleTimer = setTimeout(checkIdle, 30000);
+    } else if (!idleFired[90]) {
+      idleFired[90] = true;
+      say(idleMsgs[2]);
+      idleTimer = setTimeout(checkIdle, 30000);
+    } else {
+      // 循环闲逛提示
+      say(idleMsgs[Math.floor(Math.random() * idleMsgs.length)]);
+      idleFired[30] = false;
+      idleFired[60] = false;
+      idleFired[90] = false;
+      idleTimer = setTimeout(checkIdle, 30000);
+    }
+  }
+
+  // 页面加载后30秒开始检测空闲
+  idleTimer = setTimeout(checkIdle, 30000);
+
+  // 用户有任何交互就重置
+  document.addEventListener('click', resetIdle);
+  document.addEventListener('scroll', function() {
+    if (idleTimer) { clearTimeout(idleTimer); idleFired[30]=false; idleFired[60]=false; idleFired[90]=false; idleTimer = setTimeout(checkIdle, 30000); }
+  });
+})();
+
 // ====== 数字滚动动画 ======
 function animateCounter(id, target, duration, suffix) {
   var el = document.getElementById(id);
