@@ -184,19 +184,22 @@
 .mascot-bubble {
   position: absolute;
   bottom: calc(100% + 12px);
-  left: -30px;
+  left: 50%;
+  transform: translateX(-50%);
   background: #fdfaf4;
   border: 3px solid #4a3828;
   border-radius: 0;
   padding: 10px 16px;
+  width: max-content;
   max-width: 360px;
-  min-width: 140px;
-  text-align: left;
+  min-width: 100px;
+  text-align: center;
   font-size: 13px;
   color: #3a2a18;
-  line-height: 1.6;
+  line-height: 1.5;
   cursor: pointer;
   white-space: normal;
+  word-break: keep-all;
   box-shadow:
     4px 4px 0 0 #2a1a08,
     inset 2px 2px 0 rgba(255,255,255,0.3),
@@ -204,12 +207,13 @@
   user-select: none;
   font-family: "Georgia", "Noto Serif SC", "SimSun", serif;
 }
-/* 尾巴在右下角，指向下方的小人 */
+/* 尾巴指向下方小人 */
 .mascot-bubble::after {
   content: '';
   position: absolute;
   top: 100%;
-  right: 22px;
+  left: 50%;
+  transform: translateX(-50%);
   width: 14px;
   height: 8px;
   background: #4a3828;
@@ -219,7 +223,8 @@
   content: '';
   position: absolute;
   top: 100%;
-  right: 24px;
+  left: 50%;
+  transform: translateX(-50%);
   width: 6px;
   height: 4px;
   background: #fdfaf4;
@@ -237,35 +242,6 @@
   animation: bubblePop 0.3s ease;
 }
 @keyframes bubblePop {
-  0%   { transform: scale(1); }
-  50%  { transform: scale(1.06); }
-  100% { transform: scale(1); }
-}
-/* 手机端：气泡居中显示在上方 */
-@media (max-width: 640px) {
-  .mascot-bubble {
-    bottom: calc(100% + 12px);
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-  }
-  .mascot-bubble::after {
-    top: 100%;
-    right: auto;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  .mascot-bubble::before {
-    top: 100%;
-    right: auto;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  .mascot-bubble.pop {
-    animation: bubblePopMobile 0.3s ease;
-  }
-}
-@keyframes bubblePopMobile {
   0%   { transform: translateX(-50%) scale(1); }
   50%  { transform: translateX(-50%) scale(1.06); }
   100% { transform: translateX(-50%) scale(1); }
@@ -515,18 +491,18 @@
 
   function say(msg) {
     bubble.textContent = msg;
-    // 长文本加宽而非拉高
+    // 根据字数设定宽度：字少就窄，字多就宽，避免换行
     var len = msg.length;
-    if (len <= 8) {
-      bubble.style.maxWidth = '260px';
-    } else if (len <= 16) {
-      bubble.style.maxWidth = '360px';
+    if (len <= 10) {
+      bubble.style.maxWidth = '220px';
+    } else if (len <= 18) {
+      bubble.style.maxWidth = '320px';
     } else if (len <= 28) {
-      bubble.style.maxWidth = '460px';
-    } else if (len <= 42) {
-      bubble.style.maxWidth = '560px';
+      bubble.style.maxWidth = '420px';
+    } else if (len <= 40) {
+      bubble.style.maxWidth = '520px';
     } else {
-      bubble.style.maxWidth = '640px';
+      bubble.style.maxWidth = '600px';
     }
     popAnim();
   }
