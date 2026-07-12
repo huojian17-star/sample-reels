@@ -323,10 +323,13 @@
 </footer>
 <script>
 // 手风琴：打开一个时关闭其他
+var batchOpening = false;
+
 document.addEventListener('DOMContentLoaded', function() {
   var cards = document.querySelectorAll('.analysis-card');
   cards.forEach(function(card) {
     card.addEventListener('toggle', function() {
+      if (batchOpening) return;
       if (this.open) {
         cards.forEach(function(other) {
           if (other !== this && other.open) other.open = false;
@@ -340,10 +343,12 @@ document.addEventListener('DOMContentLoaded', function() {
 var allExpanded = false;
 function toggleAll() {
   allExpanded = !allExpanded;
+  batchOpening = true;
   var cards = document.querySelectorAll('.analysis-card');
   var btn = document.getElementById('toggle-all');
   cards.forEach(function(c) { c.open = allExpanded; });
   btn.textContent = allExpanded ? '全部收起' : '全部展开';
+  batchOpening = false;
 }
 </script></body>
 </html>
