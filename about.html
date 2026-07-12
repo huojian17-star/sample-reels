@@ -80,27 +80,125 @@
   <p>在表达方式上，偏好<strong>冷峻、克制</strong>的语调，用事实和逻辑本身的力量驱动叙事，而非依赖情绪渲染。</p>
 
   <h2>关于这份网页 · 人机协作</h2>
-  <p>这份作品集网站本身也是我创作方法论的一部分——由一个人类（我）提供方向、内容、审美判断和迭代反馈，由一个 AI（Claude）执行编码、重构、调试和内容生成。以下记录的是这段协作中的分工逻辑、演进过程与技术架构。</p>
+  <p>这份作品集网站从第一行 HTML 到最终 13 页的完整结构，<strong>全程由一个人（我）提供方向、内容、审美判断和迭代反馈，由一个 AI（Claude）执行编码、重构、调试和内容生成。</strong>以下记录的是这段协作是如何工作的，以及从中可以提取什么可复用的方法论。</p>
 
-  <h3>创意栈：谁决定"做什么"和"做成什么样"</h3>
-  <p>在我们的协作中，有一条稳定且高效的分界线：<strong>人类负责"做什么"和"好不好"，AI 负责"怎么做"。</strong>我不需要告诉 AI "用 grid-column: 2 来实现居中"，AI 不需要替我判断"这个设计是不是太啰嗦了"。最有效的沟通模式是——我用自然语言描述需求（"这里加一个掉落模拟器""排版变成三角形""去掉那些 emoji"），AI 提出技术方案并执行，我验收后反馈。</p>
-  <p>这份网站经历了<strong>四次创意跃迁</strong>：从最初的静态展示站 → 加入交互模块（雷达图、战斗计算器、任务决策）→ 内容升维（基于 Word 原始文案生成游戏拆解和文案元分析）→ 审美打磨与元反思（三角形布局调试、缺点复盘、数据验证）。每一次跃迁都不是因为"技术可以实现"，而是因为我问了自己一句"这个页面还能做什么？"。</p>
+  <!-- 项目全貌 -->
+  <div style="display:flex;gap:16px;flex-wrap:wrap;margin:20px 0;">
+    <div style="flex:1;min-width:100px;text-align:center;padding:16px;background:var(--bg-page);border-radius:4px;"><span style="font-size:24px;font-weight:700;color:var(--accent);">13</span><br><span style="font-size:11px;color:var(--text-dim);">独立页面</span></div>
+    <div style="flex:1;min-width:100px;text-align:center;padding:16px;background:var(--bg-page);border-radius:4px;"><span style="font-size:24px;font-weight:700;color:var(--accent);">~1,600</span><br><span style="font-size:11px;color:var(--text-dim);">行 CSS</span></div>
+    <div style="flex:1;min-width:100px;text-align:center;padding:16px;background:var(--bg-page);border-radius:4px;"><span style="font-size:24px;font-weight:700;color:var(--accent);">~6,000</span><br><span style="font-size:11px;color:var(--text-dim);">行 JavaScript</span></div>
+    <div style="flex:1;min-width:100px;text-align:center;padding:16px;background:var(--bg-page);border-radius:4px;"><span style="font-size:24px;font-weight:700;color:var(--accent);">9</span><br><span style="font-size:11px;color:var(--text-dim);">交互式模块</span></div>
+    <div style="flex:1;min-width:100px;text-align:center;padding:16px;background:var(--bg-page);border-radius:4px;"><span style="font-size:24px;font-weight:700;color:#7266ba;">1+1</span><br><span style="font-size:11px;color:var(--text-dim);">人类 + AI</span></div>
+  </div>
 
-  <h3>技术栈与架构决策</h3>
-  <p><strong>纯 HTML/CSS/JS</strong>——零框架、零依赖、零构建步骤。面试官右键就能看到完整的、未混淆的源码。代价是当页面数量增长到14个时，导航栏等公共部分需要借助 sed 批量更新——这在 React/Vue 中本应是一个组件。</p>
-  <p><strong>CSS 混合架构</strong>——style.css 提供全局骨架（导航、卡片、排版），各页面 &lt;style&gt; 提供专属皮肤（中世纪木板、折叠卡片、三角形布局）。之所以不全部放在 style.css，是因为部分全局规则（如 .nav-cards 的 auto-fit）会与页面专属样式冲突——三角形的调试过程就是典型案例。</p>
-  <p><strong>Python 辅助脚本</strong>——python-docx 用于读取用户提供的 Word 文案，BeautifulSoup 用于页面结构批量重构（将长篇滚动改为折叠卡片），Bash sed 用于导航栏批量同步。</p>
+  <h3>创意栈：谁决定了"做什么"和"做成什么样"</h3>
+  <p>在传统的网页开发中，"甲方"给出模糊的需求，"乙方"反复猜测并执行。而在我们的协作中，角色分工更加精确：</p>
+
+  <table class="info-table" style="width:100%;margin:16px 0;font-size:12px;">
+  <tr><th>决策类型</th><th>谁主导</th><th>具体表现</th></tr>
+  <tr><td>模块方向（"这个页面该有什么"）</td><td style="color:#c95d3d;font-weight:600;">人类</td><td>比如"B站数据那里加个互动排序和雷达对比图"、"小说页加性格测试和人物关系图"</td></tr>
+  <tr><td>审美风格（"看起来是什么感觉"）</td><td style="color:#c95d3d;font-weight:600;">人类</td><td>比如"用中世纪告示板风格"、"去Emoji纯文字"、"调成三角布局"</td></tr>
+  <tr><td>内容质量把关（"这个分析到位了吗"）</td><td style="color:#c95d3d;font-weight:600;">人类</td><td>比如"彼得不是教师的孙子，是教师之子"、"加上翻译"、"这段的缺点复盘少了"</td></tr>
+  <tr><td>代码实现（"怎么用CSS/JS做出来"）</td><td style="color:#4d9b91;font-weight:600;">AI</td><td>CSS Grid布局、SVG雷达图、手风琴交互、Python HTML转换脚本</td></tr>
+  <tr><td>文案生成（"把设定集/数据提炼成网页文字"）</td><td style="color:#4d9b91;font-weight:600;">AI</td><td>基于用户提供的Word文档、口述数据、up主文案，生成网页上的分析文字</td></tr>
+  <tr><td>Bug修复（"为什么这个按钮点了没反应"）</td><td style="color:#7266ba;font-weight:600;">人机协作</td><td>用户发现并描述问题 → AI诊断并提出修复方案 → 用户验证反馈 → AI迭代修复</td></tr>
+  <tr><td>结构优化（"页面太长改成卡片折叠"）</td><td style="color:#7266ba;font-weight:600;">人机协作</td><td>用户提出体验问题 → AI设计交互方案 → 用户确认方向 → AI执行重构</td></tr>
+  </table>
+
+  <p>这个网站不是一次性设计出来的，而是经历了<strong>四次创意跃迁</strong>。每次跃迁都不是技术驱动的，而是我问了自己一句"这个页面还能做什么？"：</p>
+
+  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:16px;">
+  <h4 style="font-size:15px;font-weight:600;color:var(--text-bright);margin-bottom:4px;">阶段一：静态展示站</h4>
+  <p style="font-size:12px;color:var(--text-dim);margin-bottom:8px;">初始需求</p>
+  <p style="font-size:13px;color:var(--text);line-height:1.9;">最早的构想是一个标准作品集网站：首页 + 关于 + B站数据 + 设定集陈列 + 小说页面。结构是静态的，功能是展示型的。AI 的角色是<strong>"听话的翻译器"</strong>——用户描述需求，AI 转化为 HTML/CSS。这个阶段产出了基础骨架：导航栏、Hero区、导航卡片、内容区域、页脚——这些今天仍在用的模块。</p>
+  </div>
+
+  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:16px;">
+  <h4 style="font-size:15px;font-weight:600;color:var(--text-bright);margin-bottom:4px;">阶段二：交互化转型</h4>
+  <p style="font-size:12px;color:var(--text-dim);margin-bottom:8px;">转折点：用户说"那个能力者雷达图能不能让人拖动滑块然后出评估结果？"</p>
+  <p style="font-size:13px;color:var(--text);line-height:1.9;">这是整个网站气质转变的<strong>决定性时刻</strong>。不再满足于"展示已经完成的作品"，而是想让面试官<strong>在这个网站上做点什么</strong>。从此"交互"成为新增模块的默认要求。催生了属性雷达评估系统、战斗伤害计算器、掉落模拟器、公会任务交互式决策。AI 从"翻译器"升级为<strong>"设计方案的提出者"</strong>——用户说"要个伤害公式计算器"，AI 需要自己设计公式、参数、布局和输出格式。</p>
+  </div>
+
+  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:16px;">
+  <h4 style="font-size:15px;font-weight:600;color:var(--text-bright);margin-bottom:4px;">阶段三：内容升维</h4>
+  <p style="font-size:12px;color:var(--text-dim);margin-bottom:8px;">转折点：用户把7期视频的完整Word文案发给 AI</p>
+  <p style="font-size:13px;color:var(--text);line-height:1.9;">这是<strong>信息密度的一次暴增</strong>。在此之前 B站页面只有标题和播放量。在此之后：每期有了100字研究摘要 → 7款游戏的完整拆解 → 文案本身的元分析（叙事结构、风格演变、缺点复盘、数据验证）。AI 升级为<strong>"内容合作创作者"</strong>——不只翻译用户的话，而是基于原始素材独立完成信息提取、结构设计、分析写作，交给用户审核修改。</p>
+  </div>
+
+  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:16px;">
+  <h4 style="font-size:15px;font-weight:600;color:var(--text-bright);margin-bottom:4px;">阶段四：审美打磨与元反思</h4>
+  <p style="font-size:12px;color:var(--text-dim);margin-bottom:8px;">转折点：用户说"排版变成三角形""加一个缺点复盘""首页那块太重复了"</p>
+  <p style="font-size:13px;color:var(--text);line-height:1.9;">当前阶段的核心工作不再是"加新东西"，而是<strong>删、调整、打磨、反思</strong>。三角布局的CSS冲突调试、手风琴组件的toggle事件Bug修复、英国编剧原话的翻译补充、数据验证的交叉对比——这些都是典型的"最后20%的细节占了80%的时间"。AI 承担了一个新角色：<strong>"有记忆的合作者"</strong>——因为 AI 记住了之前每一次对话的上下文，当用户说"用卡特原话替换掉那个note"时，不需要被重新告知卡特是谁。</p>
+  </div>
+
+  <h3>技术栈：这份网页是用什么和怎么搭建的</h3>
+
+  <p><strong>前端技术</strong></p>
+  <table class="info-table" style="width:100%;margin-bottom:16px;font-size:12px;">
+  <tr><th>技术</th><th>用途</th><th>为什么选它</th></tr>
+  <tr><td>纯 HTML/CSS/JS</td><td>全部页面</td><td>零依赖、零构建步骤、面试官可以直接右键查看源码</td></tr>
+  <tr><td>CSS Grid + Flexbox</td><td>布局系统</td><td>三角布局、卡片网格、响应式断点全部依赖原生CSS，不引入Bootstrap</td></tr>
+  <tr><td>SVG（内联）</td><td>雷达图、人物关系图</td><td>可编程矢量图形，JS直接操作DOM，不需要Canvas或图表库</td></tr>
+  <tr><td>CSS自定义属性</td><td>全局主题色</td><td>--accent等变量统一管理颜色，换主题只需改十几行</td></tr>
+  <tr><td>Media Queries</td><td>响应式适配</td><td>768px断点，桌面三角布局→移动单列堆叠，纯CSS无JS</td></tr>
+  <tr><td>details/summary + JS</td><td>折叠卡片</td><td>原生HTML折叠元素 + 手风琴JS增强，不使用任何UI库</td></tr>
+  </table>
+
+  <p><strong>辅助工具</strong></p>
+  <table class="info-table" style="width:100%;margin-bottom:16px;font-size:12px;">
+  <tr><th>工具</th><th>用途</th><th>为什么选它</th></tr>
+  <tr><td>Python (python-docx)</td><td>Word文档内容提取</td><td>用户的7期视频文案以.docx格式提供，需用python-docx读取段落文本</td></tr>
+  <tr><td>Python (BeautifulSoup)</td><td>HTML结构批量重构</td><td>游戏拆解页面从长篇滚动重构为折叠卡片时，手动改7个analysis-block不现实</td></tr>
+  <tr><td>Bash (sed/grep)</td><td>导航栏批量更新</td><td>每新增一个页面需在多个HTML中同步导航链接，一行sed替换全部完成</td></tr>
+  </table>
+
+  <p><strong>关键架构决策</strong></p>
+
+  <div style="background:var(--bg-page);border-left:3px solid var(--accent);padding:14px 18px;margin:10px 0;border-radius:0 4px 4px 0;font-size:13px;line-height:1.9;">
+  <strong>为什么不用框架（React/Vue）？</strong>这是一个静态作品集网站，不是Web应用。引入框架会带来不必要的构建步骤和依赖管理。纯HTML/CSS/JS意味着任何电脑的浏览器都能直接打开。但代价是页面数量增长后，导航栏等公共部分需借助sed批量操作——这在框架中本应是一个组件。
+  </div>
+
+  <div style="background:var(--bg-page);border-left:3px solid var(--accent);padding:14px 18px;margin:10px 0;border-radius:0 4px 4px 0;font-size:13px;line-height:1.9;">
+  <strong>为什么CSS分散在各页面？</strong>理想情况下应有一个统一样式表。但实际迭代中，每个页面的独有样式是逐步叠加的，AI每次编辑时直接内联写入更高效。更大的问题是外部style.css中的全局规则会与页面专属样式冲突——三角形布局调试就是典型案例。最终采用"style.css提供全局骨架 + 各页面提供专属皮肤"的混合架构。
+  </div>
+
+  <div style="background:var(--bg-page);border-left:3px solid var(--accent);padding:14px 18px;margin:10px 0;border-radius:0 4px 4px 0;font-size:13px;line-height:1.9;">
+  <strong>引入Python BeautifulSoup的代价。</strong>BS4在"游戏拆解页面重组为折叠卡片"时，第一次转换丢失了所有正文内容——因为脚本的"remaining children"提取逻辑有Bug，7个分析卡片只剩标题。教训：<strong>对结构化HTML做批量转换时，先用一个元素验证脚本逻辑，确认无误后再跑全量。</strong>
+  </div>
+
+  <h3>可复用的协作方法论</h3>
+
+  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:12px;">
+  <h4 style="font-size:14px;font-weight:600;color:var(--text-bright);margin-bottom:6px;">原则一：人类负责"做什么"和"好不好"，AI负责"怎么做"</h4>
+  <p style="font-size:13px;color:var(--text);line-height:1.9;">这是整段协作中最稳定的分界线。用户不需要告诉AI技术细节；AI不需要替用户判断审美。当AI的方案被否决时（比如三角形布局第一次没生效），AI应该换一种技术思路而非坚持原方案。</p>
+  </div>
+
+  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:12px;">
+  <h4 style="font-size:14px;font-weight:600;color:var(--text-bright);margin-bottom:6px;">原则二：一次只做一件事，但把这件事做完</h4>
+  <p style="font-size:13px;color:var(--text);line-height:1.9;">每个交互模块的添加都遵循同一节奏：需求 → 设计 → 实现 → 验收 → 修复 → 再验收。AI 不会在加掉落模拟器的路上顺便把一个视频卡片的颜色改了。这种"窄而深"的推进方式确保每次改动可追溯。</p>
+  </div>
+
+  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:12px;">
+  <h4 style="font-size:14px;font-weight:600;color:var(--text-bright);margin-bottom:6px;">原则三：给AI看原始素材，让人做最终裁决</h4>
+  <p style="font-size:13px;color:var(--text);line-height:1.9;">当用户把Word文档直接发给AI时，产出质量显著高于"你帮我写一个细胞分裂的分析"。因为AI能看到原始材料中的细节。但当AI从素材中提炼出内容后，人的审核不可跳过——彼得是"教师之子"而非"教师的孙子"这类只有人类才知道的正确信息必须由人来纠正。</p>
+  </div>
+
+  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:12px;">
+  <h4 style="font-size:14px;font-weight:600;color:var(--text-bright);margin-bottom:6px;">原则四：失败是协作的养料，前提是记录每一次失败</h4>
+  <p style="font-size:13px;color:var(--text);line-height:1.9;">三角布局的CSS冲突、BS4内容丢失、toggle事件异步Bug、全部展开按钮失效——这些不是AI的"错误"，而是协作过程中的可复用教训。把每一次修复都记录下来，下一段人机协作的效率和可靠性都会有显著提升。</p>
+  </div>
 
   <h3>协作数据</h3>
   <div style="display:flex;gap:16px;flex-wrap:wrap;margin:16px 0;">
     <div style="flex:1;min-width:100px;text-align:center;padding:16px;background:var(--bg-page);border-radius:4px;"><span style="font-size:24px;font-weight:700;color:var(--accent);">~200</span><br><span style="font-size:11px;color:var(--text-dim);">次交互式编辑</span></div>
     <div style="flex:1;min-width:100px;text-align:center;padding:16px;background:var(--bg-page);border-radius:4px;"><span style="font-size:24px;font-weight:700;color:var(--accent);">~15</span><br><span style="font-size:11px;color:var(--text-dim);">次页面级重构</span></div>
+    <div style="flex:1;min-width:100px;text-align:center;padding:16px;background:var(--bg-page);border-radius:4px;"><span style="font-size:24px;font-weight:700;color:var(--accent);">~6</span><br><span style="font-size:11px;color:var(--text-dim);">次 CSS 冲突调试</span></div>
     <div style="flex:1;min-width:100px;text-align:center;padding:16px;background:var(--bg-page);border-radius:4px;"><span style="font-size:24px;font-weight:700;color:var(--accent);">~8</span><br><span style="font-size:11px;color:var(--text-dim);">次 JS Bug 修复</span></div>
-    <div style="flex:1;min-width:100px;text-align:center;padding:16px;background:var(--bg-page);border-radius:4px;"><span style="font-size:24px;font-weight:700;color:#7266ba;">1+1</span><br><span style="font-size:11px;color:var(--text-dim);">人类 + AI</span></div>
+    <div style="flex:1;min-width:100px;text-align:center;padding:16px;background:var(--bg-page);border-radius:4px;"><span style="font-size:24px;font-weight:700;color:var(--accent);">~1,200</span><br><span style="font-size:11px;color:var(--text-dim);">行 Python 辅助脚本</span></div>
   </div>
 
-  <p style="font-size:12px;color:var(--text-dim);">这份关于协作的记录本身，也是本文所描述的人机协作的又一个实例——人类口述方向，AI 执行排版，人类审核修改。</p>
   <p style="font-size:12px;color:var(--text-dim);"><strong>本次 AI 调用费用总成本不超过 5 元人民币。</strong>用不到一杯咖啡的成本，验证了一个完整的创意假设——这就是 MVP（最小可行产品）思维在内容创作中的实际应用。</p>
+  <p style="font-size:12px;color:var(--text-dim);">这份关于协作的记录本身，也是本文所描述的人机协作的又一个实例——人类口述方向，AI 执行排版，人类审核修改。</p>
 
 </div>
 
