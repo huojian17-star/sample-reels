@@ -255,6 +255,14 @@
 .mascot-bubble.pop {
   animation: bubblePop 0.25s steps(3);
 }
+/* 空闲漂浮 */
+.mascot-float {
+  animation: mascotFloat 3s ease-in-out infinite;
+}
+@keyframes mascotFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
 @keyframes bubblePop {
   0%, 100% { padding: 10px 16px; }
   50%      { padding: 13px 20px; }
@@ -548,43 +556,57 @@
   // 各模块介绍对话
   var zoneDialogs = {
     bilibili: [
-      'B站板块有7期视频数据，还能拖动排序对比雷达图哦~',
-      '点进B站页可以对比任意两期视频的六维雷达图！',
-      '消失游戏开发日志系列——我的代表作都在那里。'
+      '这里有7期视频的完整数据，还能拖动排序哦~',
+      '点进去可以对比任意两期视频的六维雷达图！',
+      '消失游戏开发日志——每期都是一段被遗忘的故事。',
+      '观众画像：93.6%男性，25-40岁为主——很硬核。',
+      '#3细胞分裂那期有4.6万播放，是目前最高的！'
     ],
     worldbuilding: [
-      '艾瑞斯大陆有六万多字的设定，够看一整天~',
-      '物理侧、魔法侧、研究侧——你属于哪一边？',
-      '机密档案里藏了暗界生物的秘密……嘘。'
+      '六万多字的设定，从能力体系到法律制度都有。',
+      '物理侧拿剑，魔法侧施法，研究侧掌管一切。',
+      '五大城市：寰宇尚武、岩湖锻造、富华重商、天际观星、低语岭祈祷。',
+      '机密档案里藏了暗界生物的秘密……点到为止。',
+      '双月历法——塞莱妮和墨恩的周期，影响整个大陆。'
     ],
     novel: [
-      '渡鸦镇的瑞雯不觉得冷，也不理解眼泪。',
-      '哥特小镇、三个少年、一场大雪。底部有性格测试！',
-      '去看看你像渡鸦镇的哪个角色？瑞雯、索菲娜还是彼得？'
+      '瑞雯不觉得冷——不是比喻，真的不觉得冷。',
+      '索菲娜第一天上学就打了一架。然后被孤立了。',
+      '彼得想造一艘船驶离小镇。但大雪封住了所有的路。',
+      '底部性格测试蛮准的——我测出来是瑞雯。',
+      '十二章，从葬礼开始，到大雪结束。'
     ],
     gamedesign: [
-      '这里有可以上手玩的交互原型——试试能力者雷达评估？',
-      '战斗伤害计算器、掉落模拟器……数值策划的游乐场！',
-      '告示板彩蛋是纯CSS画的，没用到任何图片。'
+      '能力者雷达评估可以识别12种类型！还有隐藏暗界彩蛋。',
+      '战斗伤害计算器——物理侧和魔法侧公式不一样哦。',
+      '公会任务5步决策，选错一步就失败了，和真实设计一样。',
+      '告示板彩蛋——纯CSS画的木板纹理，没用一张图。',
+      '掉落模拟器按暗界生物稀有度做了完整的概率表。'
     ],
     gameanalysis: [
-      '7款游戏的完整失败分析，从策划视角拆解。',
-      '《幻》那个案例简直是教科书级的翻车现场……',
-      '每篇拆解末尾都有4条可迁移的行业教训。'
+      '从策划视角拆了7款游戏的失败原因——不是八卦，是教训。',
+      '《幻》的案例：理想主义遇到了没有结局的代码。',
+      '每篇末尾有4条行业教训，可直接用到实际项目中。',
+      '《寂静岭P.T.》不止是恐怖游戏——它是科乐美转型的牺牲品。',
+      '《细胞分裂》从旗舰到雪藏，见证了育碧的完整弧线。'
     ],
     scriptanalysis: [
-      '文案拆解里有我的叙事方法论——怎么写才能留住观众。',
-      '缺点复盘有7张卡，每张卡都是真实踩过的坑。',
-      '数据验证了"高播放≠高转化"，做内容的人都该看看。'
+      '7期文案的完整元分析——不是"写了什么"，是"为什么这样写"。',
+      '缺点复盘有7张棕红色卡片，每张都是一次真实翻车。',
+      '数据验证发现"高播放≠高转化"——做内容的人都该知道。',
+      '从Noclip到新新闻主义，叙事风格有清晰的影响链。',
+      '5条可复用方法论——如果你也想做深度游戏内容。'
     ],
     about: [
-      '关于页面里有人机协作的完整记录~',
-      '整个网站AI成本不到5块钱，MVP思维的胜利！',
-      '我的求职方向是游戏策划/产品经理。'
+      '这里有人机协作的完整决策记录——谁做了什么、为什么。',
+      '整个网站AI成本不到5块钱。MVP思维的胜利！',
+      '四次创意跃迁卡片——每次都是不明显的转折点。',
+      '我的求职方向是游戏策划，偏系统和数值。',
+      '跨专业做游戏，需要额外的证明——这个网站就是。'
     ]
   };
 
-  function startDrag(x, y) {
+  function startDrag(x, y, touch) {
     var rect = mascot.getBoundingClientRect();
     startMouseX = x;
     startMouseY = y;
@@ -598,6 +620,19 @@
     origPageY = rect.top + window.scrollY;
     wasDragged = false;
     isDragging = false;
+    isTouch = !!touch;
+    dragReady = false;
+    if (touchHoldTimer) clearTimeout(touchHoldTimer);
+
+    if (touch) {
+      // 手机端：需长按 250ms 或移动超 10px 才进入拖拽
+      touchHoldTimer = setTimeout(function() {
+        dragReady = true;
+        avatarImg.style.transform = 'scale(1.1)';
+        avatarImg.style.transition = 'transform 0.15s ease';
+      }, 250);
+    }
+
     document.addEventListener('mousemove', onDragMove);
     document.addEventListener('mouseup', onDragEnd);
     document.addEventListener('touchmove', onDragTouch, { passive: false });
@@ -614,7 +649,9 @@
   function handleDrag(x, y) {
     var dx = Math.abs(x - startMouseX);
     var dy = Math.abs(y - startMouseY);
-    if (!isDragging && dx + dy < 5) return;
+    // 手机端：需长按就绪或滑动超10px；电脑端：5px即可
+    var threshold = isTouch ? (dragReady ? 5 : 10) : 5;
+    if (!isDragging && dx + dy < threshold) return;
 
     if (!isDragging) {
       isDragging = true;
@@ -640,10 +677,20 @@
       speedMsgFrames = 0;
       lastZone = null;
       zoneTimers = {};
+      // 拾起彩蛋
+      bubble.style.visibility = 'visible';
+      say(pickRandom(['诶？！你要带我去哪？', '哇！飞起来了！', '别别别——行吧，跟你走。', '又来？上次拖我拖得那么快……', '好吧，临时导游模式启动。']));
+      setTimeout(function() { if (isDragging) bubble.style.visibility = 'hidden'; }, 1800);
     }
 
-    // 固定定位跟随鼠标
-    mascot.style.left = (x - offsetX) + 'px';
+    // 缓动跟随鼠标
+    var ml = parseFloat(mascot.style.left) || 0;
+    var mt = parseFloat(mascot.style.top) || 0;
+    var targetX = x - offsetX;
+    var targetY = y - offsetY;
+    var ease = 0.35;
+    mascot.style.left = (ml + (targetX - ml) * ease) + 'px';
+    mascot.style.top  = (mt + (targetY - mt) * ease) + 'px';
     mascot.style.top  = (y - offsetY) + 'px';
 
     // 速度检测
@@ -654,9 +701,8 @@
     if (dt > 0 && dist / dt > 1.5 && speedMsgFrames <= 0) {
       speedMsgFrames = 20;
       bubble.style.visibility = 'visible';
-      var fastMsgs = ['慢点慢点！我要晕像素了！！', '啊啊啊别甩我！我只是个PNG！', '你拖这么快是想让我穿越吗？', '救命！绑架像素小人啦！'];
-      say(fastMsgs[Math.floor(Math.random() * fastMsgs.length)]);
-      setTimeout(function() { if (isDragging) bubble.style.visibility = 'hidden'; }, 2000);
+      say(pickRandom(['慢点慢点！我要晕像素了！！', '啊啊啊别甩我！我恐高——虽然我只是一张图……', '你拖这么快是想让我穿越到矢量图世界吗？', '救命！有人绑架像素小人啦！！', '又来了！我要散架了！', '好吧我认输，你拖吧。反正我也打不过你。']));
+      setTimeout(function() { if (isDragging) bubble.style.visibility = 'hidden'; }, 2200);
     }
     if (speedMsgFrames > 0) speedMsgFrames--;
     lastDragX = x; lastDragY = y; lastDragTime = now;
@@ -691,15 +737,45 @@
       if (!zoneTimers[near] || t - zoneTimers[near] > 4000) {
         zoneTimers[near] = t;
         bubble.style.visibility = 'visible';
-        var msgs = zoneDialogs[near];
-        if (msgs) say(msgs[Math.floor(Math.random() * msgs.length)]);
-        setTimeout(function() { if (isDragging) bubble.style.visibility = 'hidden'; }, 2500);
+        var firstMsg = pickRandom(zoneDialogs[near]);
+        say(firstMsg);
+        // 1.8秒后追加一条连锁对话
+        (function(zone, prev) {
+          setTimeout(function() {
+            if (!isDragging || lastZone !== zone) return;
+            say(pickRandom(zoneDialogs[zone]));
+          }, 1800);
+        })(near, firstMsg);
+        setTimeout(function() { if (isDragging) bubble.style.visibility = 'hidden'; }, 3500);
       }
     }
     lastZone = near;
   }
 
   var endTimer = null;
+  var recentMsgs = [];
+  var wanderTimer = null;
+  var isWandering = false;
+  var homeX, homeY;
+  var isTouch = false;       // 区分触屏/鼠标
+  var touchHoldTimer = null; // 长按计时器
+  var dragReady = false;     // 长按就绪
+
+  function updateHome() {
+    var hero = document.querySelector('.hero-content');
+    if (hero) { var r = hero.getBoundingClientRect(); homeX = r.left + r.width / 2; homeY = r.top + 40; }
+  }
+  updateHome();
+  window.addEventListener('resize', updateHome);
+
+  function pickRandom(arr) {
+    var pool = arr.filter(function(m) { return recentMsgs.indexOf(m) === -1; });
+    if (pool.length === 0) { pool = arr; recentMsgs.length = 0; }
+    var pick = pool[Math.floor(Math.random() * pool.length)];
+    recentMsgs.push(pick);
+    if (recentMsgs.length > 10) recentMsgs.shift();
+    return pick;
+  }
 
   function onDragEnd(e) {
     document.removeEventListener('mousemove', onDragMove);
@@ -710,6 +786,8 @@
     if (!isDragging) return;
     isDragging = false;
 
+    if (touchHoldTimer) { clearTimeout(touchHoldTimer); touchHoldTimer = null; }
+    if (dragReady) { avatarImg.style.transform = 'scale(1)'; avatarImg.style.transition = ''; dragReady = false; }
     if (endTimer) clearTimeout(endTimer);
 
     // 从 fixed（视口坐标）转为 absolute（页面坐标），随页面滚动
@@ -734,19 +812,36 @@
     mascot.style.transition = 'none';
     mascot.style.pointerEvents = '';
     mascot.style.zIndex = '999';
+
+    // 松手弹跳
+    avatarImg.style.transition = 'transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)';
+    avatarImg.style.transform = 'scale(1.1)';
+    setTimeout(function() {
+      avatarImg.style.transform = 'scale(1)';
+      setTimeout(function() { avatarImg.style.transition = ''; }, 250);
+    }, 50);
+
+    // 松手对话
+    if (Math.random() < 0.4) {
+      say(pickRandom(['就放这了？行吧。', '这里风景不错。比刚才那个角落好。', '呼——落地了。像素脚都站麻了。', '要不要双击我一下，让我回家？', '如果你后悔了，双击我就能回原位哦~']));
+    }
+
+    // 启动漫游计时
+    if (wanderTimer) clearTimeout(wanderTimer);
+    wanderTimer = setTimeout(startWander, 120000);
     resetIdle();
   }
 
   avatarImg.addEventListener('mousedown', function(e) {
     e.preventDefault();
     e.stopPropagation();
-    startDrag(e.clientX, e.clientY);
+    startDrag(e.clientX, e.clientY, false);
   });
   avatarImg.addEventListener('touchstart', function(e) {
     if (e.touches.length === 1) {
       e.preventDefault();
       e.stopPropagation();
-      startDrag(e.touches[0].clientX, e.touches[0].clientY);
+      startDrag(e.touches[0].clientX, e.touches[0].clientY, true);
     }
   }, { passive: false });
 
@@ -761,6 +856,67 @@
   });
 
   avatarImg.style.cursor = 'grab';
+
+  // 双击回家
+  avatarImg.addEventListener('dblclick', function(e) {
+    e.preventDefault(); e.stopPropagation();
+    isWandering = false;
+    if (wanderTimer) clearTimeout(wanderTimer);
+    mascot.classList.remove('mascot-float');
+    updateHome();
+    mascot.style.position = 'fixed';
+    mascot.style.zIndex = '999';
+    mascot.style.transition = 'left 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), top 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+    mascot.style.left = homeX + 'px';
+    mascot.style.top  = homeY + 'px';
+    say('回家啦！双击随时可以送我回来~');
+    setTimeout(function() {
+      mascot.style.position = '';
+      mascot.style.left = '';
+      mascot.style.top = '';
+      mascot.style.zIndex = '';
+      mascot.style.transition = '';
+      wanderTimer = setTimeout(startWander, 180000);
+    }, 650);
+    resetIdle();
+  });
+
+  // 漫游模式
+  function startWander() {
+    if (isDragging || isWandering) return;
+    isWandering = true;
+    var maxX = window.innerWidth - 150;
+    var maxY = window.innerHeight - 150;
+    var randX = 30 + Math.random() * (maxX - 30);
+    var randY = 30 + Math.random() * (maxY - 30);
+
+    var ml = mascot.getBoundingClientRect().left;
+    var mt = mascot.getBoundingClientRect().top;
+    if (mascot.style.position === 'absolute') {
+      ml = ml - window.scrollX;
+      mt = mt - window.scrollY;
+    }
+    mascot.style.position = 'fixed';
+    mascot.style.left = ml + 'px';
+    mascot.style.top  = mt + 'px';
+    mascot.style.zIndex = '999';
+    mascot.style.transition = 'left 8s ease-in-out, top 8s ease-in-out';
+    mascot.classList.add('mascot-float');
+    setTimeout(function() {
+      mascot.style.left = randX + 'px';
+      mascot.style.top  = randY + 'px';
+    }, 150);
+
+    setTimeout(function() {
+      mascot.style.transition = 'none';
+      mascot.classList.remove('mascot-float');
+      isWandering = false;
+      wanderTimer = setTimeout(startWander, 180000);
+    }, 8300);
+  }
+
+  // 初始漫游计时
+  wanderTimer = setTimeout(startWander, 120000);
 
   function resetIdle() {
     if (idleTimer) clearTimeout(idleTimer);
