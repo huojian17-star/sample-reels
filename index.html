@@ -189,8 +189,8 @@
   border: 3px solid #4a3828;
   border-radius: 0;
   padding: 10px 16px;
-  max-width: 240px;
-  min-width: 120px;
+  max-width: 360px;
+  min-width: 140px;
   text-align: left;
   font-size: 13px;
   color: #3a2a18;
@@ -518,15 +518,15 @@
     // 长文本加宽而非拉高
     var len = msg.length;
     if (len <= 8) {
-      bubble.style.maxWidth = '200px';
+      bubble.style.maxWidth = '260px';
     } else if (len <= 16) {
-      bubble.style.maxWidth = '280px';
+      bubble.style.maxWidth = '360px';
     } else if (len <= 28) {
-      bubble.style.maxWidth = '380px';
-    } else if (len <= 42) {
       bubble.style.maxWidth = '460px';
+    } else if (len <= 42) {
+      bubble.style.maxWidth = '560px';
     } else {
-      bubble.style.maxWidth = '540px';
+      bubble.style.maxWidth = '640px';
     }
     popAnim();
   }
