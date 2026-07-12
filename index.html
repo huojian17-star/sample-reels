@@ -683,11 +683,19 @@
       setTimeout(function() { if (isDragging) bubble.style.visibility = 'hidden'; }, 1800);
     }
 
-    // 缓动跟随鼠标
+    // 缓动跟随鼠标（含边缘碰撞）
     var ml = parseFloat(mascot.style.left) || 0;
     var mt = parseFloat(mascot.style.top) || 0;
     var targetX = x - offsetX;
     var targetY = y - offsetY;
+    // 边界限制：小人至少保留40px在屏幕内
+    var pad = 40;
+    var minX = pad - startMascotWidth;
+    var maxX = window.innerWidth - pad;
+    var minY = pad - startMascotHeight;
+    var maxY = window.innerHeight - pad;
+    targetX = Math.max(minX, Math.min(maxX, targetX));
+    targetY = Math.max(minY, Math.min(maxY, targetY));
     var ease = 0.35;
     mascot.style.left = (ml + (targetX - ml) * ease) + 'px';
     mascot.style.top  = (mt + (targetY - mt) * ease) + 'px';
