@@ -533,6 +533,10 @@
     avatarImg.style.cursor = 'pointer';
     avatarImg.addEventListener('click', function(e) {
       e.stopPropagation();
+      // 点击反馈：小人弹一下
+      avatarImg.style.transition = 'transform 0.15s ease';
+      avatarImg.style.transform = 'scale(1.12)';
+      setTimeout(function() { avatarImg.style.transform = 'scale(1)'; }, 150);
       bubble.click();
     });
   }
