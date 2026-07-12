@@ -348,7 +348,7 @@ function toggleAll() {
   var btn = document.getElementById('toggle-all');
   cards.forEach(function(c) { c.open = allExpanded; });
   btn.textContent = allExpanded ? '全部收起' : '全部展开';
-  batchOpening = false;
+  setTimeout(function() { batchOpening = false; }, 0);
 }
 </script></body>
 </html>

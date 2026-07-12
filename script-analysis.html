@@ -637,7 +637,8 @@ function toggleAll() {
   var btn = document.getElementById('toggle-all');
   cards.forEach(function(c) { c.open = allExpanded; });
   btn.textContent = allExpanded ? '全部收起' : '全部展开';
-  batchOpening = false;
+  // toggle 事件可能是异步触发的，延迟重置旗标
+  setTimeout(function() { batchOpening = false; }, 0);
 }
 </script>
 
