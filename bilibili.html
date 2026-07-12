@@ -234,7 +234,7 @@ function renderVideoGrid() {
     var html = '<div class="' + cardClass + '">';
     html += '<div class="video-order">#' + v.order + '</div>';
     if (v.cover) {
-      html += '<div class="video-cover"><img src="' + v.cover + '" alt="' + v.title + '" style="width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:4px;margin-bottom:12px;" loading="lazy"></div>';
+      html += '<div class="video-cover"><img src="' + v.cover + '" alt="' + v.title + '" loading="lazy"></div>';
     }
     html += '<div class="video-info">';
     html += '<h4>' + v.title + '</h4>';
