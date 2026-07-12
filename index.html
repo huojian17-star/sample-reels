@@ -479,14 +479,16 @@
     bubble.textContent = msg;
     // 长文本加宽而非拉高
     var len = msg.length;
-    if (len <= 18) {
-      bubble.style.maxWidth = '240px';
-    } else if (len <= 30) {
-      bubble.style.maxWidth = '340px';
-    } else if (len <= 45) {
-      bubble.style.maxWidth = '420px';
+    if (len <= 8) {
+      bubble.style.maxWidth = '200px';
+    } else if (len <= 16) {
+      bubble.style.maxWidth = '280px';
+    } else if (len <= 28) {
+      bubble.style.maxWidth = '380px';
+    } else if (len <= 42) {
+      bubble.style.maxWidth = '460px';
     } else {
-      bubble.style.maxWidth = '500px';
+      bubble.style.maxWidth = '540px';
     }
     popAnim();
   }
