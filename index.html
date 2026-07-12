@@ -183,9 +183,8 @@
 /* ====== 像素小人对话框 ====== */
 .mascot-bubble {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  left: calc(100% + 16px);
+  bottom: calc(100% + 12px);
+  left: -30px;
   background: #fdfaf4;
   border: 3px solid #4a3828;
   border-radius: 0;
@@ -205,59 +204,71 @@
   user-select: none;
   font-family: "Georgia", "Noto Serif SC", "SimSun", serif;
 }
-/* 尾巴指向左边（朝像素小人） */
+/* 尾巴在右下角，指向下方的小人 */
 .mascot-bubble::after {
   content: '';
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  right: 100%;
-  width: 10px;
-  height: 14px;
+  top: 100%;
+  right: 22px;
+  width: 14px;
+  height: 8px;
   background: #4a3828;
-  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+  clip-path: polygon(0 0, 50% 100%, 100% 0);
 }
 .mascot-bubble::before {
   content: '';
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  right: 100%;
-  width: 5px;
-  height: 7px;
+  top: 100%;
+  right: 24px;
+  width: 6px;
+  height: 4px;
   background: #fdfaf4;
-  clip-path: polygon(100% 0, 0 50%, 100% 100%);
-  margin-right: -2px;
+  clip-path: polygon(0 0, 50% 100%, 100% 0);
+  margin-top: -2px;
   z-index: 1;
 }
-/* 手机端改为下方 */
+.mascot-bubble:hover {
+  box-shadow:
+    5px 5px 0 0 #2a1a08,
+    inset 2px 2px 0 rgba(255,255,255,0.35),
+    inset -2px -2px 0 rgba(0,0,0,0.1);
+}
+.mascot-bubble.pop {
+  animation: bubblePop 0.3s ease;
+}
+@keyframes bubblePop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+/* 手机端：气泡居中显示在上方 */
 @media (max-width: 640px) {
   .mascot-bubble {
-    top: calc(100% + 12px);
+    bottom: calc(100% + 12px);
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
   }
   .mascot-bubble::after {
-    top: auto;
-    bottom: 100%;
+    top: 100%;
+    right: auto;
     left: 50%;
     transform: translateX(-50%);
-    width: 14px;
-    height: 8px;
-    clip-path: polygon(0 100%, 50% 0, 100% 100%);
   }
   .mascot-bubble::before {
-    top: auto;
-    bottom: 100%;
+    top: 100%;
+    right: auto;
     left: 50%;
     transform: translateX(-50%);
-    width: 6px;
-    height: 4px;
-    clip-path: polygon(0 100%, 50% 0, 100% 100%);
-    margin-bottom: -2px;
-    margin-right: 0;
   }
+  .mascot-bubble.pop {
+    animation: bubblePopMobile 0.3s ease;
+  }
+}
+@keyframes bubblePopMobile {
+  0%   { transform: translateX(-50%) scale(1); }
+  50%  { transform: translateX(-50%) scale(1.06); }
+  100% { transform: translateX(-50%) scale(1); }
 }
 .mascot-bubble:hover {
   box-shadow:
