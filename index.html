@@ -533,6 +533,8 @@
   var normalImg = 'pixel-avatar-clean-small.png';
   var isDragging = false;
   var wasDragged = false;
+  var mascotParent = null;
+  var mascotNextSibling = null;
   var startMouseX, startMouseY;
   var startMascotLeft, startMascotTop;
   var startMascotWidth, startMascotHeight;
@@ -620,13 +622,17 @@
       avatarImg.src = dragImg;
       avatarImg.style.cursor = 'grabbing';
       bubble.style.visibility = 'hidden';
+      // 移到 body 下，确保不被任何模块盖住
+      mascotParent = mascot.parentNode;
+      mascotNextSibling = mascot.nextSibling;
+      document.body.appendChild(mascot);
       mascot.style.position = 'fixed';
       mascot.style.left = startMascotLeft + 'px';
       mascot.style.top = startMascotTop + 'px';
       mascot.style.width = startMascotWidth + 'px';
       mascot.style.height = startMascotHeight + 'px';
       mascot.style.margin = '0';
-      mascot.style.zIndex = '999';
+      mascot.style.zIndex = '2147483647';
       mascot.style.transition = 'none';
       mascot.style.pointerEvents = 'none';
       lastDragX = x; lastDragY = y;
@@ -647,8 +653,10 @@
     var dt = now - lastDragTime;
     if (dt > 0 && dist / dt > 1.5 && speedMsgFrames <= 0) {
       speedMsgFrames = 20;
+      bubble.style.visibility = 'visible';
       var fastMsgs = ['慢点慢点！我要晕像素了！！', '啊啊啊别甩我！我只是个PNG！', '你拖这么快是想让我穿越吗？', '救命！绑架像素小人啦！'];
       say(fastMsgs[Math.floor(Math.random() * fastMsgs.length)]);
+      setTimeout(function() { if (isDragging) bubble.style.visibility = 'hidden'; }, 2000);
     }
     if (speedMsgFrames > 0) speedMsgFrames--;
     lastDragX = x; lastDragY = y; lastDragTime = now;
@@ -663,6 +671,7 @@
       { sel: '.card-world',   key: 'worldbuilding' },
       { sel: '.card-novel',   key: 'novel' },
       { sel: '.card-about',   key: 'about' },
+      { sel: '.featured-banner', key: 'featured' },
       { sel: 'a[href="game-design.html"].nav-card',    key: 'gamedesign' },
       { sel: 'a[href="game-analysis.html"].nav-card',   key: 'gameanalysis' },
       { sel: 'a[href="script-analysis.html"].nav-card', key: 'scriptanalysis' }
@@ -672,7 +681,7 @@
       var el = document.querySelector(zones[i].sel);
       if (!el) continue;
       var r = el.getBoundingClientRect();
-      if (cx >= r.left - 50 && cx <= r.right + 50 && cy >= r.top - 50 && cy <= r.bottom + 50) {
+      if (cx >= r.left - 80 && cx <= r.right + 80 && cy >= r.top - 80 && cy <= r.bottom + 80) {
         near = zones[i].key;
         break;
       }
@@ -681,8 +690,10 @@
       var t = Date.now();
       if (!zoneTimers[near] || t - zoneTimers[near] > 4000) {
         zoneTimers[near] = t;
+        bubble.style.visibility = 'visible';
         var msgs = zoneDialogs[near];
         if (msgs) say(msgs[Math.floor(Math.random() * msgs.length)]);
+        setTimeout(function() { if (isDragging) bubble.style.visibility = 'hidden'; }, 2500);
       }
     }
     lastZone = near;
@@ -708,12 +719,21 @@
     mascot.style.left = (curLeft + window.scrollX) + 'px';
     mascot.style.top  = (curTop  + window.scrollY) + 'px';
 
+    // 移回原父元素
+    if (mascotParent) {
+      if (mascotNextSibling) {
+        mascotParent.insertBefore(mascot, mascotNextSibling);
+      } else {
+        mascotParent.appendChild(mascot);
+      }
+    }
+
     avatarImg.src = normalImg;
     avatarImg.style.cursor = 'grab';
     bubble.style.visibility = 'visible';
     mascot.style.transition = 'none';
     mascot.style.pointerEvents = '';
-    mascot.style.zIndex = '';
+    mascot.style.zIndex = '999';
     resetIdle();
   }
 
