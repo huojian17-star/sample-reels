@@ -94,7 +94,7 @@
   var mascot = document.createElement('div');
   mascot.id = 'guest-mascot';
   mascot.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:9999;cursor:grab;user-select:none;';
-  mascot.innerHTML = '<div id="guest-bubble" style="position:absolute;bottom:110%;left:50%;transform:translateX(-50%);background:#fdfaf4;border:3px solid #4a3828;padding:10px 16px;max-width:320px;text-align:center;font-size:13px;color:#3a2a18;line-height:1.5;white-space:normal;box-shadow:4px 4px 0 0 #2a1a08;font-family:Georgia,serif;cursor:pointer;display:none;"></div><img id="guest-img" src="pixel-avatar-clean-small.png" alt="小人" style="width:80px;height:auto;display:block;" draggable="false">';
+  mascot.innerHTML = '<div id="guest-bubble" style="position:absolute;bottom:110%;left:50%;transform:translateX(-50%);background:#fdfaf4;border:3px solid #4a3828;padding:10px 16px;max-width:380px;min-width:100px;text-align:center;font-size:13px;color:#3a2a18;line-height:1.5;word-break:keep-all;box-shadow:4px 4px 0 0 #2a1a08;font-family:Georgia,serif;cursor:pointer;display:none;"></div><img id="guest-img" src="pixel-avatar-clean-small.png" alt="小人" style="width:80px;height:auto;display:block;" draggable="false">';
   document.body.appendChild(mascot);
 
   var bubble = document.getElementById('guest-bubble');
@@ -117,7 +117,7 @@
     bubble.textContent = msg;
     // 自适应宽度
     var len = msg.length;
-    bubble.style.maxWidth = len <= 10 ? '200px' : len <= 18 ? '300px' : len <= 30 ? '400px' : '500px';
+    bubble.style.maxWidth = len <= 10 ? '240px' : len <= 18 ? '340px' : len <= 30 ? '440px' : '540px';
     bubble.style.display = 'block';
     bubble.classList.remove('pop');
     void bubble.offsetWidth;
