@@ -32,12 +32,13 @@
 <div class="content-section">
 
   <!-- 搜索栏 -->
-  <div id="world-search-bar" style="position:sticky;top:70px;z-index:50;background:var(--bg);padding:16px 0 12px;margin-bottom:8px;border-bottom:1px solid var(--border);">
-    <div style="display:flex;gap:8px;align-items:center;">
-      <input type="text" id="world-search-input" placeholder="搜索设定集内容..." style="flex:1;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);font-size:14px;font-family:inherit;background:var(--bg-card);color:var(--text);outline:none;">
+  <div id="world-search-bar" style="position:sticky;top:70px;z-index:50;background:var(--bg-alt);padding:16px 32px;margin:0 -32px 24px;border-bottom:2px solid var(--accent-dim);">
+    <div style="display:flex;gap:8px;align-items:center;max-width:100%;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="2" style="flex-shrink:0;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="world-search-input" placeholder="输入关键词搜索设定集..." style="flex:1;padding:10px 0;border:none;font-size:15px;font-family:inherit;background:transparent;color:var(--text);outline:none;">
       <span id="search-count" style="font-size:11px;color:var(--text-dim);white-space:nowrap;min-width:50px;text-align:right;"></span>
-      <button id="search-prev-btn" style="background:none;border:1px solid var(--border);padding:6px 12px;border-radius:var(--radius);font-size:12px;cursor:pointer;font-family:inherit;color:var(--text-dim);line-height:1;" title="上一个匹配">↑</button>
-      <button id="search-next-btn" style="background:none;border:1px solid var(--border);padding:6px 12px;border-radius:var(--radius);font-size:12px;cursor:pointer;font-family:inherit;color:var(--text-dim);line-height:1;" title="下一个匹配">↓</button>
+      <button id="search-prev-btn" style="background:var(--bg-card);border:1px solid var(--border);padding:6px 10px;border-radius:4px;font-size:12px;cursor:pointer;font-family:inherit;color:var(--text-dim);line-height:1;" title="上一个匹配">↑</button>
+      <button id="search-next-btn" style="background:var(--bg-card);border:1px solid var(--border);padding:6px 10px;border-radius:4px;font-size:12px;cursor:pointer;font-family:inherit;color:var(--text-dim);line-height:1;" title="下一个匹配">↓</button>
     </div>
   </div>
 

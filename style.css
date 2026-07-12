@@ -654,4 +654,5 @@ footer p { font-size: 12px; color: var(--text-dim); }
   .nav-inner { height: 54px; padding: 0 16px; }
   .nav-links a { font-size: 12px; }
   .nav-links.nav-open { top: 54px; }
+  #world-search-bar { top: 54px; }
 }
