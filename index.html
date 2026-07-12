@@ -244,19 +244,27 @@
   <a href="game-design.html" class="banner-cta">&#9876; 进入交互原型</a>
 </div>
 
-<!-- ====== 导航卡片 ====== -->
-<div class="nav-cards">
+<!-- ====== 导航卡片 · 三角形布局 ====== -->
+<!-- 不用 .nav-cards 类名，避免外部 CSS 干扰 -->
 
-  <a href="about.html" class="nav-card card-about">
-    <span class="card-badge badge-lore">&#9679; 关于</span>
-    <span class="card-icon">&para;</span>
-    <h3>关于我</h3>
-    <p>游戏考古的创作理念、世界观构建的方法论。冷峻克制的叙事风格，追求信息密度与节奏的平衡。</p>
-    <span class="card-tease">创作哲学 · 叙事方法论</span>
-    <span class="card-arrow">了解更多 →</span>
-  </a>
+<!-- 顶角：关于我，居中 -->
+<div style="display:flex;justify-content:center;max-width:960px;margin:0 auto;padding:0 16px;">
+  <div style="width:calc(33.333% - 14px);min-width:260px;max-width:340px;margin-bottom:20px;">
+    <a href="about.html" class="nav-card card-about" style="margin:0;">
+      <span class="card-badge badge-lore">&#9679; 关于</span>
+      <span class="card-icon">&para;</span>
+      <h3>关于我</h3>
+      <p>游戏考古的创作理念、世界观构建的方法论。冷峻克制的叙事风格，追求信息密度与节奏的平衡。</p>
+      <span class="card-tease">创作哲学 · 叙事方法论</span>
+      <span class="card-arrow">了解更多 →</span>
+    </a>
+  </div>
+</div>
 
-  <a href="bilibili.html" class="nav-card card-bili">
+<!-- 底边：B站 + 设定集 + 小说，三列 -->
+<div style="display:flex;gap:20px;max-width:960px;margin:0 auto;padding:0 16px;">
+
+  <a href="bilibili.html" class="nav-card card-bili" style="flex:1;min-width:0;">
     <span class="card-badge badge-data">&#9679; 数据</span>
     <span class="card-icon">&#9654;</span>
     <h3>B站内容创作</h3>
@@ -265,7 +273,7 @@
     <span class="card-arrow">浏览作品 →</span>
   </a>
 
-  <a href="worldbuilding.html" class="nav-card card-world">
+  <a href="worldbuilding.html" class="nav-card card-world" style="flex:1;min-width:0;">
     <span class="card-badge badge-lore">&#9679; 设定</span>
     <span class="card-icon">&#9734;</span>
     <h3>艾瑞斯大陆设定集</h3>
@@ -274,7 +282,7 @@
     <span class="card-arrow">探索世界 →</span>
   </a>
 
-  <a href="novel.html" class="nav-card card-novel">
+  <a href="novel.html" class="nav-card card-novel" style="flex:1;min-width:0;">
     <span class="card-badge badge-read">&#9679; 小说</span>
     <span class="card-icon">&#9733;</span>
     <h3>渡鸦镇</h3>
