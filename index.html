@@ -699,8 +699,14 @@
     if (!isDragging) return;
     isDragging = false;
 
-    // 清除上一次的完成计时器
     if (endTimer) clearTimeout(endTimer);
+
+    // 从 fixed（视口坐标）转为 absolute（页面坐标），随页面滚动
+    var curLeft = parseFloat(mascot.style.left) || 0;
+    var curTop  = parseFloat(mascot.style.top)  || 0;
+    mascot.style.position = 'absolute';
+    mascot.style.left = (curLeft + window.scrollX) + 'px';
+    mascot.style.top  = (curTop  + window.scrollY) + 'px';
 
     avatarImg.src = normalImg;
     avatarImg.style.cursor = 'grab';
@@ -708,7 +714,6 @@
     mascot.style.transition = 'none';
     mascot.style.pointerEvents = '';
     mascot.style.zIndex = '';
-    // 保持在 fixed 状态，不弹回——小人停在松手的位置
     resetIdle();
   }
 
