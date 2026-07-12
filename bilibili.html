@@ -17,6 +17,7 @@
       <a href="worldbuilding.html">设定集</a>
       <a href="novel.html">小说</a>
       <a href="game-design.html">游戏设计</a>
+      <a href="game-analysis.html">游戏拆解</a>
     </div>
   </div>
 </nav>
@@ -143,13 +144,13 @@
 <script>
 // ====== 视频数据 ======
 var videos = [
-  { order:6, title:'历时3年骗过索尼，还@特朗普求救？', desc:'揭秘国产沙盒游戏史上最抽象的欺诈事件', plays:10000, likes:233, favs:129, coins:108, comments:78, shares:42, date:'2026.06.18', featured:true, note:'选题从"消失的游戏"延伸至"欺诈性游戏项目"，拓展了系列边界。发布后带动频道数据显著上升。' },
-  { order:5, title:'暴力像素游戏如何引起社会风波？', desc:'从《迈阿密热线》到《午夜动物》的曲折故事（上）', plays:25000, likes:1040, favs:1005, coins:336, comments:165, shares:88, date:'2025.06.10', featured:false, note:'' },
-  { order:4, title:'画面"最超前"的动作游戏《eight days》', desc:'如何被索尼亲手埋葬', plays:24000, likes:489, favs:365, coins:103, comments:94, shares:51, date:'2025.04.11', featured:false, note:'' },
-  { order:3, title:'从"合金装备杀手"到逐渐雪藏', desc:'《细胞分裂》是如何一步步被育碧玩坏的？', plays:46000, likes:1011, favs:647, coins:214, comments:306, shares:157, date:'2025.03.22', featured:true, note:'系列播放量最高的一期，306条评论引发了对育碧产品策略的广泛讨论。' },
-  { order:2, title:'最意难平的恐怖游戏，最气愤的消失真相', desc:'从《寂静岭P.T》浅析小岛秀夫与科乐美的权力斗争', plays:21000, likes:483, favs:308, coins:163, comments:132, shares:71, date:'2025.02.24', featured:false, note:'' },
-  { order:1, title:'港风版GTA？！', desc:'20分钟带你看完《热血无赖2》是如何胎死腹中的', plays:18000, likes:540, favs:250, coins:280, comments:89, shares:58, date:'2025.01.30', featured:false, note:'' },
-  { order:0, title:'全网最细！将近20年！', desc:'12分钟带你了解历史跳票时间最长的游戏！育碧心中的白月光？《超越善恶2》', plays:6551, likes:98, favs:42, coins:38, comments:45, shares:20, date:'2024.12.30', featured:true, note:'系列开山之作，平均播放进度51.6%，说明观众留存率极高。' }
+  { order:6, title:'历时3年骗过索尼，还@特朗普求救？', desc:'揭秘国产沙盒游戏史上最抽象的欺诈事件', plays:10000, likes:233, favs:129, coins:108, comments:78, shares:42, date:'2026.06.18', featured:true, note:'电影导演徐化跨界做3A，宣称1:1太阳系、无缝宇宙、VR兼容。从机核网力捧到众筹仅募集3万元，开发三年后发售暴死——玩家发现游戏根本没有结局。复盘了一个"理想主义者"如何沦为国产游戏史上最著名的欺诈案例。' },
+  { order:5, title:'暴力像素游戏如何引起社会风波？', desc:'从《迈阿密热线》到《午夜动物》的曲折故事（上）', plays:25000, likes:1040, favs:1005, coins:336, comments:165, shares:88, date:'2025.06.10', featured:false, note:'两位瑞典独立开发者的九年磕碰史：引擎Bug导致打印机驱动冲突、开发期抑郁症入院、二代因强塞剧情遭粉丝网暴、关卡编辑器却催生了社群最传奇的模组事件。联系noclip纪录片团队取得素材使用授权，是频道首次获得海外专业游戏媒体团队的正式素材许可。' },
+  { order:4, title:'画面"最超前"的动作游戏《eight days》', desc:'如何被索尼亲手埋葬', plays:24000, likes:489, favs:365, coins:103, comments:94, shares:51, date:'2025.04.11', featured:false, note:'索尼伦敦工作室利用CELL处理器打造的次世代野心作，2006年E3演示震惊全场却因画面过于超前被质疑为"伪预告"。吉田修平上任总裁一个月后砍掉项目，理由是"不符合PS3互联体验战略"。前设计师事后透露：游戏距完成还需追加一年工期和巨额预算，而每三台PS3就得卖出一份才能回本。' },
+  { order:3, title:'从"合金装备杀手"到逐渐雪藏', desc:'《细胞分裂》是如何一步步被育碧玩坏的？', plays:46000, likes:1011, favs:647, coins:214, comments:306, shares:157, date:'2025.03.22', featured:true, note:'从育碧纽约工作室被取消的《The Drift》中诞生的细胞分裂，曾是育碧叫板合金装备的旗舰IP。但黑名单换主角配音、逼供场景引发社会声讨、销量仅200万份远未达预期。2021年官宣重制版，一年后游戏总监离职，至今再无下文。见证了育碧从"业界大哥"到内部丑闻缠身的完整弧线。' },
+  { order:2, title:'最意难平的恐怖游戏，最气愤的消失真相', desc:'从《寂静岭P.T》浅析小岛秀夫与科乐美的权力斗争', plays:21000, likes:483, favs:308, coins:163, comments:132, shares:71, date:'2025.02.24', featured:false, note:'2014年科隆展，小岛秀夫虚构7780s工作室发布PT，24小时内被玩家破解出"寂静岭新作"真身。但科乐美正全力转型移动端与柏青哥业务，小岛主导的大投资主机游戏被视为公司累赘。从官网抹去小岛名字、员工被摄像头监控、到PT从商店强制下架——这不仅是一款恐怖游戏的消失，更是一家公司亲手埋葬自己黄金时代的寓言。' },
+  { order:1, title:'港风版GTA？！', desc:'20分钟带你看完《热血无赖2》是如何胎死腹中的', plays:18000, likes:540, favs:250, coins:280, comments:89, shares:58, date:'2025.01.30', featured:true, note:'<strong>一手信源：</strong>通过多渠道联系到热血无赖原编剧蒂姆·卡特（Tim Carter），获得独家访谈确认续作开发计划书的真实性。卡特在回复中证实："<em>That document you found on the Internet is authentic. I know because I wrote it. There was a sequel in development and we did a lot of work on it.</em>"<br><span style="font-size:11px;color:var(--text-dim);">（译："你在网上找到的那份文件是真的。我知道，因为是我写的。续作确实开发过，我们为此做了大量工作。"）</span> <a href="interview-carter.jpg" target="_blank" style="font-size:10px;color:var(--accent);">[查看访谈截图]</a>' },
+  { order:0, title:'全网最细！将近20年！', desc:'12分钟带你了解历史跳票时间最长的游戏！育碧心中的白月光？《超越善恶2》', plays:6551, likes:98, favs:42, coins:38, comments:45, shares:20, date:'2024.12.30', featured:true, note:'从2003年叫好不叫座的一代，到2008年官宣续作，再到2020年制作人安塞尔因"无休止加班与引擎反复修改"心力交瘁转行动物保护——超越善恶2横跨PS2到PS4三个世代，创下游戏史上最长跳票纪录。育碧内部体系臃肿、管理混乱、项目优先级反复横跳，共同构成了这场持续17年的开发灾难。' }
 ];
 
 // 计算派生指标
