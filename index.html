@@ -745,12 +745,15 @@
     ];
     var near = null;
     var overCard = null;
+    // 小人包围盒（近似）
+    var mLeft = ml2, mTop = mt2;
+    var mRight = ml2 + startMascotWidth, mBottom = mt2 + startMascotHeight;
     for (var i = 0; i < zones.length; i++) {
       var el = document.querySelector(zones[i].sel);
       if (!el) continue;
       var r = el.getBoundingClientRect();
-      // 直接重叠（小人中心在卡片区域内）
-      if (cx >= r.left && cx <= r.right && cy >= r.top && cy <= r.bottom) {
+      // 矩形重叠判定（比中心点判定更宽松准确）
+      if (mRight > r.left && mLeft < r.right && mBottom > r.top && mTop < r.bottom) {
         overCard = zones[i];
         break;
       }
@@ -760,28 +763,17 @@
       }
     }
 
-    if (overCard && overCard.key !== 'featured') {
+    if (overCard) {
       // 重叠在模块卡片上——邀请进入
       if (lastZone !== ('enter_' + overCard.key)) {
         lastZone = 'enter_' + overCard.key;
         bubble.style.visibility = 'visible';
         bubble.style.cursor = 'pointer';
         bubble.style.background = '#fffef5';
-        say('想让我跟你一起进去看看吗？点我=确定 | 拖走=不去');
-        // 记录邀请目标
+        var inviteMsg = overCard.key === 'featured' ? '想让我带你体验交互原型吗？点我=一起去 | 拖走=下次' : '想让我跟你一起进去看看吗？点我=确定 | 拖走=不去';
+        say(inviteMsg);
         bubble._enterPage = overCard.page;
         bubble._enterZone = overCard.key;
-      }
-    } else if (overCard && overCard.key === 'featured') {
-      // 横幅区域——进入游戏设计页
-      if (lastZone !== 'enter_featured') {
-        lastZone = 'enter_featured';
-        bubble.style.visibility = 'visible';
-        bubble.style.cursor = 'pointer';
-        bubble.style.background = '#fffef5';
-        say('想让我带你体验交互原型吗？点我=一起去 | 拖走=下次');
-        bubble._enterPage = 'game-design.html';
-        bubble._enterZone = 'gamedesign';
       }
     } else if (near && near !== lastZone && lastZone.indexOf('enter_') !== 0) {
       // 靠近但未重叠——正常介绍

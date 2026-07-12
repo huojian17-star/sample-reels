@@ -115,9 +115,11 @@
 
   function say(msg) {
     bubble.textContent = msg;
-    // 自适应宽度
-    var len = msg.length;
-    bubble.style.maxWidth = len <= 10 ? '240px' : len <= 18 ? '340px' : len <= 30 ? '440px' : '540px';
+    // 自适应宽度：让气泡贴合文字
+    var L = msg.length;
+    bubble.style.width = 'auto';
+    bubble.style.maxWidth = L <= 10 ? '220px' : L <= 18 ? '320px' : L <= 30 ? '420px' : '520px';
+    bubble.style.minWidth = '80px';
     bubble.style.display = 'block';
     bubble.classList.remove('pop');
     void bubble.offsetWidth;
