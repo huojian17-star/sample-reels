@@ -186,21 +186,26 @@
   bottom: 110%;
   left: 50%;
   transform: translateX(-50%);
-  background: #fff;
-  border: 2px solid var(--border);
-  border-radius: 14px;
+  background: #fdfaf4;
+  border: 3px solid #4a3828;
+  border-image: none;
+  border-radius: 0;
   padding: 10px 16px;
   max-width: 240px;
-  min-width: 140px;
+  min-width: 120px;
   text-align: center;
   font-size: 13px;
-  color: var(--text);
+  color: #3a2a18;
   line-height: 1.6;
   cursor: pointer;
   white-space: normal;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-  transition: opacity 0.25s;
+  box-shadow:
+    3px 4px 0 0 #2a1a08,
+    inset 2px 2px 0 rgba(255,255,255,0.3),
+    inset -2px -2px 0 rgba(0,0,0,0.08);
+  image-rendering: pixelated;
   user-select: none;
+  font-family: "Georgia", "Noto Serif SC", "SimSun", serif;
 }
 .mascot-bubble::after {
   content: '';
@@ -208,26 +213,32 @@
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
-  border: 10px solid transparent;
-  border-top: 10px solid #fff;
-  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.06));
+  width: 14px;
+  height: 8px;
+  background: #4a3828;
+  clip-path: polygon(0 0, 50% 100%, 100% 0);
 }
-/* 边框的小三角 */
 .mascot-bubble::before {
   content: '';
   position: absolute;
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
-  border: 11px solid transparent;
-  border-top: 11px solid var(--border);
-  margin-top: 2px;
+  width: 6px;
+  height: 4px;
+  background: #fdfaf4;
+  clip-path: polygon(0 0, 50% 100%, 100% 0);
+  margin-top: -2px;
+  z-index: 1;
 }
 .mascot-bubble:hover {
-  box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+  box-shadow:
+    4px 5px 0 0 #2a1a08,
+    inset 2px 2px 0 rgba(255,255,255,0.35),
+    inset -2px -2px 0 rgba(0,0,0,0.1);
 }
 .mascot-bubble.pop {
-  animation: bubblePop 0.3s ease;
+  animation: bubblePop 0.25s steps(3);
 }
 @keyframes bubblePop {
   0%   { transform: translateX(-50%) scale(1); }
@@ -466,6 +477,17 @@
 
   function say(msg) {
     bubble.textContent = msg;
+    // 长文本加宽而非拉高
+    var len = msg.length;
+    if (len <= 18) {
+      bubble.style.maxWidth = '240px';
+    } else if (len <= 30) {
+      bubble.style.maxWidth = '340px';
+    } else if (len <= 45) {
+      bubble.style.maxWidth = '420px';
+    } else {
+      bubble.style.maxWidth = '500px';
+    }
     popAnim();
   }
 
