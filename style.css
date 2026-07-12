@@ -665,3 +665,16 @@ footer p { font-size: 12px; color: var(--text-dim); }
 @media (max-width: 500px) {
   #world-search-bar.search-sticky { top: 54px; }
 }
+
+/* 访客小人（二级页面） */
+#guest-bubble {
+  animation: none;
+}
+#guest-bubble.pop {
+  animation: guestBubblePop 0.25s ease;
+}
+@keyframes guestBubblePop {
+  0%   { transform: translateX(-50%) scale(1); }
+  50%  { transform: translateX(-50%) scale(1.06); }
+  100% { transform: translateX(-50%) scale(1); }
+}

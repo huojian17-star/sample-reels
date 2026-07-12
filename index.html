@@ -523,6 +523,20 @@
 
   bubble.addEventListener('click', function(e) {
     e.stopPropagation();
+    // 如果是"进入页面"邀请
+    if (bubble._enterPage) {
+      var targetPage = bubble._enterPage;
+      localStorage.setItem('mascot_guest', JSON.stringify({
+        page: targetPage,
+        active: true,
+        time: Date.now()
+      }));
+      say('好嘞！跟我来~');
+      bubble.style.background = '';
+      delete bubble._enterPage;
+      setTimeout(function() { window.location.href = targetPage; }, 400);
+      return;
+    }
     clicks++;
     resetIdle();
 
@@ -699,7 +713,6 @@
     var ease = 0.35;
     mascot.style.left = (ml + (targetX - ml) * ease) + 'px';
     mascot.style.top  = (mt + (targetY - mt) * ease) + 'px';
-    mascot.style.top  = (y - offsetY) + 'px';
 
     // 速度检测
     var now = Date.now();
@@ -715,39 +728,72 @@
     if (speedMsgFrames > 0) speedMsgFrames--;
     lastDragX = x; lastDragY = y; lastDragTime = now;
 
-    // 靠近检测
-    var ml = parseFloat(mascot.style.left) || 0;
-    var mt = parseFloat(mascot.style.top) || 0;
-    var cx = ml + startMascotWidth / 2;
-    var cy = mt + startMascotHeight / 2;
+    // 靠近/重叠检测
+    var ml2 = parseFloat(mascot.style.left) || 0;
+    var mt2 = parseFloat(mascot.style.top) || 0;
+    var cx = ml2 + startMascotWidth / 2;
+    var cy = mt2 + startMascotHeight / 2;
     var zones = [
-      { sel: '.card-bili',    key: 'bilibili' },
-      { sel: '.card-world',   key: 'worldbuilding' },
-      { sel: '.card-novel',   key: 'novel' },
-      { sel: '.card-about',   key: 'about' },
-      { sel: '.featured-banner', key: 'featured' },
-      { sel: 'a[href="game-design.html"].nav-card',    key: 'gamedesign' },
-      { sel: 'a[href="game-analysis.html"].nav-card',   key: 'gameanalysis' },
-      { sel: 'a[href="script-analysis.html"].nav-card', key: 'scriptanalysis' }
+      { sel: '.card-bili',    key: 'bilibili',      page: 'bilibili.html' },
+      { sel: '.card-world',   key: 'worldbuilding',  page: 'worldbuilding.html' },
+      { sel: '.card-novel',   key: 'novel',          page: 'novel.html' },
+      { sel: '.card-about',   key: 'about',          page: 'about.html' },
+      { sel: '.featured-banner', key: 'featured',    page: 'game-design.html' },
+      { sel: 'a[href="game-design.html"].nav-card',    key: 'gamedesign',     page: 'game-design.html' },
+      { sel: 'a[href="game-analysis.html"].nav-card',   key: 'gameanalysis',   page: 'game-analysis.html' },
+      { sel: 'a[href="script-analysis.html"].nav-card', key: 'scriptanalysis', page: 'script-analysis.html' }
     ];
     var near = null;
+    var overCard = null;
     for (var i = 0; i < zones.length; i++) {
       var el = document.querySelector(zones[i].sel);
       if (!el) continue;
       var r = el.getBoundingClientRect();
-      if (cx >= r.left - 80 && cx <= r.right + 80 && cy >= r.top - 80 && cy <= r.bottom + 80) {
-        near = zones[i].key;
+      // 直接重叠（小人中心在卡片区域内）
+      if (cx >= r.left && cx <= r.right && cy >= r.top && cy <= r.bottom) {
+        overCard = zones[i];
         break;
       }
+      // 靠近
+      if (cx >= r.left - 80 && cx <= r.right + 80 && cy >= r.top - 80 && cy <= r.bottom + 80) {
+        near = zones[i].key;
+      }
     }
-    if (near && near !== lastZone) {
+
+    if (overCard && overCard.key !== 'featured') {
+      // 重叠在模块卡片上——邀请进入
+      if (lastZone !== ('enter_' + overCard.key)) {
+        lastZone = 'enter_' + overCard.key;
+        bubble.style.visibility = 'visible';
+        bubble.style.cursor = 'pointer';
+        bubble.style.background = '#fffef5';
+        say('想让我跟你一起进去看看吗？点我=确定 | 拖走=不去');
+        // 记录邀请目标
+        bubble._enterPage = overCard.page;
+        bubble._enterZone = overCard.key;
+      }
+    } else if (overCard && overCard.key === 'featured') {
+      // 横幅区域——进入游戏设计页
+      if (lastZone !== 'enter_featured') {
+        lastZone = 'enter_featured';
+        bubble.style.visibility = 'visible';
+        bubble.style.cursor = 'pointer';
+        bubble.style.background = '#fffef5';
+        say('想让我带你体验交互原型吗？点我=一起去 | 拖走=下次');
+        bubble._enterPage = 'game-design.html';
+        bubble._enterZone = 'gamedesign';
+      }
+    } else if (near && near !== lastZone && lastZone.indexOf('enter_') !== 0) {
+      // 靠近但未重叠——正常介绍
       var t = Date.now();
       if (!zoneTimers[near] || t - zoneTimers[near] > 4000) {
         zoneTimers[near] = t;
         bubble.style.visibility = 'visible';
+        bubble.style.cursor = 'pointer';
+        bubble.style.background = '';  // 恢复默认
+        delete bubble._enterPage;
         var firstMsg = pickRandom(zoneDialogs[near]);
         say(firstMsg);
-        // 1.8秒后追加一条连锁对话
         (function(zone, prev) {
           setTimeout(function() {
             if (!isDragging || lastZone !== zone) return;
@@ -756,8 +802,13 @@
         })(near, firstMsg);
         setTimeout(function() { if (isDragging) bubble.style.visibility = 'hidden'; }, 3500);
       }
+      lastZone = near;
+    } else if (!near && !overCard) {
+      lastZone = null;
+      bubble.style.background = '';
+      bubble.style.cursor = 'pointer';
+      delete bubble._enterPage;
     }
-    lastZone = near;
   }
 
   var endTimer = null;
