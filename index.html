@@ -533,8 +533,8 @@
   var normalImg = 'pixel-avatar-clean-small.png';
   var isDragging = false;
   var wasDragged = false;
-  var dragStartX, dragStartY;
-  var mascotOrigRect;
+  var startMouseX, startMouseY;
+  var currentDX = 0, currentDY = 0;
   var lastDragX, lastDragY, lastDragTime;
   var speedMsgFrames = 0;
   var lastZone = null;
@@ -580,10 +580,10 @@
   };
 
   function startDrag(x, y) {
-    dragStartX = x;
-    dragStartY = y;
+    startMouseX = x;
+    startMouseY = y;
     wasDragged = false;
-    mascotOrigRect = mascot.getBoundingClientRect();
+    isDragging = false;
     document.addEventListener('mousemove', onDragMove);
     document.addEventListener('mouseup', onDragEnd);
     document.addEventListener('touchmove', onDragTouch, { passive: false });
@@ -598,8 +598,8 @@
   }
 
   function handleDrag(x, y) {
-    var dx = x - dragStartX;
-    var dy = y - dragStartY;
+    var dx = x - startMouseX;
+    var dy = y - startMouseY;
     if (!isDragging && Math.abs(dx) + Math.abs(dy) < 5) return;
 
     if (!isDragging) {
@@ -607,12 +607,11 @@
       wasDragged = true;
       avatarImg.src = dragImg;
       avatarImg.style.cursor = 'grabbing';
-      bubble.style.display = 'none';
-      mascot.style.position = 'fixed';
+      bubble.style.visibility = 'hidden';
       mascot.style.zIndex = '999';
-      mascot.style.marginBottom = '0';
       mascot.style.transition = 'none';
       mascot.style.pointerEvents = 'none';
+      currentDX = 0; currentDY = 0;
       lastDragX = x; lastDragY = y;
       lastDragTime = Date.now();
       speedMsgFrames = 0;
@@ -620,24 +619,27 @@
       zoneTimers = {};
     }
 
-    mascot.style.left = (mascotOrigRect.left + dx) + 'px';
-    mascot.style.top  = (mascotOrigRect.top  + dy) + 'px';
+    currentDX += (x - lastDragX);
+    currentDY += (y - lastDragY);
+    mascot.style.transform = 'translate(' + currentDX + 'px, ' + currentDY + 'px)';
 
     // 速度检测
     var now = Date.now();
     var sdx = x - lastDragX, sdy = y - lastDragY;
     var dist = Math.sqrt(sdx * sdx + sdy * sdy);
-    if (now - lastDragTime > 0) {
-      if (dist / (now - lastDragTime) > 1.8 && speedMsgFrames <= 0) {
-        speedMsgFrames = 25;
-        var fastMsgs = ['慢点慢点！我要晕像素了！！', '啊啊啊别甩我！我只是个PNG！', '你拖这么快是想让我穿越吗？', '救命！绑架像素小人啦！'];
-        say(fastMsgs[Math.floor(Math.random() * fastMsgs.length)]);
-      }
-      if (speedMsgFrames > 0) speedMsgFrames--;
+    var dt = now - lastDragTime;
+    if (dt > 0 && dist / dt > 1.8 && speedMsgFrames <= 0) {
+      speedMsgFrames = 25;
+      var fastMsgs = ['慢点慢点！我要晕像素了！！', '啊啊啊别甩我！我只是个PNG！', '你拖这么快是想让我穿越吗？', '救命！绑架像素小人啦！'];
+      say(fastMsgs[Math.floor(Math.random() * fastMsgs.length)]);
     }
+    if (speedMsgFrames > 0) speedMsgFrames--;
     lastDragX = x; lastDragY = y; lastDragTime = now;
 
-    // 靠近检测
+    // 靠近检测 —— 用实际位置
+    var mascotRect = mascot.getBoundingClientRect();
+    var cx = mascotRect.left + mascotRect.width / 2;
+    var cy = mascotRect.top + mascotRect.height / 2;
     var zones = [
       { sel: '.card-bili',    key: 'bilibili' },
       { sel: '.card-world',   key: 'worldbuilding' },
@@ -652,7 +654,7 @@
       var el = document.querySelector(zones[i].sel);
       if (!el) continue;
       var r = el.getBoundingClientRect();
-      if (x >= r.left - 60 && x <= r.right + 60 && y >= r.top - 60 && y <= r.bottom + 60) {
+      if (cx >= r.left - 60 && cx <= r.right + 60 && cy >= r.top - 60 && cy <= r.bottom + 60) {
         near = zones[i].key;
         break;
       }
@@ -679,35 +681,29 @@
 
     avatarImg.src = normalImg;
     avatarImg.style.cursor = 'grab';
-    bubble.style.display = '';
+    bubble.style.visibility = '';
     mascot.style.pointerEvents = '';
     mascot.style.zIndex = '';
-    mascot.style.transition = 'left 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), top 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
-    mascot.style.left = (mascotOrigRect.left + window.scrollX) + 'px';
-    mascot.style.top  = (mascotOrigRect.top  + window.scrollY) + 'px';
+    mascot.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+    mascot.style.transform = 'translate(0, 0)';
 
     setTimeout(function() {
-      mascot.style.position = '';
-      mascot.style.left = '';
-      mascot.style.top = '';
       mascot.style.transition = '';
-      mascot.style.marginBottom = '';
+      mascot.style.transform = '';
     }, 400);
 
     resetIdle();
   }
 
-  // 鼠标拖拽
   avatarImg.addEventListener('mousedown', function(e) {
     e.preventDefault();
     startDrag(e.clientX, e.clientY);
   });
-  // 触摸拖拽
   avatarImg.addEventListener('touchstart', function(e) {
     if (e.touches.length === 1) {
       startDrag(e.touches[0].clientX, e.touches[0].clientY);
     }
-  });
+  }, { passive: false });
 
   // 点击小人触发对话（未拖拽时）
   avatarImg.addEventListener('click', function(e) {
@@ -719,7 +715,6 @@
     bubble.click();
   });
 
-  // 初始样式
   avatarImg.style.cursor = 'grab';
 
   function resetIdle() {
