@@ -179,6 +179,13 @@
   font-size: 12px;
   margin-top: 8px;
 }
+
+/* 三角形布局：顶角卡片宽度 = 3列中的1列 */
+.home-triangle-top-inner {
+  width: calc(33.333% - 14px);
+  min-width: 260px;
+  max-width: 340px;
+}
 </style>
 </head>
 <body>
@@ -245,11 +252,11 @@
 </div>
 
 <!-- ====== 导航卡片 · 三角形布局 ====== -->
-<!-- 不用 .nav-cards 类名，避免外部 CSS 干扰 -->
+<!-- 使用独立类名避免外部 CSS 冲突，内联样式处理桌面布局 -->
 
 <!-- 顶角：关于我，居中 -->
-<div style="display:flex;justify-content:center;max-width:960px;margin:0 auto;padding:0 16px;">
-  <div style="width:calc(33.333% - 14px);min-width:260px;max-width:340px;margin-bottom:20px;">
+<div class="home-triangle-top" style="display:flex;justify-content:center;max-width:960px;margin:0 auto;padding:0 16px;">
+  <div class="home-triangle-top-inner" style="margin-bottom:20px;">
     <a href="about.html" class="nav-card card-about" style="margin:0;">
       <span class="card-badge badge-lore">&#9679; 关于</span>
       <span class="card-icon">&para;</span>
@@ -262,7 +269,7 @@
 </div>
 
 <!-- 底边：B站 + 设定集 + 小说，三列 -->
-<div style="display:flex;gap:20px;max-width:960px;margin:0 auto;padding:0 16px;">
+<div class="home-triangle-bottom" style="display:flex;gap:20px;max-width:960px;margin:0 auto;padding:0 16px 100px;">
 
   <a href="bilibili.html" class="nav-card card-bili" style="flex:1;min-width:0;">
     <span class="card-badge badge-data">&#9679; 数据</span>
@@ -292,6 +299,26 @@
   </a>
 
 </div>
+
+<!-- 移动端三角形适配 -->
+<style>
+@media (max-width: 768px) {
+  .home-triangle-top-inner {
+    width: 100% !important;
+    max-width: 500px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .home-triangle-bottom {
+    flex-direction: column !important;
+    gap: 16px !important;
+    max-width: 500px !important;
+  }
+  .home-triangle-bottom .nav-card {
+    flex: auto !important;
+  }
+}
+</style>
 
 <footer>
   <p>BEST-辣椒 &copy; 2026 · <a href="https://space.bilibili.com/518565512" target="_blank" rel="noopener" style="color:var(--text-dim);">B站主页</a></p>
