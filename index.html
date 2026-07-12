@@ -291,7 +291,7 @@
     <!-- 像素小人 + 对话框 -->
     <div class="pixel-mascot" id="pixel-mascot" style="display:inline-block;position:relative;margin-bottom:16px;">
       <div class="mascot-bubble" id="mascot-bubble">你好，欢迎来到我的求职个人网站！</div>
-      <img src="pixel-avatar-clean-small.png" alt="BEST-辣椒" style="width:100px;height:auto;display:block;">
+      <img id="mascot-img" src="pixel-avatar-clean-small.png" alt="BEST-辣椒" style="width:100px;height:auto;display:block;cursor:grab;user-select:none;" draggable="false">
     </div>
     <h1>BEST-辣椒 · 求职作品集</h1>
     <p class="hero-subtitle" style="font-size:16px;color:var(--accent);letter-spacing:2px;">游戏考据作者 · 世界观构建者 · 交互原型设计师</p>
@@ -527,19 +527,200 @@
     }
   });
 
-  // 点击小人本身也可以触发
-  var avatarImg = mascot ? mascot.querySelector('img') : null;
-  if (avatarImg) {
-    avatarImg.style.cursor = 'pointer';
-    avatarImg.addEventListener('click', function(e) {
-      e.stopPropagation();
-      // 点击反馈：小人弹一下
-      avatarImg.style.transition = 'transform 0.15s ease';
-      avatarImg.style.transform = 'scale(1.12)';
-      setTimeout(function() { avatarImg.style.transform = 'scale(1)'; }, 150);
-      bubble.click();
-    });
+  // ====== 拖拽系统 ======
+  var avatarImg = document.getElementById('mascot-img');
+  var dragImg = 'mascot-drag.png';
+  var normalImg = 'pixel-avatar-clean-small.png';
+  var isDragging = false;
+  var wasDragged = false;
+  var dragStartX, dragStartY;
+  var mascotOrigRect;
+  var lastDragX, lastDragY, lastDragTime;
+  var speedMsgFrames = 0;
+  var lastZone = null;
+  var zoneTimers = {};
+
+  // 各模块介绍对话
+  var zoneDialogs = {
+    bilibili: [
+      'B站板块有7期视频数据，还能拖动排序对比雷达图哦~',
+      '点进B站页可以对比任意两期视频的六维雷达图！',
+      '消失游戏开发日志系列——我的代表作都在那里。'
+    ],
+    worldbuilding: [
+      '艾瑞斯大陆有六万多字的设定，够看一整天~',
+      '物理侧、魔法侧、研究侧——你属于哪一边？',
+      '机密档案里藏了暗界生物的秘密……嘘。'
+    ],
+    novel: [
+      '渡鸦镇的瑞雯不觉得冷，也不理解眼泪。',
+      '哥特小镇、三个少年、一场大雪。底部有性格测试！',
+      '去看看你像渡鸦镇的哪个角色？瑞雯、索菲娜还是彼得？'
+    ],
+    gamedesign: [
+      '这里有可以上手玩的交互原型——试试能力者雷达评估？',
+      '战斗伤害计算器、掉落模拟器……数值策划的游乐场！',
+      '告示板彩蛋是纯CSS画的，没用到任何图片。'
+    ],
+    gameanalysis: [
+      '7款游戏的完整失败分析，从策划视角拆解。',
+      '《幻》那个案例简直是教科书级的翻车现场……',
+      '每篇拆解末尾都有4条可迁移的行业教训。'
+    ],
+    scriptanalysis: [
+      '文案拆解里有我的叙事方法论——怎么写才能留住观众。',
+      '缺点复盘有7张卡，每张卡都是真实踩过的坑。',
+      '数据验证了"高播放≠高转化"，做内容的人都该看看。'
+    ],
+    about: [
+      '关于页面里有人机协作的完整记录~',
+      '整个网站AI成本不到5块钱，MVP思维的胜利！',
+      '我的求职方向是游戏策划/产品经理。'
+    ]
+  };
+
+  function startDrag(x, y) {
+    dragStartX = x;
+    dragStartY = y;
+    wasDragged = false;
+    mascotOrigRect = mascot.getBoundingClientRect();
+    document.addEventListener('mousemove', onDragMove);
+    document.addEventListener('mouseup', onDragEnd);
+    document.addEventListener('touchmove', onDragTouch, { passive: false });
+    document.addEventListener('touchend', onDragEnd);
   }
+
+  function onDragMove(e) { handleDrag(e.clientX, e.clientY); }
+
+  function onDragTouch(e) {
+    e.preventDefault();
+    if (e.touches.length === 1) handleDrag(e.touches[0].clientX, e.touches[0].clientY);
+  }
+
+  function handleDrag(x, y) {
+    var dx = x - dragStartX;
+    var dy = y - dragStartY;
+    if (!isDragging && Math.abs(dx) + Math.abs(dy) < 5) return;
+
+    if (!isDragging) {
+      isDragging = true;
+      wasDragged = true;
+      avatarImg.src = dragImg;
+      avatarImg.style.cursor = 'grabbing';
+      bubble.style.display = 'none';
+      mascot.style.position = 'fixed';
+      mascot.style.zIndex = '999';
+      mascot.style.marginBottom = '0';
+      mascot.style.transition = 'none';
+      mascot.style.pointerEvents = 'none';
+      lastDragX = x; lastDragY = y;
+      lastDragTime = Date.now();
+      speedMsgFrames = 0;
+      lastZone = null;
+      zoneTimers = {};
+    }
+
+    mascot.style.left = (mascotOrigRect.left + dx) + 'px';
+    mascot.style.top  = (mascotOrigRect.top  + dy) + 'px';
+
+    // 速度检测
+    var now = Date.now();
+    var sdx = x - lastDragX, sdy = y - lastDragY;
+    var dist = Math.sqrt(sdx * sdx + sdy * sdy);
+    if (now - lastDragTime > 0) {
+      if (dist / (now - lastDragTime) > 1.8 && speedMsgFrames <= 0) {
+        speedMsgFrames = 25;
+        var fastMsgs = ['慢点慢点！我要晕像素了！！', '啊啊啊别甩我！我只是个PNG！', '你拖这么快是想让我穿越吗？', '救命！绑架像素小人啦！'];
+        say(fastMsgs[Math.floor(Math.random() * fastMsgs.length)]);
+      }
+      if (speedMsgFrames > 0) speedMsgFrames--;
+    }
+    lastDragX = x; lastDragY = y; lastDragTime = now;
+
+    // 靠近检测
+    var zones = [
+      { sel: '.card-bili',    key: 'bilibili' },
+      { sel: '.card-world',   key: 'worldbuilding' },
+      { sel: '.card-novel',   key: 'novel' },
+      { sel: '.card-about',   key: 'about' },
+      { sel: 'a[href="game-design.html"].nav-card',    key: 'gamedesign' },
+      { sel: 'a[href="game-analysis.html"].nav-card',   key: 'gameanalysis' },
+      { sel: 'a[href="script-analysis.html"].nav-card', key: 'scriptanalysis' }
+    ];
+    var near = null;
+    for (var i = 0; i < zones.length; i++) {
+      var el = document.querySelector(zones[i].sel);
+      if (!el) continue;
+      var r = el.getBoundingClientRect();
+      if (x >= r.left - 60 && x <= r.right + 60 && y >= r.top - 60 && y <= r.bottom + 60) {
+        near = zones[i].key;
+        break;
+      }
+    }
+    if (near && near !== lastZone) {
+      var t = Date.now();
+      if (!zoneTimers[near] || t - zoneTimers[near] > 4000) {
+        zoneTimers[near] = t;
+        var msgs = zoneDialogs[near];
+        if (msgs) say(msgs[Math.floor(Math.random() * msgs.length)]);
+      }
+    }
+    lastZone = near;
+  }
+
+  function onDragEnd(e) {
+    document.removeEventListener('mousemove', onDragMove);
+    document.removeEventListener('mouseup', onDragEnd);
+    document.removeEventListener('touchmove', onDragTouch);
+    document.removeEventListener('touchend', onDragEnd);
+
+    if (!isDragging) return;
+    isDragging = false;
+
+    avatarImg.src = normalImg;
+    avatarImg.style.cursor = 'grab';
+    bubble.style.display = '';
+    mascot.style.pointerEvents = '';
+    mascot.style.zIndex = '';
+    mascot.style.transition = 'left 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), top 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+    mascot.style.left = (mascotOrigRect.left + window.scrollX) + 'px';
+    mascot.style.top  = (mascotOrigRect.top  + window.scrollY) + 'px';
+
+    setTimeout(function() {
+      mascot.style.position = '';
+      mascot.style.left = '';
+      mascot.style.top = '';
+      mascot.style.transition = '';
+      mascot.style.marginBottom = '';
+    }, 400);
+
+    resetIdle();
+  }
+
+  // 鼠标拖拽
+  avatarImg.addEventListener('mousedown', function(e) {
+    e.preventDefault();
+    startDrag(e.clientX, e.clientY);
+  });
+  // 触摸拖拽
+  avatarImg.addEventListener('touchstart', function(e) {
+    if (e.touches.length === 1) {
+      startDrag(e.touches[0].clientX, e.touches[0].clientY);
+    }
+  });
+
+  // 点击小人触发对话（未拖拽时）
+  avatarImg.addEventListener('click', function(e) {
+    if (wasDragged) return;
+    e.stopPropagation();
+    avatarImg.style.transition = 'transform 0.15s ease';
+    avatarImg.style.transform = 'scale(1.12)';
+    setTimeout(function() { avatarImg.style.transform = 'scale(1)'; }, 150);
+    bubble.click();
+  });
+
+  // 初始样式
+  avatarImg.style.cursor = 'grab';
 
   function resetIdle() {
     if (idleTimer) clearTimeout(idleTimer);
