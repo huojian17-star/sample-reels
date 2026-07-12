@@ -359,6 +359,52 @@
     </p>
   </div>
 
+  <!-- 战斗伤害计算器 -->
+  <h3>战斗伤害计算器</h3>
+  <p>基于标准RPG伤害公式的交互演算。拖动滑块即时观察各参数对最终伤害的影响。</p>
+
+  <div class="formula-block" style="margin-bottom:8px;">
+    <h4>伤害公式</h4>
+    <div class="formula" style="font-size:13px;">
+      <span class="fn">Damage</span> <span class="op">=</span>
+      <span class="var">ATK</span> <span class="op">&times;</span>
+      <span class="fn" style="font-size:12px;">(1 &minus;</span>
+      <span class="var">DEF</span> <span class="op">&divide;</span>
+      <span class="op">(</span><span class="var">DEF</span> <span class="op">+</span> <span class="num">100</span><span class="op">))</span>
+      <span class="op">&times;</span> <span class="fn">Element</span>
+      <span class="op">&times;</span> <span class="fn">CritDMG</span>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:32px;flex-wrap:wrap;margin-bottom:32px;">
+    <!-- 左侧：输入滑块 -->
+    <div style="flex:1;min-width:260px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;">
+      <h4 style="font-size:13px;color:var(--accent);margin-bottom:16px;letter-spacing:1px;">◆ 输入参数</h4>
+      <div id="combat-sliders"></div>
+    </div>
+    <!-- 右侧：伤害输出 -->
+    <div style="flex:1.2;min-width:280px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;" id="combat-output">
+    </div>
+  </div>
+
+  <!-- 掉落模拟器 -->
+  <h3>掉落模拟器</h3>
+  <p>基于上述怪物掉落与稀有掉落公式，模拟多次击杀的掉落分布，验证数值设计的合理性。</p>
+
+  <div style="display:flex;gap:32px;flex-wrap:wrap;margin-bottom:32px;">
+    <!-- 左侧：参数 -->
+    <div style="flex:1;min-width:260px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;">
+      <h4 style="font-size:13px;color:var(--accent);margin-bottom:16px;letter-spacing:1px;">◆ 模拟参数</h4>
+      <div id="loot-sliders"></div>
+      <button id="btn-simulate" style="width:100%;margin-top:16px;padding:10px 0;background:var(--accent);color:#fff;border:none;border-radius:4px;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;letter-spacing:1px;">模拟 100 次击杀</button>
+      <button id="btn-simulate-1000" style="width:100%;margin-top:8px;padding:8px 0;background:var(--bg-page);color:var(--accent);border:1px solid var(--accent);border-radius:4px;font-family:inherit;font-size:12px;cursor:pointer;">模拟 1000 次击杀（大样本）</button>
+    </div>
+    <!-- 右侧：结果 -->
+    <div style="flex:1.2;min-width:280px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;" id="loot-output">
+      <p style="font-size:13px;color:var(--text-dim);text-align:center;padding:40px 0;">点击左侧按钮开始模拟</p>
+    </div>
+  </div>
+
   <!-- ====== 二、玩法与系统机制 ====== -->
   <h2>二、玩法与系统机制</h2>
 
@@ -915,6 +961,202 @@ function showToast(title, message) {
 function closeToast() {
   document.getElementById('toast-container').innerHTML = '';
 }
+
+// ====== 战斗伤害计算器 ======
+var combatParams = { atk: 80, def: 50, critRate: 25, critDmg: 200, element: 1.0 };
+
+function buildCombatSliders() {
+  var container = document.getElementById('combat-sliders');
+  var configs = [
+    { key: 'atk', label: '攻击力 (ATK)', min: 10, max: 200, step: 5, val: 80, color: '#c95d3d' },
+    { key: 'def', label: '目标防御 (DEF)', min: 0, max: 150, step: 5, val: 50, color: '#4d9b91' },
+    { key: 'critRate', label: '暴击率', min: 0, max: 100, step: 1, val: 25, color: '#c9a24d', suffix: '%' },
+    { key: 'critDmg', label: '暴击倍率', min: 120, max: 300, step: 5, val: 200, color: '#b85135', suffix: '%' }
+  ];
+  var html = '';
+  for (var i = 0; i < configs.length; i++) {
+    var c = configs[i];
+    html += '<div style="margin-bottom:14px;">';
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">';
+    html += '<span style="font-size:12px;color:var(--text);font-weight:500;">' + c.label + '</span>';
+    html += '<span style="font-size:12px;font-weight:600;color:' + c.color + ';" id="cv-' + c.key + '">' + c.val + (c.suffix || '') + '</span>';
+    html += '</div>';
+    html += '<input type="range" min="' + c.min + '" max="' + c.max + '" step="' + c.step + '" value="' + c.val + '"';
+    html += ' oninput="combatUpdate(\'' + c.key + '\', this.value)"';
+    html += ' style="width:100%;accent-color:' + c.color + ';height:4px;" />';
+    html += '</div>';
+  }
+  // 元素克制选择
+  html += '<div style="margin-top:16px;">';
+  html += '<span style="font-size:12px;color:var(--text);font-weight:500;">元素克制</span>';
+  html += '<select id="cv-element" onchange="combatUpdate(\'element\', this.value)" style="width:100%;margin-top:4px;padding:6px 10px;border:1px solid var(--border);border-radius:4px;font-family:inherit;font-size:13px;background:var(--bg-page);color:var(--text);">';
+  html += '<option value="1.5">克制 (+50%)</option>';
+  html += '<option value="1.0" selected>普通 (×1.0)</option>';
+  html += '<option value="0.7">被克制 (−30%)</option>';
+  html += '</select></div>';
+  container.innerHTML = html;
+  updateCombatDisplay();
+}
+
+function combatUpdate(key, value) {
+  combatParams[key] = parseFloat(value);
+  document.getElementById('cv-' + key).textContent = value + (key === 'atk' || key === 'def' ? '' : key === 'critRate' || key === 'critDmg' ? '%' : '');
+  updateCombatDisplay();
+}
+
+function updateCombatDisplay() {
+  var p = combatParams;
+  var defReduction = 1 - p.def / (p.def + 100);
+  var afterDef = p.atk * defReduction;
+  var normalDmg = Math.round(afterDef * p.element);
+  var critDmgVal = Math.round(normalDmg * p.critDmg / 100);
+  var avgDmg = Math.round(normalDmg * (1 + p.critRate / 100 * (p.critDmg / 100 - 1)));
+  var defPct = Math.round((1 - defReduction) * 100);
+
+  var container = document.getElementById('combat-output');
+  var html = '';
+  html += '<h4 style="font-size:13px;color:var(--accent);margin-bottom:16px;letter-spacing:1px;">◆ 伤害演算</h4>';
+
+  // 大数字展示
+  html += '<div style="text-align:center;margin-bottom:20px;">';
+  html += '<div style="font-size:11px;color:var(--text-dim);margin-bottom:4px;">普通伤害</div>';
+  html += '<div style="font-size:40px;font-weight:700;color:#c95d3d;">' + normalDmg + '</div>';
+  html += '<div style="display:flex;justify-content:center;gap:32px;margin-top:12px;">';
+  html += '<div><div style="font-size:11px;color:var(--text-dim);">暴击伤害</div><div style="font-size:22px;font-weight:700;color:#b85135;">' + critDmgVal + '</div></div>';
+  html += '<div><div style="font-size:11px;color:var(--text-dim);">期望伤害</div><div style="font-size:22px;font-weight:700;color:#c9a24d;">' + avgDmg + '</div></div>';
+  html += '</div></div>';
+
+  // 计算步骤
+  html += '<div style="font-size:12px;color:var(--text-dim);line-height:2.2;background:var(--bg-page);border-radius:4px;padding:12px 16px;">';
+  html += '<div>① 防御减免：DEF/(DEF+100) = <strong style="color:var(--text);">' + p.def + '/(' + p.def + '+100) = ' + defPct + '% 减免</strong></div>';
+  html += '<div>② 破防后伤害：' + p.atk + ' × (1−' + defPct + '%) = <strong style="color:var(--text);">' + Math.round(afterDef) + '</strong></div>';
+  html += '<div>③ 元素修正：' + Math.round(afterDef) + ' × ' + p.element.toFixed(1) + ' = <strong style="color:var(--text);">' + normalDmg + '</strong></div>';
+  var critContrib = Math.round(p.critRate * (p.critDmg - 100) / 100);
+  html += '<div>④ 暴击收益：' + p.critRate + '% 概率 × ' + p.critDmg + '% 倍率 → 期望增幅 +' + critContrib + '%</div>';
+  html += '<div style="margin-top:4px;font-size:11px;color:' + (avgDmg > afterDef * 1.5 ? '#8bab6a' : 'var(--text-dim)') + ';">';
+  html += '期望伤害 = ' + normalDmg + ' × (1 + ' + p.critRate + '% × ' + (p.critDmg/100 - 1).toFixed(2) + ') = <strong>' + avgDmg + '</strong>';
+  html += '</div></div>';
+
+  // 快速评估
+  var shots = Math.ceil(1000 / avgDmg);
+  html += '<div style="margin-top:12px;font-size:12px;color:var(--text-dim);text-align:center;">';
+  html += '击杀 1000 HP 目标需要约 <strong style="color:var(--text-bright);">' + shots + '</strong> 次攻击（期望）';
+  html += '</div>';
+
+  container.innerHTML = html;
+}
+
+// ====== 掉落模拟器 ======
+var lootParams = { monsterLv: 5, luck: 35, baseRate: 5 };
+
+function buildLootSliders() {
+  var container = document.getElementById('loot-sliders');
+  var configs = [
+    { key: 'monsterLv', label: '怪物等级', min: 1, max: 20, step: 1, val: 5, color: '#c95d3d' },
+    { key: 'luck', label: '幸运值', min: 0, max: 100, step: 1, val: 35, color: '#c9a24d' },
+    { key: 'baseRate', label: '基础稀有掉落率', min: 1, max: 15, step: 0.5, val: 5, color: '#4d9b91', suffix: '%' }
+  ];
+  var html = '';
+  for (var i = 0; i < configs.length; i++) {
+    var c = configs[i];
+    html += '<div style="margin-bottom:14px;">';
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">';
+    html += '<span style="font-size:12px;color:var(--text);font-weight:500;">' + c.label + '</span>';
+    html += '<span style="font-size:12px;font-weight:600;color:' + c.color + ';" id="lv-' + c.key + '">' + c.val + (c.suffix || '') + '</span>';
+    html += '</div>';
+    html += '<input type="range" min="' + c.min + '" max="' + c.max + '" step="' + c.step + '" value="' + c.val + '"';
+    html += ' oninput="lootUpdate(\'' + c.key + '\', this.value)"';
+    html += ' style="width:100%;accent-color:' + c.color + ';height:4px;" />';
+    html += '</div>';
+  }
+  container.innerHTML = html;
+}
+
+function lootUpdate(key, value) {
+  lootParams[key] = parseFloat(value);
+  document.getElementById('lv-' + key).textContent = value + (key === 'monsterLv' || key === 'luck' ? '' : '%');
+}
+
+function simulate(times) {
+  var p = lootParams;
+  var golds = [];
+  var totalGold = 0;
+  var rareCount = 0;
+  var rareRate = p.baseRate * (1 + p.luck / 200);
+
+  for (var i = 0; i < times; i++) {
+    var gold = p.monsterLv * 3 + Math.floor(Math.random() * 8) - 2 + Math.floor(p.luck / 10);
+    if (gold < 1) gold = 1;
+    golds.push(gold);
+    totalGold += gold;
+    if (Math.random() * 100 < rareRate) rareCount++;
+  }
+
+  golds.sort(function(a,b) { return a - b; });
+  var minGold = golds[0];
+  var maxGold = golds[times - 1];
+  var avgGold = Math.round(totalGold / times);
+  var medianGold = golds[Math.floor(times / 2)];
+
+  // 频率分布
+  var freq = {};
+  for (var j = 0; j < golds.length; j++) {
+    var g = golds[j];
+    freq[g] = (freq[g] || 0) + 1;
+  }
+
+  var container = document.getElementById('loot-output');
+  var html = '';
+  html += '<h4 style="font-size:13px;color:var(--accent);margin-bottom:16px;letter-spacing:1px;">◆ 模拟结果（' + times + ' 次击杀）</h4>';
+
+  // 金币统计
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;">';
+  html += '<div style="background:var(--bg-page);border-radius:4px;padding:10px;text-align:center;">';
+  html += '<div style="font-size:10px;color:var(--text-dim);">金币总计</div>';
+  html += '<div style="font-size:20px;font-weight:700;color:#c9a24d;">' + totalGold + '</div></div>';
+  html += '<div style="background:var(--bg-page);border-radius:4px;padding:10px;text-align:center;">';
+  html += '<div style="font-size:10px;color:var(--text-dim);">均值 / 中位数</div>';
+  html += '<div style="font-size:20px;font-weight:700;color:var(--text-bright);">' + avgGold + ' / ' + medianGold + '</div></div>';
+  html += '<div style="background:var(--bg-page);border-radius:4px;padding:10px;text-align:center;">';
+  html += '<div style="font-size:10px;color:var(--text-dim);">波动区间</div>';
+  html += '<div style="font-size:20px;font-weight:700;color:var(--text-bright);">' + minGold + ' ~ ' + maxGold + '</div></div>';
+  html += '<div style="background:var(--bg-page);border-radius:4px;padding:10px;text-align:center;">';
+  html += '<div style="font-size:10px;color:var(--text-dim);">稀有掉落次数</div>';
+  html += '<div style="font-size:20px;font-weight:700;color:#b85135;">' + rareCount + ' <span style="font-size:11px;">(' + (rareCount/times*100).toFixed(1) + '%)</span></div></div>';
+  html += '</div>';
+
+  // 柱状图
+  html += '<div style="background:var(--bg-page);border-radius:4px;padding:12px 16px;">';
+  html += '<div style="font-size:10px;color:var(--text-dim);margin-bottom:8px;letter-spacing:1px;">金币分布直方图</div>';
+  var keys = Object.keys(freq).sort(function(a,b) { return parseInt(a) - parseInt(b); });
+  var maxFreq = 0;
+  for (var k = 0; k < keys.length; k++) { if (freq[keys[k]] > maxFreq) maxFreq = freq[keys[k]]; }
+  for (var k = 0; k < keys.length; k++) {
+    var g = keys[k];
+    var barW = Math.round(freq[g] / maxFreq * 100);
+    html += '<div style="display:flex;align-items:center;margin-bottom:3px;gap:6px;">';
+    html += '<span style="width:24px;font-size:10px;color:var(--text-dim);text-align:right;">' + g + '</span>';
+    html += '<div style="flex:1;height:12px;background:#e8e3d7;border-radius:2px;">';
+    html += '<div style="height:12px;width:' + barW + '%;background:' + (barW > 50 ? '#c9a24d' : '#a0b0a0') + ';border-radius:2px;min-width:2px;"></div></div>';
+    html += '<span style="width:24px;font-size:10px;color:var(--text-dim);">' + freq[g] + '</span>';
+    html += '</div>';
+  }
+  html += '</div>';
+
+  // 公式验证
+  html += '<div style="margin-top:12px;font-size:11px;color:var(--text-dim);text-align:center;line-height:1.8;">';
+  html += '理论稀有掉落率：' + p.baseRate.toFixed(1) + '% × (1 + ' + p.luck + '/200) = <strong style="color:#b85135;">' + rareRate.toFixed(2) + '%</strong>';
+  html += ' &nbsp;|&nbsp; 实际触发率：<strong style="color:var(--text-bright);">' + (rareCount/times*100).toFixed(2) + '%</strong>';
+  html += '</div>';
+
+  container.innerHTML = html;
+}
+
+// ====== 启动新增组件 ======
+buildCombatSliders();
+buildLootSliders();
+document.getElementById('btn-simulate').addEventListener('click', function() { simulate(100); });
+document.getElementById('btn-simulate-1000').addEventListener('click', function() { simulate(1000); });
 </script>
 
 </body>
