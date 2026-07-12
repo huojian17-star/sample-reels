@@ -19,7 +19,6 @@
       <a href="game-design.html">游戏设计</a>
       <a href="game-analysis.html">游戏拆解</a>
       <a href="script-analysis.html">文案拆解</a>
-      <a href="human-ai-collab.html">人机协作</a>
     </div>
   </div>
 </nav>
@@ -79,6 +78,29 @@
   <p>游戏考据视频以严密的逻辑链条和一手资料为骨架，拒绝空洞的情绪输出；世界观构建则从社会学视角切入——将经济学（维尔的两本理论著作）、政治学（元老会议的三方博弈）、法律史（法典统一战争）等维度融入奇幻设定，让虚构世界拥有"非虚构"级别的可信度。</p>
 
   <p>在表达方式上，偏好<strong>冷峻、克制</strong>的语调，用事实和逻辑本身的力量驱动叙事，而非依赖情绪渲染。</p>
+
+  <h2>关于这份网页 · 人机协作</h2>
+  <p>这份作品集网站本身也是我创作方法论的一部分——由一个人类（我）提供方向、内容、审美判断和迭代反馈，由一个 AI（Claude）执行编码、重构、调试和内容生成。以下记录的是这段协作中的分工逻辑、演进过程与技术架构。</p>
+
+  <h3>创意栈：谁决定"做什么"和"做成什么样"</h3>
+  <p>在我们的协作中，有一条稳定且高效的分界线：<strong>人类负责"做什么"和"好不好"，AI 负责"怎么做"。</strong>我不需要告诉 AI "用 grid-column: 2 来实现居中"，AI 不需要替我判断"这个设计是不是太啰嗦了"。最有效的沟通模式是——我用自然语言描述需求（"这里加一个掉落模拟器""排版变成三角形""去掉那些 emoji"），AI 提出技术方案并执行，我验收后反馈。</p>
+  <p>这份网站经历了<strong>四次创意跃迁</strong>：从最初的静态展示站 → 加入交互模块（雷达图、战斗计算器、任务决策）→ 内容升维（基于 Word 原始文案生成游戏拆解和文案元分析）→ 审美打磨与元反思（三角形布局调试、缺点复盘、数据验证）。每一次跃迁都不是因为"技术可以实现"，而是因为我问了自己一句"这个页面还能做什么？"。</p>
+
+  <h3>技术栈与架构决策</h3>
+  <p><strong>纯 HTML/CSS/JS</strong>——零框架、零依赖、零构建步骤。面试官右键就能看到完整的、未混淆的源码。代价是当页面数量增长到14个时，导航栏等公共部分需要借助 sed 批量更新——这在 React/Vue 中本应是一个组件。</p>
+  <p><strong>CSS 混合架构</strong>——style.css 提供全局骨架（导航、卡片、排版），各页面 &lt;style&gt; 提供专属皮肤（中世纪木板、折叠卡片、三角形布局）。之所以不全部放在 style.css，是因为部分全局规则（如 .nav-cards 的 auto-fit）会与页面专属样式冲突——三角形的调试过程就是典型案例。</p>
+  <p><strong>Python 辅助脚本</strong>——python-docx 用于读取用户提供的 Word 文案，BeautifulSoup 用于页面结构批量重构（将长篇滚动改为折叠卡片），Bash sed 用于导航栏批量同步。</p>
+
+  <h3>协作数据</h3>
+  <div style="display:flex;gap:16px;flex-wrap:wrap;margin:16px 0;">
+    <div style="flex:1;min-width:100px;text-align:center;padding:16px;background:var(--bg-page);border-radius:4px;"><span style="font-size:24px;font-weight:700;color:var(--accent);">~200</span><br><span style="font-size:11px;color:var(--text-dim);">次交互式编辑</span></div>
+    <div style="flex:1;min-width:100px;text-align:center;padding:16px;background:var(--bg-page);border-radius:4px;"><span style="font-size:24px;font-weight:700;color:var(--accent);">~15</span><br><span style="font-size:11px;color:var(--text-dim);">次页面级重构</span></div>
+    <div style="flex:1;min-width:100px;text-align:center;padding:16px;background:var(--bg-page);border-radius:4px;"><span style="font-size:24px;font-weight:700;color:var(--accent);">~8</span><br><span style="font-size:11px;color:var(--text-dim);">次 JS Bug 修复</span></div>
+    <div style="flex:1;min-width:100px;text-align:center;padding:16px;background:var(--bg-page);border-radius:4px;"><span style="font-size:24px;font-weight:700;color:#7266ba;">1+1</span><br><span style="font-size:11px;color:var(--text-dim);">人类 + AI</span></div>
+  </div>
+
+  <p style="font-size:12px;color:var(--text-dim);">这份关于协作的记录本身，也是本文所描述的人机协作的又一个实例——人类口述方向，AI 执行排版，人类审核修改。</p>
+  <p style="font-size:12px;color:var(--text-dim);"><strong>本次 AI 调用费用总成本不超过 5 元人民币。</strong>用不到一杯咖啡的成本，验证了一个完整的创意假设——这就是 MVP（最小可行产品）思维在内容创作中的实际应用。</p>
 
 </div>
 
