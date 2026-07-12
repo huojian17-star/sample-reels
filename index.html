@@ -840,6 +840,8 @@
     if (touchHoldTimer) { clearTimeout(touchHoldTimer); touchHoldTimer = null; }
     if (dragReady) { avatarImg.style.transform = 'scale(1)'; avatarImg.style.transition = ''; dragReady = false; }
     if (endTimer) clearTimeout(endTimer);
+    // 松手后允许下一次点击
+    wasDragged = false;
 
     // 从 fixed（视口坐标）转为 absolute（页面坐标），随页面滚动
     var curLeft = parseFloat(mascot.style.left) || 0;
@@ -890,27 +892,49 @@
   });
   avatarImg.addEventListener('touchstart', function(e) {
     if (e.touches.length === 1) {
-      e.preventDefault();
+      // 不 preventDefault，保留 click 事件给点击对话
       e.stopPropagation();
       startDrag(e.touches[0].clientX, e.touches[0].clientY, true);
     }
-  }, { passive: false });
+  }, { passive: true });
 
-  // 点击小人触发对话（未拖拽时）
+  // 点击小人：对话 / 进入二级页面 / 手机双击回家
+  var lastTapTime = 0;
   avatarImg.addEventListener('click', function(e) {
     if (wasDragged) return;
+
+    // 手机端双击检测
+    var now = Date.now();
+    if (now - lastTapTime < 400) {
+      e.stopPropagation(); e.preventDefault();
+      lastTapTime = 0;
+      goHome();
+      return;
+    }
+    lastTapTime = now;
+
     e.stopPropagation();
     avatarImg.style.transition = 'transform 0.15s ease';
     avatarImg.style.transform = 'scale(1.12)';
     setTimeout(function() { avatarImg.style.transform = 'scale(1)'; }, 150);
+    // 如果有进入邀请，优先处理
+    if (bubble._enterPage) {
+      var tp = bubble._enterPage;
+      localStorage.setItem('mascot_guest', JSON.stringify({ page: tp, active: true, time: Date.now() }));
+      say('好嘞！跟我来~');
+      bubble.style.background = '';
+      delete bubble._enterPage;
+      setTimeout(function() { window.location.href = tp; }, 400);
+      return;
+    }
     bubble.click();
   });
 
   avatarImg.style.cursor = 'grab';
 
-  // 双击回家
-  avatarImg.addEventListener('dblclick', function(e) {
-    e.preventDefault(); e.stopPropagation();
+  // 双击回家（桌面 dblclick + 移动端双指 tap）
+  var lastTapTime = 0;
+  function goHome() {
     isWandering = false;
     if (wanderTimer) clearTimeout(wanderTimer);
     mascot.classList.remove('mascot-float');
@@ -930,6 +954,11 @@
       wanderTimer = setTimeout(startWander, 180000);
     }, 650);
     resetIdle();
+  }
+
+  avatarImg.addEventListener('dblclick', function(e) {
+    e.preventDefault(); e.stopPropagation();
+    goHome();
   });
 
   // 漫游模式
