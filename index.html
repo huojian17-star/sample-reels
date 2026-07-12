@@ -235,6 +235,16 @@
   </div>
 </section>
 
+<!-- ====== 全站搜索 ====== -->
+<div id="site-search-section" style="max-width:640px;margin:40px auto 0;padding:0 16px;position:relative;">
+  <div style="display:flex;gap:10px;align-items:center;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:12px 18px;box-shadow:0 2px 12px rgba(0,0,0,0.04);">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="2" style="flex-shrink:0;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" id="site-search-input" placeholder="搜索全站内容——页面、设定、人物、视频、交互工具..." style="flex:1;border:none;font-size:15px;font-family:inherit;background:transparent;color:var(--text);outline:none;">
+    <span id="site-search-hint" style="font-size:11px;color:var(--text-dim);white-space:nowrap;">输入关键词搜索</span>
+  </div>
+  <div id="site-search-results" style="display:none;position:absolute;top:100%;left:16px;right:16px;z-index:200;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;margin-top:4px;max-height:420px;overflow-y:auto;box-shadow:0 12px 40px rgba(0,0,0,0.12);"></div>
+</div>
+
 <!-- ====== 特色交互横幅 ====== -->
 <div class="featured-banner">
   <h2>&#9876; 可交互游戏原型</h2>
@@ -410,5 +420,166 @@ window.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <script src="common.js"></script>
+<script>
+// ====== 全站搜索 ======
+(function() {
+  var input = document.getElementById('site-search-input');
+  var results = document.getElementById('site-search-results');
+  var hint = document.getElementById('site-search-hint');
+  if (!input || !results) return;
+
+  // 全站搜索索引 —— 覆盖所有页面及关键内容
+  var index = [
+    // === 一级页面 ===
+    { title:'关于我', page:'about.html', tags:'关于 介绍 邓恺恒 求职 游戏策划 产品经理 创作理念 叙事方法论', desc:'个人简介、求职意向、创作哲学与叙事方法论' },
+    { title:'B站内容创作', page:'bilibili.html', tags:'B站 bilibili 视频 播放 粉丝 数据分析 雷达图 排序 内容策略 观众画像', desc:'7期视频系列，含排序对比、雷达图、数据洞察' },
+    { title:'艾瑞斯大陆设定集', page:'worldbuilding.html', tags:'设定 世界观 艾瑞斯 能力 物理侧 魔法侧 研究侧 职阶 城市 历史 法律 经济 公会 暗界 元老会议 日历 方言', desc:'六万字原创奇幻世界观，双能力体系，五大城市，机密档案' },
+    { title:'渡鸦镇（小说）', page:'novel.html', tags:'小说 渡鸦镇 哥特 瑞雯 索菲娜 彼得 希尔德 安德森 安切斯特 玛丽德尔 性格测试 人物关系图 章节', desc:'十二章长篇小说，含性格测试与人物关系图' },
+    { title:'可交互游戏原型', page:'game-design.html', tags:'交互 原型 游戏设计 雷达图 战斗力 伤害计算 掉落 模拟 任务 决策 告示板 能力评估 数值 系统', desc:'5个可交互原型：雷达评估、战斗计算器、掉落模拟、任务决策、告示板' },
+    { title:'游戏拆解', page:'game-analysis.html', tags:'拆解 分析 失败 项目 设计 幻 寂静岭 PT 细胞分裂 热血无赖 迈阿密热线 eight days 超越善恶 行业教训', desc:'从策划视角分析7款游戏的失败节点与行业教训' },
+    { title:'文案拆解', page:'script-analysis.html', tags:'文案 元分析 叙事 结构 脚本 方法论 观众钩子 缺点 复盘 数据验证', desc:'对七期视频文案的元分析，提炼可复用方法论' },
+
+    // === 二级页面 ===
+    { title:'守望堡试炼（文字冒险）', page:'adventure.html', tags:'冒险 文字 互动 守望堡 选择 结局 物理 魔法 研究', desc:'艾瑞斯世界观交互式文字冒险游戏' },
+    { title:'能力觉醒测试', page:'aptitude.html', tags:'测试 能力 觉醒 职阶 物理侧 魔法侧 研究侧 性格 问答 分类', desc:'10题情境测试，揭示你的侧系归属与职阶天赋' },
+    { title:'设定集全文', page:'worldbuilding-full.html', tags:'设定 全文 完整 艾瑞斯 方言 机密 档案 历史 年表 十六章节', desc:'设定集完整版，含方言指南、机密档案、历史年表共16章' },
+    { title:'渡鸦镇全文', page:'novel-full.html', tags:'小说 全文 完整 渡鸦镇 十二章节 瑞雯 索菲娜 彼得', desc:'渡鸦镇长篇小说完整版，十二章全文' },
+
+    // === B站 · 具体视频 ===
+    { title:'#6 历时3年骗过索尼，还@特朗普求救？', page:'bilibili.html', tags:'幻 国产 沙盒 欺诈 徐化 众筹 暴死 索尼', desc:'揭秘国产沙盒游戏史上最抽象的欺诈事件' },
+    { title:'#5 从《迈阿密热线》到《午夜动物》', page:'bilibili.html', tags:'迈阿密热线 午夜动物 独立游戏 noclip 瑞典 引擎Bug', desc:'两位瑞典独立开发者的九年磕碰史' },
+    { title:'#4 画面最超前的动作游戏《eight days》', page:'bilibili.html', tags:'eight days 索尼 PS3 CELL 吉田修平 取消 伦敦工作室', desc:'索尼伦敦工作室利用CELL处理器的次世代野心作' },
+    { title:'#3 《细胞分裂》如何被育碧玩坏', page:'bilibili.html', tags:'细胞分裂 育碧 合金装备 潜行 The Drift 重制 黑名单', desc:'从旗舰IP到逐渐雪藏，见证育碧的完整弧线' },
+    { title:'#2 从《寂静岭P.T》看小岛秀夫与科乐美权力斗争', page:'bilibili.html', tags:'寂静岭 PT 小岛秀夫 科乐美 恐怖 下架 7780s', desc:'一款恐怖游戏的消失，一家公司埋葬黄金时代的寓言' },
+    { title:'#1 《热血无赖》与永远无法面世的续作', page:'bilibili.html', tags:'热血无赖 续作 取消 开放世界 香港 卧底 编剧访谈', desc:'含原编剧独家访谈——续作为何永远无法面世' },
+
+    // === 世界观 · 核心概念 ===
+    { title:'三大侧系（能力体系核心）', page:'worldbuilding.html', tags:'侧系 物理侧 魔法侧 研究侧 能力者 职阶 主修 辅修', desc:'艾瑞斯大陆核心设定：物理侧、魔法侧、研究侧三足鼎立' },
+    { title:'物理侧七职阶', page:'worldbuilding.html', tags:'物理侧 剑术师 骑士 刺客 狂战士 盾兵 枪兵 弓兵 职阶', desc:'剑术师、骑士、刺客、狂战士、盾兵、枪兵、弓兵' },
+    { title:'魔法侧七职阶', page:'worldbuilding.html', tags:'魔法侧 元素法师 咒术师 幻术师 治愈师 屏障建构师 魔导师 召唤师 职阶', desc:'元素法师、咒术师、幻术师、治愈师、屏障建构师、魔导师、召唤师' },
+    { title:'五大城市', page:'worldbuilding.html', tags:'城市 寰宇市 岩湖市 富华城 天际市 低语岭 首都 贸易 学术 宗教', desc:'寰宇市（军事首都）、岩湖市（锻造贸易）、富华城（金融中心）、天际市（学术天文）、低语岭（宗教圣地）' },
+    { title:'暗界与暗界生物', page:'worldbuilding.html', tags:'暗界 深渊 影犬 潜伏者 裂隙 悲叹 守望堡 怪物 生物', desc:'暗界裂缝与生物——从影犬到深渊潜伏者的完整设定' },
+    { title:'公会系统', page:'worldbuilding.html', tags:'公会 组织 制度 管理 后勤 法律 经济 研究侧 权力', desc:'研究侧通过公会系统制衡能力者的制度设计' },
+    { title:'元老会议', page:'worldbuilding.html', tags:'元老 会议 政治 决策 顶层 长老 SQL 权力', desc:'物理侧与魔法侧元老组成的顶层决策机构' },
+    { title:'奥莱恩战争（核心历史）', page:'worldbuilding.html', tags:'战争 奥莱恩 历史 南北 分裂 冲突 核心', desc:'塑造艾瑞斯大陆格局的核心历史事件' },
+    { title:'双月历法', page:'worldbuilding.html', tags:'历法 日历 月亮 塞莱妮 墨恩 双月 周期', desc:'天际市发现的双月运行历法——塞莱妮与墨恩' },
+    { title:'能力者图鉴', page:'worldbuilding.html', tags:'图鉴 能力者 百科全书 记录 职阶 历史', desc:'收录大陆所有能力者类型与历史记录的百科全书' },
+
+    // === 渡鸦镇 · 人物 ===
+    { title:'瑞雯（渡鸦镇主角）', page:'novel.html', tags:'瑞雯 主角 黑衣 少女 渡鸦镇 疏离 情绪 寒冷', desc:'穿纯黑连衣裙的神秘少女，对寒冷和情绪无感' },
+    { title:'索菲娜 / 咿呀呀', page:'novel.html', tags:'索菲娜 咿呀呀 怪胎 暴力 救赎 外来者 渡鸦镇', desc:'被标签为暴力怪胎的外来少女，用尖刺保护自己' },
+    { title:'彼得（渡鸦镇主角）', page:'novel.html', tags:'彼得 科学 理性 医生 纸飞机 显微镜 造船 渡鸦镇', desc:'医生的儿子，醉心于科学，想造船驶离小镇' },
+    { title:'希尔德神父', page:'novel.html', tags:'希尔德 神父 酗酒 教堂 信仰 伤口 渡鸦镇 布道', desc:'酗酒成性的老神父，信仰出现了伤口的守护者' },
+    { title:'安德森夫人 / 玛丽德尔·诺因', page:'novel.html', tags:'安德森 玛丽德尔 诺因 军医 寡妇 葬礼 多米诺 渡鸦镇', desc:'故事的第一张多米诺骨牌——她的死亡揭开小镇裂缝' },
+    { title:'安切斯特', page:'novel.html', tags:'安切斯特 暗焰 河底 宝藏 秘密 渡鸦镇 对峙', desc:'如暗焰般的谜之男人，渡鸦镇秘而不宣历史的化身' },
+    { title:'你是渡鸦镇的谁？（性格测试）', page:'novel.html', tags:'测试 性格 渡鸦镇 瑞雯 索菲娜 彼得 问答 角色', desc:'4题情境测试——你是瑞雯、索菲娜还是彼得？' },
+
+    // === 交互原型 ===
+    { title:'能力者属性雷达评估', page:'game-design.html', tags:'雷达图 评估 能力者 属性 六维 类型 暗界 彩蛋 12种', desc:'可识别12种能力者类型+隐藏暗界彩蛋的交互评估工具' },
+    { title:'战斗伤害计算器', page:'game-design.html', tags:'伤害 计算 公式 战斗 数值 攻击力 防御 倍率', desc:'艾瑞斯大陆战斗系统的伤害公式交互演算' },
+    { title:'掉落模拟器', page:'game-design.html', tags:'掉落 模拟 随机 概率 物品 装备 战利品', desc:'暗界生物击杀后的随机物品掉落模拟' },
+    { title:'公会任务交互式决策', page:'game-design.html', tags:'任务 决策 公会 选项 分支 失败 5步 流程', desc:'5步交互式公会任务决策——选错导致任务失败' },
+    { title:'中世纪告示板彩蛋', page:'game-design.html', tags:'告示板 中世纪 彩蛋 隐藏 公告 城镇', desc:'中世纪风格的城镇告示板隐藏交互彩蛋' },
+
+    // === 关于 · 人机协作 ===
+    { title:'人机协作记录', page:'about.html', tags:'人机协作 AI 协作 分工 决策 创意 跃迁 方法论 模型 工具', desc:'本网站完整的人机协作分工决策表与创意跃迁记录' },
+    { title:'5元MVP', page:'about.html', tags:'MVP 成本 5元 最小可行产品 经济 预算 AI调用', desc:'本次AI调用总成本不超过5元人民币的MVP思维' },
+    { title:'联系方式', page:'about.html', tags:'联系 电话 邮箱 学校 湖南工商大学 本科 工商管理', desc:'邓恺恒 · 15807825534 · deng_kaiheng04@foxmail.com' },
+
+    // === 游戏拆解 · 具体条目 ===
+    { title:'《幻》项目拆解', page:'game-analysis.html', tags:'幻 拆解 国产 沙盒 欺诈 理想主义 失败 众筹 徐化', desc:'中国游戏史上最抽象欺诈案例的完整失败分析' },
+    { title:'《寂静岭P.T.》项目拆解', page:'game-analysis.html', tags:'寂静岭 PT 拆解 小岛秀夫 科乐美 恐怖 下架 失败', desc:'从策划视角分析小岛秀夫与科乐美权力斗争的完整过程' },
+    { title:'《细胞分裂》系列拆解', page:'game-analysis.html', tags:'细胞分裂 拆解 育碧 潜行 重制 取消 失败分析', desc:'从The Drift到重制版搁置——细胞分裂全系列失败分析' },
+    { title:'《热血无赖2》项目拆解', page:'game-analysis.html', tags:'热血无赖 续作 拆解 取消 开放世界 编剧 失败', desc:'续作为何永远无法面世——含原编剧独家访谈' },
+    { title:'《超越善恶2》项目拆解', page:'game-analysis.html', tags:'超越善恶 拆解 育碧 跳票 困境 分析', desc:'育碧长期跳票项目的深层困境分析' },
+
+    // === 文案拆解 · 方法论 ===
+    { title:'叙事哲学与风格演变', page:'script-analysis.html', tags:'叙事 哲学 风格 演变 新新闻主义 冷峻 克制 信息密度', desc:'从Noclip到新新闻主义——叙事风格的完整来源分析' },
+    { title:'观众钩子设计方法论', page:'script-analysis.html', tags:'钩子 观众 设计 开头 留存 方法论 可复用', desc:'从7期视频提炼的观众钩子设计方法论' },
+    { title:'缺点复盘与共性教训', page:'script-analysis.html', tags:'缺点 复盘 教训 失败 反思 改进 7条 卡片', desc:'7张棕红色缺点复盘卡片+3条共性教训' },
+    { title:'数据验证与跨期对比', page:'script-analysis.html', tags:'数据 验证 对比 跨期 播放 点赞 转化 趋势', desc:'5条数据交叉分析发现与7期跨期对比表' }
+  ];
+
+  // 搜索逻辑
+  function doSearch(query) {
+    if (query.length < 2) {
+      results.style.display = 'none';
+      hint.style.display = '';
+      return;
+    }
+    hint.style.display = 'none';
+
+    var q = query.toLowerCase();
+    var matched = [];
+    for (var i = 0; i < index.length; i++) {
+      var entry = index[i];
+      var searchText = (entry.title + ' ' + entry.tags + ' ' + entry.desc).toLowerCase();
+      if (searchText.indexOf(q) !== -1) {
+        // 计算匹配度——标题命中优先
+        var score = 0;
+        if (entry.title.toLowerCase().indexOf(q) !== -1) score += 2;
+        if (entry.tags.toLowerCase().indexOf(q) !== -1) score += 1;
+        matched.push({ entry: entry, score: score });
+      }
+    }
+    // 标题命中优先，其次按原顺序
+    matched.sort(function(a, b) { return b.score - a.score; });
+
+    if (matched.length === 0) {
+      results.innerHTML = '<div style="padding:20px;text-align:center;font-size:13px;color:var(--text-dim);">没有找到相关内容<br><span style="font-size:11px;">试试其他关键词？如"物理侧""寂静岭""渡鸦镇""伤害计算"</span></div>';
+    } else {
+      var html = '';
+      for (var j = 0; j < matched.length && j < 15; j++) {
+        var e = matched[j].entry;
+        html += '<a href="' + e.page + '" style="display:block;padding:14px 20px;text-decoration:none;border-bottom:1px solid var(--border);transition:background 0.15s;">' +
+          '<div style="font-size:14px;font-weight:500;color:var(--text-bright);margin-bottom:2px;">' + e.title + '</div>' +
+          '<div style="font-size:12px;color:var(--text-dim);line-height:1.5;">' + e.desc + '</div>' +
+          '<div style="font-size:10px;color:var(--accent);margin-top:3px;">' + e.page + '</div>' +
+        '</a>';
+      }
+      if (matched.length > 15) {
+        html += '<div style="padding:12px;text-align:center;font-size:11px;color:var(--text-dim);">还有 ' + (matched.length - 15) + ' 个结果，请细化搜索词</div>';
+      }
+      results.innerHTML = html;
+
+      // hover 效果
+      var links = results.querySelectorAll('a');
+      for (var k = 0; k < links.length; k++) {
+        links[k].addEventListener('mouseenter', function() { this.style.background = 'var(--bg)'; });
+        links[k].addEventListener('mouseleave', function() { this.style.background = ''; });
+      }
+    }
+    results.style.display = 'block';
+  }
+
+  var timer;
+  input.addEventListener('input', function() {
+    clearTimeout(timer);
+    timer = setTimeout(function() { doSearch(input.value.trim()); }, 150);
+  });
+
+  input.addEventListener('focus', function() {
+    if (input.value.trim().length >= 2) { results.style.display = 'block'; }
+  });
+
+  // 点击外部关闭
+  document.addEventListener('click', function(e) {
+    var section = document.getElementById('site-search-section');
+    if (section && !section.contains(e.target)) {
+      results.style.display = 'none';
+      hint.style.display = '';
+    }
+  });
+
+  // 键盘导航
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      results.style.display = 'none';
+      hint.style.display = '';
+      input.blur();
+    }
+  });
+})();
+</script>
 </body>
 </html>
