@@ -688,6 +688,8 @@
     lastZone = near;
   }
 
+  var endTimer = null;
+
   function onDragEnd(e) {
     document.removeEventListener('mousemove', onDragMove);
     document.removeEventListener('mouseup', onDragEnd);
@@ -697,28 +699,17 @@
     if (!isDragging) return;
     isDragging = false;
 
-    // 弹回原位
-    mascot.style.transition = 'left 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), top 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
-    mascot.style.left = (origPageX - window.scrollX) + 'px';
-    mascot.style.top  = (origPageY - window.scrollY) + 'px';
+    // 清除上一次的完成计时器
+    if (endTimer) clearTimeout(endTimer);
 
-    var finish = function() {
-      avatarImg.src = normalImg;
-      avatarImg.style.cursor = 'grab';
-      bubble.style.visibility = '';
-      mascot.style.position = '';
-      mascot.style.left = '';
-      mascot.style.top = '';
-      mascot.style.width = '';
-      mascot.style.height = '';
-      mascot.style.margin = '';
-      mascot.style.zIndex = '';
-      mascot.style.transition = '';
-      mascot.style.pointerEvents = '';
-      resetIdle();
-    };
-
-    setTimeout(finish, 400);
+    avatarImg.src = normalImg;
+    avatarImg.style.cursor = 'grab';
+    bubble.style.visibility = 'visible';
+    mascot.style.transition = 'none';
+    mascot.style.pointerEvents = '';
+    mascot.style.zIndex = '';
+    // 保持在 fixed 状态，不弹回——小人停在松手的位置
+    resetIdle();
   }
 
   avatarImg.addEventListener('mousedown', function(e) {
