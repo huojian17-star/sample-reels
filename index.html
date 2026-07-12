@@ -534,7 +534,10 @@
   var isDragging = false;
   var wasDragged = false;
   var startMouseX, startMouseY;
-  var currentDX = 0, currentDY = 0;
+  var startMascotLeft, startMascotTop;
+  var startMascotWidth, startMascotHeight;
+  var origPageX, origPageY;
+  var offsetX, offsetY;
   var lastDragX, lastDragY, lastDragTime;
   var speedMsgFrames = 0;
   var lastZone = null;
@@ -580,8 +583,17 @@
   };
 
   function startDrag(x, y) {
+    var rect = mascot.getBoundingClientRect();
     startMouseX = x;
     startMouseY = y;
+    startMascotLeft = rect.left;
+    startMascotTop = rect.top;
+    startMascotWidth = rect.width;
+    startMascotHeight = rect.height;
+    offsetX = x - rect.left;
+    offsetY = y - rect.top;
+    origPageX = rect.left + window.scrollX;
+    origPageY = rect.top + window.scrollY;
     wasDragged = false;
     isDragging = false;
     document.addEventListener('mousemove', onDragMove);
@@ -598,9 +610,9 @@
   }
 
   function handleDrag(x, y) {
-    var dx = x - startMouseX;
-    var dy = y - startMouseY;
-    if (!isDragging && Math.abs(dx) + Math.abs(dy) < 5) return;
+    var dx = Math.abs(x - startMouseX);
+    var dy = Math.abs(y - startMouseY);
+    if (!isDragging && dx + dy < 5) return;
 
     if (!isDragging) {
       isDragging = true;
@@ -608,10 +620,15 @@
       avatarImg.src = dragImg;
       avatarImg.style.cursor = 'grabbing';
       bubble.style.visibility = 'hidden';
+      mascot.style.position = 'fixed';
+      mascot.style.left = startMascotLeft + 'px';
+      mascot.style.top = startMascotTop + 'px';
+      mascot.style.width = startMascotWidth + 'px';
+      mascot.style.height = startMascotHeight + 'px';
+      mascot.style.margin = '0';
       mascot.style.zIndex = '999';
       mascot.style.transition = 'none';
       mascot.style.pointerEvents = 'none';
-      currentDX = 0; currentDY = 0;
       lastDragX = x; lastDragY = y;
       lastDragTime = Date.now();
       speedMsgFrames = 0;
@@ -619,27 +636,28 @@
       zoneTimers = {};
     }
 
-    currentDX += (x - lastDragX);
-    currentDY += (y - lastDragY);
-    mascot.style.transform = 'translate(' + currentDX + 'px, ' + currentDY + 'px)';
+    // 固定定位跟随鼠标
+    mascot.style.left = (x - offsetX) + 'px';
+    mascot.style.top  = (y - offsetY) + 'px';
 
     // 速度检测
     var now = Date.now();
     var sdx = x - lastDragX, sdy = y - lastDragY;
     var dist = Math.sqrt(sdx * sdx + sdy * sdy);
     var dt = now - lastDragTime;
-    if (dt > 0 && dist / dt > 1.8 && speedMsgFrames <= 0) {
-      speedMsgFrames = 25;
+    if (dt > 0 && dist / dt > 1.5 && speedMsgFrames <= 0) {
+      speedMsgFrames = 20;
       var fastMsgs = ['慢点慢点！我要晕像素了！！', '啊啊啊别甩我！我只是个PNG！', '你拖这么快是想让我穿越吗？', '救命！绑架像素小人啦！'];
       say(fastMsgs[Math.floor(Math.random() * fastMsgs.length)]);
     }
     if (speedMsgFrames > 0) speedMsgFrames--;
     lastDragX = x; lastDragY = y; lastDragTime = now;
 
-    // 靠近检测 —— 用实际位置
-    var mascotRect = mascot.getBoundingClientRect();
-    var cx = mascotRect.left + mascotRect.width / 2;
-    var cy = mascotRect.top + mascotRect.height / 2;
+    // 靠近检测
+    var ml = parseFloat(mascot.style.left) || 0;
+    var mt = parseFloat(mascot.style.top) || 0;
+    var cx = ml + startMascotWidth / 2;
+    var cy = mt + startMascotHeight / 2;
     var zones = [
       { sel: '.card-bili',    key: 'bilibili' },
       { sel: '.card-world',   key: 'worldbuilding' },
@@ -654,7 +672,7 @@
       var el = document.querySelector(zones[i].sel);
       if (!el) continue;
       var r = el.getBoundingClientRect();
-      if (cx >= r.left - 60 && cx <= r.right + 60 && cy >= r.top - 60 && cy <= r.bottom + 60) {
+      if (cx >= r.left - 50 && cx <= r.right + 50 && cy >= r.top - 50 && cy <= r.bottom + 50) {
         near = zones[i].key;
         break;
       }
@@ -679,28 +697,39 @@
     if (!isDragging) return;
     isDragging = false;
 
-    avatarImg.src = normalImg;
-    avatarImg.style.cursor = 'grab';
-    bubble.style.visibility = '';
-    mascot.style.pointerEvents = '';
-    mascot.style.zIndex = '';
-    mascot.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
-    mascot.style.transform = 'translate(0, 0)';
+    // 弹回原位
+    mascot.style.transition = 'left 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), top 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+    mascot.style.left = (origPageX - window.scrollX) + 'px';
+    mascot.style.top  = (origPageY - window.scrollY) + 'px';
 
-    setTimeout(function() {
+    var finish = function() {
+      avatarImg.src = normalImg;
+      avatarImg.style.cursor = 'grab';
+      bubble.style.visibility = '';
+      mascot.style.position = '';
+      mascot.style.left = '';
+      mascot.style.top = '';
+      mascot.style.width = '';
+      mascot.style.height = '';
+      mascot.style.margin = '';
+      mascot.style.zIndex = '';
       mascot.style.transition = '';
-      mascot.style.transform = '';
-    }, 400);
+      mascot.style.pointerEvents = '';
+      resetIdle();
+    };
 
-    resetIdle();
+    setTimeout(finish, 400);
   }
 
   avatarImg.addEventListener('mousedown', function(e) {
     e.preventDefault();
+    e.stopPropagation();
     startDrag(e.clientX, e.clientY);
   });
   avatarImg.addEventListener('touchstart', function(e) {
     if (e.touches.length === 1) {
+      e.preventDefault();
+      e.stopPropagation();
       startDrag(e.touches[0].clientX, e.touches[0].clientY);
     }
   }, { passive: false });
