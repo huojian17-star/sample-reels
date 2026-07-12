@@ -84,12 +84,16 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-  max-width: 1000px;
+  max-width: 960px;
   margin: 0 auto;
   padding: 0 16px;
 }
+.nav-card.card-about {
+  grid-column: 2; /* 顶尖居中 */
+}
 @media (max-width: 768px) {
   .nav-cards { grid-template-columns: 1fr; }
+  .nav-card.card-about { grid-column: auto; }
   .hero-stats { gap: 24px; }
   .stat-num { font-size: 32px; }
 }
@@ -243,12 +247,13 @@
 <!-- ====== 导航卡片 ====== -->
 <div class="nav-cards">
 
-  <a href="game-design.html" class="nav-card featured-card card-design">
-    <span class="card-badge badge-interact">&#9679; 交互</span>
-    <h3>可交互游戏原型</h3>
-    <p>能力者属性雷达评估系统、战斗伤害公式实时演算器、掉落模拟器、公会任务交互式决策流程、中世纪告示板风格任务派发彩蛋。每一个模块都可以上手操作。</p>
-    <span class="card-tease">拖动滑块 → 点击评估 → 改变属性 → 观察结果变化</span><br>
-    <span class="card-arrow">开始交互 →</span>
+  <a href="about.html" class="nav-card card-about">
+    <span class="card-badge badge-lore">&#9679; 关于</span>
+    <span class="card-icon">&para;</span>
+    <h3>关于我</h3>
+    <p>游戏考古的创作理念、世界观构建的方法论。冷峻克制的叙事风格，追求信息密度与节奏的平衡。</p>
+    <span class="card-tease">创作哲学 · 叙事方法论</span>
+    <span class="card-arrow">了解更多 →</span>
   </a>
 
   <a href="bilibili.html" class="nav-card card-bili">
@@ -276,15 +281,6 @@
     <p>长篇小说12章，哥特式小镇叙事。含「你是渡鸦镇的谁？」性格测试与可交互人物关系图。</p>
     <span class="card-tease">性格测试 · 人物关系图 · 十二章完整版</span>
     <span class="card-arrow">阅读小说 →</span>
-  </a>
-
-  <a href="about.html" class="nav-card card-about">
-    <span class="card-badge badge-lore">&#9679; 关于</span>
-    <span class="card-icon">&para;</span>
-    <h3>关于我</h3>
-    <p>游戏考古的创作理念、世界观构建的方法论。冷峻克制的叙事风格，追求信息密度与节奏的平衡。</p>
-    <span class="card-tease">创作哲学 · 叙事方法论</span>
-    <span class="card-arrow">了解更多 →</span>
   </a>
 
 </div>
