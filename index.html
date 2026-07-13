@@ -522,13 +522,39 @@
   }
 
   function fixBubblePos() {
-    // 用 visibility:hidden 临时显示以测量真实高度，再决定翻转
     var wasHidden = (bubble.style.visibility === 'hidden');
-    if (wasHidden) bubble.style.visibility = 'visible';
-    var br = bubble.getBoundingClientRect();
+    bubble.style.visibility = 'visible';
+
+    // 先恢复默认位置来测量
+    bubble.classList.remove('flipped');
+    bubble.style.position = '';
+    bubble.style.left = '';
+    bubble.style.top = '';
+    bubble.style.bottom = '';
+
+    var mRect = mascot.getBoundingClientRect();
+    var bRect = bubble.getBoundingClientRect();
     var navH = window.innerWidth <= 500 ? 54 : 70;
-    if (br.top < navH + 12) { bubble.classList.add('flipped'); }
-    else { bubble.classList.remove('flipped'); }
+
+    // 气泡改为 fixed 定位，脱离文档流，不影响任何页面元素
+    bubble.style.position = 'fixed';
+    bubble.style.bottom = 'auto';
+    bubble.style.transform = 'none';
+
+    if (mRect.top - bRect.height - 12 > navH) {
+      // 上方有空间 → 放在上面
+      bubble.classList.remove('flipped');
+      bubble.style.top = (mRect.top - bRect.height - 12) + 'px';
+      bubble.style.left = (mRect.left + mRect.width / 2) + 'px';
+      bubble.style.transform = 'translateX(-50%)';
+    } else {
+      // 上方不够 → 放在下面，用 flipped 让尾巴朝上
+      bubble.classList.add('flipped');
+      bubble.style.top = (mRect.bottom + 12) + 'px';
+      bubble.style.left = (mRect.left + mRect.width / 2) + 'px';
+      bubble.style.transform = 'translateX(-50%)';
+    }
+
     if (wasHidden) bubble.style.visibility = 'hidden';
   }
 
