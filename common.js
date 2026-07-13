@@ -289,8 +289,10 @@
 
 // ====== 6. 侧边栏目录导航 ======
 (function() {
-  var headings = document.querySelectorAll('.content-section h2, .content-section h3');
-  if (headings.length < 3) return; // 标题太少不值得建目录
+  var cs = document.querySelector('.content-section');
+  if (!cs) return; // 没有内容区，跳过（如首页）
+  var headings = cs.querySelectorAll('h2, h3');
+  if (headings.length < 2) return;
 
   // 用 h2 为主项，h3 为子项构建树
   var tree = [];
