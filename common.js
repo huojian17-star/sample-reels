@@ -307,10 +307,10 @@
   }
   if (tree.length < 2) return;
 
-  // 创建侧边栏 DOM
+  // 创建侧边栏抽屉（左滑出）
   var sidebar = document.createElement('nav');
   sidebar.id = 'page-toc';
-  sidebar.style.cssText = 'position:fixed;right:max(16px,calc((100vw - 1200px)/2));top:90px;width:200px;max-height:calc(100vh - 120px);overflow-y:auto;z-index:90;font-size:12px;line-height:1.7;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,0.06);';
+  sidebar.style.cssText = 'position:fixed;left:0;top:70px;width:260px;max-height:calc(100vh - 80px);overflow-y:auto;z-index:95;font-size:12px;line-height:1.7;background:var(--bg-card);border-right:1px solid var(--border);border-bottom:1px solid var(--border);border-radius:0 8px 8px 0;padding:20px;box-shadow:4px 4px 24px rgba(0,0,0,0.1);transform:translateX(-100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);';
   sidebar.setAttribute('aria-label', '\u9875\u5185\u5BFC\u822A');
 
   var title = document.createElement('div');
@@ -372,21 +372,35 @@
   }
   sidebar.appendChild(list);
 
-  // 移动端折叠按钮
-  var toggleBtn = document.createElement('button');
-  toggleBtn.id = 'toc-toggle';
-  toggleBtn.innerHTML = '\u2630';
-  toggleBtn.style.cssText = 'position:fixed;right:16px;bottom:70px;z-index:91;width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:var(--bg-card);color:var(--text-dim);font-size:18px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.08);display:none;';
-  toggleBtn.setAttribute('aria-label', '\u76EE\u5F55');
-  toggleBtn.addEventListener('click', function() {
-    var showing = sidebar.style.display !== 'none';
-    sidebar.style.display = showing ? 'none' : 'block';
-    sidebar.style.opacity = showing ? '0' : '1';
-    toggleBtn.innerHTML = showing ? '\u2630' : '\u2715';
-  });
+  // 左侧拉出标签
+  var tab = document.createElement('div');
+  tab.id = 'toc-tab';
+  tab.innerHTML = '\u2630';
+  tab.title = '\u76EE\u5F55';
+  tab.style.cssText = 'position:fixed;left:0;top:50%;transform:translateY(-50%);z-index:96;width:28px;height:60px;background:var(--bg-card);border:1px solid var(--border);border-left:none;border-radius:0 6px 6px 0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--text-dim);box-shadow:2px 2px 8px rgba(0,0,0,0.06);transition:left 0.3s cubic-bezier(0.4,0,0.2,1);';
+  tab.addEventListener('click', function() { toggleSidebar(); });
+
+  // 遮罩
+  var overlay = document.createElement('div');
+  overlay.id = 'toc-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;z-index:94;background:rgba(0,0,0,0.3);display:none;';
+  overlay.addEventListener('click', function() { toggleSidebar(); });
+
+  var isOpen = false;
+  function toggleSidebar() {
+    isOpen = !isOpen;
+    sidebar.style.transform = isOpen ? 'translateX(0)' : 'translateX(-100%)';
+    tab.style.left = isOpen ? '260px' : '0';
+    overlay.style.display = isOpen ? 'block' : 'none';
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  }
+
+  // ESC 关闭
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && isOpen) toggleSidebar(); });
 
   document.body.appendChild(sidebar);
-  document.body.appendChild(toggleBtn);
+  document.body.appendChild(tab);
+  document.body.appendChild(overlay);
 
   // IntersectionObserver 高亮当前章节
   var observerOptions = { rootMargin: '-80px 0px -60% 0px' };
@@ -420,32 +434,6 @@
     observer.observe(allLinks[oi].el);
   }
 
-  // 响应式：窄屏隐藏侧边栏，显示折叠按钮
-  function updateLayout() {
-    if (window.innerWidth < 1200) {
-      sidebar.style.display = 'none';
-      sidebar.style.opacity = '0';
-      sidebar.style.position = 'fixed';
-      sidebar.style.left = '16px';
-      sidebar.style.right = '16px';
-      sidebar.style.top = '80px';
-      sidebar.style.width = 'auto';
-      sidebar.style.maxHeight = '60vh';
-      toggleBtn.style.display = 'block';
-    } else {
-      sidebar.style.display = 'block';
-      sidebar.style.opacity = '1';
-      sidebar.style.position = 'fixed';
-      sidebar.style.left = '';
-      sidebar.style.right = 'max(16px,calc((100vw - 1200px)/2))';
-      sidebar.style.top = '90px';
-      sidebar.style.width = '200px';
-      sidebar.style.maxHeight = 'calc(100vh - 120px)';
-      toggleBtn.style.display = 'none';
-    }
-  }
-  updateLayout();
-  window.addEventListener('resize', updateLayout);
 })();
 
 // ====== 7. 回到顶部 ======
