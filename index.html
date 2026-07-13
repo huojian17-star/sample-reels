@@ -1124,6 +1124,11 @@ window.addEventListener('DOMContentLoaded', function() {
       document.getElementById('counter-plays').textContent = (plays / 10000).toFixed(1);
       var label = document.getElementById('counter-fans').closest('.stat-item').querySelector('.stat-label');
       if (label) label.textContent = '粉丝（实时）';
+      // 闪烁一下证明是实时数据
+      var fansEl = document.getElementById('counter-fans');
+      fansEl.style.transition = 'color 0.3s';
+      fansEl.style.color = '#22c55e';
+      setTimeout(function() { fansEl.style.color = ''; }, 2000);
     }
   }
   tryEdgeOne().then(function(r) { return r.json(); }).then(applyLiveData).catch(function() {
