@@ -1,8 +1,0 @@
-{
-  "functions": {
-    "/bili-stats": "node-functions/bili-stats.js"
-  },
-  "routes": [
-    { "src": "/bili-stats", "dest": "/node-functions/bili-stats.js" }
-  ]
-}
