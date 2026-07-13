@@ -290,9 +290,11 @@
 // ====== 6. 侧边栏目录导航 ======
 (function() {
   var cs = document.querySelector('.content-section');
-  if (!cs) return; // 没有内容区，跳过（如首页）
+  if (!cs) { console.log('[TOC] no .content-section, skipped'); return; }
   var headings = cs.querySelectorAll('h2, h3');
-  if (headings.length < 2) return;
+  if (headings.length < 2) { console.log('[TOC] only ' + headings.length + ' headings, skipped'); return; }
+
+  console.log('[TOC] building tree with ' + headings.length + ' headings');
 
   // 用 h2 为主项，h3 为子项构建树
   var tree = [];
