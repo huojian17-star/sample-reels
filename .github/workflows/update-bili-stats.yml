@@ -1,0 +1,28 @@
+name: 更新 B站 实时数据
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'  # 每30分钟
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 拉取 B站 数据并更新 COUNTERS
+        run: python .github/scripts/update-counters.py
+
+      - name: 提交并推送
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --staged --quiet || git commit -m "sync bilibili live stats" && git push
