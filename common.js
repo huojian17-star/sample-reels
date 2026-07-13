@@ -207,7 +207,40 @@
   setTimeout(function() { say('嘿，我跟你进来了！随便逛逛，点我聊天~'); }, 600);
 })();
 
-// ====== 4. 回到顶部 ======
+// ====== 4. 设计标注——点击查看 ======
+(function() {
+  document.addEventListener('click', function(e) {
+    var badge = e.target.closest('span[title]');
+    if (!badge || badge.dataset.noteActive === '1') return;
+
+    var title = badge.getAttribute('title');
+    if (!title || title.indexOf('设计意图') === -1) return;
+
+    e.preventDefault(); e.stopPropagation();
+    badge.dataset.noteActive = '1';
+
+    var tip = document.createElement('div');
+    tip.className = 'design-note-tip';
+    tip.textContent = title;
+    tip.style.cssText = 'position:absolute;z-index:99999;background:#fffef5;border:2px solid var(--accent);border-radius:6px;padding:10px 14px;font-size:12px;color:var(--text);line-height:1.6;max-width:280px;box-shadow:0 6px 24px rgba(0,0,0,0.15);pointer-events:auto;';
+    document.body.appendChild(tip);
+
+    var br = badge.getBoundingClientRect();
+    var tipLeft = Math.max(8, Math.min(window.innerWidth - 288, br.left));
+    tip.style.left = tipLeft + 'px';
+    tip.style.top = (br.bottom + 8) + 'px';
+
+    function remove() {
+      if (tip.parentNode) tip.remove();
+      badge.dataset.noteActive = '0';
+      document.removeEventListener('click', remove);
+    }
+    setTimeout(function() { document.addEventListener('click', remove); }, 50);
+    tip.addEventListener('click', function(ev) { ev.stopPropagation(); remove(); });
+  });
+})();
+
+// ====== 5. 回到顶部 ======
 (function() {
   var btn = document.createElement('button');
   btn.className = 'back-to-top';
