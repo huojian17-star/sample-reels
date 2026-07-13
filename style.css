@@ -623,16 +623,18 @@ footer p { font-size: 12px; color: var(--text-dim); }
   .content-section { padding: 40px 20px; }
   .page-hero { padding: 32px 20px; }
   .page-hero h1 { font-size: 28px; }
+  /* 表格——横向滚动 */
+  .info-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; }
+  .info-table th, .info-table td { min-width: 80px; }
 }
 
-/* ====== 手机端 ====== */
-@media (max-width: 640px) {
-  /* 导航 */
+/* ====== 手机端（≤768px 汉堡菜单触发） ====== */
+@media (max-width: 768px) {
   .hamburger-btn { display: block; z-index: 101; }
   .nav-links {
     display: none;
     position: absolute;
-    top: 54px;
+    top: 70px;
     left: 0; right: 0;
     background: rgba(250, 249, 246, 0.97);
     backdrop-filter: blur(16px);
@@ -643,94 +645,48 @@ footer p { font-size: 12px; color: var(--text-dim); }
   }
   .nav-links.nav-open { display: flex; }
   .nav-links a {
-    padding: 16px 20px;
-    font-size: 16px;
+    padding: 16px 24px;
+    font-size: 15px;
     border-bottom: 1px solid var(--border);
   }
   .nav-links a:last-child { border-bottom: none; }
+}
+
+/* ====== 小屏手机 ====== */
+@media (max-width: 500px) {
+  .hero-stats { gap: 20px; }
+  .stats-banner { gap: 18px; }
+  .sb-num { font-size: 22px; }
   .nav-inner { height: 54px; padding: 0 16px; }
+  .nav-links a { font-size: 14px; }
+  .nav-links.nav-open { top: 54px; }
+  #world-search-bar { top: 54px; }
+  .hero h1 { font-size: 26px; }
+  .stat-num { font-size: 22px; }
+  .hero { min-height: 50vh; padding: 24px 16px; }
 
   /* 内容区 */
-  .content-section { padding: 32px 16px; }
-  .content-section h2 { font-size: 18px; margin-bottom: 16px; }
-  .content-section h3 { font-size: 15px; margin: 24px 0 12px; }
-  .content-section p { font-size: 14px; line-height: 1.85; }
-  .content-section li { font-size: 14px; }
-
-  /* Hero */
-  .hero { min-height: 50vh; padding: 30px 16px; }
-  .hero h1 { font-size: 26px; }
-  .hero-content { padding: 0; }
-  .hero-stats { gap: 16px; flex-wrap: wrap; }
-  .stat-num { font-size: 24px; }
-  .stat-item { min-width: 60px; }
-
-  /* 页面头部 */
+  .content-section { padding: 28px 16px; }
+  .content-section h2 { font-size: 18px; }
+  .content-section h3 { font-size: 15px; }
+  .content-section p, .content-section li { font-size: 14px; line-height: 1.85; }
   .page-hero { padding: 28px 16px; }
   .page-hero h1 { font-size: 24px; }
-  .page-hero p { font-size: 13px; }
 
   /* 卡片 */
-  .nav-card { padding: 20px 16px; }
-  .about-card, .world-card, .world-intro-card { padding: 20px 16px; }
-  .split-card { padding: 20px 16px; }
-
-  /* 表格——横向滚动 */
-  .info-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; }
-  .info-table th, .info-table td { padding: 10px 12px; font-size: 12px; min-width: 80px; }
-
-  /* 统计条 */
-  .stats-banner { gap: 12px; flex-wrap: wrap; }
-  .sb-item { min-width: 70px; }
-  .sb-num { font-size: 20px; }
-  .sb-label { font-size: 10px; }
-
-  /* 视频卡片 */
-  .video-card { padding: 16px; }
-  .video-card .video-cover img { width: 100%; }
-  .video-info h4 { font-size: 14px; }
-  .video-meta { gap: 10px; font-size: 11px; }
-
-  /* 游戏设计 */
-  .formula-block { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  .formula-block pre { font-size: 11px; padding: 12px; }
-
-  /* 分析卡片 */
-  .analysis-card .analysis-summary { padding: 16px; }
-  .analysis-card .analysis-summary h3 { font-size: 15px; }
-  .analysis-detail { padding: 16px; }
+  .nav-card, .about-card, .world-card, .split-card { padding: 18px 14px; }
 
   /* 特色横幅 */
-  .featured-banner { padding: 24px 16px; margin: 32px 8px; }
-  .featured-banner h2 { font-size: 18px; }
-  .featured-banner .banner-features { gap: 8px; }
-  .featured-banner .bf-item { font-size: 10px; padding: 3px 8px; }
+  .featured-banner { padding: 20px 14px; margin: 24px 8px; }
+  .featured-banner h2 { font-size: 17px; }
 
-  /* 移动端标签 */
-  .audience-grid, .contact-grid { grid-template-columns: 1fr; }
-
-  /* 引用块 */
-  .quote-block { padding: 16px 20px; font-size: 13px; }
-
-  /* 搜索栏 */
-  #site-search-section { margin-top: 20px; }
-  #site-search-section input { font-size: 14px; }
-
-  /* 回到顶部——缩小避免遮挡内容 */
-  .back-to-top { bottom: 16px; right: 16px; width: 38px; height: 38px; font-size: 18px; }
-
-  /* 二维码 */
-  .qr-code { width: 100px; height: auto; }
-
-  /* design-note badges 手机上更小 */
-  span[style*="cursor:help"] {
-    font-size: 8px !important;
-  }
+  /* 回到顶部 */
+  .back-to-top { bottom: 16px; right: 16px; width: 38px; height: 38px; font-size: 17px; }
 }
 
 @media (max-width: 400px) {
   .hero h1 { font-size: 22px; }
-  .hero-stats { gap: 10px; }
+  .hero-stats { gap: 12px; }
   .stat-num { font-size: 20px; }
   .featured-banner { padding: 16px 12px; }
   .banner-cta { padding: 10px 20px; font-size: 12px; }
