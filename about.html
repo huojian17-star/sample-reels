@@ -185,6 +185,22 @@
   <strong>为什么不用拖拽库（interact.js / draggable）？</strong>像素小人的拖拽系统——含缓动跟随、边缘碰撞、速度检测、移动端长按防误触——看起来适合用一个现成JS库。但实际需求中包含大量<strong>非标准交互</strong>：拖拽时切换图片、松手弹跳动画、靠近模块时触发对话链、双击回家、漫游模式……这些都不是拖拽库的常规功能。用原生事件实现虽然经历了四次重写，但换来了完全的<strong>行为可控性</strong>——每个缓动系数、每个阈值、每条对话的触发时机都可以精确调整。对于作品集这种需要"性格"的项目，这比引入一个通用库更有价值。
   </div>
 
+  <div style="background:var(--bg-page);border-left:3px solid var(--accent);padding:14px 18px;margin:10px 0;border-radius:0 4px 4px 0;font-size:13px;line-height:1.9;">
+  <strong>B站实时数据同步的五次技术方案迭代。</strong>用户提出"让主页粉丝数和播放量跟B站实时同步"。这个问题在纯静态GitHub Pages上看起来无解——B站API有跨域限制，前端fetch会被CORS拦截。以下是完整的五次尝试：
+
+  <br><br><strong>方案一 Vercel Serverless（❌）</strong>：部署api/bili-stats.js代理函数，服务器端调用B站API规避跨域。问题是Vercel默认域名在国内被墙，HR访问不了。
+
+  <br><br><strong>方案二 Cloudflare Workers（❌）</strong>：Worker脚本处理B站API代理，国内理论可访问。但Cloudflare编辑器持续加载失败，无法进入代码页面。
+
+  <br><br><strong>方案三 公共CORS代理（❌）</strong>：corsproxy.io和allorigins.win等免费服务。国内网络超时，两个代理全部不可达。
+
+  <br><br><strong>方案四 腾讯EdgeOne Pages（❌）</strong>：国内可访问的serverless平台。但EdgeOne的serverless函数只支持框架项目（Next.js/Nuxt等），纯HTML站不认node-functions目录。尝试api/、functions/、node-functions/三种目录命名，均404。
+
+  <br><br><strong>方案五 GitHub Actions（✅ 采纳）</strong>：用户提出"能不能用GitHub Action自动爬取"。这个思路绕过了所有核心矛盾——Actions运行在GitHub的美国服务器上，既不受国内墙影响，也不受浏览器跨域限制。Python脚本每30分钟自动调用B站API获取真实粉丝数，解析JSON后更新index.html和bilibili.html中的数值，自动commit并push到仓库，触发GitHub Pages重新部署。整个过程对页面访客完全透明——页面始终秒开静态数字，后台静默同步。
+
+  <br><br><strong>教训：方案一至四都是同一个思路的不同实现——"找一个免费的、国内能访问的serverless平台跑代理"。这个组合在中国大陆互联网环境中不存在。方案五换了一个完全不同的角度——"不在运行时解决，在构建时解决"。这是AI反复建议"算了"但用户坚持继续探索后才找到的突破。有时候人类直觉中的"应该还有办法"比AI的"技术上不可行"更值得信任。</strong>
+  </div>
+
   <h3>可复用的协作方法论</h3>
 
   <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:12px;">
