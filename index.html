@@ -1089,24 +1089,23 @@ var BILI_UID = '518565512';
 var staticFallback = { fans: 888, plays: 19.5, words: 6, series: 7 };
 
 function fetchBiliStats(callback) {
-  // B站 API 可能支持 CORS，也可能需要代理。先直连，失败则用代理。
   var FANS_URL  = 'https://api.bilibili.com/x/relation/stat?vmid=' + BILI_UID;
   var PLAYS_URL = 'https://api.bilibili.com/x/space/upstat?mid=' + BILI_UID;
-  var PROXY = 'https://api.allorigins.win/raw?url=';
 
-  function fetchJSON(url, useProxy, cb) {
-    var target = useProxy ? PROXY + encodeURIComponent(url) : url;
+  // 多个 CORS 代理依次尝试
+  var proxies = [
+    '',  // 先直连
+    'https://corsproxy.io/?',
+    'https://api.allorigins.win/raw?url='
+  ];
+
+  function tryFetch(url, proxyIdx, cb) {
+    if (proxyIdx >= proxies.length) { cb(null); return; }
+    var target = proxies[proxyIdx] ? proxies[proxyIdx] + encodeURIComponent(url) : url;
     fetch(target)
       .then(function(r) { return r.json(); })
       .then(function(data) { cb(data); })
-      .catch(function() {
-        if (!useProxy) {
-          // 直连失败，尝试代理
-          fetchJSON(url, true, cb);
-        } else {
-          cb(null);
-        }
-      });
+      .catch(function() { tryFetch(url, proxyIdx + 1, cb); });
   }
 
   var pending = 2;
@@ -1118,19 +1117,18 @@ function fetchBiliStats(callback) {
     if (pending === 0) callback({ fans: fansResult, plays: playsResult });
   }
 
-  fetchJSON(FANS_URL, false, function(data) {
+  tryFetch(FANS_URL, 0, function(data) {
     if (data && data.code === 0 && data.data) fansResult = data.data;
     done();
   });
-  fetchJSON(PLAYS_URL, false, function(data) {
+  tryFetch(PLAYS_URL, 0, function(data) {
     if (data && data.code === 0 && data.data && data.data.archive) playsResult = data.data.archive;
     done();
   });
 
-  // 5秒总超时
   setTimeout(function() {
     if (pending > 0) { pending = 0; callback({ fans: null, plays: null }); }
-  }, 5000);
+  }, 8000);
 }
 
 function updateCounters(result) {
