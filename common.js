@@ -209,19 +209,12 @@
 
 // ====== 4. 设计标注——样式升级 + 点击查看 ======
 (function() {
-  // 自动给所有设计标注徽章加样式
+  // 强制升级所有设计标注徽章样式
   var badges = document.querySelectorAll('span[title*="设计意图"]');
   for (var i = 0; i < badges.length; i++) {
-    badges[i].classList.add('design-note-badge');
-    // 去掉原来的内联小字样式
-    badges[i].style.fontSize = '';
-    badges[i].style.color = '';
-    badges[i].style.background = '';
-    badges[i].style.padding = '';
-    badges[i].style.borderRadius = '';
-    badges[i].style.verticalAlign = '';
-    badges[i].style.letterSpacing = '';
-    badges[i].style.cursor = '';
+    var b = badges[i];
+    b.style.cssText = 'font-size:13px;color:#fff;background:#a98446;padding:3px 12px;border-radius:10px;vertical-align:middle;letter-spacing:0.3px;cursor:pointer;font-weight:500;display:inline-block;margin:0 2px;';
+    b.textContent = '\u24D8 设计标注'; // ⓘ 符号
   }
 
   document.addEventListener('click', function(e) {
