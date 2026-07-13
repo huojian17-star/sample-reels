@@ -263,6 +263,14 @@
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(-8px); }
 }
+/* 首次加载吸引注意 */
+.mascot-pulse {
+  animation: mascotPulse 0.6s ease 3;
+}
+@keyframes mascotPulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.15); }
+}
 @keyframes bubblePop {
   0%, 100% { padding: 10px 16px; }
   50%      { padding: 13px 20px; }
@@ -1032,6 +1040,24 @@
 
   // 页面加载后30秒开始检测空闲
   idleTimer = setTimeout(checkIdle, 30000);
+
+  // 首次加载：4秒后自动显示操作引导
+  var firstHintTimer = setTimeout(function() {
+    if (clicks === 0 && !wasDragged && !isDragging) {
+      say('提示：点我聊天 | 拖我闲逛 | 双击送我回家~');
+    }
+  }, 4000);
+
+  // 吸引注意：小人脉冲动画
+  avatarImg.classList.add('mascot-pulse');
+  setTimeout(function() { avatarImg.classList.remove('mascot-pulse'); }, 2000);
+
+  // 用户点击后清除提示计时器
+  var origResetIdle = resetIdle;
+  resetIdle = function() {
+    if (firstHintTimer) { clearTimeout(firstHintTimer); firstHintTimer = null; }
+    origResetIdle();
+  };
 
   // 用户有任何交互就重置
   document.addEventListener('click', resetIdle);
