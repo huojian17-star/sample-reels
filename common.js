@@ -209,36 +209,26 @@
 
 // ====== 4. 设计标注——样式升级 + 点击查看 ======
 (function() {
-  // 强制升级所有设计标注徽章：去掉 title，改用 data-note，纯点击展示
-  var badges = document.querySelectorAll('span[title*="设计意图"]');
-  for (var i = 0; i < badges.length; i++) {
-    var b = badges[i];
-    b.dataset.note = b.getAttribute('title');  // 保存说明文字
-    b.removeAttribute('title');                 // 删掉 title 避免原生 tooltip
+  // 强制升级所有设计标注徽章
+  var allSpans = document.getElementsByTagName('span');
+  for (var i = 0; i < allSpans.length; i++) {
+    var b = allSpans[i];
+    var t = b.getAttribute('title') || '';
+    if (t.indexOf('设计意图') === -1 && t.indexOf('设计说明') === -1) continue;
+    b.dataset.note = t;
+    b.removeAttribute('title');
     b.style.cssText = 'font-size:13px;color:#fff;background:#a98446;padding:3px 12px;border-radius:10px;vertical-align:middle;letter-spacing:0.3px;cursor:pointer;font-weight:500;display:inline-block;margin:0 2px;';
     b.textContent = '\u24D8 设计标注';
   }
 
   // 全局点击：展示 / 关闭设计说明弹窗
   document.addEventListener('click', function(e) {
-    var badge = e.target.closest('span[data-note]');
+    var badge = e.target.closest('[data-note]');
     var existing = document.querySelector('.design-note-tip');
 
-    // 点了其他地方 → 关闭现有弹窗
-    if (!badge) {
-      if (existing) existing.remove();
-      return;
-    }
-
+    if (!badge) { if (existing) existing.remove(); return; }
     e.stopPropagation();
-
-    // 重复点同一个徽章 → 关闭
-    if (existing && existing._badge === badge) {
-      existing.remove();
-      return;
-    }
-
-    // 关闭旧弹窗，打开新弹窗
+    if (existing && existing._badge === badge) { existing.remove(); return; }
     if (existing) existing.remove();
 
     var tip = document.createElement('div');
@@ -249,11 +239,9 @@
     document.body.appendChild(tip);
 
     var br = badge.getBoundingClientRect();
-    var tipLeft = Math.max(8, Math.min(window.innerWidth - 308, br.left));
-    tip.style.left = tipLeft + 'px';
+    tip.style.left = Math.max(8, Math.min(window.innerWidth - 308, br.left)) + 'px';
     tip.style.top = (br.bottom + 8) + 'px';
 
-    // 点弹窗本身或点页面其他地方关闭
     tip.addEventListener('click', function(ev) { ev.stopPropagation(); tip.remove(); });
   });
 })();
