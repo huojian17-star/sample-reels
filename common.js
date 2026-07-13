@@ -207,7 +207,20 @@
   setTimeout(function() { say('嘿，我跟你进来了！随便逛逛，点我聊天~'); }, 600);
 })();
 
-// ====== 4. 设计标注——样式升级 + 点击查看 ======
+// ====== 4. 表格响应式——自动包裹滚动容器 ======
+(function() {
+  var tables = document.querySelectorAll('.info-table');
+  for (var i = 0; i < tables.length; i++) {
+    var t = tables[i];
+    if (t.parentNode.classList.contains('table-wrap')) continue;
+    var wrap = document.createElement('div');
+    wrap.className = 'table-wrap';
+    t.parentNode.insertBefore(wrap, t);
+    wrap.appendChild(t);
+  }
+})();
+
+// ====== 5. 设计标注——样式升级 + 点击查看 ======
 (function() {
   // 强制升级所有设计标注徽章
   var allSpans = document.getElementsByTagName('span');
@@ -246,7 +259,7 @@
   });
 })();
 
-// ====== 5. 回到顶部 ======
+// ====== 6. 回到顶部 ======
 (function() {
   var btn = document.createElement('button');
   btn.className = 'back-to-top';
