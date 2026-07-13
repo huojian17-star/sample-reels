@@ -77,13 +77,13 @@
 
   <!-- 排序控件 -->
   <div id="sort-bar" style="display:flex;gap:8px;flex-wrap:wrap;margin:20px 0 8px;align-items:center;">
-    <span style="font-size:11px;color:var(--text-dim);letter-spacing:1px;margin-right:4px;">排序：<span style="font-size:9px;color:var(--accent);background:var(--bg-alt);padding:1px 5px;border-radius:6px;vertical-align:middle;letter-spacing:0;margin-left:4px;cursor:help;" title="设计意图：让HR能切换不同维度观察数据，理解"播放量≠质量"——切换排序后数据量级不变但排序变化本身就是信息。">设计标注</span></span>
+    <span style="font-size:11px;color:var(--text-dim);letter-spacing:1px;margin-right:4px;">排序：<button onclick="var t=this.nextElementSibling;t.hidden=!t.hidden" style="font-size:11px;color:#fff;background:#a98446;border:none;padding:2px 8px;border-radius:10px;cursor:pointer;font-family:inherit;font-weight:500;vertical-align:middle;margin-left:4px;">\u24D8 设计标注</button><span hidden style="font-size:11px;color:var(--text-dim);background:var(--bg-alt);padding:4px 8px;border-radius:4px;margin-left:4px;line-height:1.5;">切换排序后数据不变但排序变化本身就是信息——让HR理解"播放量≠质量"。</span></span>
   </div>
 
   <div class="video-grid" style="margin-top:16px;" id="video-grid"></div>
 
   <!-- 雷达对比 -->
-  <h2>视频指标对比 <span style="font-size:9px;color:var(--accent);background:var(--bg-alt);padding:1px 5px;border-radius:6px;vertical-align:middle;letter-spacing:0;cursor:help;" title="设计意图：雷达图能同时展示6维指标，两期视频叠在一起对比，好的内容和差的内容在图形上差异一目了然。选#3和#6比一下就知道。">设计标注</span></h2>
+  <h2>视频指标对比 <button onclick="var t=this.nextElementSibling;t.hidden=!t.hidden" style="font-size:11px;color:#fff;background:#a98446;border:none;padding:2px 8px;border-radius:10px;cursor:pointer;font-family:inherit;font-weight:500;vertical-align:middle;margin-left:6px;">\u24D8 设计标注</button><span hidden style="font-size:11px;font-weight:normal;color:var(--text-dim);background:var(--bg-alt);padding:4px 8px;border-radius:4px;margin-left:4px;line-height:1.5;">雷达图能同时展示6维指标，两期视频叠在一起对比，好内容和差内容在图形上差异一目了然。选#3和#6比一下就知道。</span></h2>
   <p>选择两期视频，用雷达图对比各项内容指标。注意观察"高播放量 ≠ 高转化率"的微妙关系——这往往是区分"热门向"和"粉丝向"内容的关键。</p>
 
   <div style="display:flex;gap:32px;flex-wrap:wrap;align-items:flex-start;margin-bottom:24px;">
