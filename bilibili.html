@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B站内容 · BEST-辣椒</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">BEST-辣椒</a>
+    <div class="nav-links">
+      <a href="about.html">关于</a>
+      <a href="bilibili.html">B站</a>
+      <a href="worldbuilding.html">设定集</a>
+      <a href="novel.html">小说</a>
+      <a href="game-design.html">游戏设计</a>
+      <a href="game-analysis.html">游戏拆解</a>
+      <a href="script-analysis.html">文案拆解</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <p><a href="index.html" class="back-link">&larr; 返回首页</a></p>
+  <h1>B站内容创作</h1>
+  <p>游戏考据 · 深度长视频 · 消失游戏开发日志系列</p>
+</div>
+
+<div class="content-section">
+
+  <!-- 频道数据概览 -->
+  <h2>频道数据</h2>
+  <div class="stats-banner">
+    <div class="sb-item"><span class="sb-num">19.5万</span><span class="sb-label">总播放量</span></div>
+    <div class="sb-item"><span class="sb-num">888</span><span class="sb-label">粉丝</span></div>
+    <div class="sb-item"><span class="sb-num">4,463</span><span class="sb-label">累计点赞</span></div>
+    <div class="sb-item"><span class="sb-num">2,869</span><span class="sb-label">累计收藏</span></div>
+    <div class="sb-item"><span class="sb-num">1,316</span><span class="sb-label">累计硬币</span></div>
+    <div class="sb-item"><span class="sb-num">902</span><span class="sb-label">累计评论</span></div>
+    <div class="sb-item"><span class="sb-num">724</span><span class="sb-label">累计弹幕</span></div>
+    <div class="sb-item"><span class="sb-num">238</span><span class="sb-label">累计分享</span></div>
+  </div>
+
+  <!-- 近期趋势 -->
+  <h3>近期增长趋势（2026年6-7月）</h3>
+  <p>近30天数据呈明显上升态势。6月18日发布新视频后，日均播放量从约180次跃升至约600+次，6月25日单日峰值达1,488次播放。粉丝数从797稳步增长至888（+91），点赞从4,188增至4,463（+275），硬币从1,202增至1,316（+114）。7月上旬继续保持稳中有升。</p>
+
+  <!-- 观众画像 -->
+  <h2>观众画像</h2>
+  <div class="audience-grid" style="margin-bottom:32px;">
+    <div class="au-item">
+      <span class="au-key">性别分布</span>
+      <span class="au-val">男性 93.6% / 女性 6.4%</span>
+    </div>
+    <div class="au-item">
+      <span class="au-key">年龄分布</span>
+      <span class="au-val">25-40岁为主</span>
+    </div>
+    <div class="au-item">
+      <span class="au-key">活跃时间</span>
+      <span class="au-val">19点、22点最活跃</span>
+    </div>
+    <div class="au-item">
+      <span class="au-key">活跃粉丝</span>
+      <span class="au-val">约 227 人 (占比 25.6%)</span>
+    </div>
+  </div>
+
+  <p>观众以<strong>25-40岁男性</strong>为主，活跃时间集中在晚间19点和22点。这一画像与深度游戏考据内容的目标受众高度吻合——具备一定游戏阅历、对行业历史感兴趣的成熟玩家群体。活跃粉丝占比25.6%，说明频道具有较强的社区粘性。</p>
+
+  <!-- 代表作系列 -->
+  <h2>代表作 · 「消失游戏开发日志」系列</h2>
+  <p>定位为游戏开发史深度纪录，每期聚焦一款或一类"消失了"的游戏作品。目前已发布7期。点击按钮切换排序方式，观察不同维度下的内容表现差异。</p>
+
+  <!-- 排序控件 -->
+  <div id="sort-bar" style="display:flex;gap:8px;flex-wrap:wrap;margin:20px 0 8px;align-items:center;">
+    <span style="font-size:11px;color:var(--text-dim);letter-spacing:1px;margin-right:4px;">排序：</span>
+  </div>
+
+  <div class="video-grid" style="margin-top:16px;" id="video-grid"></div>
+
+  <!-- 雷达对比 -->
+  <h2>视频指标对比</h2>
+  <p>选择两期视频，用雷达图对比各项内容指标。注意观察"高播放量 ≠ 高转化率"的微妙关系——这往往是区分"热门向"和"粉丝向"内容的关键。</p>
+
+  <div style="display:flex;gap:32px;flex-wrap:wrap;align-items:flex-start;margin-bottom:24px;">
+    <div style="flex-shrink:0;">
+      <div style="display:flex;gap:12px;align-items:center;margin-bottom:16px;">
+        <select id="compare-a" onchange="drawCompareRadar()" style="padding:6px 10px;border:1px solid var(--border);border-radius:4px;font-family:inherit;font-size:13px;background:var(--bg-page);color:var(--text);"></select>
+        <span style="color:var(--text-dim);font-size:13px;">VS</span>
+        <select id="compare-b" onchange="drawCompareRadar()" style="padding:6px 10px;border:1px solid var(--border);border-radius:4px;font-family:inherit;font-size:13px;background:var(--bg-page);color:var(--text);"></select>
+      </div>
+      <svg id="compare-radar" width="440" height="440" viewBox="0 0 440 440"></svg>
+    </div>
+    <div id="compare-insight" style="flex:1;min-width:240px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;">
+      <p style="font-size:13px;color:var(--text-dim);text-align:center;padding:20px 0;">选择两期视频开始对比<br>上方下拉框中选择</p>
+    </div>
+  </div>
+
+  <!-- 内容分析 -->
+  <h2>内容特征分析</h2>
+
+  <h3>选题逻辑</h3>
+  <p>系列选题遵循三条线索：<strong>被取消的知名作品</strong>（如《寂静岭P.T.》《热血无赖2》）、<strong>被长期搁置的IP</strong>（如《细胞分裂》《超越善恶2》）、<strong>具备独特开发史话题性的项目</strong>（如《eight days》《迈阿密热线》）。选题的共同特征是"曾经引发过玩家期待，但因种种原因未能如愿面世"。</p>
+
+  <h3>数据表现</h3>
+  <p>系列视频的播放量区间为6,500-46,000，中位数约2.2万。游客播放占比高达97-99%，说明流量主要来自平台推荐而非粉丝订阅——内容本身具备较强的"出圈"能力。粉丝观看率从首期的28.6%不断提升，至第3期已达51.7%，反映核心粉丝群的持续增长。第1期的平均播放进度51.6%，远超B站平均水平，说明内容留存质量极高。</p>
+
+  <h3>更新策略</h3>
+  <p>平均更新周期约1-2个月，符合深度长视频的制作规律。每期视频从选题研究、资料收集、脚本撰写到剪辑制作，通常需要3-6周。这一节奏在保证内容质量的同时维持了频道的活跃度。</p>
+
+  <!-- 其他视频 -->
+  <h2>其他视频</h2>
+  <div class="video-grid-mini">
+    <div class="video-card-mini">
+      <h4>猛开香槟！一睹2025年最值得期待的大作游戏！</h4>
+      <p>个人向年度期待盘点</p>
+      <div class="video-meta"><span>658 播放</span><span>12 点赞</span><span>2024.12.21</span></div>
+    </div>
+    <div class="video-card-mini">
+      <h4>2024TGA成最大"野鸡奖"？</h4>
+      <p>还是来看看首届TGA的盛况吧孩子们！</p>
+      <div class="video-meta"><span>1,477 播放</span><span>23 点赞</span><span>2024.12.17</span></div>
+    </div>
+    <div class="video-card-mini">
+      <h4>TGA成年度最大乐子人奖项？</h4>
+      <p>早八爬起来看直播的大学生浅度吐槽</p>
+      <div class="video-meta"><span>433 播放</span><span>5 点赞</span><span>2024.12.15</span></div>
+    </div>
+  </div>
+
+  <p style="text-align:center;margin-top:40px;">
+    <a href="https://space.bilibili.com/518565512" target="_blank" rel="noopener" class="bili-link" style="font-size:15px;">访问B站个人空间 →</a>
+  </p>
+
+</div>
+
+<footer>
+  <p>BEST-辣椒 &copy; 2026 · <a href="https://space.bilibili.com/518565512" target="_blank" rel="noopener" style="color:var(--text-dim);">B站主页</a></p>
+</footer>
+
+<script>
+// ====== 视频数据 ======
+var videos = [
+  { order:6, title:'历时3年骗过索尼，还@特朗普求救？', desc:'揭秘国产沙盒游戏史上最抽象的欺诈事件', plays:10000, likes:233, favs:129, coins:108, comments:78, shares:42, date:'2026.06.18', featured:true, cover:'cover-phantom.png', note:'电影导演徐化跨界做3A，宣称1:1太阳系、无缝宇宙、VR兼容。从机核网力捧到众筹仅募集3万元，开发三年后发售暴死——玩家发现游戏根本没有结局。复盘了一个"理想主义者"如何沦为国产游戏史上最著名的欺诈案例。' },
+  { order:5, title:'暴力像素游戏如何引起社会风波？', desc:'从《迈阿密热线》到《午夜动物》的曲折故事（上）', plays:25000, likes:1040, favs:1005, coins:336, comments:165, shares:88, date:'2025.06.10', featured:false, cover:'cover-hotlinemiami.jpg', note:'两位瑞典独立开发者的九年磕碰史：引擎Bug导致打印机驱动冲突、开发期抑郁症入院、二代因强塞剧情遭粉丝网暴、关卡编辑器却催生了社群最传奇的模组事件。联系noclip纪录片团队取得素材使用授权，是频道首次获得海外专业游戏媒体团队的正式素材许可。' },
+  { order:4, title:'画面"最超前"的动作游戏《eight days》', desc:'如何被索尼亲手埋葬', plays:24000, likes:489, favs:365, coins:103, comments:94, shares:51, date:'2025.04.11', featured:false, cover:'cover-eightdays.jpg', note:'索尼伦敦工作室利用CELL处理器打造的次世代野心作，2006年E3演示震惊全场却因画面过于超前被质疑为"伪预告"。吉田修平上任总裁一个月后砍掉项目，理由是"不符合PS3互联体验战略"。前设计师事后透露：游戏距完成还需追加一年工期和巨额预算，而每三台PS3就得卖出一份才能回本。' },
+  { order:3, title:'从"合金装备杀手"到逐渐雪藏', desc:'《细胞分裂》是如何一步步被育碧玩坏的？', plays:46000, likes:1011, favs:647, coins:214, comments:306, shares:157, date:'2025.03.22', featured:true, cover:'cover-splintercell.jpg', note:'从育碧纽约工作室被取消的《The Drift》中诞生的细胞分裂，曾是育碧叫板合金装备的旗舰IP。但黑名单换主角配音、逼供场景引发社会声讨、销量仅200万份远未达预期。2021年官宣重制版，一年后游戏总监离职，至今再无下文。见证了育碧从"业界大哥"到内部丑闻缠身的完整弧线。' },
+  { order:2, title:'最意难平的恐怖游戏，最气愤的消失真相', desc:'从《寂静岭P.T》浅析小岛秀夫与科乐美的权力斗争', plays:21000, likes:483, favs:308, coins:163, comments:132, shares:71, date:'2025.02.24', featured:false, cover:'cover-pt.jpg', note:'2014年科隆展，小岛秀夫虚构7780s工作室发布PT，24小时内被玩家破解出"寂静岭新作"真身。但科乐美正全力转型移动端与柏青哥业务，小岛主导的大投资主机游戏被视为公司累赘。从官网抹去小岛名字、员工被摄像头监控、到PT从商店强制下架——这不仅是一款恐怖游戏的消失，更是一家公司亲手埋葬自己黄金时代的寓言。' },
+  { order:1, title:'港风版GTA？！', desc:'20分钟带你看完《热血无赖2》是如何胎死腹中的', plays:18000, likes:540, favs:250, coins:280, comments:89, shares:58, date:'2025.01.30', featured:true, cover:'cover-sleepingdogs.jpg', note:'<strong>一手信源：</strong>通过多渠道联系到热血无赖原编剧蒂姆·卡特（Tim Carter），获得独家访谈确认续作开发计划书的真实性。卡特在回复中证实："<em>That document you found on the Internet is authentic. I know because I wrote it. There was a sequel in development and we did a lot of work on it.</em>"<br><span style="font-size:11px;color:var(--text-dim);">（译："你在网上找到的那份文件是真的。我知道，因为是我写的。续作确实开发过，我们为此做了大量工作。"）</span> <a href="interview-carter.jpg" target="_blank" style="font-size:10px;color:var(--accent);">[查看访谈截图]</a>' },
+  { order:0, title:'全网最细！将近20年！', desc:'12分钟带你了解历史跳票时间最长的游戏！育碧心中的白月光？《超越善恶2》', plays:6551, likes:98, favs:42, coins:38, comments:45, shares:20, date:'2024.12.30', featured:true, cover:'', note:'从2003年叫好不叫座的一代，到2008年官宣续作，再到2020年制作人安塞尔因"无休止加班与引擎反复修改"心力交瘁转行动物保护——超越善恶2横跨PS2到PS4三个世代，创下游戏史上最长跳票纪录。育碧内部体系臃肿、管理混乱、项目优先级反复横跳，共同构成了这场持续17年的开发灾难。' }
+];
+
+// 计算派生指标
+for (var i = 0; i < videos.length; i++) {
+  var v = videos[i];
+  v.likeRate = v.likes / v.plays * 1000;     // 每千播放点赞数
+  v.favRate = v.favs / v.plays * 1000;       // 每千播放收藏数
+  v.coinRate = v.coins / v.plays * 1000;     // 每千播放硬币数
+  v.interactRate = (v.likes + v.favs + v.coins + v.comments) / v.plays * 100; // 总互动率%
+  v.interactSum = v.likes + v.favs + v.coins + v.comments + v.shares;
+  v.coinLikeRatio = v.likes > 0 ? v.coins / v.likes * 100 : 0; // 硬币/点赞比（粉丝忠诚度指标）
+}
+
+// ====== 排序渲染 ======
+var sortMethods = [
+  { key:'order',     label:'默认顺序' },
+  { key:'plays',     label:'播放量' },
+  { key:'likes',     label:'点赞' },
+  { key:'favs',      label:'收藏' },
+  { key:'coins',     label:'硬币' },
+  { key:'likeRate',  label:'点赞转化率' },
+  { key:'coinLikeRatio', label:'硬币/点赞比' },
+  { key:'date',      label:'发布时间' }
+];
+var currentSort = 'order';
+var sortDesc = true;
+
+function buildSortBar() {
+  var bar = document.getElementById('sort-bar');
+  for (var i = 0; i < sortMethods.length; i++) {
+    var m = sortMethods[i];
+    var btn = document.createElement('button');
+    btn.textContent = m.label;
+    btn.setAttribute('data-key', m.key);
+    btn.style.cssText = 'padding:5px 14px;border:1px solid var(--border);border-radius:14px;background:' + (currentSort === m.key ? 'var(--accent)' : 'var(--bg-card)') + ';color:' + (currentSort === m.key ? '#fff' : 'var(--text-dim)') + ';cursor:pointer;font-family:inherit;font-size:11px;transition:all 0.2s;';
+    btn.onclick = function() {
+      var key = this.getAttribute('data-key');
+      if (currentSort === key) {
+        sortDesc = !sortDesc;
+      } else {
+        currentSort = key;
+        sortDesc = true;
+      }
+      updateSortButtons();
+      renderVideoGrid();
+    };
+    bar.appendChild(btn);
+  }
+}
+
+function updateSortButtons() {
+  var buttons = document.getElementById('sort-bar').querySelectorAll('button');
+  for (var i = 0; i < buttons.length; i++) {
+    var btn = buttons[i];
+    var key = btn.getAttribute('data-key');
+    if (key === currentSort) {
+      btn.style.background = 'var(--accent)';
+      btn.style.color = '#fff';
+      btn.textContent = sortMethods[i].label + (sortDesc ? ' ↓' : ' ↑');
+    } else {
+      btn.style.background = 'var(--bg-card)';
+      btn.style.color = 'var(--text-dim)';
+      btn.textContent = sortMethods[i].label;
+    }
+  }
+}
+
+function renderVideoGrid() {
+  var sorted = videos.slice().sort(function(a, b) {
+    var va = a[currentSort];
+    var vb = b[currentSort];
+    if (typeof va === 'string') return sortDesc ? vb.localeCompare(va) : va.localeCompare(vb);
+    return sortDesc ? vb - va : va - vb;
+  });
+
+  var grid = document.getElementById('video-grid');
+  grid.innerHTML = sorted.map(function(v) {
+    var cardClass = v.featured ? 'video-card featured' : 'video-card';
+    var playsText = v.plays >= 10000 ? (v.plays / 10000).toFixed(1) + '万' : v.plays.toLocaleString();
+    var html = '<div class="' + cardClass + '">';
+    html += '<div class="video-order">#' + v.order + '</div>';
+    if (v.cover) {
+      html += '<div class="video-cover"><img src="' + v.cover + '" alt="' + v.title + '" loading="lazy"></div>';
+    }
+    html += '<div class="video-info">';
+    html += '<h4>' + v.title + '</h4>';
+    html += '<p>' + v.desc + '</p>';
+    html += '<div class="video-meta">';
+    html += '<span>' + playsText + ' 播放</span>';
+    html += '<span>' + v.likes.toLocaleString() + ' 点赞</span>';
+    html += '<span>' + v.favs.toLocaleString() + ' 收藏</span>';
+    html += '<span>' + v.coins.toLocaleString() + ' 硬币</span>';
+    html += '<span>' + v.date + '</span>';
+    html += '</div>';
+    html += '<div class="video-meta" style="margin-top:4px;font-size:10px;color:var(--text-dim);">';
+    html += '点赞率 ' + v.likeRate.toFixed(1) + '/千播 &nbsp;|&nbsp;';
+    html += '收藏率 ' + v.favRate.toFixed(1) + '/千播 &nbsp;|&nbsp;';
+    html += '硬币/点赞 ' + v.coinLikeRatio.toFixed(0) + '% &nbsp;|&nbsp;';
+    html += '互动率 ' + v.interactRate.toFixed(1) + '%';
+    html += '</div>';
+    if (v.note) {
+      html += '<p style="font-size:12px;color:var(--text-dim);margin-top:8px;">' + v.note + '</p>';
+    }
+    html += '</div></div>';
+    return html;
+  }).join('');
+}
+
+// ====== 雷达对比图 ======
+function buildCompareSelects() {
+  var selA = document.getElementById('compare-a');
+  var selB = document.getElementById('compare-b');
+  var opts = videos.map(function(v) {
+    return '<option value="' + v.order + '">#' + v.order + ' ' + v.title.substring(0, 12) + '…</option>';
+  }).join('');
+  selA.innerHTML = opts;
+  selB.innerHTML = opts;
+  selB.selectedIndex = 3; // 默认对比 #3
+  drawCompareRadar();
+}
+
+var radarDims = [
+  { key:'plays',     label:'播放量',   maxKey:'plays' },
+  { key:'likeRate',  label:'点赞转化', maxKey:'likeRate' },
+  { key:'favRate',   label:'收藏转化', maxKey:'favRate' },
+  { key:'coinRate',  label:'硬币转化', maxKey:'coinRate' },
+  { key:'comments',  label:'评论数',   maxKey:'comments' },
+  { key:'interactRate', label:'综合互动', maxKey:'interactRate' }
+];
+
+function drawCompareRadar() {
+  var svg = document.getElementById('compare-radar');
+  svg.innerHTML = '';
+
+  var selA = document.getElementById('compare-a');
+  var selB = document.getElementById('compare-b');
+  var a = videos[parseInt(selA.value)];
+  var b = videos[parseInt(selB.value)];
+  if (!a || !b) return;
+
+  var cx = 220, cy = 220, r = 160;
+  var n = radarDims.length;
+  var angles = [];
+  for (var i = 0; i < n; i++) {
+    angles.push(-Math.PI/2 + i * 2*Math.PI/n);
+  }
+
+  // 计算各维度最大值（用于归一化）
+  var maxes = {};
+  for (var i = 0; i < radarDims.length; i++) {
+    var dk = radarDims[i].maxKey;
+    maxes[dk] = 0;
+    for (var j = 0; j < videos.length; j++) {
+      if (videos[j][dk] > maxes[dk]) maxes[dk] = videos[j][dk];
+    }
+  }
+
+  // 背景网格
+  [0.25, 0.5, 0.75, 1.0].forEach(function(level) {
+    var pts = angles.map(function(a) {
+      return (cx + r*level*Math.cos(a)).toFixed(0) + ',' + (cy + r*level*Math.sin(a)).toFixed(0);
+    }).join(' ');
+    svg.innerHTML += '<polygon points="' + pts + '" fill="none" stroke="#e6e1da" stroke-width="0.5"/>';
+  });
+
+  // 轴线
+  angles.forEach(function(a) {
+    svg.innerHTML += '<line x1="' + cx + '" y1="' + cy + '" x2="' + (cx + r*Math.cos(a)).toFixed(0) + '" y2="' + (cy + r*Math.sin(a)).toFixed(0) + '" stroke="#e6e1da" stroke-width="0.5"/>';
+  });
+
+  // 标签
+  for (var i = 0; i < radarDims.length; i++) {
+    var lx = cx + (r+30)*Math.cos(angles[i]);
+    var ly = cy + (r+30)*Math.sin(angles[i]);
+    svg.innerHTML += '<text x="' + lx.toFixed(0) + '" y="' + ly.toFixed(0) + '" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="#555" font-family="inherit">' + radarDims[i].label + '</text>';
+  }
+
+  // 绘制两个数据集
+  var colors = ['#c95d3d', '#4d9b91'];
+  var labels = ['#' + a.order, '#' + b.order];
+  var datasets = [a, b];
+
+  for (var d = 0; d < 2; d++) {
+    var data = datasets[d];
+    var pts = angles.map(function(ang, i) {
+      var val = data[radarDims[i].key] / maxes[radarDims[i].maxKey];
+      return (cx + r*val*Math.cos(ang)).toFixed(0) + ',' + (cy + r*val*Math.sin(ang)).toFixed(0);
+    }).join(' ');
+
+    svg.innerHTML += '<polygon points="' + pts + '" fill="' + colors[d] + '" fill-opacity="0.15" stroke="' + colors[d] + '" stroke-width="2"/>';
+
+    // 数据点
+    for (var i = 0; i < n; i++) {
+      var val = data[radarDims[i].key] / maxes[radarDims[i].maxKey];
+      var px = cx + r*val*Math.cos(angles[i]);
+      var py = cy + r*val*Math.sin(angles[i]);
+      svg.innerHTML += '<circle cx="' + px.toFixed(0) + '" cy="' + py.toFixed(0) + '" r="4" fill="' + colors[d] + '"/>';
+    }
+  }
+
+  // 图例
+  svg.innerHTML += '<rect x="10" y="10" width="12" height="12" fill="' + colors[0] + '" opacity="0.6" rx="2"/>';
+  svg.innerHTML += '<text x="27" y="20" font-size="11" fill="' + colors[0] + '" font-weight="600" font-family="inherit">' + labels[0] + '</text>';
+  svg.innerHTML += '<rect x="10" y="28" width="12" height="12" fill="' + colors[1] + '" opacity="0.6" rx="2"/>';
+  svg.innerHTML += '<text x="27" y="38" font-size="11" fill="' + colors[1] + '" font-weight="600" font-family="inherit">' + labels[1] + '</text>';
+
+  // 洞察
+  showCompareInsight(a, b);
+}
+
+function showCompareInsight(a, b) {
+  var container = document.getElementById('compare-insight');
+  var html = '';
+  html += '<h4 style="font-size:13px;color:var(--accent);margin-bottom:12px;letter-spacing:1px;">◆ 对比洞察</h4>';
+
+  // 播放量对比
+  var playWinner = a.plays > b.plays ? '#' + a.order : '#' + b.order;
+  html += '<p style="font-size:13px;color:var(--text);line-height:1.9;">';
+  html += '<strong>播放量：</strong>' + playWinner + ' 更高（' + (Math.max(a.plays, b.plays)/10000).toFixed(1) + '万 vs ' + (Math.min(a.plays, b.plays)/10000).toFixed(1) + '万）。';
+  html += '</p>';
+
+  // 转化率对比
+  var likeWinner = a.likeRate > b.likeRate ? '#' + a.order : '#' + b.order;
+  html += '<p style="font-size:13px;color:var(--text);line-height:1.9;">';
+  html += '<strong>点赞转化率：</strong>' + likeWinner + ' 更高（' + Math.max(a.likeRate, b.likeRate).toFixed(1) + ' vs ' + Math.min(a.likeRate, b.likeRate).toFixed(1) + '/千播）。';
+  html += '</p>';
+
+  var coinWinner = a.coinLikeRatio > b.coinLikeRatio ? '#' + a.order : '#' + b.order;
+  html += '<p style="font-size:13px;color:var(--text);line-height:1.9;">';
+  html += '<strong>硬币/点赞比：</strong>' + coinWinner + ' 更高（' + Math.max(a.coinLikeRatio, b.coinLikeRatio).toFixed(0) + '% vs ' + Math.min(a.coinLikeRatio, b.coinLikeRatio).toFixed(0) + '%）。<span style="font-size:11px;color:var(--text-dim);">硬币是B站最贵的免费货币，高硬币/点赞比通常意味着核心粉丝认可度更高。</span>';
+  html += '</p>';
+
+  // 定位判断
+  html += '<div style="margin-top:16px;background:var(--bg-page);border-radius:4px;padding:12px 16px;">';
+  html += '<div style="font-size:11px;color:var(--text-dim);letter-spacing:1px;margin-bottom:6px;">内容定位判断</div>';
+
+  if (a.plays > b.plays && b.coinLikeRatio > a.coinLikeRatio) {
+    html += '<p style="font-size:12px;color:var(--text);line-height:1.8;">';
+    html += '<span style="color:#c95d3d;font-weight:600;">#' + a.order + '</span> 播放量更高但转化率偏低 → 更偏向<strong>热门/出圈型</strong>内容，吸引大量路人观众。<br>';
+    html += '<span style="color:#4d9b91;font-weight:600;">#' + b.order + '</span> 播放量较低但转化率出色 → 更偏向<strong>粉丝/核心向</strong>内容，受众虽窄但粘性极强。';
+    html += '</p>';
+  } else if (b.plays > a.plays && a.coinLikeRatio > b.coinLikeRatio) {
+    html += '<p style="font-size:12px;color:var(--text);line-height:1.8;">';
+    html += '<span style="color:#4d9b91;font-weight:600;">#' + b.order + '</span> 播放量更高但转化率偏低 → 更偏向<strong>热门/出圈型</strong>内容。<br>';
+    html += '<span style="color:#c95d3d;font-weight:600;">#' + a.order + '</span> 播放量较低但转化率出色 → 更偏向<strong>粉丝/核心向</strong>内容。';
+    html += '</p>';
+  } else {
+    html += '<p style="font-size:12px;color:var(--text);line-height:1.8;">两期视频在播放量和转化率上呈同一方向，说明该阶段的选题策略较为一致。</p>';
+  }
+  html += '</div>';
+
+  container.innerHTML = html;
+}
+
+// 启动
+buildSortBar();
+renderVideoGrid();
+buildCompareSelects();
+</script>
+
+<script src="common.js"></script>
+</body>
+</html>

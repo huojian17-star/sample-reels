@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>守望堡试炼 · 文字冒险 · BEST-辣椒</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.adventure-container { max-width: 680px; margin: 0 auto; }
+
+.scene-block {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 36px 32px;
+  box-shadow: 0 4px 20px rgba(169, 132, 70, 0.03);
+  margin-bottom: 24px;
+}
+
+.scene-label {
+  font-size: 11px; color: var(--text-dim); letter-spacing: 2px;
+  text-transform: uppercase; margin-bottom: 16px;
+}
+
+.scene-text {
+  font-size: 15px; color: var(--text); line-height: 2;
+  margin-bottom: 28px;
+}
+
+.scene-text em { color: var(--accent); font-style: normal; }
+
+.choices { display: flex; flex-direction: column; gap: 10px; }
+
+.choice-btn {
+  display: block; width: 100%; text-align: left;
+  padding: 14px 20px;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius); font-size: 14px; color: var(--text);
+  cursor: pointer; transition: all 0.2s; font-family: inherit; line-height: 1.6;
+}
+.choice-btn:hover {
+  border-color: var(--accent-dim); background: var(--bg-card-hover);
+  transform: translateX(4px);
+}
+
+.log-divider {
+  text-align: center; padding: 20px 0; color: var(--text-dim);
+  font-size: 13px; letter-spacing: 1px;
+}
+
+.log-entry {
+  padding: 10px 16px; margin-bottom: 6px;
+  border-left: 2px solid var(--border); font-size: 13px; color: var(--text-dim);
+  line-height: 1.7;
+}
+
+/* 结局特殊样式 */
+.ending-good { border-left-color: #8bab6a; }
+.ending-neutral { border-left-color: var(--accent-dim); }
+.ending-dark { border-left-color: var(--accent-physical); }
+
+.reset-btn {
+  display: inline-block; padding: 10px 32px;
+  background: var(--accent); color: #fff; border: none;
+  border-radius: var(--radius); font-size: 13px; cursor: pointer;
+  font-family: inherit; letter-spacing: 1px; transition: opacity 0.2s;
+  margin-top: 8px;
+}
+.reset-btn:hover { opacity: 0.85; }
+
+.side-stats {
+  display: flex; gap: 20px; margin-bottom: 24px; font-size: 12px;
+  color: var(--text-dim);
+}
+.side-stats span { font-weight: 600; }
+.stat-physical { color: var(--accent-physical); }
+.stat-magic { color: var(--accent-magic); }
+.stat-research { color: var(--accent-research); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">BEST-辣椒</a>
+    <div class="nav-links">
+      <a href="about.html">关于</a>
+      <a href="bilibili.html">B站</a>
+      <a href="worldbuilding.html">设定集</a>
+      <a href="novel.html">小说</a>
+      <a href="game-design.html">游戏设计</a>
+      <a href="game-analysis.html">游戏拆解</a>
+      <a href="script-analysis.html">文案拆解</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <p><a href="worldbuilding.html" class="back-link">&larr; 返回设定集</a></p>
+  <h1>守望堡试炼</h1>
+  <p>文字冒险 · 在艾瑞斯大陆的前沿要塞中做出你的选择</p>
+</div>
+
+<div class="content-section">
+<div class="adventure-container">
+
+  <div class="side-stats" id="stats-bar" style="display:none;">
+    物理倾向: <span class="stat-physical" id="stat-p">0</span> &nbsp;
+    魔法倾向: <span class="stat-magic" id="stat-m">0</span> &nbsp;
+    研究倾向: <span class="stat-research" id="stat-r">0</span>
+  </div>
+
+  <div id="scene-area"></div>
+  <div id="log-area"></div>
+
+</div>
+</div>
+
+<footer>
+  <p>BEST-辣椒 &copy; 2026 · 基于「艾瑞斯大陆」世界观构建</p>
+</footer>
+
+<script>
+// ====== 场景数据 ======
+const scenes = {
+  start: {
+    label: '守望堡 · 新兵报到',
+    text: '你站在<em>守望堡</em>的大门前。这座永固军事要塞建在悲叹裂隙外围，灰色的石墙高得仿佛要把天空切开。一个穿着旧军大衣的士官打量着你的装备清单，啐了一口。\n\n"新来的，嗯？正好，第四巡逻队缺一个人。不过——"他顿了顿，"你也可以去档案室帮学者们整理暗界生物的目击记录。或者去武器库帮铁匠打下手。你自己挑。"',
+    choices: [
+      { text: '加入第四巡逻队，直接上前线', next: 'patrol_intro', stat: 'physical' },
+      { text: '去档案室，那里也许有更重要的情报', next: 'archive_intro', stat: 'research' },
+      { text: '先去武器库，磨刀不误砍柴工', next: 'forge_intro', stat: 'magic' }
+    ]
+  },
+
+  // ====== 巡逻线 ======
+  patrol_intro: {
+    label: '悲叹裂隙 · 外围',
+    text: '第四巡逻队是一群沉默的人。他们走在你前面，脚步声整齐得让人不安。裂隙的外围是一片荒芜的黑色岩地，空气中弥漫着一股烧焦的金属味。\n\n突然，前方的斥候举起了拳头——全员停步。他指着左侧的岩缝：一个<em>影犬</em>的巢穴。不多，大概三只。\n\n"新人，"队长回头看你，"你觉得该怎么办？"',
+    choices: [
+      { text: '正面突击——影犬怕火，用火箭和长枪压制', next: 'patrol_fight', stat: 'physical' },
+      { text: '绕过去——我们的任务是巡逻，不是清剿', next: 'patrol_bypass', stat: 'research' },
+      { text: '设陷阱引它们出来，一个一个解决', next: 'patrol_trap', stat: 'magic' }
+    ]
+  },
+  patrol_fight: {
+    label: '正面突击',
+    text: '你举起长枪冲在最前面。影犬比想象中更快，但你的反应也不慢。三只影犬在五分钟内被解决，没有伤亡。\n\n队长拍了拍你的肩膀："不错。你让我想起了一个老朋友——他也是个不要命的枪兵。"\n\n你获得了一枚<em>守望堡青铜勋章</em>。队长说下次有更危险的任务会找你。',
+    choices: [
+      { text: '继续旅程', next: 'ending_patrol_good' }
+    ]
+  },
+  patrol_bypass: {
+    label: '绕道而行',
+    text: '你们悄无声息地绕开了巢穴。队长没有表扬你，但他也没有批评——在守望堡，活着回来比英雄主义更被尊重。\n\n回到要塞后，你把影犬巢穴的位置详细标注在了要塞的地图上。档案室的研究员对此非常感激。',
+    choices: [
+      { text: '继续旅程', next: 'ending_patrol_neutral' }
+    ]
+  },
+  patrol_trap: {
+    label: '陷阱战术',
+    text: '你用从武器库学来的知识设置了拌索和噪音诱饵。第一只影犬落入了陷阱，第二只试图逃跑时被弓箭手射中，第三只被你亲手解决。\n\n队长若有所思地看着你："你不是只会蛮干的人。也许你应该去跟要塞的魔导师聊聊。"',
+    choices: [
+      { text: '继续旅程', next: 'ending_patrol_good' }
+    ]
+  },
+
+  // ====== 档案线 ======
+  archive_intro: {
+    label: '守望堡 · 档案室',
+    text: '档案室比你想的要小得多。一个头发花白的学者从堆积如山的卷宗后面抬起头来，眼镜片厚得像玻璃瓶底。\n\n"新来的助手？好极了。我正在整理过去三个月的暗界生物目击记录，但数据太乱了——光凭这些我无法判断裂隙的活动趋势。"\n\n他向你展示了两叠文件：一叠是巡逻队的目击报告，笔迹潦草；另一叠是能量探测仪的数据记录，满是奇怪的符号。',
+    choices: [
+      { text: '整理巡逻队的目击报告——虽然乱，但亲历者的话最可靠', next: 'archive_reports', stat: 'research' },
+      { text: '分析能量探测数据——符号虽然复杂，但一定有规律', next: 'archive_data', stat: 'magic' },
+      { text: '去巡逻队亲自采访——二手资料不如一手访谈', next: 'archive_interview', stat: 'physical' }
+    ]
+  },
+  archive_reports: {
+    label: '目击报告',
+    text: '你花了整个下午仔细比对每一份报告。笔迹虽然潦草，但其中有一个细节引起了你的注意：过去两周，目击到<em>深渊潜伏者</em>的报告中，有七成集中在月圆之夜前后。\n\n你在报告中补充了这项发现。学者沉默了很久，然后缓缓地说："你应该去中心市研究院。这种洞察力在这里太浪费了。"',
+    choices: [
+      { text: '继续旅程', next: 'ending_archive_good' }
+    ]
+  },
+  archive_data: {
+    label: '能量数据',
+    text: '能量探测仪的数据确实复杂——但你注意到某种周期性的波动，与天际市的双月历法（塞莱妮和墨恩的运行周期）惊人地吻合。\n\n学者兴奋地几乎打翻了他的茶杯。"这解释了为什么我们的防御总是慢半拍——我们用的是错误的历法来预测暗界活动！"',
+    choices: [
+      { text: '继续旅程', next: 'ending_archive_good' }
+    ]
+  },
+  archive_interview: {
+    label: '实地访谈',
+    text: '你找到了刚下哨的巡逻队员们。在食堂里，一边喝着热汤一边聊天，你获得了比书面报告丰富得多的细节——包括一些被巡逻队长出于谨慎而故意省略的可疑迹象。\n\n但你也因此错过了整理数据的最佳时间。学者对你的成果表示了部分肯定，但完整的分析只能等下次了。',
+    choices: [
+      { text: '继续旅程', next: 'ending_archive_neutral' }
+    ]
+  },
+
+  // ====== 武器线 ======
+  forge_intro: {
+    label: '守望堡 · 武器库',
+    text: '武器库的铁匠是个来自岩湖市的壮汉，两臂的纹身表明他是"深岩之子"总会的成员。他正在锻造一把符文剑，锤子落在铁砧上的声音像心跳一样规律。\n\n"新兵？会打铁吗？"他指了指角落里的一个木箱，"那是从裂隙附近挖出来的矿石，品质不错，但我没法同时锻剑和鉴定它。你要是能帮我鉴定这批矿石，我就用边角料帮你打一件装备。"',
+    choices: [
+      { text: '直接上锻台——我想亲手打造自己的装备', next: 'forge_smith', stat: 'physical' },
+      { text: '用鉴定术分析矿石的魔法属性', next: 'forge_identify', stat: 'magic' },
+      { text: '先查阅矿石图鉴，搞清楚这批矿石的来源和特性', next: 'forge_research', stat: 'research' }
+    ]
+  },
+  forge_smith: {
+    label: '亲手锻造',
+    text: '你在铁砧前站了四个小时。铁匠在一旁指点，偶尔用他的大锤帮你修正角度。最终你打出了一把虽然粗糙但相当趁手的长剑。\n\n"不错，"铁匠说，"下次来岩湖市，去深岩之子的铺子找我。我们那里总有活儿给会用锤子的人。"',
+    choices: [
+      { text: '继续旅程', next: 'ending_forge_good' }
+    ]
+  },
+  forge_identify: {
+    label: '矿石鉴定',
+    text: '你闭上眼睛，将手放在矿石上。一股微弱但清晰的能量脉冲回应了你——这块矿石里有<em>穹顶晶体</em>的微量成分。\n\n铁匠的眼睛亮了。"穹顶？！哪怕是一点点，都足以让这把符文剑的强度提升一个档次。你帮了我一个大忙，小子。"',
+    choices: [
+      { text: '继续旅程', next: 'ending_forge_good' }
+    ]
+  },
+  forge_research: {
+    label: '文献研究',
+    text: '你在武器库的旧书架上找到了一本《边境矿脉图鉴》。通过比对纹理、硬度和色泽，你确认这批矿石来自一处尚未被岩湖市三大总会登记的矿脉——这意味着它可能非常有价值。\n\n铁匠吹了声口哨。"你确定吗？如果属实，你应该去中心市找地质管理局登记发现权。"',
+    choices: [
+      { text: '继续旅程', next: 'ending_forge_neutral' }
+    ]
+  },
+
+  // ====== 结局 ======
+  ending_patrol_good: {
+    label: '结局 · 前线之魂',
+    text: '你在守望堡的第一次试炼以出色的表现告终。也许若干年后，会有人传唱你的名字——就像里昂·铁喉在《尤尔之陨》中歌颂的那些英雄一样。\n\n但此刻，你只是站在要塞的城墙上，看着远处悲叹裂隙上方那片永恒的暗紫色天空。风很大，你紧了紧衣领。明天还有巡逻。',
+    ending: 'good',
+    choices: [{ text: '回到起点，再次踏上旅程', next: 'start' }]
+  },
+  ending_patrol_neutral: {
+    label: '结局 · 守望者之路',
+    text: '你不是最耀眼的那一个。但你准时出现在每一次巡逻、每一场值班。守望堡像一个巨大的机器，而你是其中一颗可靠的齿轮。\n\n也许没人会写歌来唱你，但每个在要塞活过三年以上的老兵都明白：英雄会死，而守卫一直会在。',
+    ending: 'neutral',
+    choices: [{ text: '回到起点，再次踏上旅程', next: 'start' }]
+  },
+  ending_archive_good: {
+    label: '结局 · 真相的代价',
+    text: '你发现了一个被所有人忽略的关键线索。当你的分析结果被送到中心市时，档案上多了一个标注："建议晋升至三级研究员"。\n\n但你同时也注意到，某些与你分析相矛盾的官方记录，似乎被人刻意修改过。你想起西里尔·安瑟伦——那个在出版《能力者图鉴》前夕死于家中的"最后的博学家"。\n\n你决定谨慎行事。至少现在，你先把那几页矛盾的数据藏在了档案室最深的抽屉里。',
+    ending: 'good',
+    choices: [{ text: '回到起点，再次踏上旅程', next: 'start' }]
+  },
+  ending_archive_neutral: {
+    label: '结局 · 档案深处',
+    text: '你的工作引起了学者的注意，但还不足以改变什么。他给了你一个"良好"的评价和一张推荐信——如果你想申请中心市研究院的职位，这封信也许有用。\n\n你离开档案室时，注意到一扇标着"三级权限"的门虚掩着。里面传来低声的争论。你加快了脚步。',
+    ending: 'neutral',
+    choices: [{ text: '回到起点，再次踏上旅程', next: 'start' }]
+  },
+  ending_forge_good: {
+    label: '结局 · 铁与火之歌',
+    text: '铁匠用他的大手拍了拍你的背——这比任何勋章都更有分量。你带着新装备离开了武器库，感到每一步都更有底气。\n\n岩湖市的三大矿业总会也许终有一天会为了争夺像你这样的人才而明争暗斗。但此刻你只想做好手头的事。一块好铁需要好铁匠，而你已经迈出了第一步。',
+    ending: 'good',
+    choices: [{ text: '回到起点，再次踏上旅程', next: 'start' }]
+  },
+  ending_forge_neutral: {
+    label: '结局 · 未开发的矿脉',
+    text: '你发现了一条有价值的线索，但把它变成实际的收获还需要更多努力——去中心市登记、找富华城的商会投资、或者和岩湖市的总会谈判。\n\n铁匠给了你一个忠告："别急着做决定。在艾瑞斯大陆，资源是最锋利的武器——比剑更锋利，比法术更持久。想好了再出手。"',
+    ending: 'neutral',
+    choices: [{ text: '回到起点，再次踏上旅程', next: 'start' }]
+  }
+};
+
+// ====== 状态 ======
+let stats = { physical: 0, magic: 0, research: 0 };
+let log = [];
+let currentScene = 'start';
+
+const sceneArea = document.getElementById('scene-area');
+const logArea = document.getElementById('log-area');
+const statsBar = document.getElementById('stats-bar');
+
+function updateStats() {
+  document.getElementById('stat-p').textContent = stats.physical;
+  document.getElementById('stat-m').textContent = stats.magic;
+  document.getElementById('stat-r').textContent = stats.research;
+}
+
+function renderScene(id) {
+  const s = scenes[id];
+  if (!s) return;
+
+  // 更新统计
+  if (s.stat) {
+    stats[s.stat]++;
+    updateStats();
+  }
+
+  // 记录日志（非结局和初始场景）
+  if (id !== 'start' && !id.startsWith('ending_')) {
+    log.push({ label: s.label, text: s.text.substring(0, 150) + '…' });
+  }
+
+  statsBar.style.display = 'flex';
+
+  let endingClass = '';
+  if (s.ending === 'good') endingClass = 'ending-good';
+  else if (s.ending === 'neutral') endingClass = 'ending-neutral';
+  else if (s.ending === 'dark') endingClass = 'ending-dark';
+
+  const choicesHTML = s.choices.map(c => {
+    if (c.next === 'start') {
+      return `<button class="choice-btn" onclick="resetAdventure()" style="text-align:center;color:var(--accent);">${c.text}</button>`;
+    }
+    return `<button class="choice-btn" onclick="navigateTo('${c.next}')">${c.text}</button>`;
+  }).join('');
+
+  sceneArea.innerHTML = `
+    <div class="scene-block ${endingClass}">
+      <div class="scene-label">${s.label}</div>
+      <div class="scene-text">${s.text.replace(/\n/g, '<br>')}</div>
+      <div class="choices">${choicesHTML}</div>
+    </div>
+  `;
+
+  // 渲染日志
+  if (log.length > 0) {
+    logArea.innerHTML = `
+      <div class="log-divider">—— 历险足迹 ——</div>
+      ${log.map(l => `<div class="log-entry">${l.label}: ${l.text}</div>`).join('')}
+    `;
+  }
+}
+
+function navigateTo(id) {
+  currentScene = id;
+  renderScene(id);
+}
+
+function resetAdventure() {
+  stats = { physical: 0, magic: 0, research: 0 };
+  log = [];
+  currentScene = 'start';
+  updateStats();
+  logArea.innerHTML = '';
+  renderScene('start');
+}
+
+// 启动
+renderScene('start');
+</script>
+
+<script src="common.js"></script>
+</body>
+</html>

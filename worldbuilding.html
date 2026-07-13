@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>艾瑞斯大陆设定集 · BEST-辣椒</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">BEST-辣椒</a>
+    <div class="nav-links">
+      <a href="about.html">关于</a>
+      <a href="bilibili.html">B站</a>
+      <a href="worldbuilding.html">设定集</a>
+      <a href="novel.html">小说</a>
+      <a href="game-design.html">游戏设计</a>
+      <a href="game-analysis.html">游戏拆解</a>
+      <a href="script-analysis.html">文案拆解</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <p><a href="index.html" class="back-link">&larr; 返回首页</a></p>
+  <h1>艾瑞斯大陆设定集</h1>
+  <p>独立构建的原创奇幻世界观 · 累计六万余字</p>
+</div>
+
+<div class="content-section">
+
+  <!-- 搜索栏 -->
+  <div id="world-search-bar" style="z-index:50;background:var(--bg-alt);padding:16px 32px;margin:0 -32px 24px;border-bottom:2px solid var(--accent-dim);">
+    <div style="display:flex;gap:8px;align-items:center;max-width:100%;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="2" style="flex-shrink:0;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="world-search-input" placeholder="输入关键词搜索设定集..." style="flex:1;padding:10px 0;border:none;font-size:15px;font-family:inherit;background:transparent;color:var(--text);outline:none;">
+      <span id="search-count" style="font-size:11px;color:var(--text-dim);white-space:nowrap;min-width:50px;text-align:right;"></span>
+      <button id="search-prev-btn" style="background:var(--bg-card);border:1px solid var(--border);padding:6px 10px;border-radius:4px;font-size:12px;cursor:pointer;font-family:inherit;color:var(--text-dim);line-height:1;" title="上一个匹配">↑</button>
+      <button id="search-next-btn" style="background:var(--bg-card);border:1px solid var(--border);padding:6px 10px;border-radius:4px;font-size:12px;cursor:pointer;font-family:inherit;color:var(--text-dim);line-height:1;" title="下一个匹配">↓</button>
+    </div>
+  </div>
+
+  <!-- ====== 一、世界概览 ====== -->
+  <h2>一、世界概览</h2>
+  <p>「艾瑞斯大陆」是一个以<strong>"物理侧""魔法侧""研究侧"</strong>三足鼎立为核心的奇幻世界。物理侧能力者利用冷/热兵器和身体强化进行战斗（职阶如剑术师、骑士、刺客等），魔法侧能力者类似哈利波特或奇异博士那样施展法术（职阶如元素法师、咒术师、幻术师等），而<strong>研究侧</strong>则是无能力的普通人——他们依靠权力、资本和制度居中制衡，主导公会系统、法律制定与经济管理。</p>
+
+  <p>三侧的博弈构成了整个世界的底层张力：能力者掌握力量，但研究侧掌握秩序；元老会议由物理侧与魔法侧的元老级别人物组成，拥有顶层决策权，但日常行政由研究侧把持。这种"无能力者统治有能力者"的政治结构，是艾瑞斯大陆最根本的设定特征。</p>
+
+  <div class="quote-block">
+    <p>"物理侧是剑，魔法侧是盾，而研究侧是握剑盾的手。" —— 元老会议首席长老就职宣言</p>
+  </div>
+
+  <!-- ====== 二、能力体系 ====== -->
+  <h2>二、能力体系</h2>
+
+  <h3>三大侧系</h3>
+  <div class="split-grid">
+    <div class="split-card">
+      <h4 style="color:var(--accent-physical);">物理侧 &mdash; 血肉与钢铁</h4>
+      <p>能力偏重利用冷/热兵器和身体强化。七职阶：</p>
+      <ul>
+        <li><strong>剑术师</strong>：近战剑技专精</li>
+        <li><strong>骑士</strong>：专属马匹，机动力远超普通马车3-4倍</li>
+        <li><strong>刺客</strong>：潜行与情报获取</li>
+        <li><strong>狂战士</strong>：极致攻击力</li>
+        <li><strong>盾兵</strong>：防御与护卫</li>
+        <li><strong>枪兵</strong>：长柄武器专精</li>
+        <li><strong>弓兵</strong>：远程精准打击</li>
+      </ul>
+    </div>
+    <div class="split-card">
+      <h4 style="color:var(--accent-magic);">魔法侧 &mdash; 意志与元素</h4>
+      <p>能力类似法术施展，七职阶：</p>
+      <ul>
+        <li><strong>元素法师</strong>：操控火水风土</li>
+        <li><strong>咒术师</strong>：诅咒与祝福</li>
+        <li><strong>幻术师</strong>：制造幻象、认知干预</li>
+        <li><strong>治愈师</strong>：最受尊敬的职阶</li>
+        <li><strong>屏障建构师</strong>：防护结界</li>
+        <li><strong>魔导师</strong>：六阶以上可短距离传送（九阶可达50公里）</li>
+        <li><strong>召唤师</strong>：五阶以上可召唤飞龙（极速约63.5米/秒）</li>
+      </ul>
+    </div>
+  </div>
+
+  <p style="margin-top:20px;"><strong>研究侧</strong>：自身无能力，但研究他人能力来探究能力本质。提供"公会"系统，拥有专业的后勤、法律、经济学者团队。表面上是"服务者"，实则通过制度设计掌控着大陆的核心权力。</p>
+
+  <h3>主修/辅修制</h3>
+  <p>同一侧的能力者可以主修一个职阶并辅修另一个职阶。但<strong>物理侧不能辅修魔法侧职阶，魔法侧同理</strong>——否则体内两股能量会冲突导致暴毙。大陆历史上曾有最高同时修四个职阶的能力者，但辅修越多，主修越弱，最终样样不精。（收录于《艾瑞斯大陆能力者图鉴》）</p>
+
+  <h3>等级体系：一阶至十阶</h3>
+  <p>每个职阶均有等级制度，每级可学习不同的能力。升级评估依据四大板块：<strong>力量、速度、技巧、思维</strong>（魔法侧额外增加"掌控度"和"释放威力"）。</p>
+
+  <p>初习能力者强制从一阶开始。完成一次任务后，经四大板块考核可重新评定等级。早期寰宇城曾有枪兵初习者在讨伐魔物后，因表现出色直接从一阶跃升至三阶。</p>
+
+  <div class="classified-box">
+    <h4>一级机密：第十阶「神话位阶」</h4>
+    <p>十阶能力者被称为"法则化身"或"神话位阶"，其存在本身即可对局部现实规则产生可观测的、持续性的干涉。无法通过标准化考核认定晋升，唯一客观依据是引发大规模"现实参数异常现象"。</p>
+    <p>历史上仅<strong>三位确认案例</strong>：</p>
+    <ul>
+      <li><strong>「统帅」尤尔</strong>（物理侧）：神阶特质为【绝对统御】，在大范围内形成群体意志统合与强化场</li>
+      <li><strong>「源点」玻利瓦尔</strong>（魔法侧）：神阶特质为【根源操纵】，将自身意识与"魔法本源海"融合</li>
+      <li><strong>「调停者」</strong>（身份已涂抹，幻术师存疑）：神阶特质为【信息绝对权】，可对群体认知进行绝对性植入与修改</li>
+    </ul>
+    <p>元老会议战略框架下，神阶相关事务适用Ω级威胁预案。神阶能力者是文明面对绝对性毁灭威胁时的最终理论防线。</p>
+  </div>
+
+  <!-- ====== 三、五大城市 ====== -->
+  <h2>三、五大城市</h2>
+
+  <div class="split-grid">
+    <div class="split-card">
+      <h4 style="color:var(--accent-physical);">寰宇市 &mdash; 物理侧聚集区</h4>
+      <p>风格近似苏联中期，粗犷尚武。居民以物理侧能力者为主，角斗场文化盛行。奥莱因教的信仰中心，广场上矗立着赫尔加·斯顿贝克的著名雕塑《尤尔之陨》。方言"奥莱因铁舌"铿锵有力，咬字极重。</p>
+    </div>
+    <div class="split-card">
+      <h4 style="color:var(--accent-magic);">天际市 &mdash; 魔法侧聚集区</h4>
+      <p>继承古索莱恩城邦的秘法传统，神秘学与高雅气质混杂。高阶法师们倾向于使用基于双月周期的"星月循环"历法。方言"索莱恩秘语"轻柔婉转如吟唱。玻利瓦尔的相关研究在此被严密封锁。</p>
+    </div>
+    <div class="split-card">
+      <h4 style="color:var(--accent-research);">中心市 &mdash; 研究侧总部</h4>
+      <p>中美体制混合物，理性秩序。中央档案馆储存着从公开史料到一级机密的所有知识。大陆图书馆、中央银行、法务研究所均设于此。方言毫无地方特色，极度清晰——"标准音"的地位类似于新华社。</p>
+    </div>
+    <div class="split-card">
+      <h4 style="color:#6b5b52;">岩湖市 &mdash; 矿业重镇</h4>
+      <p>三大矿业总会寡头竞争：「深岩之子」（稀有金属）、「穹顶之指」（穹顶矿石垄断）、「磐石联合」（基础矿产）。穹顶矿脉的发现重塑了大陆力量格局。方言"深岩低语"惜字如金，近乎单词电报。</p>
+    </div>
+    <div class="split-card" style="grid-column: 1 / -1;">
+      <h4 style="color:#c5a059;">富华城 &mdash; 商业中心</h4>
+      <p>六十年代美国黄金时期风格，市井浮华。大陆金融心脏——金狮鹫币的发行、商业储蓄银行、贸易博览会均在此。也是西尔维娅·佩恩"世俗派"艺术的发源地，《三枚银鹿角》的故事就发生在这里的"碎铃铛"小巷。方言"金湾快嘴"语速极快，连读吞音严重。</p>
+    </div>
+  </div>
+
+  <p style="margin-top:20px;">各城市之间人员不断流通，内部还有"镇"和"村"等更小的聚落单位。各地方言不同，但存在通用语言。不同城市的习俗差异巨大——寰宇市和岩湖市粗犷、富华城浮华、天际市神秘、中心市理性。</p>
+
+  <!-- ====== 四、社会系统 ====== -->
+  <h2>四、社会系统</h2>
+
+  <h3>货币体系</h3>
+  <p><strong>1枚金狮鹫币 = 10枚银鹿角币 = 500枚棕熊铜币</strong>。村/镇集市以棕熊铜币为主流；市区则使用银鹿角币和金狮鹫币，用于购买高级装备、药剂等。各地存在官方默许的"私有货币"，如岩湖城矿区中铁石矿作为替代货币流通。金狮鹫币体系由天才经济学家阿尔德里奇设计，其最后笔记中留下了著名暗语："狮鹫俯瞰，鹿角穿梭，而熊，终将觉醒。"</p>
+
+  <h3>政治架构</h3>
+  <p>研究侧主导日常行政，但顶层决策需经<strong>元老会议</strong>（物理侧与魔法侧元老级别人物）共同裁决。元老会议历以会议成立之年为纪元起点（CCC），之前的历史记为"前元老会议历"（Pre-CCC）。这一架构的微妙之处在于：研究侧掌握行政权，但元老会议中的能力者们拥有否决权——双方既相互制衡，又相互依赖。</p>
+
+  <h3>法律体系</h3>
+  <p>六部核心法典：《艾瑞斯大陆宪法》《能力者管理总则》《岩湖市矿区管理条例》《富华城商业规范》《日常管理条例》《地方自治权管理条例》。由中心市法务研究所制定，元老会议批准。执法部门招聘要求主修职阶三阶以上。灰色地带存在黑市，官方默许但不可招摇。</p>
+
+  <h3>教育体系</h3>
+  <p>教科书由中心市统一编订。6-12岁义务教育阶段后分轨：觉醒为能力者→公会考试→能力者学校（天赋异禀者学费由市级财政保障）；未觉醒→普通考试（文学/数理逻辑学/语言学）→中学/大学→可进入中心市研究院或从事商业、医疗、矿业等职业。</p>
+
+  <div class="split-grid">
+    <div class="split-card">
+      <h4>宗教体系</h4>
+      <p>早期研究侧压制宗教，后经元老会议裁决自由发展：</p>
+      <ul>
+        <li><strong>奥莱因教</strong>（物理侧）：信仰神之子「尤尔」，催生了英雄情结，也异变出崇尚毁灭的"战争教会"</li>
+        <li><strong>玻利瓦尔信仰</strong>（魔法侧）：被称为"魔法的源头"，故事神秘拗口，信仰飘忽不定</li>
+        <li><strong>巫黑之神</strong>（暗界）：代表吞噬、虚无与毁灭，人界禁止传播</li>
+      </ul>
+    </div>
+    <div class="split-card">
+      <h4>医疗体系</h4>
+      <p>村镇设"治疗点"（普通感冒约3棕熊币，骨折等约10银鹿角币）；市区设"救治中心"，由治愈师和顶尖医疗学者驻诊，费用更高。治愈师职阶在大瘟疫（CCC前150年）中证明价值后，成为最受尊敬的职阶之一。</p>
+    </div>
+  </div>
+
+  <h3>交通体系</h3>
+  <p>普通人以马车为主（约3棕熊币/公里），水路帆船（约2棕熊币/公里）。中心市正研发"汽车"。能力者则有专属方式：骑士马匹快3-4倍、魔导师短距离传送（六阶500米→九阶50公里）、召唤师飞龙（极速63.5米/秒）。</p>
+
+  <h3>艺术与娱乐</h3>
+  <p>大陆四大艺术流派：</p>
+  <ul>
+    <li><strong>奥莱因现实主义</strong>（赫尔加·斯顿贝克）：歌颂英雄形体与崇高情感，代表作《尤尔之陨》雕塑</li>
+    <li><strong>索莱恩秘义派</strong>（埃拉多·维恩）：表现不可见之物的本质，画作《第十三种凝视》每次观看形态不同</li>
+    <li><strong>研究侧结构主义</strong>（利奥波德·克莱因）：形式追随功能，定义中心市冷峻理性的城市风貌</li>
+    <li><strong>富华城世俗派</strong>（西尔维娅·佩恩）：为凡人立传，《三枚银鹿角》震撼了整个大陆</li>
+  </ul>
+
+  <p>娱乐方面：歌剧院、角斗场（物理侧）、决斗场、魔术会演（魔法侧）遍布各市。灰色地带存在赌场和妓院。四大吟游诗人——里昂·铁喉（《尤尔之陨》）、塞莱娜·维恩斯特（《玻利瓦尔的十二瞥视》）、阿尔瓦罗·克莱恩（《丰碑无需刀剑》）、西尔维娅·佩恩（《三枚银鹿角》）——各自代表不同的阵营立场。</p>
+
+  <!-- ====== 五、核心历史 ====== -->
+  <h2>五、核心历史：奥莱因战争</h2>
+
+  <h3>混沌纪元</h3>
+  <p>在元老会议历建立前，人类文明分散成数个城邦，在恶劣环境和暗界生物的侵袭下挣扎求存。当时的主要势力包括：<strong>奥莱因王国</strong>（西方锻火之邦，物理侧雏形）、<strong>索莱恩城邦</strong>（北方秘法之邦，魔法侧雏形）、<strong>海裔民同盟</strong>（东方商业城邦联盟）、以及已被暗界摧毁的<strong>卡尔纳克王国</strong>（南方巨石之邦，其文明彻底掩埋在黄沙之下）。</p>
+
+  <h3>神之子与联盟</h3>
+  <p>天火坠落后，婴孩<strong>尤尔（Yul）</strong>被发现于山巅，身旁插着燃烧银焰的断剑。他重铸断剑为"秩序之光"，成为奥莱因军事统帅。尤尔深知孤军难胜，艰难促成了抗暗界联盟：奥莱因提供战士与武器，索莱恩提供幻术、屏障与预言，海裔民以贸易换取粮食药品。</p>
+
+  <p>战争持续数十年，以三场战役著称：<strong>血岩峡谷之战</strong>（证明暗界可被战胜）、<strong>坚守镜湖之围</strong>（展现尤尔智谋）、<strong>终焉之门战役</strong>（最终决战）。在终焉之门，尤尔与"暗影主宰"决战，以燃烧生命为代价将秩序之光插入悲叹裂隙，封印了暗界通道。</p>
+
+  <h3>背叛与陨落</h3>
+  <p>尤尔牺牲后，联盟迅速瓦解。奥莱因陷入"守护派"与"征服派"的残酷内斗。一场针对索莱恩圣所的袭击引发了<strong>"秘法之断"</strong>——索莱恩秘法师启动巨大法术，引发地脉变动，用迷雾将奥莱因与外界隔绝。在内耗、孤立与资源枯竭中，奥莱因王国分崩离析。</p>
+
+  <h3>战争遗产</h3>
+  <p>奥莱因战争彻底重塑了大陆：物理侧将尤尔神化，形成奥莱因教；魔法侧主动抹去战争贡献记录，将历史转化为晦涩秘仪；海裔民吸收流散人口发展为富华城；幸存学者建立了研究侧和中心市。物理侧与魔法侧之间的不信任种子，就此埋下。</p>
+
+  <p style="font-size:13px;color:var(--text-dim);">（注：上述为公众版本。战争真相中，索莱恩一位名为"博-L-瓦尔"的秘法大师在最终战役中发挥了扭转乾坤的作用，但此记录被封存于一级机密档案。详见下文。）</p>
+
+  <h3>后续重大事件</h3>
+  <ul>
+    <li><strong>大瘟疫（CCC前150年）</strong>：席卷大陆的瘟疫确立了治愈师职阶的地位，催生了最早的公共卫生体系</li>
+    <li><strong>法典统一战争（CCC 50-80年）</strong>：研究侧推行统一法典，遭寰宇市和富华城抵制，最终由匿名高阶幻术师调停</li>
+    <li><strong>暗潮再起（CCC 220-230年）</strong>：悲叹裂隙封印衰弱，暗界再次涌出。战后建立永固军事要塞"守望堡"</li>
+    <li><strong>富华城大萧条（CCC 350-370年）</strong>：经济危机后建立统一的金狮鹫币体系，研究侧权力渗透至经济毛细血管</li>
+    <li><strong>穹顶发现（CCC 480年）</strong>：碎岩山地深处发现稀有能量晶体矿脉，引发新一轮资源竞争，研究侧掌控了关键战略资源</li>
+  </ul>
+
+  <!-- ====== 六、核心理论著作 ====== -->
+  <h2>六、核心理论著作</h2>
+
+  <div class="split-grid">
+    <div class="split-card">
+      <h4>《银行、货币体系与经济命脉》</h4>
+      <p>阿尔伯图斯·维尔著，CCC 385年出版，大陆经济学基石之作。分四卷论述货币本质（"货币的本质是信用"）、银行系统运作、非官方经济体系（黑市、私有货币）、经济政策与周期性波动。书中那句"狮鹫俯瞰全局，鹿角穿梭流通，而沉睡的棕熊，终有一天会被贪婪或绝望唤醒"被视为对危机的隐晦预言。</p>
+    </div>
+    <div class="split-card">
+      <h4>《论能力者与非能力者的劳动》</h4>
+      <p>维尔又一力作。提出核心框架：<strong>"能力"本身是一种稀缺生产要素</strong>。论证一个三阶火焰法师的效率相当于五十名非能力者总和。提出著名的<strong>"维尔悖论"</strong>："一个社会的繁荣度取决于其能力者所能达到的生产力高度，而一个社会的稳定度则取决于其非能力者所能获得的生活保障下限。"第六章详细分析了公会任务经济体系。</p>
+    </div>
+    <div class="split-card">
+      <h4>《艾瑞斯大陆能力者图鉴》</h4>
+      <p>西里尔·安瑟伦著，CCC 485年初出版。系统记录十四大职阶的能力进阶图表。但最具传奇色彩的是其<strong>失落的终章"万流归源：关于'天赋'之根的猜想"</strong>——提出了四种颠覆性假说（上古契约、外域遗泽、集体潜意识觉醒、人造之物）。终章在出版前被撤回，西里尔本人也在发行前夜被发现死于家中。官方结论为"过劳"，但他所有关于能力起源的手稿同时不翼而飞。</p>
+    </div>
+    <div class="split-card">
+      <h4>《艾瑞斯大陆社会生态研究》</h4>
+      <p>中心市社会研究所官方权威社会百科全书，定期修订。涵盖衣食住行（各地饮食/服饰/居住风格）、经济科技（职业百工图、魔导工程）、社会秩序（五大城市详述、法律与治理、公共设施与福利）。代表研究侧的"官方视角"。</p>
+    </div>
+  </div>
+
+  <!-- ====== 七、最高机密档案 ====== -->
+  <div class="classified-box">
+    <h4>一级机密：暗界五大起源假说</h4>
+    <p>暗界的起源是艾瑞斯大陆最大的未解之谜。元老会议官方立场为"不作定论，以防任何单一理论被利用"。内部档案收录五种假说：</p>
+    <ol>
+      <li><strong>"失败的创世"</strong>（魔法侧主流）：暗界是创世过程的副产品，是人界的黑暗倒影</li>
+      <li><strong>"古神尸骸"</strong>（奥莱因教廷观点）：太古神祇的死亡尸骸化为暗界，为战争教会提供"净化"的理论依据</li>
+      <li><strong>"实验失控"</strong>（研究侧高度怀疑）：暗界源于史前文明的禁忌实验，最令人不安——意味着悲剧可能重演</li>
+      <li><strong>"异维度入侵"</strong>（基于空间魔法）：暗界是毗邻的敌对维度，研究重点应放在加固维度壁垒</li>
+      <li><strong>"集体意识阴影"</strong>（幻术师学派）：暗界是智慧生物集体负面情绪的具象化——战争本身会不断滋养暗界</li>
+    </ol>
+  </div>
+
+  <div class="classified-box">
+    <h4>一级机密：玻利瓦尔的真相</h4>
+    <p>玻利瓦尔<strong>不是一个人，也不是一个神</strong>。它是一个"现象"、一个"协议"、一个"回路"。</p>
+    <p>魔法侧的"集体潜意识海"中，因智慧生物的强烈情绪（尤其是对暗界的恐惧和绝境中的求生意志）与原始魔法能量结合，自发涌现出一个宏大的、非人的"自我调节系统"。它的核心指令非常简单：<strong>"定义威胁"然后"凝聚力量"</strong>。</p>
+    <p>它通过定义"暗界"来创造一个可以被理解和对抗的"敌人"，同时从智慧生物中筛选出能与自身共鸣的个体，授予他们魔法能力（职阶、法术、等级）。魔法师的成长本质上是与系统同步率的提高——他们的魔法是从系统中"调用"预设好的"程序"。</p>
+    <p>如果这个真相揭开，将导致：魔法的高贵与神秘感荡然无存；与暗界的战争可能只是系统维持自身的"无限循环"；为了维持"威胁"以继续"凝聚"，系统是否会主动强化暗界？这场战争是否永无尽头？</p>
+    <p style="font-size:12px;color:var(--accent-physical);">安全警告：对"玻利瓦尔"的深入研究可能导致严重的认知偏差与精神不稳定。档案仅限元老会议首席长老及指定首席历史学家查阅。</p>
+  </div>
+
+  <!-- ====== 八、历法体系 ====== -->
+  <h2>八、历法体系</h2>
+  <p><strong>元老会议历（CCC）</strong>由中心市天文与历史学者团队制定，是大陆官方通用历法。以"元老会议成立之年"为纪元起点。一年12个月（初生月、雨月、芽月、花月、阳月、暑月、收获月、金月、雾月、寒月、影月、炉火月），每月30日，全年360日。外加5个"庆典日"（新年、仲夏、丰收、先祖之夜、星辰归位），每四年增加第6个闰日。</p>
+  <p>同时并行的还有物理侧"奥莱因英雄纪年"、魔法侧"星月循环"（基于双月：银白色塞莱妮与湛蓝色墨恩的运行周期）、以及各地古老的地方历法。研究侧最高学术圈还使用"学术纪元"进行超长跨度研究。</p>
+
+  <!-- ====== 九、方言系统 ====== -->
+  <h2>九、方言系统</h2>
+  <div class="split-grid">
+    <div class="split-card">
+      <h4>奥莱因铁舌（寰宇市）</h4>
+      <p>铿锵有力，咬字极重。"这件事很重要"→"杰见儿事恨仲要嗷"，尾音拉长元音</p>
+    </div>
+    <div class="split-card">
+      <h4>索莱恩秘语（天际市）</h4>
+      <p>轻柔平滑如吟唱。"这个法术很精妙"→"泽伊法舒很晶缪哦"</p>
+    </div>
+    <div class="split-card">
+      <h4>金湾快嘴（富华城）</h4>
+      <p>语速极快，连读吞音。"这样不行，得加钱"→"酱布行得加钱诶"</p>
+    </div>
+    <div class="split-card">
+      <h4>深岩低语（岩湖市）</h4>
+      <p>极度简化，惜字如金。"下面危险，小心"→"下。险。慎。"</p>
+    </div>
+  </div>
+  <p style="margin-top:16px;">中心市方言无任何地方特色，字正腔圆——即为通用语标准发音。任何偏离标准的发音都会被礼貌地纠正："请您按照语音标准重新陈述一遍。"</p>
+
+  <div style="text-align:center;margin-top:56px;padding:40px 0;border-top:1px solid var(--border);">
+    <a href="worldbuilding-full.html" style="display:inline-block;padding:14px 40px;background:var(--accent);color:#fff;text-decoration:none;border-radius:4px;font-size:15px;font-weight:500;letter-spacing:1px;transition:opacity 0.2s;">阅读设定集全文（六万字原版） →</a>
+    <p style="color:var(--text-dim);font-size:13px;margin-top:16px;">含方言对照指南、机密档案、历史年表等共16个章节</p>
+  </div>
+
+</div>
+
+<footer>
+  <p>BEST-辣椒 &copy; 2026 · <a href="https://space.bilibili.com/518565512" target="_blank" rel="noopener" style="color:var(--text-dim);">B站主页</a></p>
+</footer>
+
+<script src="common.js"></script>
+<script>
+// ====== 设定集搜索 ======
+(function() {
+  var content = document.querySelector('.content-section');
+  if (!content) return;
+
+  var searchable = [];
+  var tags = ['P', 'H2', 'H3', 'H4', 'LI', 'TD', 'TH', 'DT', 'DD', 'BLOCKQUOTE', 'FIGCAPTION'];
+  var allElements = content.querySelectorAll(tags.join(','));
+  for (var i = 0; i < allElements.length; i++) {
+    if (!allElements[i].closest('#world-search-bar')) {
+      searchable.push(allElements[i]);
+    }
+  }
+
+  var originals = [];
+  var matchElements = [];
+  var currentMatch = -1;
+
+  function clearHighlights() {
+    for (var i = 0; i < searchable.length; i++) {
+      if (originals[i] !== undefined) {
+        searchable[i].innerHTML = originals[i];
+      }
+    }
+    matchElements.length = 0;
+    currentMatch = -1;
+  }
+
+  function doSearch(query) {
+    clearHighlights();
+    if (!query || query.length < 2) {
+      document.getElementById('search-count').textContent = '';
+      return;
+    }
+
+    var escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    var regex = new RegExp('(' + escaped + ')', 'gi');
+
+    for (var i = 0; i < searchable.length; i++) {
+      var el = searchable[i];
+      if (originals[i] === undefined) originals[i] = el.innerHTML;
+      var text = el.textContent || el.innerText || '';
+      if (regex.test(text)) {
+        regex.lastIndex = 0;
+        el.innerHTML = originals[i].replace(regex, '<mark style="background:#fde68a;color:#1a1a1a;padding:1px 3px;border-radius:2px;">$1</mark>');
+        var marks = el.querySelectorAll('mark');
+        for (var j = 0; j < marks.length; j++) {
+          matchElements.push(marks[j]);
+        }
+      }
+    }
+
+    document.getElementById('search-count').textContent = matchElements.length + ' 个匹配';
+    if (matchElements.length > 0) {
+      currentMatch = -1;
+      scrollToMatch(0);
+    }
+  }
+
+  function scrollToMatch(idx) {
+    if (idx < 0 || idx >= matchElements.length) return;
+    currentMatch = idx;
+    for (var i = 0; i < matchElements.length; i++) {
+      matchElements[i].style.background = '#fde68a';
+    }
+    matchElements[idx].style.background = '#f59e0b';
+    matchElements[idx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    document.getElementById('search-count').textContent = (idx + 1) + ' / ' + matchElements.length;
+  }
+
+  var input = document.getElementById('world-search-input');
+  var prevBtn = document.getElementById('search-prev-btn');
+  var nextBtn = document.getElementById('search-next-btn');
+  if (!input) return;
+
+  var searchBar = document.getElementById('world-search-bar');
+
+  var timer;
+  input.addEventListener('input', function() {
+    var val = input.value.trim();
+    // 有搜索内容时才置顶跟随
+    if (val.length >= 2 && searchBar) {
+      searchBar.classList.add('search-sticky');
+    } else if (val.length === 0 && searchBar) {
+      searchBar.classList.remove('search-sticky');
+    }
+    clearTimeout(timer);
+    timer = setTimeout(function() {
+      doSearch(val);
+    }, 200);
+  });
+
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (matchElements.length > 0) {
+        scrollToMatch((currentMatch + 1) % matchElements.length);
+      }
+    }
+  });
+
+  prevBtn.addEventListener('click', function() {
+    if (matchElements.length > 0) {
+      scrollToMatch(currentMatch <= 0 ? matchElements.length - 1 : currentMatch - 1);
+    }
+  });
+
+  nextBtn.addEventListener('click', function() {
+    if (matchElements.length > 0) {
+      scrollToMatch((currentMatch + 1) % matchElements.length);
+    }
+  });
+})();
+</script>
+</body>
+</html>

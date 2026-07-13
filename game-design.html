@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>可交互游戏原型 · BEST-辣椒</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* ====== 雷达图 ====== */
+.radar-section { display: flex; gap: 40px; align-items: center; flex-wrap: wrap; }
+.radar-chart { flex-shrink: 0; }
+.radar-legend { flex: 1; min-width: 200px; }
+.radar-legend h3 { font-size: 15px; color: var(--text-bright); margin-bottom: 12px; }
+.radar-legend table { width: 100%; font-size: 13px; border-collapse: collapse; }
+.radar-legend th { text-align: left; padding: 6px 10px; color: var(--text-dim); font-weight: 400; }
+.radar-legend td { padding: 6px 10px; font-weight: 600; text-align: right; }
+.legend-1 { color: #9cada4; }
+.legend-3 { color: var(--accent); }
+
+/* ====== 公式展示 ====== */
+.formula-block {
+  background: #faf8f3; border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 28px 32px; margin: 20px 0;
+  font-family: "Georgia", "Noto Serif SC", serif;
+}
+.formula-block h4 {
+  font-size: 14px; font-weight: 600; color: var(--accent);
+  margin-bottom: 16px; letter-spacing: 1px;
+}
+.formula {
+  font-size: 15px; color: var(--text-bright); line-height: 2.2;
+  padding: 12px 0;
+}
+.formula .var { color: var(--accent-magic); }
+.formula .op  { color: var(--text-dim); }
+.formula .num { color: var(--accent-physical); }
+.formula .fn  { color: var(--accent-research); }
+
+/* ====== 流程图 ====== */
+.flow-container {
+  display: flex; align-items: center; gap: 0;
+  padding: 32px 0; overflow-x: auto;
+}
+.flow-node {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px 20px; text-align: center;
+  min-width: 120px; flex-shrink: 0; font-size: 13px;
+}
+.flow-node.start { border-color: var(--accent); }
+.flow-node.battle { border-color: var(--accent-physical); }
+.flow-node.puzzle { border-color: var(--accent-magic); }
+.flow-node.reward { border-color: var(--accent-research); }
+.flow-node h4 { font-size: 13px; font-weight: 600; color: var(--text-bright); margin-bottom: 4px; }
+.flow-node p  { font-size: 11px; color: var(--text-dim); }
+.flow-arrow {
+  flex-shrink: 0; padding: 0 8px; font-size: 18px; color: var(--text-dim);
+}
+
+/* ====== 职业定位 ====== */
+.role-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin: 24px 0; }
+.role-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 28px;
+}
+.role-card h4 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+.role-tag {
+  display: inline-block; padding: 2px 10px; border-radius: 10px;
+  font-size: 10px; letter-spacing: 1px; margin-bottom: 14px;
+}
+.role-card ul { list-style: none; padding: 0; }
+.role-card li { font-size: 13px; color: var(--text-dim); padding: 4px 0; line-height: 1.6; }
+.role-card li strong { color: var(--text); }
+
+/* ====== 中世纪任务公告板 ====== */
+.quest-widget {
+  background:
+    /* 木纹纹理 */
+    repeating-linear-gradient(2deg, rgba(80,50,30,0) 0px, rgba(80,50,30,0) 1px, rgba(60,38,22,0.25) 1px, rgba(60,38,22,0.25) 2px),
+    repeating-linear-gradient(92deg, rgba(70,42,24,0) 0px, rgba(70,42,24,0) 3px, rgba(50,30,18,0.15) 3px, rgba(50,30,18,0.15) 6px),
+    /* 深色木底 */
+    linear-gradient(180deg, #4a2c18 0%, #3d2010 30%, #4a2c18 60%, #3a1e0e 100%);
+  border: 8px solid #2a1508;
+  border-image: linear-gradient(135deg, #3a1e0e, #5a3820, #3a1e0e) 1;
+  padding: 36px 32px 32px;
+  margin-top: 48px;
+  color: #d4c5b2;
+  position: relative;
+  /* 木板四角铆钉 */
+  box-shadow:
+    inset 0 2px 8px rgba(0,0,0,0.4),
+    0 4px 24px rgba(0,0,0,0.5),
+    /* 四角铁片装饰 */
+    12px 12px 0 -8px #2a1508,
+    -12px 12px 0 -8px #2a1508,
+    12px -12px 0 -8px #2a1508,
+    -12px -12px 0 -8px #2a1508;
+}
+/* 木板顶部悬挂铁链装饰 */
+.quest-widget::before {
+  content: '';
+  position: absolute; top: -28px; left: 50%; transform: translateX(-50%);
+  width: 120px; height: 20px;
+  background: repeating-linear-gradient(90deg, #3a1e0e 0px, #3a1e0e 6px, #4a2c18 6px, #4a2c18 8px);
+  border-radius: 3px 3px 0 0;
+}
+
+.quest-widget h2 {
+  font-family: "Georgia", "Noto Serif SC", serif;
+  font-size: 22px; font-weight: 600; color: #e8d9c0;
+  margin-bottom: 4px; letter-spacing: 3px; text-align: center;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+.quest-widget .quest-subtitle {
+  font-size: 12px; color: #a8947a; margin-bottom: 28px;
+  text-align: center; letter-spacing: 1.5px; font-style: italic;
+}
+
+/* 任务列表 */
+.quest-list { display: flex; gap: 16px; flex-wrap: wrap; }
+
+/* 羊皮纸任务卡片 */
+.quest-btn {
+  flex: 1; min-width: 210px;
+  padding: 22px 22px 18px;
+  background:
+    /* 羊皮纸纹理 */
+    linear-gradient(180deg, #f4e8d1 0%, #ede0c5 20%, #f2e6ce 50%, #e8d9b8 80%, #dfd0ae 100%);
+  border: 1px solid #c4a87a;
+  color: #3a2a14;
+  cursor: pointer; font-family: "Georgia", "Noto Serif SC", serif;
+  text-align: left; position: relative;
+  transition: all 0.25s ease;
+  /* 撕边效果 */
+  clip-path: polygon(
+    0% 2%, 2% 0%, 98% 1%, 100% 3%,
+    99% 97%, 97% 100%, 3% 99%, 1% 97%
+  );
+  box-shadow:
+    0 3px 10px rgba(0,0,0,0.3),
+    inset 0 1px 2px rgba(255,255,255,0.3);
+}
+/* 羊皮纸四角图钉 */
+.quest-btn::before {
+  content: '';
+  position: absolute; top: -6px; left: 50%; transform: translateX(-50%);
+  width: 10px; height: 10px;
+  background: radial-gradient(circle, #5a4a3a 20%, #2a1a0a 60%, #1a0a00 100%);
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.6);
+}
+.quest-btn::after {
+  content: '';
+  position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%);
+  width: 10px; height: 10px;
+  background: radial-gradient(circle, #5a4a3a 20%, #2a1a0a 60%, #1a0a00 100%);
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.6);
+}
+
+.quest-btn:hover {
+  transform: translateY(-3px) rotate(-0.5deg);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4), inset 0 1px 2px rgba(255,255,255,0.3);
+}
+
+.quest-btn h4 {
+  font-size: 15px; font-weight: 700; color: #2a1808;
+  margin-bottom: 6px; letter-spacing: 1px;
+  font-family: "Georgia", "Noto Serif SC", serif;
+}
+.quest-btn .quest-meta {
+  font-size: 11px; color: #6b5640; font-family: "Georgia", serif;
+  line-height: 1.6;
+}
+.quest-btn .quest-risk-low  {
+  color: #4a6b28; font-weight: 700;
+  background: rgba(74,107,40,0.10); padding: 1px 6px; border-radius: 2px;
+}
+.quest-btn .quest-risk-high {
+  color: #8b2e1a; font-weight: 700;
+  background: rgba(139,46,26,0.10); padding: 1px 6px; border-radius: 2px;
+}
+
+/* 任务日志（木板上的刻痕风格） */
+#quest-log {
+  margin-top: 28px;
+  padding: 16px 20px;
+  background: rgba(0,0,0,0.25);
+  border-top: 2px solid rgba(180,140,100,0.3);
+  font-size: 12px;
+  color: #a8947a;
+  font-family: "Georgia", "Noto Serif SC", serif;
+}
+
+/* ====== 弹窗：蜡封卷轴风 ====== */
+.quest-toast {
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  background:
+    linear-gradient(180deg, #f6ecd8 0%, #efe0c4 30%, #f4e8d2 60%, #e8d8b4 100%);
+  border: 3px solid #8b6918;
+  border-radius: 2px; padding: 36px 44px; text-align: center;
+  z-index: 200; color: #2a1808;
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.6),
+    inset 0 0 40px rgba(139,105,24,0.1);
+  animation: toastIn 0.35s ease;
+  max-width: 420px;
+  font-family: "Georgia", "Noto Serif SC", serif;
+}
+/* 蜡封装饰 */
+.quest-toast::before {
+  content: '★';
+  position: absolute; top: -18px; left: 50%; transform: translateX(-50%);
+  width: 34px; height: 34px;
+  background: radial-gradient(circle at 40% 35%, #c93030 0%, #8b1a1a 70%, #5a0000 100%);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #e8c080; font-size: 14px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.5);
+  text-indent: -9999px; /* 隐藏文字，用背景圆圈替代 */
+}
+/* 蜡封上压印星号 */
+.quest-toast::after {
+  content: '✦';
+  position: absolute; top: -18px; left: 50%; transform: translateX(-50%);
+  width: 34px; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  color: #e8c080; font-size: 12px;
+  z-index: 1;
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.85) rotate(-2deg); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+}
+.quest-toast h4 { font-size: 20px; color: #5a2a0a; margin-bottom: 14px; letter-spacing: 1px; }
+.quest-toast p { font-size: 14px; color: #3a1e0e; line-height: 2; margin-bottom: 4px; }
+.quest-toast .close-toast {
+  display: inline-block; margin-top: 18px; padding: 10px 32px;
+  background: linear-gradient(180deg, #5a3820, #3d2010);
+  color: #e8d9c0; border: 1px solid #6b4428;
+  border-radius: 2px; cursor: pointer; font-family: "Georgia", serif;
+  font-size: 13px; letter-spacing: 1px;
+  transition: all 0.2s;
+}
+.quest-toast .close-toast:hover {
+  background: linear-gradient(180deg, #6b4428, #4a2c18);
+}
+.overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+  z-index: 199;
+}
+/* 任务日志内部样式 */
+#quest-log > div:first-child {
+  padding-bottom: 10px; margin-bottom: 10px;
+  border-bottom: 1px solid rgba(180,140,100,0.2);
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">BEST-辣椒</a>
+    <div class="nav-links">
+      <a href="about.html">关于</a>
+      <a href="bilibili.html">B站</a>
+      <a href="worldbuilding.html">设定集</a>
+      <a href="novel.html">小说</a>
+      <a href="game-design.html">游戏设计</a>
+      <a href="game-analysis.html">游戏拆解</a>
+      <a href="script-analysis.html">文案拆解</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <p><a href="index.html" class="back-link">&larr; 返回首页</a></p>
+  <h1>可交互游戏原型</h1>
+  <p>基于「艾瑞斯大陆」世界观的数值模型、系统机制与交互原型</p>
+</div>
+
+<div class="content-section">
+
+  <!-- ====== 一、数值与经济模型 ====== -->
+  <h2>一、数值与经济模型</h2>
+
+  <h3>能力者属性雷达图 · 交互评估</h3>
+  <p>拖动滑块调整各属性值，系统将基于设定中的四大（或六大）评估板块自动判定阶位。切换"物理侧/魔法侧"可体验不同的评估维度。</p>
+
+  <div class="radar-section">
+    <div class="radar-chart">
+      <svg id="radar" width="360" height="360" viewBox="0 0 360 360"></svg>
+    </div>
+    <div class="radar-legend">
+      <!-- 侧系切换 -->
+      <div style="display:flex;gap:0;margin-bottom:24px;border:1px solid var(--border);border-radius:4px;overflow:hidden;">
+        <button id="btn-physical" class="side-toggle active" onclick="switchSide('physical')" style="flex:1;padding:8px 0;border:none;background:var(--accent);color:#fff;cursor:pointer;font-family:inherit;font-size:13px;transition:all 0.2s;">物理侧（4维）</button>
+        <button id="btn-magic" class="side-toggle" onclick="switchSide('magic')" style="flex:1;padding:8px 0;border:none;background:var(--bg-card);color:var(--text-dim);cursor:pointer;font-family:inherit;font-size:13px;transition:all 0.2s;">魔法侧（6维）</button>
+      </div>
+
+      <!-- 滑块区 -->
+      <div id="sliders-container"></div>
+
+      <!-- 评估按钮 -->
+      <button id="btn-evaluate" style="width:100%;margin-top:16px;padding:10px 0;background:var(--accent);color:#fff;border:none;border-radius:4px;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;letter-spacing:1px;">确认评估</button>
+
+      <!-- 评估结果 -->
+      <div id="eval-result" style="margin-top:16px;text-align:center;min-height:40px;"></div>
+
+      <p style="font-size:10px;color:var(--text-dim);margin-top:12px;">评估依据：《艾瑞斯大陆能力者图鉴》。魔法侧额外包含"掌控度"和"释放威力"两大板块。支持从一阶跨级跃升（参考早期寰宇城传奇枪兵案例）。</p>
+    </div>
+  </div>
+
+  <h3>经济系统数值模型</h3>
+  <p>以下是基于世界观货币体系（1金狮鹫 = 10银鹿角 = 500棕熊铜币）设计的怪物掉落与任务奖励数值逻辑。</p>
+
+  <div class="formula-block">
+    <h4>怪物掉落金币公式</h4>
+    <div class="formula">
+      <span class="fn">DropGold</span> <span class="op">=</span>
+      <span class="var">MonsterLevel</span> <span class="op">&times;</span>
+      <span class="num">3</span> <span class="op">+</span>
+      <span class="fn">Random</span><span class="op">(</span><span class="op">-</span><span class="num">2</span><span class="op">,</span> <span class="num">5</span><span class="op">)</span> <span class="op">+</span>
+      <span class="fn">Floor</span><span class="op">(</span><span class="var">Luck</span> <span class="op">&divide;</span> <span class="num">10</span><span class="op">)</span>
+    </div>
+    <p style="font-size:12px;color:var(--text-dim);margin-top:8px;">
+      其中 <span class="var">MonsterLevel</span> 为怪物等级（1-20），<span class="fn">Random(a,b)</span> 为区间随机整数，
+      <span class="var">Luck</span> 为角色幸运值（0-100）。掉落货币单位为棕熊铜币。<br>
+      示例：Lv.5 影犬 + 幸运值 35 → DropGold = 5×3 + Random(-2,5) + Floor(35÷10) = 15 + [−2~5] + 3 = 16~23 棕熊铜币。
+    </p>
+  </div>
+
+  <div class="formula-block">
+    <h4>幸运值对稀有掉落的影响</h4>
+    <div class="formula">
+      <span class="fn">RareDropRate</span> <span class="op">=</span>
+      <span class="fn">BaseRate</span> <span class="op">&times;</span>
+      <span class="op">(</span><span class="num">1</span> <span class="op">+</span> <span class="var">Luck</span> <span class="op">&divide;</span> <span class="num">200</span><span class="op">)</span>
+    </div>
+    <p style="font-size:12px;color:var(--text-dim);margin-top:8px;">
+      <span class="fn">BaseRate</span> 为基础稀有掉落率（通常3%-8%），<span class="var">Luck</span> 为角色幸运值。<br>
+      示例：BaseRate = 5%，Luck = 80 → RareDropRate = 5% × (1 + 80/200) = 5% × 1.4 = <strong>7%</strong>。
+      这使得幸运值从0到100的收益曲线为线性递增，不会出现边际递减——保证玩家对幸运属性的持续追求。
+    </p>
+  </div>
+
+  <div class="formula-block">
+    <h4>公会任务报酬定价模型</h4>
+    <div class="formula">
+      <span class="fn">TaskReward</span> <span class="op">=</span>
+      <span class="var">BaseReward</span> <span class="op">&times;</span>
+      <span class="op">(</span><span class="num">1</span> <span class="op">+</span> <span class="fn">RiskMultiplier</span><span class="op">)</span> <span class="op">&times;</span>
+      <span class="op">(</span><span class="num">1</span> <span class="op">-</span> <span class="fn">GuildCut</span><span class="op">)</span>
+    </div>
+    <p style="font-size:12px;color:var(--text-dim);margin-top:8px;">
+      其中 <span class="var">BaseReward</span> = 任务基础报酬（由威胁等级、时长、团队规模核定），<br>
+      <span class="fn">RiskMultiplier</span> = 风险系数（影犬清剿 ≈ 0.2，深渊领主讨伐 ≈ 2.5），<br>
+      <span class="fn">GuildCut</span> = 公会抽成（10%-20%，用于抚恤基金与运营）。<br>
+      示例：清剿影犬 BaseReward = 40银鹿角，RiskMultiplier = 0.2，GuildCut = 0.15<br>
+      → TaskReward = 40 × 1.2 × 0.85 = <strong>40.8 银鹿角</strong>（实际发放取整为41银鹿角）。
+    </p>
+  </div>
+
+  <!-- 战斗伤害计算器 -->
+  <h3>战斗伤害计算器</h3>
+  <p>基于标准RPG伤害公式的交互演算。拖动滑块即时观察各参数对最终伤害的影响。</p>
+
+  <div class="formula-block" style="margin-bottom:8px;">
+    <h4>伤害公式</h4>
+    <div class="formula" style="font-size:13px;">
+      <span class="fn">Damage</span> <span class="op">=</span>
+      <span class="var">ATK</span> <span class="op">&times;</span>
+      <span class="fn" style="font-size:12px;">(1 &minus;</span>
+      <span class="var">DEF</span> <span class="op">&divide;</span>
+      <span class="op">(</span><span class="var">DEF</span> <span class="op">+</span> <span class="num">100</span><span class="op">))</span>
+      <span class="op">&times;</span> <span class="fn">Element</span>
+      <span class="op">&times;</span> <span class="fn">CritDMG</span>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:32px;flex-wrap:wrap;margin-bottom:32px;">
+    <!-- 左侧：输入滑块 -->
+    <div style="flex:1;min-width:260px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;">
+      <h4 style="font-size:13px;color:var(--accent);margin-bottom:16px;letter-spacing:1px;">◆ 输入参数</h4>
+      <div id="combat-sliders"></div>
+    </div>
+    <!-- 右侧：伤害输出 -->
+    <div style="flex:1.2;min-width:280px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;" id="combat-output">
+    </div>
+  </div>
+
+  <!-- 掉落模拟器 -->
+  <h3>掉落模拟器</h3>
+  <p>基于上述怪物掉落与稀有掉落公式，模拟多次击杀的掉落分布，验证数值设计的合理性。</p>
+
+  <div style="display:flex;gap:32px;flex-wrap:wrap;margin-bottom:32px;">
+    <!-- 左侧：参数 -->
+    <div style="flex:1;min-width:260px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;">
+      <h4 style="font-size:13px;color:var(--accent);margin-bottom:16px;letter-spacing:1px;">◆ 模拟参数</h4>
+      <div id="loot-sliders"></div>
+      <button id="btn-simulate" style="width:100%;margin-top:16px;padding:10px 0;background:var(--accent);color:#fff;border:none;border-radius:4px;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;letter-spacing:1px;">模拟 100 次击杀</button>
+      <button id="btn-simulate-1000" style="width:100%;margin-top:8px;padding:8px 0;background:var(--bg-page);color:var(--accent);border:1px solid var(--accent);border-radius:4px;font-family:inherit;font-size:12px;cursor:pointer;">模拟 1000 次击杀（大样本）</button>
+    </div>
+    <!-- 右侧：结果 -->
+    <div style="flex:1.2;min-width:280px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;" id="loot-output">
+      <p style="font-size:13px;color:var(--text-dim);text-align:center;padding:40px 0;">点击左侧按钮开始模拟</p>
+    </div>
+  </div>
+
+  <!-- ====== 二、玩法与系统机制 ====== -->
+  <h2>二、玩法与系统机制</h2>
+
+  <h3>公会任务流程 · 交互式决策</h3>
+  <p>模拟一次完整的公会任务——从接取到结算。你的每个选择都会影响任务成败。<strong>选错可能导致任务失败。</strong></p>
+
+  <!-- 步骤进度条 -->
+  <div id="flow-progress" style="display:flex;align-items:center;gap:0;margin:24px 0;overflow-x:auto;padding:8px 0;">
+  </div>
+
+  <!-- 交互区 -->
+  <div id="flow-stage" style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:32px;min-height:200px;position:relative;transition:all 0.3s ease;">
+  </div>
+
+  <!-- 决策日志 -->
+  <div id="flow-log" style="margin-top:16px;font-size:12px;color:var(--text-dim);border-top:1px solid var(--border);padding-top:12px;">
+  </div>
+
+  <h3>三角色职业定位设计</h3>
+  <p>基于艾瑞斯大陆的双侧体系，设计一套三人小队协作玩法。每个角色拥有独特的职业定位与技能差异，形成"侦察→突破→支援"的战术闭环。</p>
+
+  <div class="role-grid">
+    <div class="role-card">
+      <h4 style="color:var(--accent-magic);">观测者</h4>
+      <span class="role-tag" style="background:#f0edfa;color:var(--accent-magic);">侦察 · 情报 · 控制</span>
+      <ul>
+        <li><strong>定位</strong>：魔法侧幻术师/咒术师</li>
+        <li><strong>核心能力</strong>：远程感知敌人位置、揭示隐藏通道、制造幻象迷惑敌人</li>
+        <li><strong>战斗风格</strong>：不直接参与近战，通过"标记"为队友提供伤害加成。可对敌人施加减速/混乱状态</li>
+        <li><strong>设计意图</strong>：满足策略型玩家的信息优势需求。低血量、低防御，但技能决定团队的战术上限</li>
+      </ul>
+    </div>
+    <div class="role-card">
+      <h4 style="color:var(--accent-physical);">突破者</h4>
+      <span class="role-tag" style="background:#fdf0eb;color:var(--accent-physical);">近战 · 伤害 · 坦克</span>
+      <ul>
+        <li><strong>定位</strong>：物理侧剑术师/狂战士</li>
+        <li><strong>核心能力</strong>：正面突破、吸引仇恨、高爆发单体伤害</li>
+        <li><strong>战斗风格</strong>：站在队伍最前方，承受主要伤害。连击系统（3段→5段）随等级解锁。怒气值满后可释放"破甲突刺"（三阶技能）</li>
+        <li><strong>设计意图</strong>：满足动作型玩家的爽感需求。操作门槛低但上限高——高手可通过精准格挡时机实现无伤通关</li>
+      </ul>
+    </div>
+    <div class="role-card">
+      <h4 style="color:var(--accent-research);">策应者</h4>
+      <span class="role-tag" style="background:#edf7f5;color:var(--accent-research);">道具 · 治疗 · 辅助</span>
+      <ul>
+        <li><strong>定位</strong>：魔法侧治愈师 + 研究侧工程师</li>
+        <li><strong>核心能力</strong>：治疗队友、投掷道具（烟雾弹/陷阱/增益药剂）、环境互动（修复桥梁/破解机关）</li>
+        <li><strong>战斗风格</strong>：不直接攻击，但通过道具组合可以改变战场地形。例如：投掷油瓶 + 观测者的火系标记 = 范围燃烧</li>
+        <li><strong>设计意图</strong>：满足辅助型玩家的创造力需求。表面上是"混子位"，实际上道具连携是Boss战的核心解法</li>
+      </ul>
+    </div>
+  </div>
+
+  <p style="font-size:13px;color:var(--text-dim);">注：该三角色设计遵循"猜拳式克制 + 连携增益"的原则。观测者标记敌人 → 突破者享受伤害加成 → 策应者利用突破者创造的输出窗口投掷关键道具。三人同时行动时触发"羁绊技"，具体效果取决于小队编成中的侧系组合。</p>
+
+  <!-- ====== 三、互动彩蛋：公会任务派发 ====== -->
+  <div class="quest-widget">
+    <h2>公会任务派发处</h2>
+    <p class="quest-subtitle">守望堡 · 第四巡逻队任务板 | 当前在线能力者：你</p>
+
+    <div class="quest-list">
+      <button class="quest-btn" onclick="acceptQuest('清剿影犬', 50, '低', 15, 0.3)">
+        <h4>清剿影犬巢穴</h4>
+        <p class="quest-meta">
+          报酬：50 银鹿角 &nbsp;|&nbsp;
+          风险：<span class="quest-risk-low">低</span> &nbsp;|&nbsp;
+          需求：无最低等级
+        </p>
+        <p class="quest-meta" style="margin-top:4px;">描述：悲叹裂隙外围发现三只影犬的巢穴。适合新晋能力者练手。</p>
+      </button>
+
+      <button class="quest-btn" onclick="acceptQuest('探索巫毒沼泽', '未知', '极高', 80, 0.9)">
+        <h4>探索巫毒沼泽</h4>
+        <p class="quest-meta">
+          报酬：<span style="color:#c9a24d;">未知（含稀有掉落）</span> &nbsp;|&nbsp;
+          风险：<span class="quest-risk-high">极高</span> &nbsp;|&nbsp;
+          需求：三阶以上
+        </p>
+        <p class="quest-meta" style="margin-top:4px;">描述：暗界·巫毒沼泽深处侦测到异常能量波动。建议满编小队前往。</p>
+      </button>
+
+      <button class="quest-btn" onclick="acceptQuest('协防卫戍', 120, '中', 40, 0.55)">
+        <h4>守望堡协防卫戍</h4>
+        <p class="quest-meta">
+          报酬：120 银鹿角 &nbsp;|&nbsp;
+          风险：中 &nbsp;|&nbsp;
+          需求：一阶以上
+        </p>
+        <p class="quest-meta" style="margin-top:4px;">描述：周期性要塞驻防任务。由研究侧财政部直接拨款，报酬稳定。</p>
+      </button>
+    </div>
+
+    <!-- 任务日志 -->
+    <div id="quest-log" style="margin-top:24px;"></div>
+  </div>
+
+</div>
+
+<footer>
+  <p>BEST-辣椒 &copy; 2026 · 基于「艾瑞斯大陆」世界观构建</p>
+</footer>
+
+<!-- 弹窗容器 -->
+<div id="toast-container"></div>
+
+<script>
+// ====== 雷达图状态 ======
+console.log('[game-design] 脚本开始加载');
+let currentSide = 'physical';
+const physicalLabels = ['力量', '速度', '技巧', '思维'];
+const magicLabels    = ['力量', '速度', '技巧', '思维', '掌控度', '释放威力'];
+const physicalDefaults = [42, 55, 38, 45];
+const magicDefaults    = [35, 40, 50, 55, 30, 25];
+let currentValues = [...physicalDefaults];
+
+function getLabels() { return currentSide === 'physical' ? physicalLabels : magicLabels; }
+
+// ====== 绘制雷达图 ======
+function drawRadar() {
+  const svg = document.getElementById('radar');
+  svg.innerHTML = '';
+  const cx = 180, cy = 180, r = 140;
+  const labels = getLabels();
+  const n = labels.length;
+  const angles = labels.map((_, i) => -Math.PI/2 + i * 2*Math.PI/n);
+
+  // 背景网格
+  [0.25, 0.5, 0.75, 1.0].forEach(level => {
+    const pts = angles.map(a => `${cx + r*level*Math.cos(a)},${cy + r*level*Math.sin(a)}`).join(' ');
+    svg.innerHTML += `<polygon points="${pts}" fill="none" stroke="#e6e1da" stroke-width="0.5"/>`;
+  });
+
+  // 轴线
+  angles.forEach(a => {
+    svg.innerHTML += `<line x1="${cx}" y1="${cy}" x2="${cx + r*Math.cos(a)}" y2="${cy + r*Math.sin(a)}" stroke="#e6e1da" stroke-width="0.5"/>`;
+  });
+
+  // 标签
+  labels.forEach((label, i) => {
+    const lx = cx + (r+26)*Math.cos(angles[i]);
+    const ly = cy + (r+26)*Math.sin(angles[i]);
+    svg.innerHTML += `<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="middle" font-size="12" fill="#555" font-family="inherit">${label}</text>`;
+  });
+
+  // 当前数据多边形
+  const data = currentValues.map(v => v / 100);
+  const pts = angles.map((a, i) => `${cx + r*data[i]*Math.cos(a)},${cy + r*data[i]*Math.sin(a)}`).join(' ');
+  svg.innerHTML += `<polygon points="${pts}" fill="#a98446" fill-opacity="0.25" stroke="#a98446" stroke-width="2"/>`;
+
+  // 数据点
+  data.forEach((d, i) => {
+    const px = cx + r*d*Math.cos(angles[i]), py = cy + r*d*Math.sin(angles[i]);
+    svg.innerHTML += `<circle cx="${px}" cy="${py}" r="5" fill="#a98446"/>`;
+    // 数值标签
+    const tx = cx + (r*d + 14)*Math.cos(angles[i]);
+    const ty = cy + (r*d + 14)*Math.sin(angles[i]);
+    svg.innerHTML += `<text x="${tx}" y="${ty}" text-anchor="middle" dominant-baseline="middle" font-size="10" fill="#a98446" font-weight="600">${currentValues[i]}</text>`;
+  });
+}
+
+// ====== 侧系切换 ======
+function switchSide(side) {
+  currentSide = side;
+  const labels = side === 'physical' ? physicalLabels : magicLabels;
+  const defaults = side === 'physical' ? physicalDefaults : magicDefaults;
+  // 保留已有值或使用默认
+  if (currentValues.length !== labels.length) {
+    currentValues = [...defaults];
+  }
+  // 按钮样式
+  document.getElementById('btn-physical').style.background = side === 'physical' ? 'var(--accent)' : 'var(--bg-card)';
+  document.getElementById('btn-physical').style.color = side === 'physical' ? '#fff' : 'var(--text-dim)';
+  document.getElementById('btn-magic').style.background = side === 'magic' ? 'var(--accent)' : 'var(--bg-card)';
+  document.getElementById('btn-magic').style.color = side === 'magic' ? '#fff' : 'var(--text-dim)';
+  // 重建滑块
+  buildSliders();
+  drawRadar();
+  document.getElementById('eval-result').innerHTML = '';
+}
+
+// ====== 构建滑块 ======
+function buildSliders() {
+  const labels = getLabels();
+  const colors = ['#c95d3d', '#c9a24d', '#4d9b91', '#7266ba', '#b85135', '#3d857b'];
+  const container = document.getElementById('sliders-container');
+  container.innerHTML = labels.map((label, i) => `
+    <div style="margin-bottom:12px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
+        <span style="font-size:12px;color:var(--text);font-weight:500;">${label}</span>
+        <span style="font-size:12px;font-weight:600;color:${colors[i]};" id="val-${i}">${currentValues[i]}</span>
+      </div>
+      <input type="range" min="5" max="99" value="${currentValues[i]}"
+        oninput="updateValue(${i}, this.value)"
+        style="width:100%;accent-color:${colors[i]};height:4px;" />
+    </div>
+  `).join('');
+}
+
+function updateValue(idx, val) {
+  currentValues[idx] = parseInt(val);
+  document.getElementById('val-' + idx).textContent = val;
+  drawRadar();
+  document.getElementById('eval-result').innerHTML = '';
+}
+
+// ====== 评估逻辑 ======
+function evaluate() {
+  try {
+    var labels = getLabels();
+    var sum = 0;
+    for (var i = 0; i < currentValues.length; i++) { sum += currentValues[i]; }
+    var avg = sum / currentValues.length;
+
+    // 阶位判定
+    var tier, tierColor;
+    if (avg < 20)      { tier = '一阶'; tierColor = '#9cada4'; }
+    else if (avg < 35) { tier = '二阶'; tierColor = '#8bab6a'; }
+    else if (avg < 50) { tier = '三阶'; tierColor = '#c9a24d'; }
+    else if (avg < 65) { tier = '四阶'; tierColor = '#c95d3d'; }
+    else if (avg < 78) { tier = '五阶'; tierColor = '#b85135'; }
+    else if (avg < 90) { tier = '六阶'; tierColor = '#7266ba'; }
+    else               { tier = '七阶+'; tierColor = '#8b1a1a'; }
+
+    // 排序找出优劣维度
+    var sorted = [];
+    for (var i = 0; i < currentValues.length; i++) {
+      sorted.push({idx: i, label: labels[i], val: currentValues[i]});
+    }
+    sorted.sort(function(a,b) { return b.val - a.val; });
+    var top1 = sorted[0], top2 = sorted[1];
+    var bot1 = sorted[sorted.length - 1], bot2 = sorted[sorted.length - 2];
+    var spread = top1.val - bot1.val; // 极差：越大越偏科
+
+    // —— 类型识别 ——
+    var archetype = '', archetypeDesc = '';
+
+    if (currentSide === 'physical') {
+      // 物理侧4维识别
+      if (top1.label === '力量' && top1.val >= 70) {
+        archetype = '重装突破者';
+        archetypeDesc = '你的力量足以正面碾碎一切障碍。在物理侧能力者中，你属于以力破巧的典型——如同古代攻城锤，不需要花哨的步法，一拳打穿防线即是你的战术。';
+      } else if (top1.label === '速度' && top1.val >= 70) {
+        archetype = '疾风游击者';
+        archetypeDesc = '来去如风，以快打慢。你追求的不是一击毙命的爆发，而是让敌人永远无法锁定的机动性。在守望堡的巡逻队中，你这样的能力者最适合担任侦察与追击任务。';
+      } else if (top1.label === '技巧' && top1.val >= 70) {
+        archetype = '武技精进者';
+        archetypeDesc = '以巧破力，以技服人。你的每一次挥砍都经过千锤百炼，连击行云流水。参考寰宇城那位从一阶跃升至三阶的传奇枪兵——正是技巧维度的突破性表现，让他跳过了常规的等级壁垒。';
+      } else if (top1.label === '思维' && top1.val >= 70) {
+        archetype = '战术指挥者';
+        archetypeDesc = '运筹帷幄，以智取胜。在物理侧能力者中偏好以脑力而非蛮力取胜的人并不多见。你不急于正面接敌，而是先读透对手的节奏与破绽——这种素质让你在小队作战中天然处于指挥位。';
+      } else if (spread <= 15) {
+        archetype = '全能均衡者';
+        archetypeDesc = '各项属性均衡发展，没有明显的短板也没有突出的锋芒。这种"水桶型"配置让你在面对不同战局时都能灵活应对，但也意味着没有任何一个维度能够成为你的王牌。';
+      } else {
+        archetype = '发展中能力者';
+        archetypeDesc = '你的属性分布尚在成长阶段，已有明显的优势倾向但尚未达到临界点。继续在优势维度上深耕，同时不要让短板拖累你的实战表现。';
+      }
+    } else {
+      // 魔法侧6维识别
+      if (top1.label === '释放威力' && top1.val >= 70) {
+        archetype = '毁灭法师';
+        archetypeDesc = '你追求的是纯粹的魔法破坏力。在魔法侧中，释放威力型的能力者最为稀少也最受忌惮——一次全力施法足以改变小型战场的地形。元老会议对这类能力者通常会建立专门档案。';
+      } else if (top1.label === '掌控度' && top1.val >= 70) {
+        archetype = '精密织法者';
+        archetypeDesc = '魔法的本质不是力量，而是控制。你深谙此道——每一丝魔力都精确投向需要的位置，几乎没有浪费。这种素质让你在同阶能力者中拥有远超同侪的持续作战能力，也让你更适合修习幻术与咒术类高阶法术。';
+      } else if (top1.label === '技巧' && top1.val >= 70) {
+        archetype = '元素塑形师';
+        archetypeDesc = '你不满足于按照教科书施法。你试图重新塑造元素本身的形态与行为逻辑——这种"不守规矩"的特质让你在实战中常常打出意料之外的效果。但请谨慎：元素塑形的失控率在所有魔法事故中排名第三。';
+      } else if (top1.label === '思维' && top1.val >= 70) {
+        archetype = '秘法学者';
+        archetypeDesc = '在魔法侧中，思维属性决定了一个法师对秘法理论的理解深度。你更像一位学者而非战士——你的价值不在前线的火力输出，而在于对古代法术的解读、对暗界能量规律的研究。研究侧的维尔学派已经注意到了像你这样的跨界人才。';
+      } else if (top1.label === '速度' && top1.val >= 70) {
+        archetype = '迅捷咏唱者';
+        archetypeDesc = '魔法对决中，咏唱速度往往决定生死。你的施法前摇远比同阶法师短——这意味着在别人还在吟诵第一段咒文时，你的火球已经脱手。但这种高速施法的代价是对掌控度的更高要求。';
+      } else if (top1.label === '力量' && top1.val >= 70) {
+        archetype = '战法师';
+        archetypeDesc = '你选择了魔法侧中一条不寻常的路——以物理力量辅助魔力输出。这种"战法双修"的配置让你的近身战斗力远超纯施法者，但也意味着你同时承受了两条成长曲线的压力。';
+      } else if (spread <= 15) {
+        archetype = '全能织法者';
+        archetypeDesc = '六维均衡，没有明显短板。这种全面的属性分布意味着你对任何魔法流派都有一定的兼容性，但也意味着你尚未在任何方向上建立起决定性的个人优势。';
+      } else {
+        archetype = '发展中施法者';
+        archetypeDesc = '属性分布尚在成长阶段。找到你最擅长的那一维并全力突破，比平均地分配精力更能让你在魔法侧中脱颖而出。';
+      }
+    }
+
+    // —— 优势分析 ——
+    var strengthText = '';
+    if (currentSide === 'physical') {
+      if (top1.label === '力量') {
+        strengthText = '力量值' + top1.val + '分，位居' + tier + '中的' + (top1.val >= 70 ? '上乘' : top1.val >= 50 ? '中坚' : '成长') + '水平。近身搏杀中你的单次攻击足以击破同级对手的常规防御。建议优先选择重武器路线——战锤、巨斧、或双手大剑。在公会任务中，你最适合承担"突破位"：冲在最前，吸引火力，为队友创造输出窗口。';
+      } else if (top1.label === '速度') {
+        strengthText = '速度值' + top1.val + '分，在' + tier + '中拥有显著的机动性优势。你可以比同阶对手更快地完成位移、闪避和追击。轻甲路线是你的最优解——牺牲一部分防御换取极致的灵活性。在三人小队编成中，你天然适合"游击位"：从侧翼切入，打乱敌方阵型后迅速脱离。';
+      } else if (top1.label === '技巧') {
+        strengthText = '技巧值' + top1.val + '分，意味着你的技术精度远超同阶平均。连击的衔接、武器的掌控、发力角度的微调——这些细节在你手中已内化为肌肉记忆。剑术师工会可能会对你的资质感兴趣。建议在四阶后考虑辅修第二武器（双持或剑盾切换），技巧系的边际收益在后期会逐步放大。';
+      } else if (top1.label === '思维') {
+        strengthText = '思维值' + top1.val + '分，在物理侧能力者中尤为难得。大多数战士依赖本能与反应，而你习惯于在出手前评估敌人的意图、地形的优劣、技能的冷却。这种素质让你在团队中天然成为战术核心。在守望堡的第四巡逻队中，思维型战士通常会被优先提拔为小队副指挥。';
+      }
+    } else {
+      if (top1.label === '释放威力') {
+        strengthText = '释放威力' + top1.val + '分，你的魔法输出在同阶中具有压倒性优势。单次施法的破坏半径和穿透力远超同级平均水平。但这种"大炮型"打法对魔力储备的消耗极大——你需要在战斗中精确计算每一次施法的性价比。推荐专精火系或雷系元素法术，这两者对释放威力的加成系数最高。';
+      } else if (top1.label === '掌控度') {
+        strengthText = '掌控度' + top1.val + '分，这是魔法侧最被低估却最核心的素质。高掌控度意味着更低的魔力浪费、更精确的施法落点、以及更短的法术冷却间隔。你对幻术和咒术的适应性远高于纯输出型法师。长远来看，掌控度型法师的成长天花板远高于释放威力型——因为高阶魔法的门槛永远是"控制"而非"力量"。';
+      } else if (top1.label === '技巧') {
+        strengthText = '技巧' + top1.val + '分，代表你对法术结构的理解与重构能力。你不只是"使用"魔法——你在"改造"它。这种能力在后期的价值不可估量：同样的基础火球术，在你手中可能附加追踪、分裂或延迟引爆效果。建议关注古代法术文献中的"变造"章节。';
+      } else if (top1.label === '思维') {
+        strengthText = '思维' + top1.val + '分，意味着你对魔法理论的学术层面有深刻理解。在实战中这表现为更好的战局判断、更准确的法术克制选择、以及对敌方施法者意图的预判。研究侧的维尔学者在他的《魔力经济学》中提出过一个观点：思维型法师是"魔法侧最接近研究侧的存在"。';
+      } else if (top1.label === '速度') {
+        strengthText = '速度' + top1.val + '分——在魔法对决中，施法速度往往直接决定胜负。你的吟唱时间比同阶短约四分之一，这让你在遭遇战中几乎总能抢到先手权。但需注意：高速施法的代价是对咒文精度的潜在牺牲。建议搭配掌控度训练来弥补这一缺陷。';
+      } else if (top1.label === '力量') {
+        strengthText = '力量' + top1.val + '分，对于魔法侧能力者而言这个数据相当不寻常。高力量意味着你拥有远超纯法师的近身自保能力——当敌方的物理侧能力者试图"切后排"时，他们会发现你并不好对付。但请保持清醒：力量不是魔法侧的主赛道，它是最好的"辅修"，但不应成为你的第一优先级。';
+      }
+    }
+
+    // 次优势补充
+    var secondText = '';
+    if (top2.val >= top1.val * 0.8 && top2.idx !== top1.idx) {
+      secondText = '此外，你的「' + top2.label + '」（' + top2.val + '分）与最强维度差距极小，形成了' + (currentSide === 'physical' ? '双核驱动' : '双属性协同') + '的稀有配置。这种"第二引擎"让你的战术选择比单一特长型能力者丰富得多。';
+    }
+
+    // —— 短板分析 ——
+    var weaknessText = '';
+    if (currentSide === 'physical') {
+      if (bot1.label === '力量') {
+        weaknessText = '力量是你的明显短板（仅' + bot1.val + '分）。这意味着你在正面硬碰硬的对抗中处于劣势——对手的重击你可能无法格挡，你的攻击也可能不足以击穿重甲单位的防御。建议：通过装备（重型臂甲、力量增幅护符）来弥补面板差距，或在战术上避免正面接敌。';
+      } else if (bot1.label === '速度') {
+        weaknessText = '速度是你的薄弱环节（仅' + bot1.val + '分）。低速度意味着你容易被机动型敌人绕后，也意味着你在追击和撤退中处于被动。建议：适当投入闪避训练，或在队伍中配置一名高速队友来弥补机动性缺口。';
+      } else if (bot1.label === '技巧') {
+        weaknessText = '技巧是你的短板（仅' + bot1.val + '分）。你的攻击可能依靠蛮力或本能，但在面对高技巧型的对手时——比如一个精通格挡与反击的剑术师——你的优势会被大幅削弱。建议：每天至少投入一小时的连击靶场训练，这是提升技巧最稳定、最无捷径的方式。';
+      } else if (bot1.label === '思维') {
+        weaknessText = '思维是你最需要关注的方向（仅' + bot1.val + '分）。低思维意味着你可能在战斗中"只顾打不顾想"——面对善于布阵、利用地形、或制造陷阱的敌人时，你的其他优势会被轻易抵消。建议：在守望堡的战术沙盘室定期参加推演训练。';
+      }
+    } else {
+      if (bot1.label === '释放威力') {
+        weaknessText = '释放威力偏低（仅' + bot1.val + '分），你的魔法在单体伤害和破坏半径上落后于同阶。但这并非无法弥补——你对掌控度和技巧的投入，可以让你通过"精准命中弱点"来等效替代"大范围轰炸"。你不是炮台，你是手术刀。';
+      } else if (bot1.label === '掌控度') {
+        weaknessText = '掌控度是你的阿喀琉斯之踵（仅' + bot1.val + '分）。低掌控度意味着更高的魔力浪费率、更长的冷却间隔，以及——最致命的一点——更高的施法失控风险。魔法事故记录中，超过六成的高阶事故都与掌控度不足有关。建议：每天进行至少两小时的精准施法练习（定点小火球、悬浮水滴等基础训练即可）。';
+      } else if (bot1.label === '技巧') {
+        weaknessText = '技巧不足（仅' + bot1.val + '分）限制了你的法术创新潜力。你可能是一个"教科书式的施法者"——每一道法术都严格遵循标准咏唱，不会出错但也毫无惊喜。对抗善于解读法术套路的敌人时，这种可预测性将成为一个致命弱点。';
+      } else if (bot1.label === '思维') {
+        weaknessText = '思维属性偏低（仅' + bot1.val + '分）。在魔法侧中，这意味着你对法术的深层原理理解不足——你可能"会用"但说不清"为什么"。这在低阶时尚可应付，但到了五阶以上，几乎所有高级魔法都要求对法术理论有深刻理解。建议阅读维尔《魔力经济学》及《暗界能量基础论》。';
+      } else if (bot1.label === '速度') {
+        weaknessText = '施法速度是你的明显短板（仅' + bot1.val + '分）。你的咏唱时间比同阶长约三分之一——这在遭遇战中意味着你几乎必定失去先手。建议：携带瞬发护身符（可在守望堡魔法道具商店购买），并优先学习一到两个无需咏唱的保命法术。';
+      } else if (bot1.label === '力量') {
+        weaknessText = '力量偏低（仅' + bot1.val + '分）对纯魔法侧能力者来说并不罕见，但极端低的体力意味着你几乎无法承受任何近身攻击。一旦被敌方突破者近身，你几乎没有自保能力。建议：掌握至少一个短距传送法术，并确保小队中始终有一名可靠的突破者。';
+      }
+    }
+
+    // 极差过大警告
+    var spreadWarning = '';
+    if (spread >= 50) {
+      spreadWarning = '<p style=\"margin-top:10px;font-size:12px;color:#b85135;\">⚠ 警告：你的属性极差达到 ' + spread + ' 分（最高' + top1.label + ' vs 最低' + bot1.label + '），属于严重偏科。这种极端分布在高阶阶段风险极高——一旦对手针对你的短板发起攻击，你几乎没有反制手段。元老会议的评估档案显示：六阶以上能力者中，极差超过45分的仅占8%，且其阵亡率显著高于均衡型。建议在下一阶段优先补齐短板。</p>';
+    } else if (spread >= 30) {
+      spreadWarning = '<p style=\"margin-top:10px;font-size:12px;color:#c9a24d;\">⚡ 提示：你的属性极差为 ' + spread + ' 分，存在一定偏科倾向。适度偏科有助于形成个人风格，但请确保短板不低于同阶平均线的60%。</p>';
+    }
+
+    // —— 发展建议 ——
+    var pathAdvice = '';
+    if (currentSide === 'physical') {
+      if (top1.label === '力量' && top2.label === '技巧') {
+        pathAdvice = '推荐路线：狂战士 → 剑术师（辅修）。力量+技巧的"重武精技"组合是物理侧中最具压制力的配置之一。你可以在狂战士的怒气爆发期间打出剑术师级别的精准连击——这在同阶中几乎无解。';
+      } else if (top1.label === '速度' && top2.label === '技巧') {
+        pathAdvice = '推荐路线：游侠 → 双持剑客。速度+技巧的"鬼魅双刀"配置让你成为战场上最难被锁定的目标。你的输出节奏不是"一波爆发"而是"持续消耗"——敌人会在你无穷无尽的走位和佯攻中逐渐耗尽体力。';
+      } else if (top1.label === '力量' && top2.label === '速度') {
+        pathAdvice = '推荐路线：重骑战士。力量+速度的搭配让你兼具冲锋的爆发力和持续追击的机动性。在野外遭遇战中，你是最适合担任先手冲锋的角色——一记全速撞击足以瓦解大多数敌人的阵型。';
+      } else if (top1.label === '思维' && top2.label === '技巧') {
+        pathAdvice = '推荐路线：战术剑客 → 小队指挥官。思维+技巧的组合让你成为"用脑子打架"的典范。你善于发现对手的节奏规律并在最合适的时机切入——这种打法需要耐心，但一旦出手，几乎必定命中要害。';
+      } else if (top1.label === '思维' && top2.label === '力量') {
+        pathAdvice = '推荐路线：重装指挥官。思维+力量的搭配在物理侧中极为稀有——你既有前线冲锋的身体素质，又有运筹帷幄的战术头脑。元老会议的军事顾问团对这类能力者一直高度关注。';
+      }
+    } else {
+      if (top1.label === '释放威力' && top2.label === '掌控度') {
+        pathAdvice = '推荐路线：毁灭法师 → 大魔导师。释放威力+掌控度的经典搭配——你有毁灭的力量，也有控制的精度。这是魔法侧中最受尊敬也最受忌惮的路线。寰宇城魔法学院的院长本人就是这条路线上的七阶能力者。';
+      } else if (top1.label === '掌控度' && top2.label === '思维') {
+        pathAdvice = '推荐路线：幻术师 → 秘法学者。掌控度+思维的组合让你更适合走"智识型"路线而非"火力型"路线。幻术、结界、封印——这些对精度和理解力要求极高的法术，才是你的主场。研究侧的维尔学派对这类人才有着持续的兴趣。';
+      } else if (top1.label === '释放威力' && top2.label === '速度') {
+        pathAdvice = '推荐路线：战斗法师。释放威力+速度的搭配让你成为"速射炮台"——你可以在极短时间内倾泻大量火力，在对方法师还在吟唱时就结束战斗。但请务必把掌控度保持在40分以上，否则失控风险会急剧上升。';
+      } else if (top1.label === '技巧' && top2.label === '掌控度') {
+        pathAdvice = '推荐路线：元素塑形师 → 法术变造专家。技巧+掌控度是最适合"魔法创造者"路线的配置。你不满足于使用已有的法术——你渴望创造全新的魔法。这条路需要极高的耐心和创造力，但上限不可估量。';
+      }
+    }
+    if (!pathAdvice) {
+      pathAdvice = '当前属性分布尚未形成明确的职业倾向。建议在' + (tier === '一阶' || tier === '二阶' ? '达到三阶之前' : '下一阶段') + '集中资源强化' + top1.label + '维度，以建立个人核心竞争力。';
+    }
+
+    // —— 暗界假说提示（彩蛋） ——
+    var darkRealmHint = '';
+    if (top1.label === '思维' && top1.val >= 75 && currentSide === 'magic') {
+      darkRealmHint = '<p style=\"margin-top:12px;font-size:11px;color:#7266ba;font-style:italic;\">※ 检测到高思维值魔法侧能力者……你已满足"暗界起源假说"档案的查阅条件。该档案收录于艾瑞斯大陆设定集·最高机密卷。思维足够锐利的人，才能在暗界的信息洪流中保持清醒。</p>';
+    } else if (top1.val >= 85) {
+      darkRealmHint = '<p style=\"margin-top:12px;font-size:11px;color:#8b1a1a;font-style:italic;\">※ 你的' + top1.label + '已接近' + tier + '的极限阈值。在艾瑞斯大陆的历史上，仅有不到百人达到过这一水平。吟游诗人协会建议为你预留一首叙事歌谣的创作名额。</p>';
+    }
+
+    // —— 拼接输出 ——
+    var html = '';
+    html += '<div style=\"background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-top:4px;\">';
+
+    // 头部：阶位 + 类型
+    html += '<div style=\"display:flex;align-items:baseline;gap:16px;margin-bottom:16px;flex-wrap:wrap;\">';
+    html += '<div style=\"font-size:36px;font-weight:700;color:' + tierColor + ';\">' + tier + '</div>';
+    html += '<div style=\"font-size:16px;font-weight:600;color:var(--text-bright);letter-spacing:2px;\">' + archetype + '</div>';
+    html += '<div style=\"font-size:12px;color:var(--text-dim);\">综合均值 ' + avg.toFixed(1) + ' 分</div>';
+    html += '</div>';
+
+    // 类型描述
+    html += '<p style=\"font-size:13px;color:var(--text);line-height:1.9;margin-bottom:20px;\">' + archetypeDesc + '</p>';
+
+    // 属性条可视化
+    html += '<div style=\"background:var(--bg-page);border-radius:4px;padding:14px 16px;margin-bottom:20px;\">';
+    html += '<div style=\"font-size:11px;color:var(--text-dim);margin-bottom:10px;letter-spacing:1px;\">◆ 各维度得分</div>';
+    for (var k = 0; k < sorted.length; k++) {
+      var s = sorted[k];
+      var barColor = s.idx === top1.idx ? tierColor : s.idx === bot1.idx ? '#b0a090' : '#c4b898';
+      html += '<div style=\"display:flex;align-items:center;margin-bottom:6px;gap:8px;\">';
+      html += '<span style=\"width:60px;font-size:11px;color:var(--text-dim);text-align:right;\">' + s.label + '</span>';
+      html += '<span style=\"font-size:11px;font-weight:600;color:' + barColor + ';width:28px;\">' + s.val + '</span>';
+      html += '<div style=\"flex:1;height:6px;background:#e8e3d7;border-radius:3px;\">';
+      html += '<div style=\"height:6px;width:' + s.val + '%;background:' + barColor + ';border-radius:3px;\"></div></div>';
+      html += '</div>';
+    }
+    html += '</div>';
+
+    // 优势分析
+    html += '<div style=\"margin-bottom:16px;\">';
+    html += '<h4 style=\"font-size:13px;color:' + tierColor + ';margin-bottom:8px;letter-spacing:1px;\">▎优势分析</h4>';
+    html += '<p style=\"font-size:13px;color:var(--text);line-height:1.9;\">' + strengthText + '</p>';
+    if (secondText) {
+      html += '<p style=\"font-size:13px;color:var(--text);line-height:1.9;margin-top:6px;\">' + secondText + '</p>';
+    }
+    html += '</div>';
+
+    // 短板警示
+    html += '<div style=\"margin-bottom:16px;\">';
+    html += '<h4 style=\"font-size:13px;color:#b85135;margin-bottom:8px;letter-spacing:1px;\">▎短板警示</h4>';
+    html += '<p style=\"font-size:13px;color:var(--text);line-height:1.9;\">' + weaknessText + '</p>';
+    html += '</div>';
+
+    // 发展建议
+    html += '<div style=\"margin-bottom:8px;\">';
+    html += '<h4 style=\"font-size:13px;color:var(--accent);margin-bottom:8px;letter-spacing:1px;\">▎发展建议</h4>';
+    html += '<p style=\"font-size:13px;color:var(--text);line-height:1.9;\">' + pathAdvice + '</p>';
+    html += '</div>';
+
+    // 极差警告
+    if (spreadWarning) html += spreadWarning;
+
+    // 彩蛋
+    if (darkRealmHint) html += darkRealmHint;
+
+    html += '</div>';
+
+    document.getElementById('eval-result').innerHTML = html;
+  } catch(e) {
+    document.getElementById('eval-result').innerHTML = '<div style=\"color:red;padding:12px;\">评估出错: ' + e.message + '</div>';
+  }
+}
+
+// ====== 启动 ======
+buildSliders();
+drawRadar();
+
+// 绑定评估按钮（使用 addEventListener 更可靠）
+var evalBtn = document.getElementById('btn-evaluate');
+if (evalBtn) {
+  evalBtn.addEventListener('click', function() {
+    console.log('[game-design] 评估按钮被点击');
+    evaluate();
+  });
+} else {
+  console.error('[game-design] 找不到评估按钮 #btn-evaluate');
+}
+console.log('[game-design] 脚本加载完成');
+
+// ====== 任务派发系统 ======
+let questLog = [];
+let totalSilver = 0;
+let totalExp = 0;
+
+function acceptQuest(name, reward, risk, expGain, progressPct) {
+  // 避免重复接取
+  if (questLog.find(q => q.name === name && q.status === '进行中')) {
+    showToast('⚠ 任务冲突', `你已经接取了「${name}」任务。请先完成当前任务再重新接取。`);
+    return;
+  }
+
+  const silverAmount = typeof reward === 'number' ? reward : Math.floor(Math.random() * 200 + 50);
+  const actualReward = typeof reward === 'number' ? reward : silverAmount;
+
+  questLog.push({ name, reward: actualReward, risk, exp: expGain, status: '进行中', time: new Date() });
+  totalSilver += actualReward;
+  totalExp += expGain;
+
+  // 更新日志
+  renderQuestLog();
+
+  // 弹窗
+  const riskColor = risk === '低' ? '#8bab6a' : risk === '中' ? '#c9a24d' : '#b85135';
+  showToast(
+    `任务接取成功`,
+    `
+      <span style="font-size:18px;color:#5a2a0a;">「${name}」</span><br><br>
+      +${actualReward} <span style="color:#8b6918;font-weight:700;">银鹿角</span> &nbsp;|&nbsp;
+      +${expGain} 历练值 &nbsp;|&nbsp;
+      风险等级：<span style="color:${riskColor};font-weight:700;">${risk}</span><br><br>
+      距离下次晋升还需完成「力量、速度、技巧、思维」<br>四大板块考核评估。<br>
+      <span style="font-size:11px;color:#887050;">（当前累计赏金：${totalSilver} 银鹿角 / ${totalExp} 历练）</span>
+    `
+  );
+}
+
+function renderQuestLog() {
+  const logDiv = document.getElementById('quest-log');
+  if (questLog.length === 0) {
+    logDiv.innerHTML = '<p style="font-size:12px;color:#a8947a;font-style:italic;text-align:center;">~ 公告板空无一物，寻找可接取的任务吧 ~</p>';
+    return;
+  }
+  logDiv.innerHTML = `
+    <div style="font-size:11px;color:#a8947a;margin-bottom:12px;letter-spacing:2px;text-transform:uppercase;">◆ 已张贴的委托 (${questLog.length}) | 累计赏金：${totalSilver} 银鹿角 | ${totalExp} 历练</div>
+    ${questLog.map(q => `
+      <div style="padding:10px 14px;margin-bottom:8px;background:rgba(240,225,200,0.08);border-left:3px solid #8b6918;font-size:13px;display:flex;justify-content:space-between;align-items:center;">
+        <span><strong style="color:#e8d9c0;">${q.name}</strong> <span style="color:#a8947a;font-size:11px;">— ${q.status}</span></span>
+        <span style="color:#c4a060;font-size:12px;font-family:Georgia,serif;">+${q.reward}🪙 +${q.exp}✦</span>
+      </div>
+    `).join('')}
+  `;
+}
+
+function showToast(title, message) {
+  const container = document.getElementById('toast-container');
+  const overlay = document.createElement('div');
+  overlay.className = 'overlay';
+  overlay.onclick = closeToast;
+
+  const toast = document.createElement('div');
+  toast.className = 'quest-toast';
+  toast.innerHTML = `
+    <h4>${title}</h4>
+    <p>${message}</p>
+    <button class="close-toast" onclick="closeToast()">确认</button>
+  `;
+
+  container.innerHTML = '';
+  container.appendChild(overlay);
+  container.appendChild(toast);
+}
+
+function closeToast() {
+  document.getElementById('toast-container').innerHTML = '';
+}
+
+// ====== 战斗伤害计算器 ======
+var combatParams = { atk: 80, def: 50, critRate: 25, critDmg: 200, element: 1.0 };
+
+function buildCombatSliders() {
+  var container = document.getElementById('combat-sliders');
+  var configs = [
+    { key: 'atk', label: '攻击力 (ATK)', min: 10, max: 200, step: 5, val: 80, color: '#c95d3d' },
+    { key: 'def', label: '目标防御 (DEF)', min: 0, max: 150, step: 5, val: 50, color: '#4d9b91' },
+    { key: 'critRate', label: '暴击率', min: 0, max: 100, step: 1, val: 25, color: '#c9a24d', suffix: '%' },
+    { key: 'critDmg', label: '暴击倍率', min: 120, max: 300, step: 5, val: 200, color: '#b85135', suffix: '%' }
+  ];
+  var html = '';
+  for (var i = 0; i < configs.length; i++) {
+    var c = configs[i];
+    html += '<div style="margin-bottom:14px;">';
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">';
+    html += '<span style="font-size:12px;color:var(--text);font-weight:500;">' + c.label + '</span>';
+    html += '<span style="font-size:12px;font-weight:600;color:' + c.color + ';" id="cv-' + c.key + '">' + c.val + (c.suffix || '') + '</span>';
+    html += '</div>';
+    html += '<input type="range" min="' + c.min + '" max="' + c.max + '" step="' + c.step + '" value="' + c.val + '"';
+    html += ' oninput="combatUpdate(\'' + c.key + '\', this.value)"';
+    html += ' style="width:100%;accent-color:' + c.color + ';height:4px;" />';
+    html += '</div>';
+  }
+  // 元素克制选择
+  html += '<div style="margin-top:16px;">';
+  html += '<span style="font-size:12px;color:var(--text);font-weight:500;">元素克制</span>';
+  html += '<select id="cv-element" onchange="combatUpdate(\'element\', this.value)" style="width:100%;margin-top:4px;padding:6px 10px;border:1px solid var(--border);border-radius:4px;font-family:inherit;font-size:13px;background:var(--bg-page);color:var(--text);">';
+  html += '<option value="1.5">克制 (+50%)</option>';
+  html += '<option value="1.0" selected>普通 (×1.0)</option>';
+  html += '<option value="0.7">被克制 (−30%)</option>';
+  html += '</select></div>';
+  container.innerHTML = html;
+  updateCombatDisplay();
+}
+
+function combatUpdate(key, value) {
+  combatParams[key] = parseFloat(value);
+  document.getElementById('cv-' + key).textContent = value + (key === 'atk' || key === 'def' ? '' : key === 'critRate' || key === 'critDmg' ? '%' : '');
+  updateCombatDisplay();
+}
+
+function updateCombatDisplay() {
+  var p = combatParams;
+  var defReduction = 1 - p.def / (p.def + 100);
+  var afterDef = p.atk * defReduction;
+  var normalDmg = Math.round(afterDef * p.element);
+  var critDmgVal = Math.round(normalDmg * p.critDmg / 100);
+  var avgDmg = Math.round(normalDmg * (1 + p.critRate / 100 * (p.critDmg / 100 - 1)));
+  var defPct = Math.round((1 - defReduction) * 100);
+
+  var container = document.getElementById('combat-output');
+  var html = '';
+  html += '<h4 style="font-size:13px;color:var(--accent);margin-bottom:16px;letter-spacing:1px;">◆ 伤害演算</h4>';
+
+  // 大数字展示
+  html += '<div style="text-align:center;margin-bottom:20px;">';
+  html += '<div style="font-size:11px;color:var(--text-dim);margin-bottom:4px;">普通伤害</div>';
+  html += '<div style="font-size:40px;font-weight:700;color:#c95d3d;">' + normalDmg + '</div>';
+  html += '<div style="display:flex;justify-content:center;gap:32px;margin-top:12px;">';
+  html += '<div><div style="font-size:11px;color:var(--text-dim);">暴击伤害</div><div style="font-size:22px;font-weight:700;color:#b85135;">' + critDmgVal + '</div></div>';
+  html += '<div><div style="font-size:11px;color:var(--text-dim);">期望伤害</div><div style="font-size:22px;font-weight:700;color:#c9a24d;">' + avgDmg + '</div></div>';
+  html += '</div></div>';
+
+  // 计算步骤
+  html += '<div style="font-size:12px;color:var(--text-dim);line-height:2.2;background:var(--bg-page);border-radius:4px;padding:12px 16px;">';
+  html += '<div>① 防御减免：DEF/(DEF+100) = <strong style="color:var(--text);">' + p.def + '/(' + p.def + '+100) = ' + defPct + '% 减免</strong></div>';
+  html += '<div>② 破防后伤害：' + p.atk + ' × (1−' + defPct + '%) = <strong style="color:var(--text);">' + Math.round(afterDef) + '</strong></div>';
+  html += '<div>③ 元素修正：' + Math.round(afterDef) + ' × ' + p.element.toFixed(1) + ' = <strong style="color:var(--text);">' + normalDmg + '</strong></div>';
+  var critContrib = Math.round(p.critRate * (p.critDmg - 100) / 100);
+  html += '<div>④ 暴击收益：' + p.critRate + '% 概率 × ' + p.critDmg + '% 倍率 → 期望增幅 +' + critContrib + '%</div>';
+  html += '<div style="margin-top:4px;font-size:11px;color:' + (avgDmg > afterDef * 1.5 ? '#8bab6a' : 'var(--text-dim)') + ';">';
+  html += '期望伤害 = ' + normalDmg + ' × (1 + ' + p.critRate + '% × ' + (p.critDmg/100 - 1).toFixed(2) + ') = <strong>' + avgDmg + '</strong>';
+  html += '</div></div>';
+
+  // 快速评估
+  var shots = Math.ceil(1000 / avgDmg);
+  html += '<div style="margin-top:12px;font-size:12px;color:var(--text-dim);text-align:center;">';
+  html += '击杀 1000 HP 目标需要约 <strong style="color:var(--text-bright);">' + shots + '</strong> 次攻击（期望）';
+  html += '</div>';
+
+  container.innerHTML = html;
+}
+
+// ====== 掉落模拟器 ======
+var lootParams = { monsterLv: 5, luck: 35, baseRate: 5 };
+
+function buildLootSliders() {
+  var container = document.getElementById('loot-sliders');
+  var configs = [
+    { key: 'monsterLv', label: '怪物等级', min: 1, max: 20, step: 1, val: 5, color: '#c95d3d' },
+    { key: 'luck', label: '幸运值', min: 0, max: 100, step: 1, val: 35, color: '#c9a24d' },
+    { key: 'baseRate', label: '基础稀有掉落率', min: 1, max: 15, step: 0.5, val: 5, color: '#4d9b91', suffix: '%' }
+  ];
+  var html = '';
+  for (var i = 0; i < configs.length; i++) {
+    var c = configs[i];
+    html += '<div style="margin-bottom:14px;">';
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">';
+    html += '<span style="font-size:12px;color:var(--text);font-weight:500;">' + c.label + '</span>';
+    html += '<span style="font-size:12px;font-weight:600;color:' + c.color + ';" id="lv-' + c.key + '">' + c.val + (c.suffix || '') + '</span>';
+    html += '</div>';
+    html += '<input type="range" min="' + c.min + '" max="' + c.max + '" step="' + c.step + '" value="' + c.val + '"';
+    html += ' oninput="lootUpdate(\'' + c.key + '\', this.value)"';
+    html += ' style="width:100%;accent-color:' + c.color + ';height:4px;" />';
+    html += '</div>';
+  }
+  container.innerHTML = html;
+}
+
+function lootUpdate(key, value) {
+  lootParams[key] = parseFloat(value);
+  document.getElementById('lv-' + key).textContent = value + (key === 'monsterLv' || key === 'luck' ? '' : '%');
+}
+
+function simulate(times) {
+  var p = lootParams;
+  var golds = [];
+  var totalGold = 0;
+  var rareCount = 0;
+  var rareRate = p.baseRate * (1 + p.luck / 200);
+
+  for (var i = 0; i < times; i++) {
+    var gold = p.monsterLv * 3 + Math.floor(Math.random() * 8) - 2 + Math.floor(p.luck / 10);
+    if (gold < 1) gold = 1;
+    golds.push(gold);
+    totalGold += gold;
+    if (Math.random() * 100 < rareRate) rareCount++;
+  }
+
+  golds.sort(function(a,b) { return a - b; });
+  var minGold = golds[0];
+  var maxGold = golds[times - 1];
+  var avgGold = Math.round(totalGold / times);
+  var medianGold = golds[Math.floor(times / 2)];
+
+  // 频率分布
+  var freq = {};
+  for (var j = 0; j < golds.length; j++) {
+    var g = golds[j];
+    freq[g] = (freq[g] || 0) + 1;
+  }
+
+  var container = document.getElementById('loot-output');
+  var html = '';
+  html += '<h4 style="font-size:13px;color:var(--accent);margin-bottom:16px;letter-spacing:1px;">◆ 模拟结果（' + times + ' 次击杀）</h4>';
+
+  // 金币统计
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;">';
+  html += '<div style="background:var(--bg-page);border-radius:4px;padding:10px;text-align:center;">';
+  html += '<div style="font-size:10px;color:var(--text-dim);">金币总计</div>';
+  html += '<div style="font-size:20px;font-weight:700;color:#c9a24d;">' + totalGold + '</div></div>';
+  html += '<div style="background:var(--bg-page);border-radius:4px;padding:10px;text-align:center;">';
+  html += '<div style="font-size:10px;color:var(--text-dim);">均值 / 中位数</div>';
+  html += '<div style="font-size:20px;font-weight:700;color:var(--text-bright);">' + avgGold + ' / ' + medianGold + '</div></div>';
+  html += '<div style="background:var(--bg-page);border-radius:4px;padding:10px;text-align:center;">';
+  html += '<div style="font-size:10px;color:var(--text-dim);">波动区间</div>';
+  html += '<div style="font-size:20px;font-weight:700;color:var(--text-bright);">' + minGold + ' ~ ' + maxGold + '</div></div>';
+  html += '<div style="background:var(--bg-page);border-radius:4px;padding:10px;text-align:center;">';
+  html += '<div style="font-size:10px;color:var(--text-dim);">稀有掉落次数</div>';
+  html += '<div style="font-size:20px;font-weight:700;color:#b85135;">' + rareCount + ' <span style="font-size:11px;">(' + (rareCount/times*100).toFixed(1) + '%)</span></div></div>';
+  html += '</div>';
+
+  // 柱状图
+  html += '<div style="background:var(--bg-page);border-radius:4px;padding:12px 16px;">';
+  html += '<div style="font-size:10px;color:var(--text-dim);margin-bottom:8px;letter-spacing:1px;">金币分布直方图</div>';
+  var keys = Object.keys(freq).sort(function(a,b) { return parseInt(a) - parseInt(b); });
+  var maxFreq = 0;
+  for (var k = 0; k < keys.length; k++) { if (freq[keys[k]] > maxFreq) maxFreq = freq[keys[k]]; }
+  for (var k = 0; k < keys.length; k++) {
+    var g = keys[k];
+    var barW = Math.round(freq[g] / maxFreq * 100);
+    html += '<div style="display:flex;align-items:center;margin-bottom:3px;gap:6px;">';
+    html += '<span style="width:24px;font-size:10px;color:var(--text-dim);text-align:right;">' + g + '</span>';
+    html += '<div style="flex:1;height:12px;background:#e8e3d7;border-radius:2px;">';
+    html += '<div style="height:12px;width:' + barW + '%;background:' + (barW > 50 ? '#c9a24d' : '#a0b0a0') + ';border-radius:2px;min-width:2px;"></div></div>';
+    html += '<span style="width:24px;font-size:10px;color:var(--text-dim);">' + freq[g] + '</span>';
+    html += '</div>';
+  }
+  html += '</div>';
+
+  // 公式验证
+  html += '<div style="margin-top:12px;font-size:11px;color:var(--text-dim);text-align:center;line-height:1.8;">';
+  html += '理论稀有掉落率：' + p.baseRate.toFixed(1) + '% × (1 + ' + p.luck + '/200) = <strong style="color:#b85135;">' + rareRate.toFixed(2) + '%</strong>';
+  html += ' &nbsp;|&nbsp; 实际触发率：<strong style="color:var(--text-bright);">' + (rareCount/times*100).toFixed(2) + '%</strong>';
+  html += '</div>';
+
+  container.innerHTML = html;
+}
+
+// ====== 启动新增组件 ======
+buildCombatSliders();
+buildLootSliders();
+document.getElementById('btn-simulate').addEventListener('click', function() { simulate(100); });
+document.getElementById('btn-simulate-1000').addEventListener('click', function() { simulate(1000); });
+
+// ====== 交互式任务流程 ======
+var flowSteps = [
+  {
+    id: 'npc',
+    title: 'NPC 安切斯特',
+    nodeLabel: '任务派发',
+    story: '守望堡公会大厅里，安切斯特从堆积如山的羊皮纸卷中抬起头来。他的右眼有一道旧伤疤，据说是十年前在悲叹裂隙留下的。"嗯？又是你？还是新面孔？"他用羽毛笔敲了敲桌面，墨水溅到了桌角的一张旧地图上。',
+    options: [
+      { text: '"我是新注册的能力者，请给我推荐一个合适的任务。"', ok: true, feedback: '安切斯特点点头，翻出一本厚重的任务登记册。"不错，有自知之明。低阶任务在左边那栏，自己看。"' },
+      { text: '"有没有报酬最高的任务？我赶时间，直接给我最贵的。"', ok: true, feedback: '安切斯特挑了挑眉："急脾气。行，右边那栏报酬高，但我提醒你——有些任务的要求不是你现在能接的。"' },
+      { text: '"我就随便逛逛，你这儿有茶水吗？"', ok: false, feedback: '安切斯特的脸沉了下来。"公会大厅不是酒馆。门口右转，不送。"你被赶出了公会大厅。' }
+    ]
+  },
+  {
+    id: 'board',
+    title: '公会布告栏',
+    nodeLabel: '选择任务',
+    story: '你走到布告栏前。斑驳的木板上钉着十几张委托书，有些羊皮纸已经泛黄卷边。最显眼的三张分别是：',
+    options: [
+      { text: '【清剿影犬巢穴】— 悲叹裂隙外围，3只影犬。报酬50银鹿角。风险：低。要求：无。', ok: true, feedback: '你用指尖敲了敲那张羊皮纸。"这个适合我。"你将委托书从图钉下取出，折好放进胸前的口袋。' },
+      { text: '【守望堡协防卫戍】— 周期性要塞驻防。报酬120银鹿角。风险：中。要求：一阶以上。', ok: true, feedback: '"守城任务，报酬稳定。"你扯下委托书。这张羊皮纸比影犬那张重得多——120银鹿角压在纸上，分量不轻。' },
+      { text: '【探索巫毒沼泽】— 暗界深处异常能量波动。报酬未知（含稀有掉落）。风险：极高。要求：三阶以上。', ok: false, feedback: '你的手指刚碰到那张委托书，布告栏旁的登记员就按住了你的手腕。"三阶以上才能接这个。你是三阶吗？不是就别碰。"他指了指你胸前的等阶徽章——上面的等级标识明显不足。' }
+    ]
+  },
+  {
+    id: 'team',
+    title: '小队编成',
+    nodeLabel: '编队',
+    story: '接了任务，下一步是组建小队。守望堡的规矩是三人一组——你不能一个人出战。公会大厅角落的长桌前坐着几位待命的能力者，他们的等阶徽章在烛光下微微发亮。',
+    options: [
+      { text: '观测者（侦察）+ 突破者（近战）+ 策应者（治疗）——标准三角色配置', ok: true, feedback: '你选了最稳妥的配置：观测者负责情报，突破者负责战斗，策应者负责支援。三人之间形成了完整的战术闭环。这支出门的小队，任何一位老练的能力者看了都会点头。' },
+      { text: '突破者 + 突破者 + 策应者——双输出偏进攻配置', ok: true, feedback: '两个突破者相互看了一眼，拳头碰了碰。"终于有人敢这么组队了。"火力翻倍，但缺少侦察意味着你们可能在遭遇敌人之前就被伏击。策应者的压力会比平时大很多。' },
+      { text: '策应者 + 策应者 + 策应者——三个辅助一起上？', ok: false, feedback: '三位策应者面面相觑。其中一人咳嗽了一声："呃……我们三个，谁来打伤害？"你意识到自己犯了一个致命的错误——没有输出位的小队，在影犬面前就是一盘自助餐。任务还没出发就被公会否决了。' }
+    ]
+  },
+  {
+    id: 'encounter',
+    title: '遭遇事件',
+    nodeLabel: '战斗',
+    story: '你们抵达了悲叹裂隙外围。空气中弥漫着硫磺味，地面上散落着被啃食过的野兽骨骸。在前方五十步处，三只影犬正围着一具羚羊的尸体撕咬。它们的脊背上覆盖着暗紫色的鳞甲，嘴角滴着黑色的黏液。它们还没发现你们——但不会太久了。',
+    options: [
+      { text: '观测者标记最壮的影犬 → 突破者正面冲锋 → 策应者准备治疗和烟雾弹', ok: true, feedback: '观测者闭上双眼，一道淡蓝色的标记浮现在领头影犬的头顶。突破者深吸一口气，长剑出鞘——"现在！"两人同时动作，剑光与烟雾在裂隙中炸开。影犬的嚎叫声回荡在岩壁上，但它们已经陷入混乱。' },
+      { text: '绕到侧翼高地，先解决落单的那只影犬，逐个击破', ok: true, feedback: '你做了一个手势——分散，包抄。三人贴着岩壁无声移动，绕过主巢穴的视野范围。那只落单的影犬还没来得及发出警报，突破者的剑已经刺穿了它的咽喉。剩下两只？现在是一对三了。' },
+      { text: '三对三，有什么好怕的？直接冲上去砍！', ok: false, feedback: '你拔出武器直接冲了上去——但影犬的反应比你想象中快得多。领头的影犬发出一声刺耳的尖啸，另外两只瞬间转身，呈三角阵型将你包围。观测者来不及标记，策应者来不及上盾——第一只影犬的利爪已经划开了你的肩甲。血流如注，任务以撤退告终。' }
+    ]
+  },
+  {
+    id: 'result',
+    title: '任务结算',
+    nodeLabel: '结算',
+    story: '', // computed
+    options: [] // computed
+  }
+];
+
+var flowState = { current: 0, history: [], failed: false, score: 0, maxScore: 4 };
+
+function initFlow() {
+  flowState = { current: 0, history: [], failed: false, score: 0, maxScore: 4 };
+  renderFlowProgress();
+  renderFlowStage();
+  document.getElementById('flow-log').innerHTML = '';
+}
+
+function renderFlowProgress() {
+  var container = document.getElementById('flow-progress');
+  var html = '';
+  for (var i = 0; i < flowSteps.length; i++) {
+    var step = flowSteps[i];
+    var status = 'pending'; // pending | active | done | failed
+    if (i < flowState.current) status = 'done';
+    else if (i === flowState.current) status = 'active';
+    if (flowState.failed && i === flowState.current) status = 'failed';
+
+    var bg = '#e8e3d7', border = '#ccc', color = '#999', icon = '';
+    if (status === 'done')    { bg = '#edf7ed'; border = '#8bab6a'; color = '#4a6b28'; icon = '✓'; }
+    if (status === 'active')  { bg = '#fef9f0'; border = '#c9a24d'; color = '#8b6918'; icon = '●'; }
+    if (status === 'failed')  { bg = '#fdf0eb'; border = '#b85135'; color = '#8b1a1a'; icon = '✗'; }
+
+    html += '<div style="display:flex;align-items:center;gap:0;flex-shrink:0;">';
+    html += '<div style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;';
+    html += 'background:' + bg + ';border:2px solid ' + border + ';color:' + color + ';font-size:11px;font-weight:700;">';
+    html += status === 'done' ? icon : (status === 'active' ? icon : (i + 1));
+    html += '</div>';
+    html += '<div style="margin-left:6px;font-size:10px;color:' + color + ';white-space:nowrap;font-weight:' + (status === 'active' ? '600' : '400') + ';">';
+    html += step.nodeLabel;
+    html += '</div>';
+    html += '</div>';
+
+    if (i < flowSteps.length - 1) {
+      var lineColor = status === 'done' ? '#8bab6a' : '#e0dbd0';
+      html += '<div style="width:30px;height:2px;background:' + lineColor + ';margin:0 8px;flex-shrink:0;"></div>';
+    }
+  }
+  container.innerHTML = html;
+}
+
+function renderFlowStage() {
+  var container = document.getElementById('flow-stage');
+  var step = flowSteps[flowState.current];
+
+  if (step.id === 'result') {
+    renderResult(container);
+    return;
+  }
+
+  var html = '';
+  // NPC 对话气泡风格
+  html += '<div style="margin-bottom:24px;">';
+  html += '<div style="font-size:10px;color:var(--accent);letter-spacing:2px;margin-bottom:6px;">◆ ' + step.title + '</div>';
+  html += '<p style="font-size:14px;color:var(--text);line-height:2;font-family:Georgia,\'Noto Serif SC\',serif;">' + step.story + '</p>';
+  html += '</div>';
+
+  // 选项
+  html += '<div style="display:flex;flex-direction:column;gap:10px;">';
+  for (var i = 0; i < step.options.length; i++) {
+    var opt = step.options[i];
+    html += '<button onclick="flowChoose(' + i + ')" style="';
+    html += 'text-align:left;padding:14px 18px;background:var(--bg-page);border:1px solid var(--border);';
+    html += 'border-radius:4px;cursor:pointer;font-family:inherit;font-size:13px;color:var(--text);';
+    html += 'line-height:1.7;transition:all 0.2s;width:100%;';
+    html += '" onmouseover="this.style.borderColor=\'var(--accent)\';this.style.background=\'#fef9f0\';"';
+    html += ' onmouseout="this.style.borderColor=\'var(--border)\';this.style.background=\'var(--bg-page)\';">';
+    html += '<span style="color:var(--text-dim);margin-right:10px;">' + String.fromCharCode(65 + i) + '.</span>';
+    html += opt.text;
+    html += '</button>';
+  }
+  html += '</div>';
+
+  container.innerHTML = html;
+}
+
+function flowChoose(optionIdx) {
+  var step = flowSteps[flowState.current];
+  var choice = step.options[optionIdx];
+  flowState.history.push({ step: step.id, choice: optionIdx, ok: choice.ok });
+
+  // 更新日志
+  var logDiv = document.getElementById('flow-log');
+  var logEntry = document.createElement('div');
+  logEntry.style.cssText = 'padding:8px 0;border-bottom:1px solid #eee;display:flex;align-items:flex-start;gap:10px;';
+  logEntry.innerHTML = '<span style="color:' + (choice.ok ? '#8bab6a' : '#b85135') + ';font-weight:700;flex-shrink:0;">' + (choice.ok ? '✓' : '✗') + ' ' + step.title + '</span>';
+  logEntry.innerHTML += '<span style="color:var(--text-dim);">' + choice.feedback + '</span>';
+  logDiv.insertBefore(logEntry, logDiv.firstChild);
+
+  if (!choice.ok) {
+    flowState.failed = true;
+    flowState.score -= 1;
+  } else {
+    flowState.score += 1;
+  }
+
+  // 渲染阶段过渡动画
+  var container = document.getElementById('flow-stage');
+  container.style.opacity = '0';
+  container.style.transform = 'translateY(-8px)';
+
+  setTimeout(function() {
+    flowState.current++;
+    renderFlowProgress();
+
+    if (choice.ok || flowState.current >= flowSteps.length) {
+      renderFlowStage();
+    } else {
+      // 失败后也推进到结算
+      renderFlowStage();
+    }
+
+    container.style.opacity = '1';
+    container.style.transform = 'translateY(0)';
+  }, 200);
+}
+
+function renderResult(container) {
+  var totalOk = 0;
+  for (var i = 0; i < flowState.history.length; i++) {
+    if (flowState.history[i].ok) totalOk++;
+  }
+
+  var grade, gradeColor, gradeText;
+  if (totalOk === 4)      { grade = 'S'; gradeColor = '#c9a24d'; gradeText = '完美通关——安切斯特在公会档案中为你标注了"重点关注"的记号。元老会议的季度评估报告上可能会出现你的名字。'; }
+  else if (totalOk === 3) { grade = 'A'; gradeColor = '#8bab6a'; gradeText = '任务圆满完成。虽然中间有些小波折，但结果令人满意。安切斯特在你的任务记录上盖了公会印章。报酬已打入你的账户。'; }
+  else if (totalOk === 2) { grade = 'B'; gradeColor = '#4d9b91'; gradeText = '任务完成了，但过程磕磕绊绊。你犯了一些可以避免的错误。安切斯特在你的档案里写了一条备注："建议参加战术基础训练课程。"'; }
+  else if (totalOk === 1) { grade = 'C'; gradeColor = '#c95d3d'; gradeText = '你差点把任务搞砸了。公会登记员用红墨水在你的记录上画了一笔——这会影响到你下次接取高阶任务的优先级。回去跟安切斯特道个歉吧。'; }
+  else                    { grade = 'F'; gradeColor = '#8b1a1a'; gradeText = '任务完全失败。影犬没有被清理，你受了伤，小队的士气跌到了谷底。安切斯特把你的档案扔进了"待观察"那一堆——这可不是什么好兆头。但你至少活着回来了，下次你会做得更好。'; }
+
+  // 计算报酬
+  var reward = totalOk >= 3 ? (totalOk === 4 ? 50 : 40) : (totalOk >= 1 ? 20 : 5);
+  var exp = totalOk >= 3 ? (totalOk === 4 ? 35 : 25) : (totalOk >= 1 ? 10 : 3);
+
+  var html = '';
+  html += '<div style="text-align:center;">';
+  html += '<div style="font-size:10px;color:var(--text-dim);letter-spacing:2px;margin-bottom:12px;">◆ 任务结算</div>';
+  html += '<div style="font-size:64px;font-weight:700;color:' + gradeColor + ';line-height:1;">' + grade + '</div>';
+  html += '<div style="font-size:13px;color:var(--text);margin-top:8px;letter-spacing:2px;">任务评级</div>';
+  html += '<div style="margin-top:16px;display:flex;justify-content:center;gap:32px;">';
+  html += '<div><span style="font-size:11px;color:var(--text-dim);">报酬</span><br><span style="font-size:18px;font-weight:700;color:#c9a24d;">+' + reward + ' 🪙</span></div>';
+  html += '<div><span style="font-size:11px;color:var(--text-dim);">历练</span><br><span style="font-size:18px;font-weight:700;color:#4d9b91;">+' + exp + ' ✦</span></div>';
+  html += '</div>';
+  html += '<p style="margin-top:20px;font-size:13px;color:var(--text);line-height:1.9;">' + gradeText + '</p>';
+
+  // 决策回顾
+  html += '<div style="margin-top:24px;text-align:left;background:var(--bg-page);border-radius:4px;padding:16px;">';
+  html += '<div style="font-size:11px;color:var(--text-dim);letter-spacing:1px;margin-bottom:10px;">决策回顾</div>';
+  for (var i = 0; i < flowState.history.length; i++) {
+    var h = flowState.history[i];
+    var stepTitle = flowSteps[i].title;
+    var optText = flowSteps[i].options[h.choice].text;
+    html += '<div style="font-size:11px;margin-bottom:6px;display:flex;align-items:flex-start;gap:8px;">';
+    html += '<span style="color:' + (h.ok ? '#8bab6a' : '#b85135') + ';flex-shrink:0;">' + (h.ok ? '✓' : '✗') + '</span>';
+    html += '<span style="color:var(--text-dim);">' + stepTitle + '：</span>';
+    html += '<span style="color:var(--text);">' + optText.substring(0, 40) + '…</span>';
+    html += '</div>';
+  }
+  html += '</div>';
+
+  // 重新开始
+  html += '<button onclick="initFlow()" style="margin-top:20px;padding:10px 32px;background:var(--accent);color:#fff;border:none;border-radius:4px;font-family:inherit;font-size:13px;cursor:pointer;letter-spacing:1px;">重新挑战</button>';
+  html += '</div>';
+
+  container.innerHTML = html;
+}
+
+// 启动
+initFlow();
+</script>
+
+<script src="common.js"></script>
+</body>
+</html>

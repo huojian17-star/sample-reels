@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>能力觉醒测试 · 艾瑞斯大陆 · BEST-辣椒</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* ====== 测试专用样式 ====== */
+.quiz-container { max-width: 700px; margin: 0 auto; }
+
+.progress-bar {
+  height: 3px; background: var(--border); border-radius: 2px;
+  margin-bottom: 40px; transition: all 0.3s;
+}
+.progress-fill {
+  height: 100%; background: var(--accent); border-radius: 2px;
+  transition: width 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.question-block { margin-bottom: 48px; }
+.question-num {
+  font-size: 12px; color: var(--text-dim); letter-spacing: 2px;
+  text-transform: uppercase; margin-bottom: 8px;
+}
+.question-text {
+  font-family: "Georgia", "Noto Serif SC", serif;
+  font-size: 20px; font-weight: 500; color: var(--text-bright);
+  line-height: 1.6; margin-bottom: 28px;
+}
+
+.options { display: flex; flex-direction: column; gap: 10px; }
+.option-btn {
+  display: block; width: 100%; text-align: left;
+  padding: 16px 20px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); font-size: 14px; color: var(--text);
+  cursor: pointer; transition: all 0.2s;
+  font-family: inherit; line-height: 1.6;
+}
+.option-btn:hover {
+  border-color: var(--accent-dim); background: var(--bg-card-hover);
+  transform: translateX(4px);
+}
+.option-btn.selected {
+  border-color: var(--accent); background: #fdf9f2;
+}
+
+/* 结果页 */
+.result-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 48px 40px; text-align: center;
+  box-shadow: 0 8px 40px rgba(169, 132, 70, 0.06);
+}
+
+.result-badge {
+  display: inline-block; padding: 6px 24px; border-radius: 20px;
+  font-size: 13px; letter-spacing: 2px; margin-bottom: 24px;
+  font-weight: 600;
+}
+.badge-physical { background: #fdf0eb; color: var(--accent-physical); border: 1px solid #e8c8bd; }
+.badge-magic    { background: #f0edfa; color: var(--accent-magic); border: 1px solid #d0c8e8; }
+.badge-research { background: #edf7f5; color: var(--accent-research); border: 1px solid #b8d8d4; }
+
+.result-icon { font-size: 64px; margin-bottom: 20px; display: block; }
+
+.result-class {
+  font-family: "Georgia", "Noto Serif SC", serif;
+  font-size: 28px; font-weight: 600; color: var(--text-bright);
+  margin-bottom: 8px;
+}
+
+.result-side {
+  font-size: 15px; color: var(--text-dim); margin-bottom: 28px;
+}
+
+.result-desc {
+  font-size: 14px; color: var(--text); line-height: 1.95;
+  text-align: left; max-width: 500px; margin: 0 auto 32px;
+}
+
+.result-detail {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  text-align: left; max-width: 500px; margin: 0 auto 32px;
+}
+.result-detail dt { font-size: 12px; color: var(--text-dim); margin-bottom: 4px; }
+.result-detail dd { font-size: 14px; color: var(--text-bright); font-weight: 500; }
+
+.retry-btn {
+  display: inline-block; padding: 10px 32px;
+  background: none; border: 1px solid var(--border);
+  border-radius: var(--radius); color: var(--text-dim);
+  font-size: 13px; cursor: pointer; font-family: inherit;
+  transition: all 0.2s;
+}
+.retry-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+.hidden { display: none; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">BEST-辣椒</a>
+    <div class="nav-links">
+      <a href="about.html">关于</a>
+      <a href="bilibili.html">B站</a>
+      <a href="worldbuilding.html">设定集</a>
+      <a href="novel.html">小说</a>
+      <a href="game-design.html">游戏设计</a>
+      <a href="game-analysis.html">游戏拆解</a>
+      <a href="script-analysis.html">文案拆解</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <p><a href="worldbuilding.html" class="back-link">&larr; 返回设定集</a></p>
+  <h1>能力觉醒测试</h1>
+  <p>回答十个情境题，揭示你在艾瑞斯大陆的侧系归属与职阶天赋</p>
+</div>
+
+<div class="content-section">
+<div class="quiz-container">
+
+  <!-- 进度条 -->
+  <div class="progress-bar"><div class="progress-fill" id="progress" style="width:0%"></div></div>
+
+  <!-- 题目区 -->
+  <div id="quiz-area"></div>
+
+  <!-- 结果区 -->
+  <div id="result-area" class="hidden"></div>
+
+</div>
+</div>
+
+<footer>
+  <p>BEST-辣椒 &copy; 2026 · 基于「艾瑞斯大陆」世界观构建</p>
+</footer>
+
+<script>
+// ====== 题库 ======
+// 每题3个选项分别对应: physical, magic, research
+const questions = [
+  {
+    q: '你发现一扇紧闭的门后面传出奇怪的声音。你会？',
+    options: [
+      { text: '一脚踹开门，看看里面到底是什么', side: 'physical' },
+      { text: '先感知门后的能量波动，判断是否有魔法痕迹', side: 'magic' },
+      { text: '查阅建筑图纸，分析门通向哪里，评估风险后再行动', side: 'research' }
+    ]
+  },
+  {
+    q: '一场冲突即将爆发。你更倾向于？',
+    options: [
+      { text: '站在最前线，用力量和行动保护同伴', side: 'physical' },
+      { text: '在后方施放干扰或防护法术，控制战场节奏', side: 'magic' },
+      { text: '分析双方实力对比，制定最优策略避免不必要的伤亡', side: 'research' }
+    ]
+  },
+  {
+    q: '面对一个你完全不理解的现象，你的第一反应是？',
+    options: [
+      { text: '靠近观察，甚至上手触碰，用身体去感受', side: 'physical' },
+      { text: '尝试与它产生共鸣，用直觉去理解它的本质', side: 'magic' },
+      { text: '记录数据、对比文献、设计实验来逐步验证', side: 'research' }
+    ]
+  },
+  {
+    q: '你最看重的能力是？',
+    options: [
+      { text: '力量与速度——没有实力，一切都是空谈', side: 'physical' },
+      { text: '掌控与直觉——力量本身没有意义，关键在于如何运用', side: 'magic' },
+      { text: '思维与判断——正确的决策胜过千军万马', side: 'research' }
+    ]
+  },
+  {
+    q: '你独自走在荒原上，遇到一个受伤的陌生人。你会？',
+    options: [
+      { text: '立即上前检查伤势，用随身携带的绷带和药剂救助', side: 'physical' },
+      { text: '先用探查术确认是否有陷阱或诅咒，再决定是否施救', side: 'magic' },
+      { text: '询问对方来历和受伤原因，评估此人是否值得信任', side: 'research' }
+    ]
+  },
+  {
+    q: '你获得了一笔可观的财富。最优的用法是？',
+    options: [
+      { text: '购买最好的武器装备，或者痛快地享受一番', side: 'physical' },
+      { text: '搜罗稀有的法术书、炼金材料和魔法器物', side: 'magic' },
+      { text: '投资一笔生意，或者存入富华城的银行赚取利息', side: 'research' }
+    ]
+  },
+  {
+    q: '你在一座废墟中发现了一本古老的典籍。你会？',
+    options: [
+      { text: '翻看图册和战斗技法部分，看看有没有实用的招式', side: 'physical' },
+      { text: '逐字逐句地研读，尝试理解其中隐藏的秘法原理', side: 'magic' },
+      { text: '先确认典籍的年代、作者和真伪，再决定它在学术上的价值', side: 'research' }
+    ]
+  },
+  {
+    q: '你最不能容忍的是？',
+    options: [
+      { text: '软弱与背叛——信念和忠诚高于一切', side: 'physical' },
+      { text: '愚昧与肤浅——对知识和力量的轻慢不可原谅', side: 'magic' },
+      { text: '混乱与不公——没有规则的世界上谁都无法生存', side: 'research' }
+    ]
+  },
+  {
+    q: '你的理想生活是？',
+    options: [
+      { text: '四处游历冒险，用实力赢得荣誉和他人的尊敬', side: 'physical' },
+      { text: '在隐秘的高塔或秘境中钻研世界的终极奥秘', side: 'magic' },
+      { text: '在城市中经营自己的事业，或者参与公共事务的管理', side: 'research' }
+    ]
+  },
+  {
+    q: '当规则明显不公平时，你会？',
+    options: [
+      { text: '站出来挑战它，用行动而非言语', side: 'physical' },
+      { text: '找到规则的漏洞，用智慧绕过或瓦解它', side: 'magic' },
+      { text: '起草一份修正提案，通过合法程序推动变革', side: 'research' }
+    ]
+  }
+];
+
+// ====== 职阶库 ======
+const classes = {
+  physical: [
+    { name: '剑术师', icon: '⚔', desc: '你属于<b>物理侧·剑术师</b>。剑是你灵魂的延伸。你相信在刀锋交错的瞬间，真理会自己显现。你不擅长言辞，但你的剑从不说谎。在寰宇市的角斗场上，像你这样的人被称作"铁骨"——不是因为铠甲，而是因为意志。' },
+    { name: '骑士', icon: '🛡', desc: '你属于<b>物理侧·骑士</b>。你天生有一种责任感——不是对抽象的理念，而是对身边具体的人。你的马比任何马车都快三倍，但真正让你与众不同的是：你不会在危险面前调转马头。' },
+    { name: '刺客', icon: '🗡', desc: '你属于<b>物理侧·刺客</b>。你行走在阴影中，却比大多数站在阳光下的人更清楚自己想要什么。你不迷信正面交锋，你相信——在正确的时间、正确的地点、一刀就够了。' },
+    { name: '狂战士', icon: '🪓', desc: '你属于<b>物理侧·狂战士</b>。你内心深处有一股压不住的火。不是愤怒——是某种更原始的东西。当别人在计算得失时，你已经冲上去了。这不是鲁莽，这是你的战斗方式。' },
+    { name: '枪兵', icon: '🔱', desc: '你属于<b>物理侧·枪兵</b>。长枪是你选择的道路——它比剑更远，比弓更近。这个距离感需要极高的技巧和判断。你不太说话，但当你出手时，往往一击定乾坤。早期寰宇城那个从一阶跳升三阶的传奇枪兵，大概就是你这种人。' }
+  ],
+  magic: [
+    { name: '元素法师', icon: '🔥', desc: '你属于<b>魔法侧·元素法师</b>。火、水、风、土——这些不是抽象的概念，而是你身体的一部分。当你愤怒时，空气会变热；当你平静时，水面会停止涟漪。天赋与控制力的平衡，是你一生的课题。' },
+    { name: '咒术师', icon: '🌙', desc: '你属于<b>魔法侧·咒术师</b>。你理解语言本身就是一种力量。祝福与诅咒，在你看来只是同一枚硬币的两面。你说话很慢，因为你知道每一个音节都可能产生后果。' },
+    { name: '幻术师', icon: '🔮', desc: '你属于<b>魔法侧·幻术师</b>。你不相信"眼见为实"。因为你比任何人都清楚——现实是可以被塑造的。你不制造谎言，你只是展示了人们想看到的东西。历史上最伟大的调停者就是一位幻术师。' },
+    { name: '治愈师', icon: '💚', desc: '你属于<b>魔法侧·治愈师</b>。这个职阶在大瘟疫后被整个大陆尊敬。别以为治愈只是"修复"——它需要比攻击法术更精准的掌控。你不太愿意谈在大瘟疫期间治愈师们付出了什么代价，但那不重要。重要的是现在还有人需要你。' },
+    { name: '魔导师', icon: '✨', desc: '你属于<b>魔法侧·魔导师</b>。你不只是使用魔法——你在研究魔法的本质。六阶之后你可以短距离传送，九阶之后你能跨越五十公里。但空间的距离是次要的，你真正想跨越的，是理解的边界。' }
+  ],
+  research: [
+    { name: '经济学家', icon: '📊', desc: '你属于<b>研究侧·经济学家</b>。像阿尔伯图斯·维尔一样，你相信世界运行的底层逻辑是可以用数字和模型来描述的。你也许无法举起一把剑或施放一个火球，但你能让金狮鹫币在正确的时间流向正确的地方——这可能比任何法术都更强大。' },
+    { name: '法务学者', icon: '⚖', desc: '你属于<b>研究侧·法务学者</b>。法典统一战争之后，你这样的人就成了大陆秩序的基石。你起草的法律条文约束着从一阶学徒到九阶大师的所有能力者。元老会议批准你的提案，但真正理解每一条款含义的，只有你。' },
+    { name: '档案馆员', icon: '📜', desc: '你属于<b>研究侧·档案馆员</b>。就像西里尔·安瑟伦——"最后的博学家"。你知道大陆最大的秘密不在暗界深处，而在中心市图书馆的禁书区里。你一生的热情就是把散落的真相拼成完整的图景。当然，西里尔的结局不太好。但你会更小心的。' },
+    { name: '工程师', icon: '⚙', desc: '你属于<b>研究侧·工程师</b>。当别人还在争论魔法和力量的优劣时，你已经画好了下一座桥的图纸。中心市正在研发的"汽车"项目也许就有你的手笔。利奥波德·克莱因说得对——一个完美的齿轮组本身就是艺术品。' }
+  ]
+};
+
+// ====== 状态 ======
+let currentQ = 0;
+let scores = { physical: 0, magic: 0, research: 0 };
+
+// ====== 渲染 ======
+const quizArea = document.getElementById('quiz-area');
+const resultArea = document.getElementById('result-area');
+const progress = document.getElementById('progress');
+
+function renderQuestion(idx) {
+  if (idx >= questions.length) {
+    showResult();
+    return;
+  }
+  const q = questions[idx];
+  progress.style.width = ((idx / questions.length) * 100) + '%';
+  quizArea.innerHTML = `
+    <div class="question-block">
+      <div class="question-num">问题 ${idx + 1} / ${questions.length}</div>
+      <div class="question-text">${q.q}</div>
+      <div class="options">
+        ${q.options.map((opt, i) => `
+          <button class="option-btn" onclick="selectAnswer(${idx}, ${i}, '${opt.side}')">
+            ${opt.text}
+          </button>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function selectAnswer(qIdx, optIdx, side) {
+  scores[side]++;
+  // 短暂高亮选中项
+  const btns = document.querySelectorAll('.option-btn');
+  btns[optIdx].classList.add('selected');
+  setTimeout(() => {
+    currentQ++;
+    renderQuestion(currentQ);
+  }, 400);
+}
+
+function showResult() {
+  progress.style.width = '100%';
+  quizArea.classList.add('hidden');
+  resultArea.classList.remove('hidden');
+
+  // 判定侧系
+  let primary = 'physical';
+  if (scores.magic > scores[primary]) primary = 'magic';
+  if (scores.research > scores[primary]) primary = 'research';
+
+  // 选职阶
+  const pool = classes[primary];
+  const job = pool[Math.floor(Math.random() * pool.length)];
+
+  const badgeClass = { physical: 'badge-physical', magic: 'badge-magic', research: 'badge-research' }[primary];
+  const sideName = { physical: '物理侧', magic: '魔法侧', research: '研究侧' }[primary];
+  const total = scores.physical + scores.magic + scores.research;
+  const pctP = Math.round(scores.physical / total * 100);
+  const pctM = Math.round(scores.magic / total * 100);
+  const pctR = Math.round(scores.research / total * 100);
+
+  resultArea.innerHTML = `
+    <div class="result-card">
+      <span class="result-badge ${badgeClass}">${sideName}</span>
+      <span class="result-icon">${job.icon}</span>
+      <div class="result-class">${job.name}</div>
+      <div class="result-side">${sideName}能力者</div>
+      <div class="result-desc">${job.desc}</div>
+      <div class="result-detail">
+        <div><dt>物理倾向</dt><dd style="color:var(--accent-physical);">${pctP}%</dd></div>
+        <div><dt>魔法倾向</dt><dd style="color:var(--accent-magic);">${pctM}%</dd></div>
+        <div><dt>研究倾向</dt><dd style="color:var(--accent-research);">${pctR}%</dd></div>
+        <div><dt>推荐城市</dt><dd>${primary === 'physical' ? '寰宇市' : primary === 'magic' ? '天际市' : '中心市'}</dd></div>
+      </div>
+      <button class="retry-btn" onclick="location.reload()">重新测试</button>
+    </div>
+  `;
+}
+
+// 启动
+renderQuestion(0);
+</script>
+
+<script src="common.js"></script>
+</body>
+</html>
