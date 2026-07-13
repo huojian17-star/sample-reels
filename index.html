@@ -3,335 +3,1373 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BEST-辣椒 · 作品集</title>
+<title>BEST-辣椒 · 求职作品集</title>
 <link rel="stylesheet" href="style.css">
+<style>
+/* ====== 首页专用样式 ====== */
+
+/* Hero 动画数字 */
+.hero-stats { display: flex; gap: 48px; justify-content: center; margin-top: 36px; flex-wrap: wrap; }
+.stat-item { text-align: center; }
+.stat-num {
+  font-size: 42px; font-weight: 700; color: var(--accent);
+  font-family: "Georgia", "Noto Serif SC", serif;
+  display: inline-block;
+}
+.stat-unit { font-size: 22px; font-weight: 400; }
+.stat-label { display: block; font-size: 12px; color: var(--text-dim); margin-top: 4px; letter-spacing: 1px; }
+
+/* 游戏化特色横幅 */
+.featured-banner {
+  background:
+    repeating-linear-gradient(2deg, rgba(80,50,30,0) 0px, rgba(80,50,30,0) 1px, rgba(60,38,22,0.2) 1px, rgba(60,38,22,0.2) 2px),
+    linear-gradient(180deg, #3d2010 0%, #4a2c18 50%, #3a1e0e 100%);
+  border: 6px solid #2a1508;
+  border-image: linear-gradient(135deg, #3a1e0e, #5a3820, #3a1e0e) 1;
+  padding: 36px 40px;
+  margin: 48px auto;
+  max-width: 720px;
+  color: #e8d9c0;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 2px 8px rgba(0,0,0,0.3);
+}
+.featured-banner::before {
+  content: '';
+  position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
+  width: 80px; height: 14px;
+  background: repeating-linear-gradient(90deg, #3a1e0e 0px, #3a1e0e 5px, #4a2c18 5px, #4a2c18 7px);
+  border-radius: 2px;
+}
+.featured-banner h2 {
+  font-family: "Georgia", "Noto Serif SC", serif;
+  font-size: 20px; font-weight: 600; color: #e8d9c0;
+  letter-spacing: 3px; margin-bottom: 6px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+.featured-banner .banner-sub {
+  font-size: 12px; color: #a8947a; letter-spacing: 1px; margin-bottom: 16px; font-style: italic;
+}
+.featured-banner .banner-desc {
+  font-size: 14px; color: #c4b090; line-height: 1.9; margin-bottom: 20px;
+}
+.featured-banner .banner-features {
+  display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px;
+}
+.featured-banner .bf-item {
+  font-size: 11px; color: #a8947a; background: rgba(0,0,0,0.2);
+  padding: 4px 12px; border-radius: 10px; letter-spacing: 1px;
+}
+.featured-banner .banner-cta {
+  display: inline-block;
+  padding: 12px 36px;
+  background: linear-gradient(180deg, #8b6918, #6b4c10);
+  color: #e8d9c0;
+  text-decoration: none;
+  border-radius: 2px;
+  font-family: "Georgia", "Noto Serif SC", serif;
+  font-size: 14px;
+  letter-spacing: 2px;
+  transition: all 0.25s;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+.featured-banner .banner-cta:hover {
+  background: linear-gradient(180deg, #a08020, #8b6918);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+
+/* 导航卡片重设计 */
+.nav-cards {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 20px !important;
+  max-width: 960px !important;
+  margin: 0 auto !important;
+  padding: 0 16px !important;
+}
+.nav-card.card-about {
+  grid-column: 2 !important; /* 顶尖居中 */
+}
+@media (max-width: 768px) {
+  .nav-cards { grid-template-columns: 1fr !important; }
+  .nav-card.card-about { grid-column: auto !important; }
+  .hero-stats { gap: 24px; }
+  .stat-num { font-size: 32px; }
+}
+
+.nav-card {
+  display: block;
+  padding: 28px 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  text-decoration: none;
+  color: var(--text);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.nav-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+.nav-card:hover::after { transform: scaleX(1); }
+.nav-card.card-bili::after    { background: #c95d3d; }
+.nav-card.card-world::after   { background: #c9a24d; }
+.nav-card.card-novel::after   { background: #3a3a5c; }
+.nav-card.card-about::after   { background: #5a4a3a; }
+.nav-card.card-design::after  { background: var(--accent); }
+.nav-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+  border-color: var(--accent);
+}
+.nav-card .card-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-size: 9px;
+  letter-spacing: 1px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.badge-interact { background: #fdf0eb; color: #b85135; }
+.badge-data    { background: #edf7f5; color: #4d9b91; }
+.badge-read    { background: #f0edfa; color: #7266ba; }
+.badge-lore    { background: #fef9f0; color: #8b6918; }
+.nav-card .card-icon {
+  font-size: 24px; display: block; margin-bottom: 10px;
+}
+.nav-card h3 {
+  font-size: 16px; font-weight: 600; margin-bottom: 8px;
+  color: var(--text-bright);
+}
+.nav-card p {
+  font-size: 12px; color: var(--text-dim); line-height: 1.7; margin-bottom: 12px;
+}
+.nav-card .card-tease {
+  font-size: 11px; color: var(--accent); font-weight: 500;
+}
+.nav-card .card-arrow {
+  font-size: 11px; color: var(--accent);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+.nav-card:hover .card-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* 特色卡片全宽 */
+.nav-card.featured-card {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, #fef9f0 0%, var(--bg-card) 100%);
+  border-color: var(--accent);
+  padding: 32px;
+}
+.nav-card.featured-card h3 { font-size: 18px; }
+.nav-card.featured-card .card-tease {
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+/* ====== 像素小人对话框 ====== */
+.mascot-bubble {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fdfaf4;
+  border: 3px solid #4a3828;
+  border-radius: 0;
+  padding: 10px 16px;
+  width: max-content;
+  max-width: 360px;
+  min-width: 100px;
+  text-align: center;
+  font-size: 13px;
+  color: #3a2a18;
+  line-height: 1.5;
+  cursor: pointer;
+  white-space: normal;
+  word-break: keep-all;
+  box-shadow:
+    4px 4px 0 0 #2a1a08,
+    inset 2px 2px 0 rgba(255,255,255,0.3),
+    inset -2px -2px 0 rgba(0,0,0,0.08);
+  user-select: none;
+  font-family: "Georgia", "Noto Serif SC", "SimSun", serif;
+}
+/* 尾巴指向下方小人 */
+.mascot-bubble::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 8px;
+  background: #4a3828;
+  clip-path: polygon(0 0, 50% 100%, 100% 0);
+}
+.mascot-bubble::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 4px;
+  background: #fdfaf4;
+  clip-path: polygon(0 0, 50% 100%, 100% 0);
+  margin-top: -2px;
+  z-index: 1;
+}
+.mascot-bubble:hover {
+  box-shadow:
+    5px 5px 0 0 #2a1a08,
+    inset 2px 2px 0 rgba(255,255,255,0.35),
+    inset -2px -2px 0 rgba(0,0,0,0.1);
+}
+.mascot-bubble.pop {
+  animation: bubblePop 0.3s ease;
+}
+@keyframes bubblePop {
+  0%   { transform: translateX(-50%) scale(1); }
+  50%  { transform: translateX(-50%) scale(1.06); }
+  100% { transform: translateX(-50%) scale(1); }
+}
+.mascot-bubble:hover {
+  box-shadow:
+    4px 5px 0 0 #2a1a08,
+    inset 2px 2px 0 rgba(255,255,255,0.35),
+    inset -2px -2px 0 rgba(0,0,0,0.1);
+}
+.mascot-bubble.pop {
+  animation: bubblePop 0.25s steps(3);
+}
+/* 空闲漂浮 */
+.mascot-float {
+  animation: mascotFloat 3s ease-in-out infinite;
+}
+@keyframes mascotFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+/* 首次加载吸引注意 */
+.mascot-pulse {
+  animation: mascotPulse 0.6s ease 3;
+}
+@keyframes mascotPulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.15); }
+}
+@keyframes bubblePop {
+  0%, 100% { padding: 10px 16px; }
+  50%      { padding: 13px 20px; }
+}
+
+/* 三角形布局：顶角卡片宽度 = 3列中的1列 */
+.home-triangle-top-inner {
+  width: calc(33.333% - 14px);
+  min-width: 260px;
+  max-width: 340px;
+}
+</style>
 </head>
 <body>
 
-<!-- ====== 导航 ====== -->
 <nav>
   <div class="nav-inner">
-    <a href="#home" class="nav-brand">BEST-辣椒</a>
+    <a href="index.html" class="nav-brand">BEST-辣椒</a>
     <div class="nav-links">
-      <a href="#about">关于</a>
-      <a href="#bilibili">B站</a>
-      <a href="#worldbuilding">设定集</a>
-      <a href="#contact">联系</a>
+      <a href="about.html">关于</a>
+      <a href="bilibili.html">B站</a>
+      <a href="worldbuilding.html">设定集</a>
+      <a href="novel.html">小说</a>
+      <a href="game-design.html">游戏设计</a>
+      <a href="game-analysis.html">游戏拆解</a>
+      <a href="script-analysis.html">文案拆解</a>
     </div>
   </div>
 </nav>
 
-<!-- ====== 首页 ====== -->
-<section id="home" class="hero">
+<!-- ====== Hero ====== -->
+<section class="hero">
   <div class="hero-content">
-    <h1>BEST-辣椒</h1>
-    <p class="hero-subtitle">游戏考据作者 · 世界观构建者</p>
-    <p class="hero-desc">
-      专注挖掘被遗忘的游戏历史，记录"消失"的作品故事。<br>
-      同时构建名为「艾瑞斯大陆」的奇幻世界。
+    <!-- 像素小人 + 对话框 -->
+    <div class="pixel-mascot" id="pixel-mascot" style="display:inline-block;position:relative;margin-bottom:16px;">
+      <div class="mascot-bubble" id="mascot-bubble">你好，欢迎来到我的求职个人网站！</div>
+      <img id="mascot-img" src="pixel-avatar-clean-small.png" alt="BEST-辣椒" style="width:100px;height:auto;display:block;cursor:grab;user-select:none;" draggable="false">
+    </div>
+    <h1>BEST-辣椒 · 求职作品集</h1>
+    <p class="hero-subtitle" style="font-size:16px;color:var(--accent);letter-spacing:2px;">游戏考据作者 · 世界观构建者 · 交互原型设计师</p>
+    <p class="hero-desc" style="font-size:13px;color:var(--text-dim);margin-top:10px;">
+      挖掘被遗忘的游戏开发史 · 构建六万字的奇幻世界 · 把设定变成可以玩的交互原型
     </p>
     <div class="hero-stats">
       <div class="stat-item">
-        <span class="stat-num">19.5<span class="stat-unit">万</span></span>
+        <span class="stat-num"><span id="counter-plays">0</span><span class="stat-unit">万</span></span>
         <span class="stat-label">B站总播放</span>
       </div>
       <div class="stat-item">
-        <span class="stat-num">888</span>
+        <span class="stat-num" id="counter-fans">0</span>
         <span class="stat-label">粉丝</span>
       </div>
       <div class="stat-item">
-        <span class="stat-num">10<span class="stat-unit">篇</span></span>
-        <span class="stat-label">深度长视频</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-num">6<span class="stat-unit">万字+</span></span>
+        <span class="stat-num"><span id="counter-words">0</span><span class="stat-unit">万字+</span></span>
         <span class="stat-label">世界观设定</span>
       </div>
+      <div class="stat-item">
+        <span class="stat-num" id="counter-series">0</span>
+        <span class="stat-label">视频系列期数</span>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ====== 关于 ====== -->
-<section id="about" class="section">
-  <h2 class="section-title">关于我</h2>
-  <div class="about-grid">
-    <div class="about-card">
-      <h3>游戏考古</h3>
-      <p>以"消失游戏开发日志"系列为核心，追溯被取消、被雪藏、胎死腹中的游戏作品背后的开发故事。从《寂静岭P.T.》到《细胞分裂》，从《超越善恶2》到《热血无赖2》——每一部"消失的游戏"都值得被认真记录。</p>
-    </div>
-    <div class="about-card">
-      <h3>世界观构建</h3>
-      <p>独立构建「艾瑞斯大陆」奇幻世界观，涵盖物理侧与魔法侧双能力体系、五大城市生态、完整的经济/法律/宗教/教育体系，以及跨越千年的编年史。设定集累计六万余字。</p>
-    </div>
-    <div class="about-card">
-      <h3>叙事风格</h3>
-      <p>追求信息密度与叙事节奏的平衡。游戏考据视频以严密的逻辑链和一手资料为骨架，世界观构建则以社会学视角切入，将经济学、政治学维度融入奇幻设定。</p>
-    </div>
+<!-- ====== 全站搜索 ====== -->
+<div id="site-search-section" style="max-width:640px;margin:40px auto 0;padding:0 16px;position:relative;">
+  <div style="display:flex;gap:10px;align-items:center;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:12px 18px;box-shadow:0 2px 12px rgba(0,0,0,0.04);">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="2" style="flex-shrink:0;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" id="site-search-input" placeholder="搜索全站内容——页面、设定、人物、视频、交互工具..." style="flex:1;border:none;font-size:15px;font-family:inherit;background:transparent;color:var(--text);outline:none;">
+    <span id="site-search-hint" style="font-size:11px;color:var(--text-dim);white-space:nowrap;">输入关键词搜索</span>
   </div>
-</section>
+  <div id="site-search-results" style="display:none;position:absolute;top:100%;left:16px;right:16px;z-index:200;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;margin-top:4px;max-height:420px;overflow-y:auto;box-shadow:0 12px 40px rgba(0,0,0,0.12);"></div>
+</div>
 
-<!-- ====== B站内容 ====== -->
-<section id="bilibili" class="section section-alt">
-  <h2 class="section-title">B站内容创作</h2>
-  <p class="section-desc">
-    <a href="https://space.bilibili.com/518565512" target="_blank" rel="noopener" class="bili-link">BEST-辣椒 的个人空间 →</a>
+<!-- ====== 特色交互横幅 ====== -->
+<div class="featured-banner">
+  <h2>&#9876; 可交互游戏原型</h2>
+  <p class="banner-sub">—— 不只是文档，是你可以上手玩的设计工具 ——</p>
+  <p class="banner-desc">
+    能力者属性雷达评估 &nbsp;·&nbsp; 战斗伤害公式演算 &nbsp;·&nbsp; 掉落模拟器<br>
+    公会任务交互式决策 &nbsp;·&nbsp; 中世纪告示板彩蛋
   </p>
-
-  <div class="stats-banner">
-    <div class="sb-item">
-      <span class="sb-num">19.5万</span>
-      <span class="sb-label">总播放量</span>
-    </div>
-    <div class="sb-item">
-      <span class="sb-num">888</span>
-      <span class="sb-label">粉丝</span>
-    </div>
-    <div class="sb-item">
-      <span class="sb-num">4,463</span>
-      <span class="sb-label">累计点赞</span>
-    </div>
-    <div class="sb-item">
-      <span class="sb-num">2,869</span>
-      <span class="sb-label">累计收藏</span>
-    </div>
-    <div class="sb-item">
-      <span class="sb-num">1,316</span>
-      <span class="sb-label">累计硬币</span>
-    </div>
+  <div class="banner-features">
+    <span class="bf-item">&#9733; 雷达图评估</span>
+    <span class="bf-item">&#9876; 战斗计算器</span>
+    <span class="bf-item">&#9760; 掉落模拟</span>
+    <span class="bf-item">&#9776; 任务决策</span>
+    <span class="bf-item">&#9830; 性格测试</span>
+    <span class="bf-item">&#9672; 关系图</span>
   </div>
+  <a href="game-design.html" class="banner-cta">&#9876; 进入交互原型</a>
+</div>
 
-  <!-- 观众画像 -->
-  <div class="audience-box">
-    <h3>观众画像</h3>
-    <div class="audience-grid">
-      <div class="au-item">
-        <span class="au-key">性别分布</span>
-        <span class="au-val">男性 93.6% / 女性 6.4%</span>
-      </div>
-      <div class="au-item">
-        <span class="au-key">年龄分布</span>
-        <span class="au-val">25-40岁为主</span>
-      </div>
-      <div class="au-item">
-        <span class="au-key">活跃时间</span>
-        <span class="au-val">19点、22点最活跃</span>
-      </div>
-      <div class="au-item">
-        <span class="au-key">活跃粉丝占比</span>
-        <span class="au-val">25.6%</span>
-      </div>
-    </div>
-  </div>
+<!-- ====== 导航卡片 · 三角形布局 ====== -->
+<!-- 使用独立类名避免外部 CSS 冲突，内联样式处理桌面布局 -->
 
-  <!-- 代表作 -->
-  <h3 class="subsection-title">代表作 · 「消失游戏开发日志」系列</h3>
-  <div class="video-grid">
-    <div class="video-card">
-      <div class="video-order">#6</div>
-      <div class="video-info">
-        <h4>暴力像素游戏如何引起社会风波？</h4>
-        <p>从《迈阿密热线》到《午夜动物》的曲折故事</p>
-        <div class="video-meta">
-          <span>2.5万 播放</span>
-          <span>1,040 点赞</span>
-          <span>1,005 收藏</span>
-          <span>2025.06</span>
-        </div>
-      </div>
-    </div>
-    <div class="video-card">
-      <div class="video-order">#5</div>
-      <div class="video-info">
-        <h4>画面"最超前"的动作游戏《eight days》</h4>
-        <p>如何被索尼亲手埋葬</p>
-        <div class="video-meta">
-          <span>2.4万 播放</span>
-          <span>489 点赞</span>
-          <span>365 收藏</span>
-          <span>2025.04</span>
-        </div>
-      </div>
-    </div>
-    <div class="video-card featured">
-      <div class="video-order">#4</div>
-      <div class="video-info">
-        <h4>从"合金装备杀手"到逐渐雪藏</h4>
-        <p>《细胞分裂》如何被育碧一步步玩坏？</p>
-        <div class="video-meta">
-          <span>4.6万 播放</span>
-          <span>1,011 点赞</span>
-          <span>647 收藏</span>
-          <span>2025.03</span>
-        </div>
-      </div>
-    </div>
-    <div class="video-card">
-      <div class="video-order">#3</div>
-      <div class="video-info">
-        <h4>最意难平的恐怖游戏</h4>
-        <p>从《寂静岭P.T》浅析小岛秀夫与科乐美的权力斗争</p>
-        <div class="video-meta">
-          <span>2.1万 播放</span>
-          <span>483 点赞</span>
-          <span>308 收藏</span>
-          <span>2025.02</span>
-        </div>
-      </div>
-    </div>
-    <div class="video-card">
-      <div class="video-order">#2</div>
-      <div class="video-info">
-        <h4>港风版GTA？！</h4>
-        <p>20分钟带你看完《热血无赖2》如何胎死腹中</p>
-        <div class="video-meta">
-          <span>1.8万 播放</span>
-          <span>540 点赞</span>
-          <span>250 收藏</span>
-          <span>2025.01</span>
-        </div>
-      </div>
-    </div>
-    <div class="video-card">
-      <div class="video-order">#1</div>
-      <div class="video-info">
-        <h4>全网最细！历史跳票时间最长的游戏</h4>
-        <p>育碧心中的白月光？《超越善恶2》</p>
-        <div class="video-meta">
-          <span>6,551 播放</span>
-          <span>98 点赞</span>
-          <span>42 收藏</span>
-          <span>2024.12</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 其他视频 -->
-  <h3 class="subsection-title">其他视频</h3>
-  <div class="video-grid-mini">
-    <div class="video-card-mini">
-      <h4>历时3年骗过索尼，还@特朗普求救？</h4>
-      <p>揭秘国产沙盒游戏史上最抽象的欺诈事件</p>
-      <div class="video-meta"><span>1万 播放</span><span>2026.06</span></div>
-    </div>
-    <div class="video-card-mini">
-      <h4>猛开香槟！2025年最值得期待的大作游戏</h4>
-      <p>个人向年度期待盘点</p>
-      <div class="video-meta"><span>658 播放</span><span>2024.12</span></div>
-    </div>
-    <div class="video-card-mini">
-      <h4>2024 TGA 成最大"野鸡奖"？</h4>
-      <p>回顾首届TGA的盛况</p>
-      <div class="video-meta"><span>1,477 播放</span><span>2024.12</span></div>
-    </div>
-  </div>
-</section>
-
-<!-- ====== 艾瑞斯大陆设定集 ====== -->
-<section id="worldbuilding" class="section">
-  <h2 class="section-title">艾瑞斯大陆设定集</h2>
-  <p class="section-desc">独立构建的原创奇幻世界观 · 累计六万余字</p>
-
-  <!-- 世界观概览 -->
-  <div class="world-overview">
-    <div class="world-intro-card">
-      <p>「艾瑞斯大陆」是一个以<strong>"物理侧""魔法侧""研究侧"</strong>三足鼎立为核心的奇幻世界。物理侧者锤炼肉身与兵器，魔法侧者沟通元素与秘法，而无能力的研究侧则依靠知识与制度居中制衡——三者的权力博弈构成了整个世界的底层张力。</p>
-    </div>
-  </div>
-
-  <!-- 设定维度 -->
-  <div class="world-grid">
-    <div class="world-card">
-      <h3>能力体系</h3>
-      <ul>
-        <li><strong>物理侧</strong>：剑术师 · 骑士 · 刺客 · 狂战士 · 盾兵 · 枪兵 · 弓兵</li>
-        <li><strong>魔法侧</strong>：元素法师 · 咒术师 · 幻术师 · 治愈师 · 屏障建构师 · 魔导师 · 召唤师</li>
-        <li><strong>研究侧</strong>：无能力，主导公会系统与社会治理</li>
-        <li>主修+辅修双职阶制 · 一至十阶等级体系 · 十阶「神话位阶」秘档</li>
-      </ul>
-    </div>
-
-    <div class="world-card">
-      <h3>五大城市</h3>
-      <ul>
-        <li><strong>寰宇市</strong>：物理侧聚集区，尚武粗犷（苏式中期风格）</li>
-        <li><strong>天际市</strong>：魔法侧聚集区，神秘高雅（索莱恩秘法传承）</li>
-        <li><strong>中心市</strong>：研究侧总部，秩序理性（中美体制混合物）</li>
-        <li><strong>岩湖市</strong>：矿业重镇，寡头竞争（穹顶矿脉垄断）</li>
-        <li><strong>富华城</strong>：商业中心，市井浮华（六十年代美国风格）</li>
-      </ul>
-    </div>
-
-    <div class="world-card">
-      <h3>社会系统</h3>
-      <ul>
-        <li><strong>货币体系</strong>：金狮鹫币—银鹿角币—棕熊铜币三级汇兑</li>
-        <li><strong>政治架构</strong>：研究侧主导行政，元老会议（物理+魔法侧元老）最高决策</li>
-        <li><strong>教育体系</strong>：6-12岁义务教育 → 能力者公会考试 / 普通升学双轨</li>
-        <li><strong>法律体系</strong>：《艾瑞斯大陆宪法》+《能力者管理总则》等六部法典</li>
-      </ul>
-    </div>
-
-    <div class="world-card">
-      <h3>核心历史</h3>
-      <ul>
-        <li><strong>奥莱因战争</strong>：神之子「尤尔」统合物理侧与魔法侧联军，封印暗界通道</li>
-        <li><strong>秘法之断</strong>：战后物理/魔法侧决裂，奥莱因王国陨落</li>
-        <li><strong>元老会议历</strong>：以会议成立之年为纪元起点，12月×30日+5庆典日</li>
-        <li><strong>穹顶矿脉</strong>：稀有能量晶体的发现重塑了大陆力量格局</li>
-      </ul>
-    </div>
-
-    <div class="world-card">
-      <h3>暗界与神阶</h3>
-      <ul>
-        <li><strong>暗界五大起源假说</strong>：失败创世 / 古神尸骸 / 实验失控 / 异维度入侵 / 集体意识阴影</li>
-        <li><strong>玻利瓦尔档案</strong>：一级机密，魔法侧"源头"的真实本质存疑</li>
-        <li><strong>神话位阶</strong>：十阶「法则化身」，仅三位历史确认案例（尤尔、玻利瓦尔、调停者）</li>
-      </ul>
-    </div>
-
-    <div class="world-card">
-      <h3>经济与艺术</h3>
-      <ul>
-        <li><strong>维尔经济学双著</strong>：《银行、货币体系与经济命脉》《论能力者与非能力者的劳动》</li>
-        <li><strong>四大艺术流派</strong>：奥莱因现实主义 · 索莱恩秘义派 · 研究侧结构主义 · 富华城世俗派</li>
-        <li><strong>吟游诗人</strong>：里昂·铁喉 / 塞莱娜·维恩斯特 / 阿尔瓦罗·克莱恩 / 西尔维娅·佩恩</li>
-      </ul>
-    </div>
-  </div>
-
-  <p class="setting-note">
-    设定集全文详见 <strong>《艾瑞斯大陆设定集》</strong>（文档共16个章节，含方言对照指南、机密档案、历史年表等附录）
-  </p>
-</section>
-
-<!-- ====== 联系 ====== -->
-<section id="contact" class="section section-alt">
-  <h2 class="section-title">联系方式</h2>
-  <div class="contact-grid">
-    <a href="https://space.bilibili.com/518565512" target="_blank" rel="noopener" class="contact-card">
-      <span class="contact-icon">▶</span>
-      <h3>B站</h3>
-      <p>BEST-辣椒</p>
+<!-- 顶角：关于我，居中 -->
+<div class="home-triangle-top" style="display:flex;justify-content:center;max-width:960px;margin:0 auto;padding:0 16px;">
+  <div class="home-triangle-top-inner" style="margin-bottom:20px;">
+    <a href="about.html" class="nav-card card-about" style="margin:0;">
+      <span class="card-badge badge-lore">&#9679; 关于</span>
+      <span class="card-icon">&para;</span>
+      <h3>关于我</h3>
+      <p>游戏考古的创作理念、世界观构建的方法论。冷峻克制的叙事风格，追求信息密度与节奏的平衡。</p>
+      <span class="card-tease">创作哲学 · 叙事方法论</span>
+      <span class="card-arrow">了解更多 →</span>
     </a>
-    <div class="contact-card">
-      <span class="contact-icon">✉</span>
-      <h3>邮箱</h3>
-      <p>待补充</p>
-    </div>
-    <div class="contact-card">
-      <span class="contact-icon">⟐</span>
-      <h3>GitHub</h3>
-      <p>待补充</p>
-    </div>
   </div>
-</section>
+</div>
 
-<!-- ====== 页脚 ====== -->
+<!-- 底边：B站 + 设定集 + 小说，三列 -->
+<div class="home-triangle-bottom" style="display:flex;gap:20px;max-width:960px;margin:0 auto;padding:0 16px 100px;">
+
+  <a href="bilibili.html" class="nav-card card-bili" style="flex:1;min-width:0;">
+    <span class="card-badge badge-data">&#9679; 数据</span>
+    <span class="card-icon">&#9654;</span>
+    <h3>B站内容创作</h3>
+    <p>「消失游戏开发日志」系列7期，累计19.5万播放。含可排序视频对比、指标雷达图、观众画像与内容策略分析。</p>
+    <span class="card-tease">拖动排序 · 雷达对比 · 数据洞察</span>
+    <span class="card-arrow">浏览作品 →</span>
+  </a>
+
+  <a href="worldbuilding.html" class="nav-card card-world" style="flex:1;min-width:0;">
+    <span class="card-badge badge-lore">&#9679; 设定</span>
+    <span class="card-icon">&#9734;</span>
+    <h3>艾瑞斯大陆设定集</h3>
+    <p>六万余字原创奇幻世界观。双能力体系、五大城市、经济法律系统、核心历史、机密档案与最高机密卷宗。</p>
+    <span class="card-tease">折叠档案 · 神位阶隐藏交互</span>
+    <span class="card-arrow">探索世界 →</span>
+  </a>
+
+  <a href="novel.html" class="nav-card card-novel" style="flex:1;min-width:0;">
+    <span class="card-badge badge-read">&#9679; 小说</span>
+    <span class="card-icon">&#9733;</span>
+    <h3>渡鸦镇</h3>
+    <p>长篇小说12章，哥特式小镇叙事。含「你是渡鸦镇的谁？」性格测试与可交互人物关系图。</p>
+    <span class="card-tease">性格测试 · 人物关系图 · 十二章完整版</span>
+    <span class="card-arrow">阅读小说 →</span>
+  </a>
+
+</div>
+
+<!-- 游戏拆解卡片（三角形下方全宽） -->
+<div style="max-width:960px;margin:32px auto 0;padding:0 16px;">
+  <a href="game-analysis.html" class="nav-card card-design" style="display:block;border-left:3px solid var(--accent);">
+    <span class="card-badge badge-data">&#9679; 拆解</span>
+    <span class="card-icon">&#9878;</span>
+    <h3>游戏拆解</h3>
+    <p>基于「消失游戏开发日志」系列的一手研究资料，从策划视角对《幻》和《寂静岭P.T.》进行完整的项目失败分析——核心设计问题、关键失败节点、以及可迁移至当代游戏开发的行业教训。</p>
+    <span class="card-tease">设计分析 · 失败节点 · 行业教训 · 假设推演</span>
+    <span class="card-arrow">阅读拆解 →</span>
+  </a>
+</div>
+
+<!-- 文案拆解卡片（全宽） -->
+<div style="max-width:960px;margin:24px auto 0;padding:0 16px;">
+  <a href="script-analysis.html" class="nav-card card-about" style="display:block;border-left:3px solid #7266ba;">
+    <span class="card-badge badge-read">&#9679; 元分析</span>
+    <span class="card-icon">&#9998;</span>
+    <h3>文案拆解</h3>
+    <p>对七期视频文案本身的元分析——叙事结构、风格演变、观众钩子设计、以及从Noclip/新新闻主义/B站知识区生态中汲取的创作方法论。不只是"写了什么"，更是"为什么这么写"。</p>
+    <span class="card-tease">叙事哲学 · 逐期拆解 · 跨期对比 · 影响来源 · 可复用方法论</span>
+    <span class="card-arrow">阅读拆解 →</span>
+  </a>
+</div>
+
+<!-- 移动端三角形适配 -->
+<style>
+@media (max-width: 768px) {
+  .home-triangle-top-inner {
+    width: 100% !important;
+    max-width: 500px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .home-triangle-bottom {
+    flex-direction: column !important;
+    gap: 16px !important;
+    max-width: 500px !important;
+  }
+  .home-triangle-bottom .nav-card {
+    flex: auto !important;
+  }
+}
+</style>
+
 <footer>
-  <p>BEST-辣椒 © 2026 · 游戏考据与世界观构建</p>
+  <p>BEST-辣椒 &copy; 2026 · <a href="https://space.bilibili.com/518565512" target="_blank" rel="noopener" style="color:var(--text-dim);">B站主页</a></p>
 </footer>
 
+<script>
+// ====== 像素小人对话框 ======
+(function() {
+  var bubble = document.getElementById('mascot-bubble');
+  var mascot = document.getElementById('pixel-mascot');
+  if (!bubble) return;
+
+  var clicks = 0;
+  var idleTimer = null;
+  var idleFired = { 30: false, 60: false, 90: false };
+
+  // 对话库
+  var normalMsgs = [
+    '你好，欢迎来到我的求职个人网站！',
+    '这里收录了我的游戏考据、世界观设定和交互原型~',
+    '随便逛逛，有疑问随时找我！呃，虽然我只是一张图……'
+  ];
+  var easterMsgs = [
+    '你知道吗？这个网站的总AI调用成本不到5块钱。',
+    '嘘……设定集里藏了一些暗界生物的秘密档案。',
+    'B站的视频拆解页里，有原游戏编剧的独家访谈翻译哦。',
+    '渡鸦镇那个页面底部有个性格测试，试试你是哪个角色？',
+    '游戏设计页里有个中世纪告示板，那是纯CSS画的。'
+  ];
+  var sillyMsgs = [
+    '你已经点了我' + '好多次了。好吧，我承认我只是个像素图。',
+    '别点了别点了！再点我就要从像素变成矢量图了！',
+    '你知道吗，我的原型是作者花了几分钟在某个像素生成器里捏出来的。',
+    '我要是能动的话早就跑了。但我是PNG格式的。PNG不支持动画。',
+    '好吧好吧，最后告诉你一个秘密：这个对话框里的逗号都是英文逗号——等等，好像确实是。'
+  ];
+  var idleMsgs = [
+    '你还在吗？……要不要去B站看看我的视频？',
+    '页面停留这么久，看来你是真的在认真看。谢谢你。',
+    '如果看完了，可以试试设定集页面的搜索功能。我做的。呃，作者做的。',
+    '还在呢？要不……再点我一下？'
+  ];
+
+  function popAnim() {
+    bubble.classList.remove('pop');
+    void bubble.offsetWidth; // reflow
+    bubble.classList.add('pop');
+  }
+
+  function say(msg) {
+    bubble.textContent = msg;
+    // 根据字数设定宽度：字少就窄，字多就宽，避免换行
+    var len = msg.length;
+    if (len <= 10) {
+      bubble.style.maxWidth = '220px';
+    } else if (len <= 18) {
+      bubble.style.maxWidth = '320px';
+    } else if (len <= 28) {
+      bubble.style.maxWidth = '420px';
+    } else if (len <= 40) {
+      bubble.style.maxWidth = '520px';
+    } else {
+      bubble.style.maxWidth = '600px';
+    }
+    popAnim();
+  }
+
+  function getSillyMsg() {
+    var n = clicks - normalMsgs.length - easterMsgs.length;
+    var msg = sillyMsgs[Math.min(n, sillyMsgs.length - 1)];
+    return msg.replace('好多次', n + '次');
+  }
+
+  bubble.addEventListener('click', function(e) {
+    e.stopPropagation();
+    // 如果是"进入页面"邀请
+    if (bubble._enterPage) {
+      var targetPage = bubble._enterPage;
+      localStorage.setItem('mascot_guest', JSON.stringify({
+        page: targetPage,
+        active: true,
+        time: Date.now()
+      }));
+      say('好嘞！跟我来~');
+      bubble.style.background = '';
+      delete bubble._enterPage;
+      setTimeout(function() { window.location.href = targetPage; }, 400);
+      return;
+    }
+    clicks++;
+    resetIdle();
+
+    if (clicks <= normalMsgs.length) {
+      say(normalMsgs[clicks - 1]);
+    } else if (clicks <= normalMsgs.length + easterMsgs.length) {
+      say(easterMsgs[clicks - normalMsgs.length - 1]);
+    } else {
+      say(getSillyMsg());
+    }
+  });
+
+  // ====== 拖拽系统 ======
+  var avatarImg = document.getElementById('mascot-img');
+  var dragImg = 'mascot-drag.png';
+  var normalImg = 'pixel-avatar-clean-small.png';
+  var isDragging = false;
+  var wasDragged = false;
+  var mascotParent = null;
+  var mascotNextSibling = null;
+  var startMouseX, startMouseY;
+  var startMascotLeft, startMascotTop;
+  var startMascotWidth, startMascotHeight;
+  var origPageX, origPageY;
+  var offsetX, offsetY;
+  var lastDragX, lastDragY, lastDragTime;
+  var speedMsgFrames = 0;
+  var lastZone = null;
+  var zoneTimers = {};
+
+  // 各模块介绍对话
+  var zoneDialogs = {
+    bilibili: [
+      '这里有7期视频的完整数据，还能拖动排序哦~',
+      '点进去可以对比任意两期视频的六维雷达图！',
+      '消失游戏开发日志——每期都是一段被遗忘的故事。',
+      '观众画像：93.6%男性，25-40岁为主——很硬核。',
+      '#3细胞分裂那期有4.6万播放，是目前最高的！'
+    ],
+    worldbuilding: [
+      '六万多字的设定，从能力体系到法律制度都有。',
+      '物理侧拿剑，魔法侧施法，研究侧掌管一切。',
+      '五大城市：寰宇尚武、岩湖锻造、富华重商、天际观星、低语岭祈祷。',
+      '机密档案里藏了暗界生物的秘密……点到为止。',
+      '双月历法——塞莱妮和墨恩的周期，影响整个大陆。'
+    ],
+    novel: [
+      '瑞雯不觉得冷——不是比喻，真的不觉得冷。',
+      '索菲娜第一天上学就打了一架。然后被孤立了。',
+      '彼得想造一艘船驶离小镇。但大雪封住了所有的路。',
+      '底部性格测试蛮准的——我测出来是瑞雯。',
+      '十二章，从葬礼开始，到大雪结束。'
+    ],
+    gamedesign: [
+      '能力者雷达评估可以识别12种类型！还有隐藏暗界彩蛋。',
+      '战斗伤害计算器——物理侧和魔法侧公式不一样哦。',
+      '公会任务5步决策，选错一步就失败了，和真实设计一样。',
+      '告示板彩蛋——纯CSS画的木板纹理，没用一张图。',
+      '掉落模拟器按暗界生物稀有度做了完整的概率表。'
+    ],
+    gameanalysis: [
+      '从策划视角拆了7款游戏的失败原因——不是八卦，是教训。',
+      '《幻》的案例：理想主义遇到了没有结局的代码。',
+      '每篇末尾有4条行业教训，可直接用到实际项目中。',
+      '《寂静岭P.T.》不止是恐怖游戏——它是科乐美转型的牺牲品。',
+      '《细胞分裂》从旗舰到雪藏，见证了育碧的完整弧线。'
+    ],
+    scriptanalysis: [
+      '7期文案的完整元分析——不是"写了什么"，是"为什么这样写"。',
+      '缺点复盘有7张棕红色卡片，每张都是一次真实翻车。',
+      '数据验证发现"高播放≠高转化"——做内容的人都该知道。',
+      '从Noclip到新新闻主义，叙事风格有清晰的影响链。',
+      '5条可复用方法论——如果你也想做深度游戏内容。'
+    ],
+    about: [
+      '这里有人机协作的完整决策记录——谁做了什么、为什么。',
+      '整个网站AI成本不到5块钱。MVP思维的胜利！',
+      '四次创意跃迁卡片——每次都是不明显的转折点。',
+      '我的求职方向是游戏策划，偏系统和数值。',
+      '跨专业做游戏，需要额外的证明——这个网站就是。'
+    ]
+  };
+
+  function startDrag(x, y, touch) {
+    var rect = mascot.getBoundingClientRect();
+    startMouseX = x;
+    startMouseY = y;
+    startMascotLeft = rect.left;
+    startMascotTop = rect.top;
+    startMascotWidth = rect.width;
+    startMascotHeight = rect.height;
+    offsetX = x - rect.left;
+    offsetY = y - rect.top;
+    origPageX = rect.left + window.scrollX;
+    origPageY = rect.top + window.scrollY;
+    wasDragged = false;
+    isDragging = false;
+    isTouch = !!touch;
+    dragReady = false;
+    if (touchHoldTimer) clearTimeout(touchHoldTimer);
+
+    if (touch) {
+      // 手机端：需长按 250ms 或移动超 10px 才进入拖拽
+      touchHoldTimer = setTimeout(function() {
+        dragReady = true;
+        avatarImg.style.transform = 'scale(1.1)';
+        avatarImg.style.transition = 'transform 0.15s ease';
+      }, 250);
+    }
+
+    document.addEventListener('mousemove', onDragMove);
+    document.addEventListener('mouseup', onDragEnd);
+    document.addEventListener('touchmove', onDragTouch, { passive: false });
+    document.addEventListener('touchend', onDragEnd);
+  }
+
+  function onDragMove(e) { handleDrag(e.clientX, e.clientY); }
+
+  function onDragTouch(e) {
+    e.preventDefault();
+    if (e.touches.length === 1) handleDrag(e.touches[0].clientX, e.touches[0].clientY);
+  }
+
+  function handleDrag(x, y) {
+    var dx = Math.abs(x - startMouseX);
+    var dy = Math.abs(y - startMouseY);
+    // 手机端：需长按就绪或滑动超10px；电脑端：5px即可
+    var threshold = isTouch ? (dragReady ? 5 : 10) : 5;
+    if (!isDragging && dx + dy < threshold) return;
+
+    if (!isDragging) {
+      isDragging = true;
+      wasDragged = true;
+      avatarImg.src = dragImg;
+      avatarImg.style.cursor = 'grabbing';
+      bubble.style.visibility = 'hidden';
+      // 移到 body 下，确保不被任何模块盖住
+      mascotParent = mascot.parentNode;
+      mascotNextSibling = mascot.nextSibling;
+      document.body.appendChild(mascot);
+      mascot.style.position = 'fixed';
+      mascot.style.left = startMascotLeft + 'px';
+      mascot.style.top = startMascotTop + 'px';
+      mascot.style.width = startMascotWidth + 'px';
+      mascot.style.height = startMascotHeight + 'px';
+      mascot.style.margin = '0';
+      mascot.style.zIndex = '2147483647';
+      mascot.style.transition = 'none';
+      mascot.style.pointerEvents = 'none';
+      lastDragX = x; lastDragY = y;
+      lastDragTime = Date.now();
+      speedMsgFrames = 0;
+      lastZone = null;
+      zoneTimers = {};
+      // 拾起彩蛋
+      bubble.style.visibility = 'visible';
+      say(pickRandom(['诶？！你要带我去哪？', '哇！飞起来了！', '别别别——行吧，跟你走。', '又来？上次拖我拖得那么快……', '好吧，临时导游模式启动。']));
+      setTimeout(function() { if (isDragging) bubble.style.visibility = 'hidden'; }, 1800);
+    }
+
+    // 缓动跟随鼠标（含边缘碰撞）
+    var ml = parseFloat(mascot.style.left) || 0;
+    var mt = parseFloat(mascot.style.top) || 0;
+    var targetX = x - offsetX;
+    var targetY = y - offsetY;
+    // 边界限制：小人至少保留40px在屏幕内
+    var pad = 40;
+    var minX = pad - startMascotWidth;
+    var maxX = window.innerWidth - pad;
+    var minY = pad - startMascotHeight;
+    var maxY = window.innerHeight - pad;
+    targetX = Math.max(minX, Math.min(maxX, targetX));
+    targetY = Math.max(minY, Math.min(maxY, targetY));
+    var ease = 0.35;
+    mascot.style.left = (ml + (targetX - ml) * ease) + 'px';
+    mascot.style.top  = (mt + (targetY - mt) * ease) + 'px';
+
+    // 速度检测
+    var now = Date.now();
+    var sdx = x - lastDragX, sdy = y - lastDragY;
+    var dist = Math.sqrt(sdx * sdx + sdy * sdy);
+    var dt = now - lastDragTime;
+    if (dt > 0 && dist / dt > 1.5 && speedMsgFrames <= 0) {
+      speedMsgFrames = 20;
+      bubble.style.visibility = 'visible';
+      say(pickRandom(['慢点慢点！我要晕像素了！！', '啊啊啊别甩我！我恐高——虽然我只是一张图……', '你拖这么快是想让我穿越到矢量图世界吗？', '救命！有人绑架像素小人啦！！', '又来了！我要散架了！', '好吧我认输，你拖吧。反正我也打不过你。']));
+      setTimeout(function() { if (isDragging) bubble.style.visibility = 'hidden'; }, 2200);
+    }
+    if (speedMsgFrames > 0) speedMsgFrames--;
+    lastDragX = x; lastDragY = y; lastDragTime = now;
+
+    // 靠近/重叠检测
+    var ml2 = parseFloat(mascot.style.left) || 0;
+    var mt2 = parseFloat(mascot.style.top) || 0;
+    var cx = ml2 + startMascotWidth / 2;
+    var cy = mt2 + startMascotHeight / 2;
+    var zones = [
+      { sel: '.card-bili',    key: 'bilibili',      page: 'bilibili.html' },
+      { sel: '.card-world',   key: 'worldbuilding',  page: 'worldbuilding.html' },
+      { sel: '.card-novel',   key: 'novel',          page: 'novel.html' },
+      { sel: '.card-about',   key: 'about',          page: 'about.html' },
+      { sel: '.featured-banner', key: 'featured',    page: 'game-design.html' },
+      { sel: 'a[href="game-design.html"].nav-card',    key: 'gamedesign',     page: 'game-design.html' },
+      { sel: 'a[href="game-analysis.html"].nav-card',   key: 'gameanalysis',   page: 'game-analysis.html' },
+      { sel: 'a[href="script-analysis.html"].nav-card', key: 'scriptanalysis', page: 'script-analysis.html' }
+    ];
+    var near = null;
+    var overCard = null;
+    // 小人包围盒（近似）
+    var mLeft = ml2, mTop = mt2;
+    var mRight = ml2 + startMascotWidth, mBottom = mt2 + startMascotHeight;
+    for (var i = 0; i < zones.length; i++) {
+      var el = document.querySelector(zones[i].sel);
+      if (!el) continue;
+      var r = el.getBoundingClientRect();
+      // 矩形重叠判定（比中心点判定更宽松准确）
+      if (mRight > r.left && mLeft < r.right && mBottom > r.top && mTop < r.bottom) {
+        overCard = zones[i];
+        break;
+      }
+      // 靠近
+      if (cx >= r.left - 80 && cx <= r.right + 80 && cy >= r.top - 80 && cy <= r.bottom + 80) {
+        near = zones[i].key;
+      }
+    }
+
+    if (overCard) {
+      // 重叠在模块卡片上——邀请进入
+      if (lastZone !== ('enter_' + overCard.key)) {
+        lastZone = 'enter_' + overCard.key;
+        bubble.style.visibility = 'visible';
+        bubble.style.cursor = 'pointer';
+        bubble.style.background = '#fffef5';
+        var inviteMsg = overCard.key === 'featured' ? '想让我带你体验交互原型吗？点我=一起去 | 拖走=下次' : '想让我跟你一起进去看看吗？点我=确定 | 拖走=不去';
+        say(inviteMsg);
+        bubble._enterPage = overCard.page;
+        bubble._enterZone = overCard.key;
+      }
+    } else if (near && near !== lastZone && lastZone.indexOf('enter_') !== 0) {
+      // 靠近但未重叠——正常介绍
+      var t = Date.now();
+      if (!zoneTimers[near] || t - zoneTimers[near] > 4000) {
+        zoneTimers[near] = t;
+        bubble.style.visibility = 'visible';
+        bubble.style.cursor = 'pointer';
+        bubble.style.background = '';  // 恢复默认
+        delete bubble._enterPage;
+        var firstMsg = pickRandom(zoneDialogs[near]);
+        say(firstMsg);
+        (function(zone, prev) {
+          setTimeout(function() {
+            if (!isDragging || lastZone !== zone) return;
+            say(pickRandom(zoneDialogs[zone]));
+          }, 1800);
+        })(near, firstMsg);
+        setTimeout(function() { if (isDragging) bubble.style.visibility = 'hidden'; }, 3500);
+      }
+      lastZone = near;
+    } else if (!near && !overCard) {
+      lastZone = null;
+      bubble.style.background = '';
+      bubble.style.cursor = 'pointer';
+      delete bubble._enterPage;
+    }
+  }
+
+  var endTimer = null;
+  var recentMsgs = [];
+  var wanderTimer = null;
+  var isWandering = false;
+  var homeX, homeY;
+  var isTouch = false;       // 区分触屏/鼠标
+  var touchHoldTimer = null; // 长按计时器
+  var dragReady = false;     // 长按就绪
+
+  function updateHome() {
+    var hero = document.querySelector('.hero-content');
+    if (hero) { var r = hero.getBoundingClientRect(); homeX = r.left + r.width / 2; homeY = r.top + 40; }
+  }
+  updateHome();
+  window.addEventListener('resize', updateHome);
+
+  function pickRandom(arr) {
+    var pool = arr.filter(function(m) { return recentMsgs.indexOf(m) === -1; });
+    if (pool.length === 0) { pool = arr; recentMsgs.length = 0; }
+    var pick = pool[Math.floor(Math.random() * pool.length)];
+    recentMsgs.push(pick);
+    if (recentMsgs.length > 10) recentMsgs.shift();
+    return pick;
+  }
+
+  function onDragEnd(e) {
+    document.removeEventListener('mousemove', onDragMove);
+    document.removeEventListener('mouseup', onDragEnd);
+    document.removeEventListener('touchmove', onDragTouch);
+    document.removeEventListener('touchend', onDragEnd);
+
+    if (!isDragging) return;
+    isDragging = false;
+
+    if (touchHoldTimer) { clearTimeout(touchHoldTimer); touchHoldTimer = null; }
+    if (dragReady) { avatarImg.style.transform = 'scale(1)'; avatarImg.style.transition = ''; dragReady = false; }
+    if (endTimer) clearTimeout(endTimer);
+    // 松手后允许下一次点击
+    wasDragged = false;
+
+    // 从 fixed（视口坐标）转为 absolute（页面坐标），随页面滚动
+    var curLeft = parseFloat(mascot.style.left) || 0;
+    var curTop  = parseFloat(mascot.style.top)  || 0;
+    mascot.style.position = 'absolute';
+    mascot.style.left = (curLeft + window.scrollX) + 'px';
+    mascot.style.top  = (curTop  + window.scrollY) + 'px';
+
+    // 移回原父元素
+    if (mascotParent) {
+      if (mascotNextSibling) {
+        mascotParent.insertBefore(mascot, mascotNextSibling);
+      } else {
+        mascotParent.appendChild(mascot);
+      }
+    }
+
+    avatarImg.src = normalImg;
+    avatarImg.style.cursor = 'grab';
+    bubble.style.visibility = 'visible';
+    mascot.style.transition = 'none';
+    mascot.style.pointerEvents = '';
+    mascot.style.zIndex = '999';
+
+    // 松手弹跳
+    avatarImg.style.transition = 'transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)';
+    avatarImg.style.transform = 'scale(1.1)';
+    setTimeout(function() {
+      avatarImg.style.transform = 'scale(1)';
+      setTimeout(function() { avatarImg.style.transition = ''; }, 250);
+    }, 50);
+
+    // 松手对话
+    if (Math.random() < 0.4) {
+      say(pickRandom(['就放这了？行吧。', '这里风景不错。比刚才那个角落好。', '呼——落地了。像素脚都站麻了。', '要不要双击我一下，让我回家？', '如果你后悔了，双击我就能回原位哦~']));
+    }
+
+    // 启动漫游计时
+    if (wanderTimer) clearTimeout(wanderTimer);
+    wanderTimer = setTimeout(startWander, 120000);
+    resetIdle();
+  }
+
+  avatarImg.addEventListener('mousedown', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    startDrag(e.clientX, e.clientY, false);
+  });
+  avatarImg.addEventListener('touchstart', function(e) {
+    if (e.touches.length === 1) {
+      // 不 preventDefault，保留 click 事件给点击对话
+      e.stopPropagation();
+      startDrag(e.touches[0].clientX, e.touches[0].clientY, true);
+    }
+  }, { passive: true });
+
+  // 点击小人：对话 / 进入二级页面 / 手机双击回家
+  var lastTapTime = 0;
+  avatarImg.addEventListener('click', function(e) {
+    if (wasDragged) return;
+
+    // 手机端双击检测
+    var now = Date.now();
+    if (now - lastTapTime < 400) {
+      e.stopPropagation(); e.preventDefault();
+      lastTapTime = 0;
+      goHome();
+      return;
+    }
+    lastTapTime = now;
+
+    e.stopPropagation();
+    avatarImg.style.transition = 'transform 0.15s ease';
+    avatarImg.style.transform = 'scale(1.12)';
+    setTimeout(function() { avatarImg.style.transform = 'scale(1)'; }, 150);
+    // 如果有进入邀请，优先处理
+    if (bubble._enterPage) {
+      var tp = bubble._enterPage;
+      localStorage.setItem('mascot_guest', JSON.stringify({ page: tp, active: true, time: Date.now() }));
+      say('好嘞！跟我来~');
+      bubble.style.background = '';
+      delete bubble._enterPage;
+      setTimeout(function() { window.location.href = tp; }, 400);
+      return;
+    }
+    bubble.click();
+  });
+
+  avatarImg.style.cursor = 'grab';
+
+  // 双击回家（桌面 dblclick + 移动端双指 tap）
+  var lastTapTime = 0;
+  function goHome() {
+    isWandering = false;
+    if (wanderTimer) clearTimeout(wanderTimer);
+    mascot.classList.remove('mascot-float');
+    updateHome();
+    mascot.style.position = 'fixed';
+    mascot.style.zIndex = '999';
+    mascot.style.transition = 'left 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), top 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+    mascot.style.left = homeX + 'px';
+    mascot.style.top  = homeY + 'px';
+    say('回家啦！双击随时可以送我回来~');
+    setTimeout(function() {
+      mascot.style.position = '';
+      mascot.style.left = '';
+      mascot.style.top = '';
+      mascot.style.zIndex = '';
+      mascot.style.transition = '';
+      wanderTimer = setTimeout(startWander, 180000);
+    }, 650);
+    resetIdle();
+  }
+
+  avatarImg.addEventListener('dblclick', function(e) {
+    e.preventDefault(); e.stopPropagation();
+    goHome();
+  });
+
+  // 漫游模式
+  function startWander() {
+    if (isDragging || isWandering) return;
+    isWandering = true;
+    var maxX = window.innerWidth - 150;
+    var maxY = window.innerHeight - 150;
+    var randX = 30 + Math.random() * (maxX - 30);
+    var randY = 30 + Math.random() * (maxY - 30);
+
+    var ml = mascot.getBoundingClientRect().left;
+    var mt = mascot.getBoundingClientRect().top;
+    if (mascot.style.position === 'absolute') {
+      ml = ml - window.scrollX;
+      mt = mt - window.scrollY;
+    }
+    mascot.style.position = 'fixed';
+    mascot.style.left = ml + 'px';
+    mascot.style.top  = mt + 'px';
+    mascot.style.zIndex = '999';
+    mascot.style.transition = 'left 8s ease-in-out, top 8s ease-in-out';
+    mascot.classList.add('mascot-float');
+    setTimeout(function() {
+      mascot.style.left = randX + 'px';
+      mascot.style.top  = randY + 'px';
+    }, 150);
+
+    setTimeout(function() {
+      mascot.style.transition = 'none';
+      mascot.classList.remove('mascot-float');
+      isWandering = false;
+      wanderTimer = setTimeout(startWander, 180000);
+    }, 8300);
+  }
+
+  // 初始漫游计时
+  wanderTimer = setTimeout(startWander, 120000);
+
+  function resetIdle() {
+    if (idleTimer) clearTimeout(idleTimer);
+    idleFired[30] = false;
+    idleFired[60] = false;
+    idleFired[90] = false;
+    idleTimer = setTimeout(checkIdle, 30000);
+  }
+
+  function checkIdle() {
+    var elapsed = 30;
+    if (!idleFired[30]) {
+      idleFired[30] = true;
+      say(idleMsgs[0]);
+      idleTimer = setTimeout(checkIdle, 30000);
+    } else if (!idleFired[60]) {
+      idleFired[60] = true;
+      say(idleMsgs[1]);
+      idleTimer = setTimeout(checkIdle, 30000);
+    } else if (!idleFired[90]) {
+      idleFired[90] = true;
+      say(idleMsgs[2]);
+      idleTimer = setTimeout(checkIdle, 30000);
+    } else {
+      // 循环闲逛提示
+      say(idleMsgs[Math.floor(Math.random() * idleMsgs.length)]);
+      idleFired[30] = false;
+      idleFired[60] = false;
+      idleFired[90] = false;
+      idleTimer = setTimeout(checkIdle, 30000);
+    }
+  }
+
+  // 页面加载后30秒开始检测空闲
+  idleTimer = setTimeout(checkIdle, 30000);
+
+  // 首次加载：4秒后自动显示操作引导
+  var firstHintTimer = setTimeout(function() {
+    if (clicks === 0 && !wasDragged && !isDragging) {
+      say('提示：点我聊天 | 拖我闲逛 | 双击送我回家~');
+    }
+  }, 4000);
+
+  // 吸引注意：小人脉冲动画
+  avatarImg.classList.add('mascot-pulse');
+  setTimeout(function() { avatarImg.classList.remove('mascot-pulse'); }, 2000);
+
+  // 用户点击后清除提示计时器
+  var origResetIdle = resetIdle;
+  resetIdle = function() {
+    if (firstHintTimer) { clearTimeout(firstHintTimer); firstHintTimer = null; }
+    origResetIdle();
+  };
+
+  // 用户有任何交互就重置
+  document.addEventListener('click', resetIdle);
+  document.addEventListener('scroll', function() {
+    if (idleTimer) { clearTimeout(idleTimer); idleFired[30]=false; idleFired[60]=false; idleFired[90]=false; idleTimer = setTimeout(checkIdle, 30000); }
+  });
+})();
+
+// ====== 数字滚动动画 ======
+function animateCounter(id, target, duration, suffix, decimals) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  var start = 0;
+  var startTime = null;
+
+  function step(timestamp) {
+    if (!startTime) startTime = timestamp;
+    var progress = Math.min((timestamp - startTime) / duration, 1);
+    var eased = 1 - (1 - progress) * (1 - progress);
+    var current = decimals ? (target * eased).toFixed(decimals) : Math.round(target * eased);
+    el.textContent = current + (suffix || '');
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+// ====== B站实时数据同步 ======
+var BILI_UID = '518565512';
+var staticFallback = { fans: 888, plays: 19.5, words: 6, series: 7 };
+
+function fetchBiliStats(callback) {
+  var done = false; // 防止超时二次回调
+  var API_BASE = 'https://sample-reels-ten.vercel.app/api/bili-stats';
+
+  function finish(result) {
+    if (done) return;
+    done = true;
+    callback(result);
+  }
+
+  function tryVercelAPI() {
+    fetch(API_BASE)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data && data.fans !== null && data.totalPlays !== null) {
+          finish({ fans: { follower: data.fans }, plays: { view: data.totalPlays } });
+        } else {
+          tryPublicProxy();
+        }
+      })
+      .catch(function() { tryPublicProxy(); });
+  }
+
+  function tryPublicProxy() {
+    var url = 'https://corsproxy.io/?' + encodeURIComponent('https://api.bilibili.com/x/relation/stat?vmid=' + BILI_UID);
+    fetch(url)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data && data.code === 0 && data.data && data.data.follower !== undefined) {
+          finish({ fans: data.data, plays: null });
+        } else {
+          finish({ fans: null, plays: null });
+        }
+      })
+      .catch(function() { finish({ fans: null, plays: null }); });
+  }
+
+  tryVercelAPI();
+  setTimeout(function() { finish({ fans: null, plays: null }); }, 6000);
+}
+
+function updateCounters(result) {
+  var fans, playsWan;
+  var fansData = result ? result.fans : null;
+  var playsData = result ? result.plays : null;
+  var isLive = false;
+
+  if (fansData && fansData.follower !== undefined) {
+    fans = fansData.follower;
+    isLive = true;
+  } else {
+    fans = staticFallback.fans;
+  }
+
+  if (playsData && playsData.view !== undefined) {
+    playsWan = parseFloat((playsData.view / 10000).toFixed(1));
+    isLive = true;
+  } else if (isLive) {
+    // 粉丝增长 → 按比例推算播放量
+    var ratio = fans / staticFallback.fans;
+    playsWan = parseFloat((staticFallback.plays * ratio).toFixed(1));
+  } else {
+    playsWan = staticFallback.plays;
+  }
+
+  // 动画粉丝数
+  document.getElementById('counter-fans').textContent = '0';
+  animateCounter('counter-fans', fans, isLive ? 1500 : 1000, '');
+
+  // 动画播放量（万）
+  var el = document.getElementById('counter-plays');
+  if (el) {
+    el.textContent = '0';
+    var target = playsWan;
+    var startTime = null;
+    var duration = isLive ? 1800 : 1200;
+    function step(ts) {
+      if (!startTime) startTime = ts;
+      var progress = Math.min((ts - startTime) / duration, 1);
+      var eased = 1 - (1 - progress) * (1 - progress);
+      el.textContent = (target * eased).toFixed(1);
+      if (progress < 1) requestAnimationFrame(step);
+    }
+    setTimeout(function() { requestAnimationFrame(step); }, 200);
+  }
+
+  // 静态指标
+  setTimeout(function() { animateCounter('counter-words', staticFallback.words, 800, ''); }, 600);
+  setTimeout(function() { animateCounter('counter-series', staticFallback.series, 600, ''); }, 800);
+
+  // 实时数据加标记
+  if (isLive) {
+    var statItem = document.getElementById('counter-fans').closest('.stat-item');
+    if (statItem) {
+      var label = statItem.querySelector('.stat-label');
+      if (label) label.textContent = '粉丝（实时）';
+    }
+  }
+}
+
+// 启动
+window.addEventListener('DOMContentLoaded', function() {
+  fetchBiliStats(function(data) {
+    updateCounters(data);
+  });
+  // 每10分钟静默刷新
+  setInterval(function() {
+    fetchBiliStats(function(result) {
+      var fansData = result ? result.fans : null;
+      var playsData = result ? result.plays : null;
+      if (fansData && fansData.follower !== undefined) {
+        document.getElementById('counter-fans').textContent = fansData.follower;
+      }
+      if (playsData && playsData.view !== undefined) {
+        document.getElementById('counter-plays').textContent = (playsData.view / 10000).toFixed(1);
+      }
+    });
+  }, 600000);
+});
+</script>
+
+<script src="common.js"></script>
+<script>
+// ====== 全站搜索 ======
+(function() {
+  var input = document.getElementById('site-search-input');
+  var results = document.getElementById('site-search-results');
+  var hint = document.getElementById('site-search-hint');
+  if (!input || !results) return;
+
+  // 全站搜索索引 —— 覆盖所有页面及关键内容
+  var index = [
+    // === 一级页面 ===
+    { title:'关于我', page:'about.html', tags:'关于 介绍 邓恺恒 求职 游戏策划 产品经理 创作理念 叙事方法论', desc:'个人简介、求职意向、创作哲学与叙事方法论' },
+    { title:'B站内容创作', page:'bilibili.html', tags:'B站 bilibili 视频 播放 粉丝 数据分析 雷达图 排序 内容策略 观众画像', desc:'7期视频系列，含排序对比、雷达图、数据洞察' },
+    { title:'艾瑞斯大陆设定集', page:'worldbuilding.html', tags:'设定 世界观 艾瑞斯 能力 物理侧 魔法侧 研究侧 职阶 城市 历史 法律 经济 公会 暗界 元老会议 日历 方言', desc:'六万字原创奇幻世界观，双能力体系，五大城市，机密档案' },
+    { title:'渡鸦镇（小说）', page:'novel.html', tags:'小说 渡鸦镇 哥特 瑞雯 索菲娜 彼得 希尔德 安德森 安切斯特 玛丽德尔 性格测试 人物关系图 章节', desc:'十二章长篇小说，含性格测试与人物关系图' },
+    { title:'可交互游戏原型', page:'game-design.html', tags:'交互 原型 游戏设计 雷达图 战斗力 伤害计算 掉落 模拟 任务 决策 告示板 能力评估 数值 系统', desc:'5个可交互原型：雷达评估、战斗计算器、掉落模拟、任务决策、告示板' },
+    { title:'游戏拆解', page:'game-analysis.html', tags:'拆解 分析 失败 项目 设计 幻 寂静岭 PT 细胞分裂 热血无赖 迈阿密热线 eight days 超越善恶 行业教训', desc:'从策划视角分析7款游戏的失败节点与行业教训' },
+    { title:'文案拆解', page:'script-analysis.html', tags:'文案 元分析 叙事 结构 脚本 方法论 观众钩子 缺点 复盘 数据验证', desc:'对七期视频文案的元分析，提炼可复用方法论' },
+
+    // === 二级页面 ===
+    { title:'守望堡试炼（文字冒险）', page:'adventure.html', tags:'冒险 文字 互动 守望堡 选择 结局 物理 魔法 研究', desc:'艾瑞斯世界观交互式文字冒险游戏' },
+    { title:'能力觉醒测试', page:'aptitude.html', tags:'测试 能力 觉醒 职阶 物理侧 魔法侧 研究侧 性格 问答 分类', desc:'10题情境测试，揭示你的侧系归属与职阶天赋' },
+    { title:'设定集全文', page:'worldbuilding-full.html', tags:'设定 全文 完整 艾瑞斯 方言 机密 档案 历史 年表 十六章节', desc:'设定集完整版，含方言指南、机密档案、历史年表共16章' },
+    { title:'渡鸦镇全文', page:'novel-full.html', tags:'小说 全文 完整 渡鸦镇 十二章节 瑞雯 索菲娜 彼得', desc:'渡鸦镇长篇小说完整版，十二章全文' },
+
+    // === B站 · 具体视频 ===
+    { title:'#6 历时3年骗过索尼，还@特朗普求救？', page:'bilibili.html', tags:'幻 国产 沙盒 欺诈 徐化 众筹 暴死 索尼', desc:'揭秘国产沙盒游戏史上最抽象的欺诈事件' },
+    { title:'#5 从《迈阿密热线》到《午夜动物》', page:'bilibili.html', tags:'迈阿密热线 午夜动物 独立游戏 noclip 瑞典 引擎Bug', desc:'两位瑞典独立开发者的九年磕碰史' },
+    { title:'#4 画面最超前的动作游戏《eight days》', page:'bilibili.html', tags:'eight days 索尼 PS3 CELL 吉田修平 取消 伦敦工作室', desc:'索尼伦敦工作室利用CELL处理器的次世代野心作' },
+    { title:'#3 《细胞分裂》如何被育碧玩坏', page:'bilibili.html', tags:'细胞分裂 育碧 合金装备 潜行 The Drift 重制 黑名单', desc:'从旗舰IP到逐渐雪藏，见证育碧的完整弧线' },
+    { title:'#2 从《寂静岭P.T》看小岛秀夫与科乐美权力斗争', page:'bilibili.html', tags:'寂静岭 PT 小岛秀夫 科乐美 恐怖 下架 7780s', desc:'一款恐怖游戏的消失，一家公司埋葬黄金时代的寓言' },
+    { title:'#1 《热血无赖》与永远无法面世的续作', page:'bilibili.html', tags:'热血无赖 续作 取消 开放世界 香港 卧底 编剧访谈', desc:'含原编剧独家访谈——续作为何永远无法面世' },
+
+    // === 世界观 · 核心概念 ===
+    { title:'三大侧系（能力体系核心）', page:'worldbuilding.html', tags:'侧系 物理侧 魔法侧 研究侧 能力者 职阶 主修 辅修', desc:'艾瑞斯大陆核心设定：物理侧、魔法侧、研究侧三足鼎立' },
+    { title:'物理侧七职阶', page:'worldbuilding.html', tags:'物理侧 剑术师 骑士 刺客 狂战士 盾兵 枪兵 弓兵 职阶', desc:'剑术师、骑士、刺客、狂战士、盾兵、枪兵、弓兵' },
+    { title:'魔法侧七职阶', page:'worldbuilding.html', tags:'魔法侧 元素法师 咒术师 幻术师 治愈师 屏障建构师 魔导师 召唤师 职阶', desc:'元素法师、咒术师、幻术师、治愈师、屏障建构师、魔导师、召唤师' },
+    { title:'五大城市', page:'worldbuilding.html', tags:'城市 寰宇市 岩湖市 富华城 天际市 低语岭 首都 贸易 学术 宗教', desc:'寰宇市（军事首都）、岩湖市（锻造贸易）、富华城（金融中心）、天际市（学术天文）、低语岭（宗教圣地）' },
+    { title:'暗界与暗界生物', page:'worldbuilding.html', tags:'暗界 深渊 影犬 潜伏者 裂隙 悲叹 守望堡 怪物 生物', desc:'暗界裂缝与生物——从影犬到深渊潜伏者的完整设定' },
+    { title:'公会系统', page:'worldbuilding.html', tags:'公会 组织 制度 管理 后勤 法律 经济 研究侧 权力', desc:'研究侧通过公会系统制衡能力者的制度设计' },
+    { title:'元老会议', page:'worldbuilding.html', tags:'元老 会议 政治 决策 顶层 长老 SQL 权力', desc:'物理侧与魔法侧元老组成的顶层决策机构' },
+    { title:'奥莱恩战争（核心历史）', page:'worldbuilding.html', tags:'战争 奥莱恩 历史 南北 分裂 冲突 核心', desc:'塑造艾瑞斯大陆格局的核心历史事件' },
+    { title:'双月历法', page:'worldbuilding.html', tags:'历法 日历 月亮 塞莱妮 墨恩 双月 周期', desc:'天际市发现的双月运行历法——塞莱妮与墨恩' },
+    { title:'能力者图鉴', page:'worldbuilding.html', tags:'图鉴 能力者 百科全书 记录 职阶 历史', desc:'收录大陆所有能力者类型与历史记录的百科全书' },
+
+    // === 渡鸦镇 · 人物 ===
+    { title:'瑞雯（渡鸦镇主角）', page:'novel.html', tags:'瑞雯 主角 黑衣 少女 渡鸦镇 疏离 情绪 寒冷', desc:'穿纯黑连衣裙的神秘少女，对寒冷和情绪无感' },
+    { title:'索菲娜 / 咿呀呀', page:'novel.html', tags:'索菲娜 咿呀呀 怪胎 暴力 救赎 外来者 渡鸦镇', desc:'被标签为暴力怪胎的外来少女，用尖刺保护自己' },
+    { title:'彼得（渡鸦镇主角）', page:'novel.html', tags:'彼得 科学 理性 医生 纸飞机 显微镜 造船 渡鸦镇', desc:'医生的儿子，醉心于科学，想造船驶离小镇' },
+    { title:'希尔德神父', page:'novel.html', tags:'希尔德 神父 酗酒 教堂 信仰 伤口 渡鸦镇 布道', desc:'酗酒成性的老神父，信仰出现了伤口的守护者' },
+    { title:'安德森夫人 / 玛丽德尔·诺因', page:'novel.html', tags:'安德森 玛丽德尔 诺因 军医 寡妇 葬礼 多米诺 渡鸦镇', desc:'故事的第一张多米诺骨牌——她的死亡揭开小镇裂缝' },
+    { title:'安切斯特', page:'novel.html', tags:'安切斯特 暗焰 河底 宝藏 秘密 渡鸦镇 对峙', desc:'如暗焰般的谜之男人，渡鸦镇秘而不宣历史的化身' },
+    { title:'你是渡鸦镇的谁？（性格测试）', page:'novel.html', tags:'测试 性格 渡鸦镇 瑞雯 索菲娜 彼得 问答 角色', desc:'4题情境测试——你是瑞雯、索菲娜还是彼得？' },
+
+    // === 交互原型 ===
+    { title:'能力者属性雷达评估', page:'game-design.html', tags:'雷达图 评估 能力者 属性 六维 类型 暗界 彩蛋 12种', desc:'可识别12种能力者类型+隐藏暗界彩蛋的交互评估工具' },
+    { title:'战斗伤害计算器', page:'game-design.html', tags:'伤害 计算 公式 战斗 数值 攻击力 防御 倍率', desc:'艾瑞斯大陆战斗系统的伤害公式交互演算' },
+    { title:'掉落模拟器', page:'game-design.html', tags:'掉落 模拟 随机 概率 物品 装备 战利品', desc:'暗界生物击杀后的随机物品掉落模拟' },
+    { title:'公会任务交互式决策', page:'game-design.html', tags:'任务 决策 公会 选项 分支 失败 5步 流程', desc:'5步交互式公会任务决策——选错导致任务失败' },
+    { title:'中世纪告示板彩蛋', page:'game-design.html', tags:'告示板 中世纪 彩蛋 隐藏 公告 城镇', desc:'中世纪风格的城镇告示板隐藏交互彩蛋' },
+
+    // === 关于 · 人机协作 ===
+    { title:'人机协作记录', page:'about.html', tags:'人机协作 AI 协作 分工 决策 创意 跃迁 方法论 模型 工具', desc:'本网站完整的人机协作分工决策表与创意跃迁记录' },
+    { title:'5元MVP', page:'about.html', tags:'MVP 成本 5元 最小可行产品 经济 预算 AI调用', desc:'本次AI调用总成本不超过5元人民币的MVP思维' },
+    { title:'联系方式', page:'about.html', tags:'联系 电话 邮箱 学校 湖南工商大学 本科 工商管理', desc:'邓恺恒 · 15807825534 · deng_kaiheng04@foxmail.com' },
+
+    // === 游戏拆解 · 具体条目 ===
+    { title:'《幻》项目拆解', page:'game-analysis.html', tags:'幻 拆解 国产 沙盒 欺诈 理想主义 失败 众筹 徐化', desc:'中国游戏史上最抽象欺诈案例的完整失败分析' },
+    { title:'《寂静岭P.T.》项目拆解', page:'game-analysis.html', tags:'寂静岭 PT 拆解 小岛秀夫 科乐美 恐怖 下架 失败', desc:'从策划视角分析小岛秀夫与科乐美权力斗争的完整过程' },
+    { title:'《细胞分裂》系列拆解', page:'game-analysis.html', tags:'细胞分裂 拆解 育碧 潜行 重制 取消 失败分析', desc:'从The Drift到重制版搁置——细胞分裂全系列失败分析' },
+    { title:'《热血无赖2》项目拆解', page:'game-analysis.html', tags:'热血无赖 续作 拆解 取消 开放世界 编剧 失败', desc:'续作为何永远无法面世——含原编剧独家访谈' },
+    { title:'《超越善恶2》项目拆解', page:'game-analysis.html', tags:'超越善恶 拆解 育碧 跳票 困境 分析', desc:'育碧长期跳票项目的深层困境分析' },
+
+    // === 文案拆解 · 方法论 ===
+    { title:'叙事哲学与风格演变', page:'script-analysis.html', tags:'叙事 哲学 风格 演变 新新闻主义 冷峻 克制 信息密度', desc:'从Noclip到新新闻主义——叙事风格的完整来源分析' },
+    { title:'观众钩子设计方法论', page:'script-analysis.html', tags:'钩子 观众 设计 开头 留存 方法论 可复用', desc:'从7期视频提炼的观众钩子设计方法论' },
+    { title:'缺点复盘与共性教训', page:'script-analysis.html', tags:'缺点 复盘 教训 失败 反思 改进 7条 卡片', desc:'7张棕红色缺点复盘卡片+3条共性教训' },
+    { title:'数据验证与跨期对比', page:'script-analysis.html', tags:'数据 验证 对比 跨期 播放 点赞 转化 趋势', desc:'5条数据交叉分析发现与7期跨期对比表' }
+  ];
+
+  // 搜索逻辑
+  function doSearch(query) {
+    if (query.length < 2) {
+      results.style.display = 'none';
+      hint.style.display = '';
+      return;
+    }
+    hint.style.display = 'none';
+
+    var q = query.toLowerCase();
+    var matched = [];
+    for (var i = 0; i < index.length; i++) {
+      var entry = index[i];
+      var searchText = (entry.title + ' ' + entry.tags + ' ' + entry.desc).toLowerCase();
+      if (searchText.indexOf(q) !== -1) {
+        // 计算匹配度——标题命中优先
+        var score = 0;
+        if (entry.title.toLowerCase().indexOf(q) !== -1) score += 2;
+        if (entry.tags.toLowerCase().indexOf(q) !== -1) score += 1;
+        matched.push({ entry: entry, score: score });
+      }
+    }
+    // 标题命中优先，其次按原顺序
+    matched.sort(function(a, b) { return b.score - a.score; });
+
+    if (matched.length === 0) {
+      results.innerHTML = '<div style="padding:20px;text-align:center;font-size:13px;color:var(--text-dim);">没有找到相关内容<br><span style="font-size:11px;">试试其他关键词？如"物理侧""寂静岭""渡鸦镇""伤害计算"</span></div>';
+    } else {
+      var html = '';
+      for (var j = 0; j < matched.length && j < 15; j++) {
+        var e = matched[j].entry;
+        html += '<a href="' + e.page + '" style="display:block;padding:14px 20px;text-decoration:none;border-bottom:1px solid var(--border);transition:background 0.15s;">' +
+          '<div style="font-size:14px;font-weight:500;color:var(--text-bright);margin-bottom:2px;">' + e.title + '</div>' +
+          '<div style="font-size:12px;color:var(--text-dim);line-height:1.5;">' + e.desc + '</div>' +
+          '<div style="font-size:10px;color:var(--accent);margin-top:3px;">' + e.page + '</div>' +
+        '</a>';
+      }
+      if (matched.length > 15) {
+        html += '<div style="padding:12px;text-align:center;font-size:11px;color:var(--text-dim);">还有 ' + (matched.length - 15) + ' 个结果，请细化搜索词</div>';
+      }
+      results.innerHTML = html;
+
+      // hover 效果
+      var links = results.querySelectorAll('a');
+      for (var k = 0; k < links.length; k++) {
+        links[k].addEventListener('mouseenter', function() { this.style.background = 'var(--bg)'; });
+        links[k].addEventListener('mouseleave', function() { this.style.background = ''; });
+      }
+    }
+    results.style.display = 'block';
+  }
+
+  var timer;
+  input.addEventListener('input', function() {
+    clearTimeout(timer);
+    timer = setTimeout(function() { doSearch(input.value.trim()); }, 150);
+  });
+
+  input.addEventListener('focus', function() {
+    if (input.value.trim().length >= 2) { results.style.display = 'block'; }
+  });
+
+  // 点击外部关闭
+  document.addEventListener('click', function(e) {
+    var section = document.getElementById('site-search-section');
+    if (section && !section.contains(e.target)) {
+      results.style.display = 'none';
+      hint.style.display = '';
+    }
+  });
+
+  // 键盘导航
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      results.style.display = 'none';
+      hint.style.display = '';
+      input.blur();
+    }
+  });
+})();
+</script>
 </body>
 </html>
