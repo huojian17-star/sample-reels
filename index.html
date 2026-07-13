@@ -255,6 +255,20 @@
 .mascot-bubble.pop {
   animation: bubblePop 0.25s steps(3);
 }
+/* 气泡被遮挡时翻转到下方 */
+.mascot-bubble.flipped {
+  bottom: auto;
+  top: calc(100% + 12px);
+}
+.mascot-bubble.flipped::after {
+  top: auto; bottom: 100%;
+  clip-path: polygon(0 100%, 50% 0, 100% 100%);
+}
+.mascot-bubble.flipped::before {
+  top: auto; bottom: 100%;
+  clip-path: polygon(0 100%, 50% 0, 100% 100%);
+  margin-top: 0; margin-bottom: -3px;
+}
 /* 空闲漂浮 */
 .mascot-float {
   animation: mascotFloat 3s ease-in-out infinite;
@@ -509,20 +523,25 @@
 
   function say(msg) {
     bubble.textContent = msg;
-    // 根据字数设定宽度：字少就窄，字多就宽，避免换行
     var len = msg.length;
-    if (len <= 10) {
-      bubble.style.maxWidth = '220px';
-    } else if (len <= 18) {
-      bubble.style.maxWidth = '320px';
-    } else if (len <= 28) {
-      bubble.style.maxWidth = '420px';
-    } else if (len <= 40) {
-      bubble.style.maxWidth = '520px';
-    } else {
-      bubble.style.maxWidth = '600px';
-    }
+    if (len <= 10) { bubble.style.maxWidth = '220px'; }
+    else if (len <= 18) { bubble.style.maxWidth = '320px'; }
+    else if (len <= 28) { bubble.style.maxWidth = '420px'; }
+    else if (len <= 40) { bubble.style.maxWidth = '520px'; }
+    else { bubble.style.maxWidth = '600px'; }
+
     popAnim();
+
+    // 检测气泡是否被导航栏遮挡，是则翻转到下方
+    requestAnimationFrame(function() {
+      var br = bubble.getBoundingClientRect();
+      var navH = window.innerWidth <= 500 ? 54 : 70;
+      if (br.top < navH + 10) {
+        bubble.classList.add('flipped');
+      } else {
+        bubble.classList.remove('flipped');
+      }
+    });
   }
 
   function getSillyMsg() {
