@@ -94,7 +94,7 @@
   var mascot = document.createElement('div');
   mascot.id = 'guest-mascot';
   mascot.style.cssText = 'position:fixed;bottom:80px;right:24px;z-index:9999;cursor:grab;user-select:none;';
-  mascot.innerHTML = '<div id="guest-bubble" style="position:absolute;bottom:110%;left:50%;transform:translateX(-50%);background:#fdfaf4;border:3px solid #4a3828;padding:10px 16px;max-width:380px;min-width:100px;text-align:center;font-size:13px;color:#3a2a18;line-height:1.5;word-break:keep-all;box-shadow:4px 4px 0 0 #2a1a08;font-family:Georgia,serif;cursor:pointer;display:none;"></div><img id="guest-img" src="pixel-avatar-clean-small.png" alt="小人" style="width:80px;height:auto;display:block;" draggable="false">';
+  mascot.innerHTML = '<div id="guest-bubble" style="position:absolute;bottom:110%;left:50%;transform:translateX(-50%);background:#fdfaf4;border:3px solid #4a3828;padding:10px 16px;max-width:380px;min-width:100px;text-align:center;font-size:13px;color:#3a2a18;line-height:1.5;word-break:keep-all;box-shadow:4px 4px 0 0 #2a1a08;font-family:Georgia,serif;cursor:pointer;display:none;"></div><img id="guest-img" src="pixel-avatar-clean-small.webp" alt="小人" style="width:80px;height:auto;display:block;" draggable="false">';
   document.body.appendChild(mascot);
 
   var bubble = document.getElementById('guest-bubble');

@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BEST-辣椒 · 求职作品集</title>
 <link rel="stylesheet" href="style.css">
+<link rel="preload" as="image" href="pixel-avatar-clean-small.webp" type="image/webp" fetchpriority="high">
 <style>
 /* ====== 首页专用样式 ====== */
 
@@ -326,7 +327,7 @@
     <!-- 像素小人 + 对话框 -->
     <div class="pixel-mascot" id="pixel-mascot" style="display:inline-block;position:relative;margin-bottom:16px;">
       <div class="mascot-bubble" id="mascot-bubble">你好，欢迎来到我的求职个人网站！</div>
-      <img id="mascot-img" src="pixel-avatar-clean-small.png" alt="BEST-辣椒" style="width:100px;height:auto;display:block;cursor:grab;user-select:none;" draggable="false">
+      <img id="mascot-img" src="pixel-avatar-clean-small.webp" alt="BEST-辣椒" style="width:100px;height:auto;display:block;cursor:grab;user-select:none;" draggable="false" fetchpriority="high" decoding="async">
     </div>
     <h1>BEST-辣椒 · 求职作品集</h1>
     <p class="hero-subtitle" style="font-size:16px;color:var(--accent);letter-spacing:2px;">游戏考据作者 · 世界观构建者 · 交互原型设计师</p>
@@ -573,8 +574,8 @@
 
   // ====== 拖拽系统 ======
   var avatarImg = document.getElementById('mascot-img');
-  var dragImg = 'mascot-drag.png';
-  var normalImg = 'pixel-avatar-clean-small.png';
+  var dragImg = 'mascot-drag.webp';
+  var normalImg = 'pixel-avatar-clean-small.webp';
   var isDragging = false;
   var wasDragged = false;
   var mascotParent = null;
