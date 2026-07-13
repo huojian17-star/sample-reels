@@ -1085,127 +1085,28 @@ function animateCounter(id, target, duration, suffix, decimals) {
 }
 
 // ====== B站实时数据同步 ======
-var BILI_UID = '518565512';
-var staticFallback = { fans: 896, plays: 19.7, words: 6, series: 7 };
-
-function fetchBiliStats(callback) {
-  var done = false; // 防止超时二次回调
-  var API_BASE = 'https://sample-reels-dp1kobxrfrxx.edgeone.cool/api/bili-stats';
-
-  function finish(result) {
-    if (done) return;
-    done = true;
-    callback(result);
-  }
-
-  function tryVercelAPI() {
-    fetch(API_BASE)
-      .then(function(r) { return r.json(); })
-      .then(function(data) {
-        if (data && data.fans !== null && data.totalPlays !== null) {
-          finish({ fans: { follower: data.fans }, plays: { view: data.totalPlays } });
-        } else {
-          tryPublicProxy();
-        }
-      })
-      .catch(function() { tryPublicProxy(); });
-  }
-
-  function tryPublicProxy() {
-    var url = 'https://corsproxy.io/?' + encodeURIComponent('https://api.bilibili.com/x/relation/stat?vmid=' + BILI_UID);
-    fetch(url)
-      .then(function(r) { return r.json(); })
-      .then(function(data) {
-        if (data && data.code === 0 && data.data && data.data.follower !== undefined) {
-          finish({ fans: data.data, plays: null });
-        } else {
-          finish({ fans: null, plays: null });
-        }
-      })
-      .catch(function() { finish({ fans: null, plays: null }); });
-  }
-
-  tryVercelAPI();
-  setTimeout(function() { finish({ fans: null, plays: null }); }, 6000);
-}
-
-function updateCounters(result) {
-  var fans, playsWan;
-  var fansData = result ? result.fans : null;
-  var playsData = result ? result.plays : null;
-  var isLive = false;
-
-  if (fansData && fansData.follower !== undefined) {
-    fans = fansData.follower;
-    isLive = true;
-  } else {
-    fans = staticFallback.fans;
-  }
-
-  if (playsData && playsData.view !== undefined) {
-    playsWan = parseFloat((playsData.view / 10000).toFixed(1));
-    isLive = true;
-  } else if (isLive) {
-    // 粉丝增长 → 按比例推算播放量
-    var ratio = fans / staticFallback.fans;
-    playsWan = parseFloat((staticFallback.plays * ratio).toFixed(1));
-  } else {
-    playsWan = staticFallback.plays;
-  }
-
-  // 动画粉丝数
-  document.getElementById('counter-fans').textContent = '0';
-  animateCounter('counter-fans', fans, isLive ? 1500 : 1000, '');
-
-  // 动画播放量（万）
-  var el = document.getElementById('counter-plays');
-  if (el) {
-    el.textContent = '0';
-    var target = playsWan;
-    var startTime = null;
-    var duration = isLive ? 1800 : 1200;
-    function step(ts) {
-      if (!startTime) startTime = ts;
-      var progress = Math.min((ts - startTime) / duration, 1);
-      var eased = 1 - (1 - progress) * (1 - progress);
-      el.textContent = (target * eased).toFixed(1);
-      if (progress < 1) requestAnimationFrame(step);
-    }
-    setTimeout(function() { requestAnimationFrame(step); }, 200);
-  }
-
-  // 静态指标
-  setTimeout(function() { animateCounter('counter-words', staticFallback.words, 800, ''); }, 600);
-  setTimeout(function() { animateCounter('counter-series', staticFallback.series, 600, ''); }, 800);
-
-  // 实时数据加标记
-  if (isLive) {
-    var statItem = document.getElementById('counter-fans').closest('.stat-item');
-    if (statItem) {
-      var label = statItem.querySelector('.stat-label');
-      if (label) label.textContent = '粉丝（实时）';
-    }
-  }
-}
+// 数据更新于 2026年7月13日。更新时修改下方数值即可。
+var COUNTERS = { fans: 896, plays: 19.7, words: 6, series: 7 };
 
 // 启动
 window.addEventListener('DOMContentLoaded', function() {
-  fetchBiliStats(function(data) {
-    updateCounters(data);
-  });
-  // 每10分钟静默刷新
-  setInterval(function() {
-    fetchBiliStats(function(result) {
-      var fansData = result ? result.fans : null;
-      var playsData = result ? result.plays : null;
-      if (fansData && fansData.follower !== undefined) {
-        document.getElementById('counter-fans').textContent = fansData.follower;
-      }
-      if (playsData && playsData.view !== undefined) {
-        document.getElementById('counter-plays').textContent = (playsData.view / 10000).toFixed(1);
-      }
-    });
-  }, 600000);
+  setTimeout(function() { animateCounter('counter-fans', COUNTERS.fans, 1000, ''); }, 400);
+  setTimeout(function() { animateCounter('counter-words', COUNTERS.words, 800, ''); }, 600);
+  setTimeout(function() { animateCounter('counter-series', COUNTERS.series, 600, ''); }, 800);
+
+  // 播放量动画（浮点数）
+  var el = document.getElementById('counter-plays');
+  if (el) {
+    el.textContent = '0';
+    var target = COUNTERS.plays, startTime = null;
+    function step(ts) {
+      if (!startTime) startTime = ts;
+      var p = Math.min((ts - startTime) / 1200, 1);
+      el.textContent = (target * (1 - (1 - p) * (1 - p))).toFixed(1);
+      if (p < 1) requestAnimationFrame(step);
+    }
+    setTimeout(function() { requestAnimationFrame(step); }, 200);
+  }
 });
 </script>
 
