@@ -98,6 +98,11 @@
   .stat-num { font-size: 32px; }
 }
 
+/* 手机端确保气泡不被导航栏遮挡 */
+@media (max-width: 500px) {
+  .hero { padding-top: 70px; min-height: 60vh; }
+}
+
 .nav-card {
   display: block;
   padding: 28px 24px;
@@ -521,43 +526,6 @@
     bubble.classList.add('pop');
   }
 
-  function fixBubblePos() {
-    var wasHidden = (bubble.style.visibility === 'hidden');
-    bubble.style.visibility = 'visible';
-
-    // 先恢复默认位置来测量
-    bubble.classList.remove('flipped');
-    bubble.style.position = '';
-    bubble.style.left = '';
-    bubble.style.top = '';
-    bubble.style.bottom = '';
-
-    var mRect = mascot.getBoundingClientRect();
-    var bRect = bubble.getBoundingClientRect();
-    var navH = window.innerWidth <= 500 ? 54 : 70;
-
-    // 气泡改为 fixed 定位，脱离文档流，不影响任何页面元素
-    bubble.style.position = 'fixed';
-    bubble.style.bottom = 'auto';
-    bubble.style.transform = 'none';
-
-    if (mRect.top - bRect.height - 12 > navH) {
-      // 上方有空间 → 放在上面
-      bubble.classList.remove('flipped');
-      bubble.style.top = (mRect.top - bRect.height - 12) + 'px';
-      bubble.style.left = (mRect.left + mRect.width / 2) + 'px';
-      bubble.style.transform = 'translateX(-50%)';
-    } else {
-      // 上方不够 → 放在下面，用 flipped 让尾巴朝上
-      bubble.classList.add('flipped');
-      bubble.style.top = (mRect.bottom + 12) + 'px';
-      bubble.style.left = (mRect.left + mRect.width / 2) + 'px';
-      bubble.style.transform = 'translateX(-50%)';
-    }
-
-    if (wasHidden) bubble.style.visibility = 'hidden';
-  }
-
   function say(msg) {
     bubble.textContent = msg;
     var len = msg.length;
@@ -567,12 +535,7 @@
     else if (len <= 40) { bubble.style.maxWidth = '520px'; }
     else { bubble.style.maxWidth = '600px'; }
     popAnim();
-    fixBubblePos();
   }
-
-  // 页面加载时检查初始气泡
-  fixBubblePos();
-  window.addEventListener('resize', fixBubblePos);
 
   function getSillyMsg() {
     var n = clicks - normalMsgs.length - easterMsgs.length;
