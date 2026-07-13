@@ -136,6 +136,12 @@
   <p style="font-size:13px;color:var(--text);line-height:1.9;">当前阶段的核心工作不再是"加新东西"，而是<strong>删、调整、打磨、反思</strong>。三角布局的CSS冲突调试、手风琴组件的toggle事件Bug修复、英国编剧原话的翻译补充、数据验证的交叉对比——这些都是典型的"最后20%的细节占了80%的时间"。AI 承担了一个新角色：<strong>"有记忆的合作者"</strong>——因为 AI 记住了之前每一次对话的上下文，当用户说"用卡特原话替换掉那个note"时，不需要被重新告知卡特是谁。</p>
   </div>
 
+  <div style="background:var(--bg-card);border:1px solid var(--accent);border-radius:var(--radius);padding:20px 24px;margin-bottom:16px;box-shadow:0 0 0 1px var(--accent-dim);">
+  <h4 style="font-size:15px;font-weight:600;color:var(--text-bright);margin-bottom:4px;">阶段五：交互伴侣系统 · 从"作品集"到"体验" <span style="font-size:10px;color:var(--accent);background:#fef9f0;padding:2px 8px;border-radius:10px;margin-left:8px;">当前</span></h4>
+  <p style="font-size:12px;color:var(--text-dim);margin-bottom:8px;">转折点：用户说"能不能设计一个我的对话小人在里面？"</p>
+  <p style="font-size:13px;color:var(--text);line-height:1.9;">这是整个网站最<strong>游戏化</strong>的一次迭代。从首页像素小人的对话框开始，逐步演变为一个完整的交互伴侣系统：可拖拽小人（含缓动跟随、边缘碰撞、松手弹跳、移动端长按防误触）、三层对话递进（欢迎→彩蛋→打破第四面墙）、空闲漫游模式、速度检测彩蛋、靠近模块介绍、拖到卡片上方"跟随进入"二级页面、跨页面访客小人（localStorage 状态传递）。AI 的角色升级为<strong>"交互设计师 + 游戏系统策划"</strong>——不再只写代码，而是设计对话记忆去重、连锁对话时序、漫游缓动曲线等行为系统。同时做了全站搜索、B站实时数据同步（JSONP）、手机汉堡菜单、回到顶部按钮等基础设施。整个系统的代码量翻了一倍以上，但用户的操作感受反而更轻了——这正是好的交互设计要达到的效果。</p>
+  </div>
+
   <h3>技术栈：这份网页是用什么和怎么搭建的</h3>
 
   <p><strong>前端技术</strong></p>
@@ -147,6 +153,10 @@
   <tr><td>CSS自定义属性</td><td>全局主题色</td><td>--accent等变量统一管理颜色，换主题只需改十几行</td></tr>
   <tr><td>Media Queries</td><td>响应式适配</td><td>768px断点，桌面三角布局→移动单列堆叠，纯CSS无JS</td></tr>
   <tr><td>details/summary + JS</td><td>折叠卡片</td><td>原生HTML折叠元素 + 手风琴JS增强，不使用任何UI库</td></tr>
+<tr><td>requestAnimationFrame</td><td>数字动画 / 拖拽缓动</td><td>60fps 平滑过渡，比 setInterval 更省电且帧率稳定</td></tr>
+<tr><td>localStorage</td><td>跨页面状态传递</td><td>访客小人从首页"跟随进入"二级页面，无需服务器</td></tr>
+<tr><td>JSONP (script注入)</td><td>B站实时数据同步</td><td>绕过跨域限制，每10分钟拉取粉丝数和总播放量</td></tr>
+<tr><td>Touch Events + 手势检测</td><td>移动端拖拽 / 双击</td><td>自定义长按检测、双击计时器、passive事件优化</td></tr>
   </table>
 
   <p><strong>辅助工具</strong></p>
@@ -171,6 +181,10 @@
   <strong>引入Python BeautifulSoup的代价。</strong>BS4在"游戏拆解页面重组为折叠卡片"时，第一次转换丢失了所有正文内容——因为脚本的"remaining children"提取逻辑有Bug，7个分析卡片只剩标题。教训：<strong>对结构化HTML做批量转换时，先用一个元素验证脚本逻辑，确认无误后再跑全量。</strong>
   </div>
 
+  <div style="background:var(--bg-page);border-left:3px solid var(--accent);padding:14px 18px;margin:10px 0;border-radius:0 4px 4px 0;font-size:13px;line-height:1.9;">
+  <strong>为什么不用拖拽库（interact.js / draggable）？</strong>像素小人的拖拽系统——含缓动跟随、边缘碰撞、速度检测、移动端长按防误触——看起来适合用一个现成JS库。但实际需求中包含大量<strong>非标准交互</strong>：拖拽时切换图片、松手弹跳动画、靠近模块时触发对话链、双击回家、漫游模式……这些都不是拖拽库的常规功能。用原生事件实现虽然经历了四次重写，但换来了完全的<strong>行为可控性</strong>——每个缓动系数、每个阈值、每条对话的触发时机都可以精确调整。对于作品集这种需要"性格"的项目，这比引入一个通用库更有价值。
+  </div>
+
   <h3>可复用的协作方法论</h3>
 
   <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:12px;">
@@ -193,13 +207,18 @@
   <p style="font-size:13px;color:var(--text);line-height:1.9;">三角布局的CSS冲突、BS4内容丢失、toggle事件异步Bug、全部展开按钮失效——这些不是AI的"错误"，而是协作过程中的可复用教训。把每一次修复都记录下来，下一段人机协作的效率和可靠性都会有显著提升。</p>
   </div>
 
+  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:12px;">
+  <h4 style="font-size:14px;font-weight:600;color:var(--text-bright);margin-bottom:6px;">原则五：交互系统需要"手感"，而不只是功能</h4>
+  <p style="font-size:13px;color:var(--text);line-height:1.9;">像素小人拖拽系统经历了四次重写：从 position:fixed 坐标不准，到 transform 累积位移受滚动影响，再到最终 fixed + absolute 坐标系转换。每个版本在功能上都"能拖"，但手感完全不同。最终版加入了缓动跟随（ease 0.35）、松手弹跳动画、边界软碰撞、移动端长按阈值——这些<strong>都不是功能需求，而是体验需求</strong>。在人机协作中，AI 应该主动提出体验优化方案（"要不要加个缓动，让拖拽更有物理感？"），而不是等用户发现"手感不好"。</p>
+  </div>
+
   <h3>协作数据</h3>
   <div style="display:flex;gap:16px;flex-wrap:wrap;margin:16px 0;">
-    <div style="flex:1;min-width:100px;text-align:center;padding:16px;background:var(--bg-page);border-radius:4px;"><span style="font-size:24px;font-weight:700;color:var(--accent);">~200</span><br><span style="font-size:11px;color:var(--text-dim);">次交互式编辑</span></div>
-    <div style="flex:1;min-width:100px;text-align:center;padding:16px;background:var(--bg-page);border-radius:4px;"><span style="font-size:24px;font-weight:700;color:var(--accent);">~15</span><br><span style="font-size:11px;color:var(--text-dim);">次页面级重构</span></div>
-    <div style="flex:1;min-width:100px;text-align:center;padding:16px;background:var(--bg-page);border-radius:4px;"><span style="font-size:24px;font-weight:700;color:var(--accent);">~6</span><br><span style="font-size:11px;color:var(--text-dim);">次 CSS 冲突调试</span></div>
-    <div style="flex:1;min-width:100px;text-align:center;padding:16px;background:var(--bg-page);border-radius:4px;"><span style="font-size:24px;font-weight:700;color:var(--accent);">~8</span><br><span style="font-size:11px;color:var(--text-dim);">次 JS Bug 修复</span></div>
-    <div style="flex:1;min-width:100px;text-align:center;padding:16px;background:var(--bg-page);border-radius:4px;"><span style="font-size:24px;font-weight:700;color:var(--accent);">~1,200</span><br><span style="font-size:11px;color:var(--text-dim);">行 Python 辅助脚本</span></div>
+    <div style="flex:1;min-width:100px;text-align:center;padding:16px;background:var(--bg-page);border-radius:4px;"><span style="font-size:24px;font-weight:700;color:var(--accent);">~350</span><br><span style="font-size:11px;color:var(--text-dim);">次交互式编辑</span></div>
+    <div style="flex:1;min-width:100px;text-align:center;padding:16px;background:var(--bg-page);border-radius:4px;"><span style="font-size:24px;font-weight:700;color:var(--accent);">~25</span><br><span style="font-size:11px;color:var(--text-dim);">次页面级重构</span></div>
+    <div style="flex:1;min-width:100px;text-align:center;padding:16px;background:var(--bg-page);border-radius:4px;"><span style="font-size:24px;font-weight:700;color:var(--accent);">~12</span><br><span style="font-size:11px;color:var(--text-dim);">次 CSS 冲突调试</span></div>
+    <div style="flex:1;min-width:100px;text-align:center;padding:16px;background:var(--bg-page);border-radius:4px;"><span style="font-size:24px;font-weight:700;color:var(--accent);">~20</span><br><span style="font-size:11px;color:var(--text-dim);">次 JS Bug 修复</span></div>
+    <div style="flex:1;min-width:100px;text-align:center;padding:16px;background:var(--bg-page);border-radius:4px;"><span style="font-size:24px;font-weight:700;color:var(--accent);">~300</span><br><span style="font-size:11px;color:var(--text-dim);">行 common.js 公共模块</span></div>
   </div>
 
   <div style="background:linear-gradient(135deg, #fef9f0 0%, #fdf5e6 100%); border:2px solid var(--accent); border-radius:8px; padding:20px 28px; margin:20px 0; text-align:center;">

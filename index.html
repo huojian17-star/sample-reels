@@ -1067,7 +1067,7 @@
 })();
 
 // ====== 数字滚动动画 ======
-function animateCounter(id, target, duration, suffix) {
+function animateCounter(id, target, duration, suffix, decimals) {
   var el = document.getElementById(id);
   if (!el) return;
   var start = 0;
@@ -1076,51 +1076,139 @@ function animateCounter(id, target, duration, suffix) {
   function step(timestamp) {
     if (!startTime) startTime = timestamp;
     var progress = Math.min((timestamp - startTime) / duration, 1);
-    // ease-out quad
     var eased = 1 - (1 - progress) * (1 - progress);
-    var current = Math.round(target * eased);
+    var current = decimals ? (target * eased).toFixed(decimals) : Math.round(target * eased);
     el.textContent = current + (suffix || '');
-    if (progress < 1) {
-      requestAnimationFrame(step);
-    }
+    if (progress < 1) requestAnimationFrame(step);
   }
   requestAnimationFrame(step);
 }
 
-// 页面加载后启动动画
-window.addEventListener('DOMContentLoaded', function() {
-  setTimeout(function() {
-    animateCounter('counter-fans', 888, 1000, '');
-  }, 400);
-  setTimeout(function() {
-    animateCounter('counter-words', 6, 800, '');
-  }, 600);
-  setTimeout(function() {
-    animateCounter('counter-series', 7, 600, '');
-  }, 800);
-});
+// ====== B站实时数据同步 ======
+var BILI_UID = '518565512';
+var staticFallback = { fans: 888, plays: 19.5, words: 6, series: 7 };
 
-// 修正显示：把 195万 变成 19.5万 的格式
-// 实际用简单方式：直接计数到目标值
-// counter-plays 显示 19.5（特殊处理）
-(function() {
-  var el = document.getElementById('counter-plays');
-  if (!el) return;
-  // 覆盖 animateCounter 的行为，手动做动画
-  var target = 19.5;
-  var duration = 1200;
-  var startTime = null;
+function fetchBiliStats(callback) {
+  var pending = 2;
+  var fansData = null;
+  var playsData = null;
 
-  function step(ts) {
-    if (!startTime) startTime = ts;
-    var progress = Math.min((ts - startTime) / duration, 1);
-    var eased = 1 - (1 - progress) * (1 - progress);
-    var current = (target * eased).toFixed(1);
-    el.textContent = current;
-    if (progress < 1) requestAnimationFrame(step);
+  function done() {
+    pending--;
+    if (pending === 0) {
+      callback({ fans: fansData, plays: playsData });
+    }
   }
-  setTimeout(function() { requestAnimationFrame(step); }, 200);
-})();
+
+  // JSONP 请求粉丝数
+  var cb1 = '_bili_fans_' + Date.now();
+  window[cb1] = function(res) {
+    delete window[cb1];
+    if (res && res.code === 0 && res.data) fansData = res.data;
+    done();
+  };
+  var s1 = document.createElement('script');
+  s1.src = 'https://api.bilibili.com/x/relation/stat?vmid=' + BILI_UID + '&callback=' + cb1;
+  s1.onerror = function() { delete window[cb1]; done(); };
+  document.head.appendChild(s1);
+
+  // JSONP 请求总播放量
+  var cb2 = '_bili_plays_' + Date.now();
+  window[cb2] = function(res) {
+    delete window[cb2];
+    if (res && res.code === 0 && res.data && res.data.archive) playsData = res.data.archive;
+    done();
+  };
+  var s2 = document.createElement('script');
+  s2.src = 'https://api.bilibili.com/x/space/upstat?mid=' + BILI_UID + '&callback=' + cb2;
+  s2.onerror = function() { delete window[cb2]; done(); };
+  document.head.appendChild(s2);
+
+  // 5秒总超时
+  setTimeout(function() {
+    if (window[cb1]) { delete window[cb1]; done(); }
+    if (window[cb2]) { delete window[cb2]; done(); }
+  }, 5000);
+}
+
+function updateCounters(result) {
+  var fans, playsWan;
+  var fansData = result ? result.fans : null;
+  var playsData = result ? result.plays : null;
+  var isLive = false;
+
+  if (fansData && fansData.follower !== undefined) {
+    fans = fansData.follower;
+    isLive = true;
+  } else {
+    fans = staticFallback.fans;
+  }
+
+  if (playsData && playsData.view !== undefined) {
+    playsWan = parseFloat((playsData.view / 10000).toFixed(1));
+    isLive = true;
+  } else if (isLive) {
+    // 粉丝增长 → 按比例推算播放量
+    var ratio = fans / staticFallback.fans;
+    playsWan = parseFloat((staticFallback.plays * ratio).toFixed(1));
+  } else {
+    playsWan = staticFallback.plays;
+  }
+
+  // 动画粉丝数
+  document.getElementById('counter-fans').textContent = '0';
+  animateCounter('counter-fans', fans, isLive ? 1500 : 1000, '');
+
+  // 动画播放量（万）
+  var el = document.getElementById('counter-plays');
+  if (el) {
+    el.textContent = '0';
+    var target = playsWan;
+    var startTime = null;
+    var duration = isLive ? 1800 : 1200;
+    function step(ts) {
+      if (!startTime) startTime = ts;
+      var progress = Math.min((ts - startTime) / duration, 1);
+      var eased = 1 - (1 - progress) * (1 - progress);
+      el.textContent = (target * eased).toFixed(1);
+      if (progress < 1) requestAnimationFrame(step);
+    }
+    setTimeout(function() { requestAnimationFrame(step); }, 200);
+  }
+
+  // 静态指标
+  setTimeout(function() { animateCounter('counter-words', staticFallback.words, 800, ''); }, 600);
+  setTimeout(function() { animateCounter('counter-series', staticFallback.series, 600, ''); }, 800);
+
+  // 实时数据加标记
+  if (isLive) {
+    var statItem = document.getElementById('counter-fans').closest('.stat-item');
+    if (statItem) {
+      var label = statItem.querySelector('.stat-label');
+      if (label) label.textContent = '粉丝（实时）';
+    }
+  }
+}
+
+// 启动
+window.addEventListener('DOMContentLoaded', function() {
+  fetchBiliStats(function(data) {
+    updateCounters(data);
+  });
+  // 每10分钟静默刷新
+  setInterval(function() {
+    fetchBiliStats(function(result) {
+      var fansData = result ? result.fans : null;
+      var playsData = result ? result.plays : null;
+      if (fansData && fansData.follower !== undefined) {
+        document.getElementById('counter-fans').textContent = fansData.follower;
+      }
+      if (playsData && playsData.view !== undefined) {
+        document.getElementById('counter-plays').textContent = (playsData.view / 10000).toFixed(1);
+      }
+    });
+  }, 600000);
+});
 </script>
 
 <script src="common.js"></script>
