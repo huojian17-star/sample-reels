@@ -624,9 +624,17 @@ footer p { font-size: 12px; color: var(--text-dim); }
   .page-hero { padding: 32px 20px; }
   .page-hero h1 { font-size: 28px; }
   /* 表格——手机端横向滚动 */
-  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 24px 0 36px; }
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 24px 0 0; position: relative; }
   .table-wrap .info-table { margin: 0; white-space: nowrap; }
   .info-table th, .info-table td { min-width: 70px; font-size: 11px; padding: 8px 10px; }
+  /* 右侧渐变提示：有更多内容 */
+  .table-wrap.has-overflow::after {
+    content: '';
+    position: absolute; right: 0; top: 0; bottom: 0;
+    width: 40px;
+    background: linear-gradient(to right, transparent, rgba(250,249,246,0.9));
+    pointer-events: none;
+  }
 }
 
 /* ====== 手机端（≤768px 汉堡菜单触发） ====== */

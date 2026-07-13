@@ -207,7 +207,7 @@
   setTimeout(function() { say('嘿，我跟你进来了！随便逛逛，点我聊天~'); }, 600);
 })();
 
-// ====== 4. 表格响应式——自动包裹滚动容器 ======
+// ====== 4. 表格响应式——自动包裹滚动容器 + 滚动提示 ======
 (function() {
   var tables = document.querySelectorAll('.info-table');
   for (var i = 0; i < tables.length; i++) {
@@ -217,6 +217,27 @@
     wrap.className = 'table-wrap';
     t.parentNode.insertBefore(wrap, t);
     wrap.appendChild(t);
+
+    // 添加滚动提示
+    var hint = document.createElement('div');
+    hint.className = 'table-scroll-hint';
+    hint.innerHTML = '\u2194 \u5DE6\u53F3\u6ED1\u52A8\u67E5\u770B\u66F4\u591A';
+    hint.style.cssText = 'text-align:center;font-size:10px;color:var(--accent);margin-top:6px;letter-spacing:1px;display:none;';
+    wrap.parentNode.insertBefore(hint, wrap.nextSibling);
+
+    // 检测是否有溢出内容
+    function checkOverflow() {
+      hint.style.display = (wrap.scrollWidth > wrap.clientWidth + 2) ? 'block' : 'none';
+      // 右侧渐变遮罩
+      if (wrap.scrollWidth > wrap.clientWidth + 2) {
+        wrap.classList.add('has-overflow');
+      } else {
+        wrap.classList.remove('has-overflow');
+      }
+    }
+    checkOverflow();
+    wrap.addEventListener('scroll', checkOverflow);
+    window.addEventListener('resize', checkOverflow);
   }
 })();
 
