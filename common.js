@@ -288,7 +288,7 @@
 })();
 
 // ====== 6. 侧边栏目录导航 ======
-(function() {
+function initTOC() {
   var cs = document.querySelector('.content-section');
   if (!cs) { console.log('[TOC] no .content-section, skipped'); return; }
   var headings = cs.querySelectorAll('h2, h3');
@@ -314,7 +314,7 @@
   // 创建侧边栏抽屉（左滑出）
   var sidebar = document.createElement('nav');
   sidebar.id = 'page-toc';
-  sidebar.style.cssText = 'position:fixed;left:0;top:70px;width:260px;max-height:calc(100vh - 80px);overflow-y:auto;z-index:95;font-size:12px;line-height:1.7;background:var(--bg-card);border-right:1px solid var(--border);border-bottom:1px solid var(--border);border-radius:0 8px 8px 0;padding:20px;box-shadow:4px 4px 24px rgba(0,0,0,0.1);transform:translateX(-100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);';
+  sidebar.style.cssText = 'position:fixed;left:0;top:70px;width:260px;max-height:calc(100vh - 80px);overflow-y:auto;z-index:95;font-size:12px;line-height:1.7;background:#fff;border-right:1px solid #e6e1da;border-bottom:1px solid #e6e1da;border-radius:0 8px 8px 0;padding:20px;box-shadow:4px 4px 24px rgba(0,0,0,0.1);transform:translateX(-100%);transition:transform 0.3s ease;';
   sidebar.setAttribute('aria-label', '\u9875\u5185\u5BFC\u822A');
 
   var title = document.createElement('div');
@@ -381,7 +381,7 @@
   tab.id = 'toc-tab';
   tab.innerHTML = '\u2630';
   tab.title = '\u76EE\u5F55';
-  tab.style.cssText = 'position:fixed;left:0;top:50%;transform:translateY(-50%);z-index:96;width:28px;height:60px;background:var(--bg-card);border:1px solid var(--border);border-left:none;border-radius:0 6px 6px 0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--text-dim);box-shadow:2px 2px 8px rgba(0,0,0,0.06);transition:left 0.3s cubic-bezier(0.4,0,0.2,1);';
+  tab.style.cssText = 'position:fixed;left:0;top:50%;transform:translateY(-50%);z-index:96;width:28px;height:60px;background:#fff;border:1px solid #e6e1da;border-left:none;border-radius:0 6px 6px 0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:#70747c;box-shadow:2px 2px 8px rgba(0,0,0,0.06);transition:left 0.3s ease;';
   tab.addEventListener('click', function() { toggleSidebar(); });
 
   // 遮罩
@@ -438,7 +438,11 @@
     observer.observe(allLinks[oi].el);
   }
 
-})();
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initTOC);
+} else {
+  initTOC();
+}
 
 // ====== 7. 回到顶部 ======
 (function() {
