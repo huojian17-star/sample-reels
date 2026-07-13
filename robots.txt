@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /about.html
+Allow: /
+
+Sitemap: https://huojian17-star.github.io/sample-reels/sitemap.xml
