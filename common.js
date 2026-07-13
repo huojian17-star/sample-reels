@@ -171,7 +171,7 @@
   });
   img.addEventListener('touchstart', function(e) {
     if (e.touches.length !== 1) return;
-    e.preventDefault(); e.stopPropagation();
+    e.stopPropagation();
     wasDrag = false; isDrag = false;
     var r = mascot.getBoundingClientRect();
     startX = e.touches[0].clientX; startY = e.touches[0].clientY;
@@ -179,7 +179,7 @@
     offX = e.touches[0].clientX - r.left; offY = e.touches[0].clientY - r.top;
     document.addEventListener('touchmove', onTouch, { passive: false });
     document.addEventListener('touchend', onUp);
-  });
+  }, { passive: true });
 
   function onMove(e) { moveDrag(e.clientX, e.clientY); }
   function onTouch(e) { e.preventDefault(); if (e.touches.length === 1) moveDrag(e.touches[0].clientX, e.touches[0].clientY); }
@@ -199,6 +199,7 @@
     document.removeEventListener('touchend', onUp);
     if (!isDrag) return;
     isDrag = false;
+    wasDrag = false;
     bubble.style.display = '';
     if (Math.random() < 0.35) say(pickMsg());
   }
