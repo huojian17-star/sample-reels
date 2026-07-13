@@ -207,14 +207,29 @@
   setTimeout(function() { say('嘿，我跟你进来了！随便逛逛，点我聊天~'); }, 600);
 })();
 
-// ====== 4. 设计标注——点击查看 ======
+// ====== 4. 设计标注——样式升级 + 点击查看 ======
 (function() {
+  // 自动给所有设计标注徽章加样式
+  var badges = document.querySelectorAll('span[title*="设计意图"]');
+  for (var i = 0; i < badges.length; i++) {
+    badges[i].classList.add('design-note-badge');
+    // 去掉原来的内联小字样式
+    badges[i].style.fontSize = '';
+    badges[i].style.color = '';
+    badges[i].style.background = '';
+    badges[i].style.padding = '';
+    badges[i].style.borderRadius = '';
+    badges[i].style.verticalAlign = '';
+    badges[i].style.letterSpacing = '';
+    badges[i].style.cursor = '';
+  }
+
   document.addEventListener('click', function(e) {
-    var badge = e.target.closest('span[title]');
+    var badge = e.target.closest('.design-note-badge');
     if (!badge || badge.dataset.noteActive === '1') return;
 
     var title = badge.getAttribute('title');
-    if (!title || title.indexOf('设计意图') === -1) return;
+    if (!title) return;
 
     e.preventDefault(); e.stopPropagation();
     badge.dataset.noteActive = '1';
