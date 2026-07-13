@@ -120,10 +120,22 @@
     bubble.style.width = 'auto';
     bubble.style.maxWidth = L <= 10 ? '220px' : L <= 18 ? '320px' : L <= 30 ? '420px' : '520px';
     bubble.style.minWidth = '80px';
+    bubble.style.left = '50%';
+    bubble.style.transform = 'translateX(-50%)';
     bubble.style.display = 'block';
     bubble.classList.remove('pop');
     void bubble.offsetWidth;
     bubble.classList.add('pop');
+
+    // 防止气泡超出屏幕边缘
+    var br = bubble.getBoundingClientRect();
+    var shift = 0;
+    if (br.left < 8) shift = 8 - br.left;
+    if (br.right > window.innerWidth - 8) shift = (window.innerWidth - 8) - br.right;
+    if (shift !== 0) {
+      bubble.style.left = '50%';
+      bubble.style.transform = 'translateX(calc(-50% + ' + shift + 'px))';
+    }
   }
 
   // 点击小人：对话
