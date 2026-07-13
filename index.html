@@ -1088,13 +1088,12 @@ function animateCounter(id, target, duration, suffix, decimals) {
 // 数据更新于 2026年7月13日。更新时修改下方数值即可。
 var COUNTERS = { fans: 896, plays: 19.7, words: 6, series: 7 };
 
-// 启动
+// 启动：先秒显静态值，后台尝试拉实时数据
 window.addEventListener('DOMContentLoaded', function() {
   setTimeout(function() { animateCounter('counter-fans', COUNTERS.fans, 1000, ''); }, 400);
   setTimeout(function() { animateCounter('counter-words', COUNTERS.words, 800, ''); }, 600);
   setTimeout(function() { animateCounter('counter-series', COUNTERS.series, 600, ''); }, 800);
 
-  // 播放量动画（浮点数）
   var el = document.getElementById('counter-plays');
   if (el) {
     el.textContent = '0';
@@ -1107,6 +1106,21 @@ window.addEventListener('DOMContentLoaded', function() {
     }
     setTimeout(function() { requestAnimationFrame(step); }, 200);
   }
+
+  // 后台尝试 EdgeOne API
+  fetch('https://sample-reels-dp1kobxrfrxx.edgeone.cool/api/bili-stats')
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      if (d && d.fans) {
+        document.getElementById('counter-fans').textContent = d.fans;
+        var label = document.getElementById('counter-fans').closest('.stat-item').querySelector('.stat-label');
+        if (label) label.textContent = '粉丝（实时）';
+      }
+      if (d && d.totalPlays) {
+        document.getElementById('counter-plays').textContent = (d.totalPlays / 10000).toFixed(1);
+      }
+    })
+    .catch(function() { /* 静默失败，静态值已显示 */ });
 });
 </script>
 
