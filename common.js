@@ -350,9 +350,9 @@
     // 标签
     var tab = document.createElement('div');
     tab.id = 'toc-tab';
-    tab.innerHTML = '\u2630&nbsp;\u76EE\u5F55';
+    tab.textContent = '\u2630 \u76EE\u5F55';
     tab.title = '';
-    tab.style.cssText = 'position:fixed;left:0;top:50%;transform:translateY(-50%);z-index:96;width:auto;height:32px;background:#fff;border:1px solid #e6e1da;border-left:none;border-radius:0 8px 8px 0;cursor:grab;display:flex;align-items:center;gap:2px;padding:6px 10px;font-size:14px;color:#70747c;box-shadow:2px 2px 8px rgba(0,0,0,0.06);transition:left 0.3s ease;line-height:1;user-select:none;white-space:nowrap;';
+    tab.style.cssText = 'position:fixed;left:0;top:50%;transform:translateY(-50%);z-index:96;min-width:62px;height:30px;background:#fff;border:1px solid #e6e1da;border-left:none;border-radius:0 8px 8px 0;cursor:grab;display:flex;align-items:center;justify-content:center;gap:4px;padding:4px 10px;font-size:13px;color:#70747c;box-shadow:2px 2px 8px rgba(0,0,0,0.06);transition:left 0.3s ease;line-height:1;user-select:none;';
 
     var overlay = document.createElement('div');
     overlay.id = 'toc-overlay';

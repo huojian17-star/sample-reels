@@ -733,3 +733,10 @@ span[title*="设计意图"]:active { opacity: 0.8; }
   50%  { transform: translateX(-50%) scale(1.06); }
   100% { transform: translateX(-50%) scale(1); }
 }
+
+/* 侧边栏目录标签——确保文字始终可见 */
+#toc-tab {
+  overflow: visible !important;
+  min-width: 62px;
+  writing-mode: horizontal-tb;
+}
