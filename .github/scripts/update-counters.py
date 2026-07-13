@@ -3,10 +3,13 @@ import re, json, urllib.request
 UID = "518565512"
 
 def get_fans():
-    url = f"https://api.bilibili.com/x/relation/stat?vmid={UID}"
+    import time
+    url = f"https://api.bilibili.com/x/relation/stat?vmid={UID}&_={int(time.time() * 1000)}"
     req = urllib.request.Request(url, headers={
-        "User-Agent": "Mozilla/5.0",
-        "Referer": "https://www.bilibili.com/"
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "Referer": "https://space.bilibili.com/" + UID,
+        "Cache-Control": "no-cache",
+        "Pragma": "no-cache"
     })
     with urllib.request.urlopen(req, timeout=10) as resp:
         data = json.loads(resp.read())
