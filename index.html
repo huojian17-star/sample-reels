@@ -240,20 +240,6 @@
 }
 .mascot-bubble:hover {
   box-shadow:
-    5px 5px 0 0 #2a1a08,
-    inset 2px 2px 0 rgba(255,255,255,0.35),
-    inset -2px -2px 0 rgba(0,0,0,0.1);
-}
-.mascot-bubble.pop {
-  animation: bubblePop 0.3s ease;
-}
-@keyframes bubblePop {
-  0%   { transform: translateX(-50%) scale(1); }
-  50%  { transform: translateX(-50%) scale(1.06); }
-  100% { transform: translateX(-50%) scale(1); }
-}
-.mascot-bubble:hover {
-  box-shadow:
     4px 5px 0 0 #2a1a08,
     inset 2px 2px 0 rgba(255,255,255,0.35),
     inset -2px -2px 0 rgba(0,0,0,0.1);
@@ -358,7 +344,6 @@
 <!-- ====== 全站搜索 ====== -->
 <div id="site-search-section" style="max-width:640px;margin:40px auto 0;padding:0 16px;position:relative;">
   <button onclick="var t=this.nextElementSibling;t.hidden=!t.hidden" style="font-size:12px;color:#fff;background:#a98446;border:none;padding:3px 10px;border-radius:10px;cursor:pointer;font-family:inherit;font-weight:500;margin-bottom:6px;">ⓘ 设计标注</button><span hidden style="font-size:12px;color:var(--text-dim);background:var(--bg-alt);padding:6px 10px;border-radius:4px;margin-bottom:8px;display:block;max-width:500px;line-height:1.6;">全站搜索不是"技术展示"——它是一个实用功能。HR可以直接搜"能力者""寂静岭""瑞雯"等关键词，快速定位到相关内容。索引覆盖了40+条目，包括所有页面和次级内容。</span>
-  <div
   <div style="display:flex;gap:10px;align-items:center;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:12px 18px;box-shadow:0 2px 12px rgba(0,0,0,0.04);">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="2" style="flex-shrink:0;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
     <input type="text" id="site-search-input" placeholder="搜索全站内容——页面、设定、人物、视频、交互工具..." style="flex:1;border:none;font-size:15px;font-family:inherit;background:transparent;color:var(--text);outline:none;">
