@@ -352,7 +352,7 @@
     tab.id = 'toc-tab';
     tab.innerHTML = '\u2630';
     tab.title = '目录';
-    tab.style.cssText = 'position:fixed;left:0;top:50%;transform:translateY(-50%);z-index:96;width:28px;height:60px;background:#fff;border:1px solid #e6e1da;border-left:none;border-radius:0 6px 6px 0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:#70747c;box-shadow:2px 2px 8px rgba(0,0,0,0.06);transition:left 0.3s ease;';
+    tab.style.cssText = 'position:fixed;left:0;top:50%;transform:translateY(-50%);z-index:96;width:34px;height:60px;background:#fff;border:1px solid #e6e1da;border-left:none;border-radius:0 8px 8px 0;cursor:grab;display:flex;align-items:center;justify-content:center;font-size:18px;color:#70747c;box-shadow:2px 2px 8px rgba(0,0,0,0.06);transition:left 0.3s ease;';
 
     var overlay = document.createElement('div');
     overlay.id = 'toc-overlay';
@@ -424,6 +424,13 @@
     }
     tab.addEventListener('mousedown', onDragStart);
     tab.addEventListener('touchstart', onDragStart, { passive: true });
+
+    // 左边缘隐形拖拽带（方便手指从屏幕左边滑入）
+    var edge = document.createElement('div');
+    edge.style.cssText = 'position:fixed;left:0;top:0;bottom:0;width:10px;z-index:97;';
+    edge.addEventListener('mousedown', onDragStart);
+    edge.addEventListener('touchstart', onDragStart, { passive: true });
+    document.body.appendChild(edge);
 
     document.body.appendChild(side);
     document.body.appendChild(tab);
