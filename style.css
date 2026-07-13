@@ -746,19 +746,21 @@ footer p { font-size: 12px; color: var(--text-dim); }
   #world-search-bar.search-sticky { top: 54px; }
 }
 
-/* 设计标注徽章 */
-.design-note-badge {
+/* 设计标注徽章——CSS属性选择器直接命中，不依赖JS */
+span[title*="设计意图"] {
   font-size: 11px !important;
   color: #fff !important;
   background: var(--accent) !important;
-  padding: 2px 8px !important;
+  padding: 3px 10px !important;
   border-radius: 10px !important;
   vertical-align: middle !important;
   letter-spacing: 0.3px !important;
   cursor: pointer !important;
   font-weight: 500 !important;
+  display: inline-block !important;
+  margin: 0 2px !important;
 }
-.design-note-badge:active { opacity: 0.8; }
+span[title*="设计意图"]:active { opacity: 0.8; }
 
 /* 访客小人（二级页面） */
 #guest-bubble {
