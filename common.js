@@ -437,6 +437,7 @@ function initTOC() {
   for (var oi = 0; oi < allLinks.length; oi++) {
     observer.observe(allLinks[oi].el);
   }
+}
 
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initTOC);
