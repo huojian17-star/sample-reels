@@ -52,6 +52,11 @@
     <p>"物理侧是剑，魔法侧是盾，而研究侧是握剑盾的手。" —— 元老会议首席长老就职宣言</p>
   </div>
 
+  <figure style="margin:36px 0;text-align:center;">
+    <img src="iris-map.webp" alt="艾瑞斯大陆地图" loading="lazy" decoding="async" style="max-width:100%;width:auto;height:auto;border-radius:8px;border:1px solid var(--border);cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.06);" onclick="openLightbox(this.src)" title="点击放大查看">
+    <figcaption style="font-size:11px;color:var(--text-dim);margin-top:8px;">艾瑞斯大陆地图 · 点击放大查看</figcaption>
+  </figure>
+
   <!-- ====== 二、能力体系 ====== -->
   <h2>二、能力体系</h2>
 
@@ -86,6 +91,11 @@
   </div>
 
   <p style="margin-top:20px;"><strong>研究侧</strong>：自身无能力，但研究他人能力来探究能力本质。提供"公会"系统，拥有专业的后勤、法律、经济学者团队。表面上是"服务者"，实则通过制度设计掌控着大陆的核心权力。</p>
+
+  <figure style="margin:36px 0;text-align:center;">
+    <img src="iris-job-classes.webp" alt="艾瑞斯大陆物理侧与魔法侧职阶示意图" loading="lazy" decoding="async" style="max-width:100%;width:auto;height:auto;border-radius:8px;border:1px solid var(--border);cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.06);" onclick="openLightbox(this.src)" title="点击放大查看">
+    <figcaption style="font-size:11px;color:var(--text-dim);margin-top:8px;">物理侧与魔法侧职阶示意图 · 点击放大查看</figcaption>
+  </figure>
 
   <h3>主修/辅修制</h3>
   <p>同一侧的能力者可以主修一个职阶并辅修另一个职阶。但<strong>物理侧不能辅修魔法侧职阶，魔法侧同理</strong>——否则体内两股能量会冲突导致暴毙。大陆历史上曾有最高同时修四个职阶的能力者，但辅修越多，主修越弱，最终样样不精。（收录于《艾瑞斯大陆能力者图鉴》）</p>
@@ -407,6 +417,25 @@
     }
   });
 })();
+</script>
+
+<!-- Lightbox overlay -->
+<div id="lightbox-overlay" onclick="closeLightbox()" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.9);z-index:9999;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:12px;">
+  <span onclick="closeLightbox()" style="position:fixed;top:12px;right:18px;color:#fff;font-size:32px;z-index:10001;line-height:1;cursor:pointer;text-shadow:0 2px 8px rgba(0,0,0,0.6);">&times;</span>
+  <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;">
+    <img id="lightbox-img" src="" alt="" onclick="event.stopPropagation()" style="width:100%;max-width:100%;height:auto;object-fit:contain;box-shadow:0 8px 40px rgba(0,0,0,0.6);touch-action:pinch-zoom;user-select:none;">
+  </div>
+</div>
+<script>
+function openLightbox(src) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox-overlay').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('lightbox-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
 </script>
 </body>
 </html>
