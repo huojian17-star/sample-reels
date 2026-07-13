@@ -138,14 +138,20 @@
     }
   }
 
-  // 点击小人：对话
-  img.addEventListener('click', function(e) {
-    if (wasDrag) return;
-    e.stopPropagation();
+  // 点击/触摸小人：对话
+  var lastTalkTime = 0;
+  function doTalk() {
+    var now = Date.now();
+    if (now - lastTalkTime < 400) return; // 防双击
+    lastTalkTime = now;
+    if (wasDrag || isDrag) return;
     img.style.transform = 'scale(1.12)';
     setTimeout(function() { img.style.transform = ''; }, 150);
     say(pickMsg());
-  });
+    wasDrag = false;
+  }
+  img.addEventListener('click', function(e) { e.stopPropagation(); doTalk(); });
+  img.addEventListener('touchend', function(e) { e.stopPropagation(); doTalk(); });
 
   // 双击：回家
   img.addEventListener('dblclick', function(e) {
