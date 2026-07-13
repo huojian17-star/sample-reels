@@ -367,9 +367,63 @@
       document.body.style.overflow = open ? 'hidden' : '';
     }
 
-    tab.onclick = toggleSidebar;
+    tab.onclick = function(e) { if (!wasSwiping) toggleSidebar(); };
     overlay.onclick = toggleSidebar;
     document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && open) toggleSidebar(); });
+
+    // 拖拽展开
+    var wasSwiping = false;
+    var dragStartX = 0, dragOpenAtStart = false;
+
+    function onDragStart(e) {
+      wasSwiping = false;
+      dragStartX = e.touches ? e.touches[0].clientX : e.clientX;
+      dragOpenAtStart = open;
+      side.style.transition = 'none';
+      tab.style.transition = 'none';
+      document.addEventListener('mousemove', onDragMove);
+      document.addEventListener('mouseup', onDragEnd);
+      document.addEventListener('touchmove', onDragMove, { passive: false });
+      document.addEventListener('touchend', onDragEnd);
+    }
+    function onDragMove(e) {
+      var x = e.touches ? e.touches[0].clientX : e.clientX;
+      var delta = x - dragStartX;
+      if (Math.abs(delta) < 3) return;
+      wasSwiping = true;
+      if (e.touches) e.preventDefault();
+      // 仅右拖展开、左拖关闭
+      if (delta > 0 && !open) {
+        var p = Math.min(delta / 260, 1);
+        var ease = 1 - (1 - p) * (1 - p); // ease-out
+        side.style.transform = 'translateX(' + (-100 + ease * 100) + '%)';
+        tab.style.left = (ease * 260) + 'px';
+      } else if (delta < 0 && open) {
+        var p2 = Math.min(-delta / 260, 1);
+        var ease2 = 1 - (1 - p2) * (1 - p2);
+        side.style.transform = 'translateX(' + (-ease2 * 100) + '%)';
+        tab.style.left = (260 - ease2 * 260) + 'px';
+      }
+    }
+    function onDragEnd() {
+      document.removeEventListener('mousemove', onDragMove);
+      document.removeEventListener('mouseup', onDragEnd);
+      document.removeEventListener('touchmove', onDragMove);
+      document.removeEventListener('touchend', onDragEnd);
+      side.style.transition = 'transform 0.3s ease';
+      tab.style.transition = 'left 0.3s ease';
+      if (wasSwiping) {
+        // 判定：拖过一半就切换状态
+        var curX = parseFloat(side.style.transform.replace('translateX(', '')) || 0;
+        open = curX > -50;
+        side.style.transform = open ? 'translateX(0)' : 'translateX(-100%)';
+        tab.style.left = open ? '260px' : '0';
+        overlay.style.display = open ? 'block' : 'none';
+        document.body.style.overflow = open ? 'hidden' : '';
+      }
+    }
+    tab.addEventListener('mousedown', onDragStart);
+    tab.addEventListener('touchstart', onDragStart, { passive: true });
 
     document.body.appendChild(side);
     document.body.appendChild(tab);
