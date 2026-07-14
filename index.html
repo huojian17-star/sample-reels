@@ -318,7 +318,7 @@
     <h1>BEST-辣椒 · 求职作品集</h1>
     <p class="hero-subtitle" style="font-size:16px;color:var(--accent);letter-spacing:2px;">游戏考据作者 · 世界观构建者 · 交互原型设计师</p>
     <p class="hero-desc" style="font-size:13px;color:var(--text-dim);margin-top:10px;">
-      挖掘被遗忘的游戏开发史 · 构建六万字的奇幻世界 · 把设定变成可以玩的交互原型
+      挖掘被遗忘的游戏开发史 · 构建约3.2万字的奇幻世界 · 把设定变成可以玩的交互原型
     </p>
     <div class="hero-stats">
       <div class="stat-item">
@@ -330,7 +330,7 @@
         <span class="stat-label">粉丝 <span style="font-size:9px;background:#22c55e20;color:#16a34a;padding:1px 5px;border-radius:6px;vertical-align:middle;letter-spacing:0;">实时</span></span>
       </div>
       <div class="stat-item">
-        <span class="stat-num"><span id="counter-words">0</span><span class="stat-unit">万字+</span></span>
+        <span class="stat-num"><span id="counter-words">0</span><span class="stat-unit">万字</span></span>
         <span class="stat-label">世界观设定</span>
       </div>
       <div class="stat-item">
@@ -404,7 +404,7 @@
     <span class="card-badge badge-lore">&#9679; 设定</span>
     <span class="card-icon">&#9734;</span>
     <h3>艾瑞斯大陆设定集</h3>
-    <p>六万余字原创奇幻世界观。双能力体系、五大城市、经济法律系统、核心历史、机密档案与最高机密卷宗。</p>
+    <p>约3.2万字原创奇幻世界观。双能力体系、五大城市、经济法律系统、核心历史、机密档案与最高机密卷宗。</p>
     <span class="card-tease">折叠档案 · 神位阶隐藏交互</span>
     <span class="card-arrow">探索世界 →</span>
   </a>
@@ -585,7 +585,7 @@
       '#3细胞分裂那期有4.6万播放，是目前最高的！'
     ],
     worldbuilding: [
-      '六万多字的设定，从能力体系到法律制度都有。',
+      '约3.2万字的设定，从能力体系到法律制度都有。',
       '物理侧拿剑，魔法侧施法，研究侧掌管一切。',
       '五大城市：寰宇尚武、岩湖锻造、富华重商、天际观星、低语岭祈祷。',
       '机密档案里藏了暗界生物的秘密……点到为止。',
@@ -1086,12 +1086,12 @@ function animateCounter(id, target, duration, suffix, decimals) {
 
 // ====== B站实时数据同步 ======
 // 数据更新于 2026年7月14日。更新时修改下方数值即可。
-var COUNTERS = { fans: 898, plays: 19.7, words: 6, series: 7 };
+var COUNTERS = { fans: 898, plays: 19.7, words: 3.2, series: 7 };
 
 // 启动：先秒显静态值，后台尝试拉实时数据
 window.addEventListener('DOMContentLoaded', function() {
   setTimeout(function() { animateCounter('counter-fans', COUNTERS.fans, 1000, ''); }, 400);
-  setTimeout(function() { animateCounter('counter-words', COUNTERS.words, 800, ''); }, 600);
+  setTimeout(function() { animateCounter('counter-words', COUNTERS.words, 800, '', 1); }, 600);
   setTimeout(function() { animateCounter('counter-series', COUNTERS.series, 600, ''); }, 800);
 
   var el = document.getElementById('counter-plays');
@@ -1124,7 +1124,7 @@ window.addEventListener('DOMContentLoaded', function() {
     // === 一级页面 ===
     { title:'关于我', page:'about.html', tags:'关于 介绍 邓恺恒 求职 游戏策划 产品经理 创作理念 叙事方法论', desc:'个人简介、求职意向、创作哲学与叙事方法论' },
     { title:'B站内容创作', page:'bilibili.html', tags:'B站 bilibili 视频 播放 粉丝 数据分析 雷达图 排序 内容策略 观众画像', desc:'7期视频系列，含排序对比、雷达图、数据洞察' },
-    { title:'艾瑞斯大陆设定集', page:'worldbuilding.html', tags:'设定 世界观 艾瑞斯 能力 物理侧 魔法侧 研究侧 职阶 城市 历史 法律 经济 公会 暗界 元老会议 日历 方言', desc:'六万字原创奇幻世界观，双能力体系，五大城市，机密档案' },
+    { title:'艾瑞斯大陆设定集', page:'worldbuilding.html', tags:'设定 世界观 艾瑞斯 能力 物理侧 魔法侧 研究侧 职阶 城市 历史 法律 经济 公会 暗界 元老会议 日历 方言', desc:'约3.2万字原创奇幻世界观，双能力体系，五大城市，机密档案' },
     { title:'渡鸦镇（小说）', page:'novel.html', tags:'小说 渡鸦镇 哥特 瑞雯 索菲娜 彼得 希尔德 安德森 安切斯特 玛丽德尔 性格测试 人物关系图 章节', desc:'十二章长篇小说，含性格测试与人物关系图' },
     { title:'可交互游戏原型', page:'game-design.html', tags:'交互 原型 游戏设计 雷达图 战斗力 伤害计算 掉落 模拟 任务 决策 告示板 能力评估 数值 系统', desc:'5个可交互原型：雷达评估、战斗计算器、掉落模拟、任务决策、告示板' },
     { title:'游戏拆解', page:'game-analysis.html', tags:'拆解 分析 失败 项目 设计 幻 寂静岭 PT 细胞分裂 热血无赖 迈阿密热线 eight days 超越善恶 行业教训', desc:'从策划视角分析7款游戏的失败节点与行业教训' },
