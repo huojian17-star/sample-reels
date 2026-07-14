@@ -88,6 +88,18 @@ This portfolio site incorporates certain AI-assisted elements, aiming to demonst
 <p style="font-size:13px;color:#5a4a38;line-height:1.9;text-align:left;margin:0 0 20px 0;">
 本网站包含一定比例的 AI 辅助设计元素，旨在展示在"人机协同"管线中，如何最大化把控作品的最终质量与研发效率。本站所涉全部核心逻辑、数值架构及文本设定均为本人手作产出。如您对生成式 AI 持有不同看法，请谨慎使用或浏览本站，感谢您的理解。
 </p>
+<button id="ai-agree-btn" onclick="agreeAI()" style="background:#a98446;color:#fff;border:none;padding:12px 32px;border-radius:6px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;letter-spacing:0.5px;pointer-events:auto;">Yes, I agree &nbsp;/&nbsp; 是的，我同意</button>
+</div></div>
+<div id="ai-disclaimer" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:2147483647;display:flex;align-items:center;justify-content:center;font-family:system-ui,-apple-system,sans-serif;">
+<div style="background:#fdfaf4;border:3px solid #4a3828;border-radius:12px;padding:32px 36px;max-width:600px;width:90%;max-height:85vh;overflow-y:auto;box-shadow:0 16px 48px rgba(0,0,0,0.4);text-align:center;">
+<div style="font-size:24px;margin-bottom:16px;">&#9888;&#65039;</div>
+<h2 style="font-size:18px;font-weight:700;color:#3a2a18;margin:0 0 16px 0;line-height:1.5;">AI-Assisted Design Notice<br><span style="font-size:14px;font-weight:400;color:#8a7a68;">AI 辅助设计声明</span></h2>
+<p style="font-size:13px;color:#5a4a38;line-height:1.9;text-align:left;margin:0 0 16px 0;">
+This portfolio site incorporates certain AI-assisted elements, aiming to demonstrate the integration of "human-AI collaboration" to optimize quality and pipeline efficiency. All core logical architectures, math models, and world-building texts are strictly handcrafted by the author. If you are sensitive to generative AI, please browse with caution. Thank you for your understanding.
+</p>
+<p style="font-size:13px;color:#5a4a38;line-height:1.9;text-align:left;margin:0 0 20px 0;">
+本网站包含一定比例的 AI 辅助设计元素，旨在展示在"人机协同"管线中，如何最大化把控作品的最终质量与研发效率。本站所涉全部核心逻辑、数值架构及文本设定均为本人手作产出。如您对生成式 AI 持有不同看法，请谨慎使用或浏览本站，感谢您的理解。
+</p>
 <button id="ai-agree-btn" style="background:#a98446;color:#fff;border:none;padding:12px 32px;border-radius:6px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;letter-spacing:0.5px;pointer-events:auto;">Yes, I agree &nbsp;/&nbsp; 是的，我同意</button>
 </div></div>
 <div id="ai-disclaimer" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:2147483647;display:flex;align-items:center;justify-content:center;font-family:system-ui,-apple-system,sans-serif;">
@@ -554,6 +566,10 @@ btn.onclick=tg;document.body.appendChild(btn);if(L==='en')ap();});
 <script>
 try{ if(localStorage.getItem('ai-agreed')==='1') document.getElementById('ai-disclaimer').remove(); }catch(e){}
 document.getElementById('ai-agree-btn').onclick=function(){ var d=document.getElementById('ai-disclaimer'); if(d)d.remove(); try{localStorage.setItem('ai-agreed','1')}catch(e){} };
+</script>
+<script>
+function agreeAI(){ var d=document.getElementById('ai-disclaimer'); if(d)d.remove(); try{localStorage.setItem('ai-agreed','1')}catch(e){} }
+window.addEventListener('load',function(){ try{ if(localStorage.getItem('ai-agreed')==='1') document.getElementById('ai-disclaimer').remove(); }catch(e){} });
 </script>
 </body>
 </html>
