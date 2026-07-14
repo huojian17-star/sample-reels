@@ -694,6 +694,9 @@ footer p { font-size: 12px; color: var(--text-dim); }
   .featured-banner { padding: 16px 12px; }
   .banner-cta { padding: 10px 20px; font-size: 12px; }
   .nav-links a { font-size: 14px; padding: 14px 16px; }
+
+  /* EN按钮避开汉堡菜单 */
+  #lang-toggle { top: 62px !important; right: 16px !important; z-index: 100 !important; }
 }
 
 /* 设定集搜索栏——仅在搜索时置顶 */
