@@ -37,7 +37,7 @@
   <div id="world-search-bar" style="z-index:50;background:var(--bg-alt);padding:16px 32px;margin:0 -32px 24px;border-bottom:2px solid var(--accent-dim);">
     <div style="display:flex;gap:8px;align-items:center;max-width:100%;">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="2" style="flex-shrink:0;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="text" id="world-search-input" placeholder="输入关键词搜索设定集..." style="flex:1;padding:10px 0;border:none;font-size:15px;font-family:inherit;background:transparent;color:var(--text);outline:none;"> <button onclick="var t=this.nextElementSibling;t.hidden=!t.hidden" style="font-size:11px;color:#fff;background:#a98446;border:none;padding:2px 8px;border-radius:10px;cursor:pointer;font-family:inherit;font-weight:500;vertical-align:middle;flex-shrink:0;margin-right:6px;">ⓘ 设计标注</button><span hidden style="font-size:11px;color:var(--text-dim);background:var(--bg-alt);padding:4px 8px;border-radius:4px;margin-right:6px;line-height:1.5;flex-shrink:0;">约3.2万字设定文档，搜索让HR快速定位感兴趣的关键词，把大量信息变成可检索的参考手册。</span>
+      <input type="text" id="world-search-input" data-i18n-placeholder="world-search-ph" placeholder="输入关键词搜索设定集..." style="flex:1;padding:10px 0;border:none;font-size:15px;font-family:inherit;background:transparent;color:var(--text);outline:none;"> <button onclick="var t=this.nextElementSibling;t.hidden=!t.hidden" style="font-size:11px;color:#fff;background:#a98446;border:none;padding:2px 8px;border-radius:10px;cursor:pointer;font-family:inherit;font-weight:500;vertical-align:middle;flex-shrink:0;margin-right:6px;">ⓘ 设计标注</button><span hidden style="font-size:11px;color:var(--text-dim);background:var(--bg-alt);padding:4px 8px;border-radius:4px;margin-right:6px;line-height:1.5;flex-shrink:0;">约3.2万字设定文档，搜索让HR快速定位感兴趣的关键词，把大量信息变成可检索的参考手册。</span>
       <span id="search-count" style="font-size:11px;color:var(--text-dim);white-space:nowrap;min-width:50px;text-align:right;"></span>
       <button id="search-prev-btn" style="background:var(--bg-card);border:1px solid var(--border);padding:6px 10px;border-radius:4px;font-size:12px;cursor:pointer;font-family:inherit;color:var(--text-dim);line-height:1;" title="上一个匹配">↑</button>
       <button id="search-next-btn" style="background:var(--bg-card);border:1px solid var(--border);padding:6px 10px;border-radius:4px;font-size:12px;cursor:pointer;font-family:inherit;color:var(--text-dim);line-height:1;" title="下一个匹配">↓</button>
@@ -45,7 +45,7 @@
   </div>
 
   <!-- ====== 一、世界概览 ====== -->
-  <h2>一、世界概览</h2>
+  <h2 data-i18n="world-overview">一、世界概览</h2>
   <p>「艾瑞斯大陆」是一个以<strong>"物理侧""魔法侧""研究侧"</strong>三足鼎立为核心的奇幻世界。物理侧能力者利用冷/热兵器和身体强化进行战斗（职阶如剑术师、骑士、刺客等），魔法侧能力者类似哈利波特或奇异博士那样施展法术（职阶如元素法师、咒术师、幻术师等），而<strong>研究侧</strong>则是无能力的普通人——他们依靠权力、资本和制度居中制衡，主导公会系统、法律制定与经济管理。</p>
 
   <p>三侧的博弈构成了整个世界的底层张力：能力者掌握力量，但研究侧掌握秩序；元老会议由物理侧与魔法侧的元老级别人物组成，拥有顶层决策权，但日常行政由研究侧把持。这种"无能力者统治有能力者"的政治结构，是艾瑞斯大陆最根本的设定特征。</p>
@@ -56,13 +56,13 @@
 
   <figure style="margin:36px 0;text-align:center;">
     <img src="iris-map.webp" alt="艾瑞斯大陆地图" loading="lazy" decoding="async" style="max-width:100%;width:auto;height:auto;border-radius:8px;border:1px solid var(--border);cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.06);" onclick="openLightbox(this.src)" title="点击放大查看">
-    <figcaption style="font-size:11px;color:var(--text-dim);margin-top:8px;">艾瑞斯大陆地图 · 图片由 GPT image2 生成 · 点击放大查看</figcaption>
+    <figcaption style="font-size:11px;color:var(--text-dim);margin-top:8px;" data-i18n="world-fig-map">艾瑞斯大陆地图 · 图片由 GPT image2 生成 · 点击放大查看</figcaption>
   </figure>
 
   <!-- ====== 二、能力体系 ====== -->
-  <h2>二、能力体系</h2>
+  <h2 data-i18n="world-power">二、能力体系</h2>
 
-  <h3>三大侧系</h3>
+  <h3 data-i18n="world-three-sides">三大侧系</h3>
   <div class="split-grid">
     <div class="split-card">
       <h4 style="color:var(--accent-physical);">物理侧 &mdash; 血肉与钢铁</h4>
@@ -96,13 +96,13 @@
 
   <figure style="margin:36px 0;text-align:center;">
     <img src="iris-job-classes.webp" alt="艾瑞斯大陆物理侧与魔法侧职阶示意图" loading="lazy" decoding="async" style="max-width:100%;width:auto;height:auto;border-radius:8px;border:1px solid var(--border);cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.06);" onclick="openLightbox(this.src)" title="点击放大查看">
-    <figcaption style="font-size:11px;color:var(--text-dim);margin-top:8px;">物理侧与魔法侧职阶示意图 · 图片由 GPT image2 生成 · 点击放大查看</figcaption>
+    <figcaption style="font-size:11px;color:var(--text-dim);margin-top:8px;" data-i18n="world-fig-classes">物理侧与魔法侧职阶示意图 · 图片由 GPT image2 生成 · 点击放大查看</figcaption>
   </figure>
 
-  <h3>主修/辅修制</h3>
+  <h3 data-i18n="world-dual-major">主修/辅修制</h3>
   <p>同一侧的能力者可以主修一个职阶并辅修另一个职阶。但<strong>物理侧不能辅修魔法侧职阶，魔法侧同理</strong>——否则体内两股能量会冲突导致暴毙。大陆历史上曾有最高同时修四个职阶的能力者，但辅修越多，主修越弱，最终样样不精。（收录于《艾瑞斯大陆能力者图鉴》）</p>
 
-  <h3>等级体系：一阶至十阶</h3>
+  <h3 data-i18n="world-tier">等级体系：一阶至十阶</h3>
   <p>每个职阶均有等级制度，每级可学习不同的能力。升级评估依据四大板块：<strong>力量、速度、技巧、思维</strong>（魔法侧额外增加"掌控度"和"释放威力"）。</p>
 
   <p>初习能力者强制从一阶开始。完成一次任务后，经四大板块考核可重新评定等级。早期寰宇城曾有枪兵初习者在讨伐魔物后，因表现出色直接从一阶跃升至三阶。</p>
@@ -120,45 +120,45 @@
   </div>
 
   <!-- ====== 三、五大城市 ====== -->
-  <h2>三、五大城市</h2>
+  <h2 data-i18n="world-cities">三、五大城市</h2>
 
   <div class="split-grid">
     <div class="split-card">
       <h4 style="color:var(--accent-physical);">寰宇市 &mdash; 物理侧聚集区</h4>
       <p>风格近似苏联中期，粗犷尚武。居民以物理侧能力者为主，角斗场文化盛行。奥莱因教的信仰中心，广场上矗立着赫尔加·斯顿贝克的著名雕塑《尤尔之陨》。方言"奥莱因铁舌"铿锵有力，咬字极重。</p>
       <img src="huan-yu.webp" alt="寰宇市全景图" loading="lazy" decoding="async" style="width:100%;height:auto;border-radius:6px;border:1px solid var(--border);cursor:pointer;margin-top:14px;" onclick="openLightbox(this.src)" title="点击放大查看">
-      <p style="font-size:10px;color:var(--text-dim);margin-top:4px;">图片由 GPT image2 生成 · 点击放大</p>
+      <p style="font-size:10px;color:var(--text-dim);margin-top:4px;"><span data-i18n="world-city-img-note">图片由 GPT image2 生成 · 点击放大</span></p>
     </div>
     <div class="split-card">
       <h4 style="color:var(--accent-magic);">天际市 &mdash; 魔法侧聚集区</h4>
       <p>继承古索莱恩城邦的秘法传统，神秘学与高雅气质混杂。高阶法师们倾向于使用基于双月周期的"星月循环"历法。方言"索莱恩秘语"轻柔婉转如吟唱。玻利瓦尔的相关研究在此被严密封锁。</p>
       <img src="tian-ji.webp" alt="天际市全景图" loading="lazy" decoding="async" style="width:100%;height:auto;border-radius:6px;border:1px solid var(--border);cursor:pointer;margin-top:14px;" onclick="openLightbox(this.src)" title="点击放大查看">
-      <p style="font-size:10px;color:var(--text-dim);margin-top:4px;">图片由 GPT image2 生成 · 点击放大</p>
+      <p style="font-size:10px;color:var(--text-dim);margin-top:4px;"><span data-i18n="world-city-img-note">图片由 GPT image2 生成 · 点击放大</span></p>
     </div>
     <div class="split-card">
       <h4 style="color:var(--accent-research);">中心市 &mdash; 研究侧总部</h4>
       <p>中美体制混合物，理性秩序。中央档案馆储存着从公开史料到一级机密的所有知识。大陆图书馆、中央银行、法务研究所均设于此。方言毫无地方特色，极度清晰——"标准音"的地位类似于新华社。</p>
       <img src="zhong-xin.webp" alt="中心市全景图" loading="lazy" decoding="async" style="width:100%;height:auto;border-radius:6px;border:1px solid var(--border);cursor:pointer;margin-top:14px;" onclick="openLightbox(this.src)" title="点击放大查看">
-      <p style="font-size:10px;color:var(--text-dim);margin-top:4px;">图片由 GPT image2 生成 · 点击放大</p>
+      <p style="font-size:10px;color:var(--text-dim);margin-top:4px;"><span data-i18n="world-city-img-note">图片由 GPT image2 生成 · 点击放大</span></p>
     </div>
     <div class="split-card">
       <h4 style="color:#6b5b52;">岩湖市 &mdash; 矿业重镇</h4>
       <p>三大矿业总会寡头竞争：「深岩之子」（稀有金属）、「穹顶之指」（穹顶矿石垄断）、「磐石联合」（基础矿产）。穹顶矿脉的发现重塑了大陆力量格局。方言"深岩低语"惜字如金，近乎单词电报。</p>
       <img src="yan-hu.webp" alt="岩湖市全景图" loading="lazy" decoding="async" style="width:100%;height:auto;border-radius:6px;border:1px solid var(--border);cursor:pointer;margin-top:14px;" onclick="openLightbox(this.src)" title="点击放大查看">
-      <p style="font-size:10px;color:var(--text-dim);margin-top:4px;">图片由 GPT image2 生成 · 点击放大</p>
+      <p style="font-size:10px;color:var(--text-dim);margin-top:4px;"><span data-i18n="world-city-img-note">图片由 GPT image2 生成 · 点击放大</span></p>
     </div>
     <div class="split-card" style="grid-column: 1 / -1;">
       <h4 style="color:#c5a059;">富华城 &mdash; 商业中心</h4>
       <p>六十年代美国黄金时期风格，市井浮华。大陆金融心脏——金狮鹫币的发行、商业储蓄银行、贸易博览会均在此。也是西尔维娅·佩恩"世俗派"艺术的发源地，《三枚银鹿角》的故事就发生在这里的"碎铃铛"小巷。方言"金湾快嘴"语速极快，连读吞音严重。</p>
       <img src="fu-hua.webp" alt="富华城全景图" loading="lazy" decoding="async" style="width:100%;height:auto;border-radius:6px;border:1px solid var(--border);cursor:pointer;margin-top:14px;" onclick="openLightbox(this.src)" title="点击放大查看">
-      <p style="font-size:10px;color:var(--text-dim);margin-top:4px;">图片由 GPT image2 生成 · 点击放大</p>
+      <p style="font-size:10px;color:var(--text-dim);margin-top:4px;"><span data-i18n="world-city-img-note">图片由 GPT image2 生成 · 点击放大</span></p>
     </div>
   </div>
 
   <p style="margin-top:20px;">各城市之间人员不断流通，内部还有"镇"和"村"等更小的聚落单位。各地方言不同，但存在通用语言。不同城市的习俗差异巨大——寰宇市和岩湖市粗犷、富华城浮华、天际市神秘、中心市理性。</p>
 
   <!-- ====== 四、社会系统 ====== -->
-  <h2>四、社会系统</h2>
+  <h2 data-i18n="world-social">四、社会系统</h2>
 
   <h3>货币体系</h3>
   <p><strong>1枚金狮鹫币 = 10枚银鹿角币 = 500枚棕熊铜币</strong>。村/镇集市以棕熊铜币为主流；市区则使用银鹿角币和金狮鹫币，用于购买高级装备、药剂等。各地存在官方默许的"私有货币"，如岩湖城矿区中铁石矿作为替代货币流通。金狮鹫币体系由天才经济学家阿尔德里奇设计，其最后笔记中留下了著名暗语："狮鹫俯瞰，鹿角穿梭，而熊，终将觉醒。"</p>
@@ -203,11 +203,11 @@
   <p>娱乐方面：歌剧院、角斗场（物理侧）、决斗场、魔术会演（魔法侧）遍布各市。灰色地带存在赌场和妓院。四大吟游诗人——里昂·铁喉（《尤尔之陨》）、塞莱娜·维恩斯特（《玻利瓦尔的十二瞥视》）、阿尔瓦罗·克莱恩（《丰碑无需刀剑》）、西尔维娅·佩恩（《三枚银鹿角》）——各自代表不同的阵营立场。</p>
 
   <!-- ====== 五、核心历史 ====== -->
-  <h2>五、核心历史：奥莱因战争</h2>
+  <h2 data-i18n="world-history">五、核心历史：奥莱因战争</h2>
 
   <figure style="margin:24px 0 32px;text-align:center;">
     <img src="olein-war.webp" alt="奥赖因战争示意图" loading="lazy" decoding="async" style="max-width:100%;width:auto;height:auto;border-radius:8px;border:1px solid var(--border);cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.06);" onclick="openLightbox(this.src)" title="点击放大查看">
-    <figcaption style="font-size:11px;color:var(--text-dim);margin-top:8px;">奥赖因战争示意图 · 图片由 GPT image2 生成 · 点击放大查看</figcaption>
+    <figcaption style="font-size:11px;color:var(--text-dim);margin-top:8px;"><span data-i18n="world-fig-war">奥赖因战争示意图 · <span data-i18n="world-city-img-note">图片由 GPT image2 生成 · 点击放大</span>查看</span></figcaption>
   </figure>
 
   <h3>混沌纪元</h3>
@@ -236,7 +236,7 @@
   </ul>
 
   <!-- ====== 六、核心理论著作 ====== -->
-  <h2>六、核心理论著作</h2>
+  <h2 data-i18n="world-books">六、核心理论著作</h2>
 
   <div class="split-grid">
     <div class="split-card">
@@ -307,8 +307,8 @@
   <p style="margin-top:16px;">中心市方言无任何地方特色，字正腔圆——即为通用语标准发音。任何偏离标准的发音都会被礼貌地纠正："请您按照语音标准重新陈述一遍。"</p>
 
   <div style="text-align:center;margin-top:56px;padding:40px 0;border-top:1px solid var(--border);">
-    <a href="worldbuilding-full.html" style="display:inline-block;padding:14px 40px;background:var(--accent);color:#fff;text-decoration:none;border-radius:4px;font-size:15px;font-weight:500;letter-spacing:1px;transition:opacity 0.2s;">阅读设定集全文（约3.2万字原版） →</a>
-    <p style="color:var(--text-dim);font-size:13px;margin-top:16px;">含方言对照指南、机密档案、历史年表等共16个章节</p>
+    <a href="worldbuilding-full.html" style="display:inline-block;padding:14px 40px;background:var(--accent);color:#fff;text-decoration:none;border-radius:4px;font-size:15px;font-weight:500;letter-spacing:1px;transition:opacity 0.2s;"><span data-i18n="world-full-btn">阅读设定集全文（约3.2万字原版） →</span></a>
+    <p style="color:var(--text-dim);font-size:13px;margin-top:16px;"><span data-i18n="world-full-desc">含方言对照指南、机密档案、历史年表等共16个章节</span></p>
   </div>
 
   <div style="margin-top:40px;padding:16px 20px;background:var(--bg-alt);border-left:3px solid var(--accent-dim);font-size:12px;color:var(--text-dim);line-height:1.8;border-radius:0 4px 4px 0;"><strong style="color:var(--accent);">团队价值关联</strong><br>约3.2万字、16个章节、可搜索的结构化文档——这种"把想法写清楚、让别人看得懂、可检索"的能力，是游戏策划最核心的产出物。策划案、世界观文档、系统设计说明……格式不同，底层能力相通：结构化思维、细节执行力、持续迭代的耐心。</div>
@@ -319,7 +319,7 @@
   <p>BEST-辣椒 &copy; 2026 · <a href="https://space.bilibili.com/518565512" target="_blank" rel="noopener" style="color:var(--text-dim);">B站主页</a></p>
 </footer>
 
-<script src="common.js?v=8"></script>
+<script src="common.js?v=9"></script>
 <script>
 // ====== 设定集搜索 ======
 (function() {

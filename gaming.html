@@ -64,18 +64,18 @@
 <div class="content-section">
 
   <div class="game-stats-banner">
-    <div class="game-stat"><span class="num">3000+</span><span class="lbl">总游戏时长（小时）</span></div>
-    <div class="game-stat"><span class="num">30+</span><span class="lbl">游戏数量</span></div>
-    <div class="game-stat"><span class="num">20+</span><span class="lbl">全成就 / 通关</span></div>
-    <div class="game-stat"><span class="num">钻石</span><span class="lbl">最高段位</span></div>
+    <div class="game-stat"><span class="num">3000+</span><span class="lbl" data-i18n="gaming-stats-hours">总游戏时长（小时）</span></div>
+    <div class="game-stat"><span class="num">30+</span><span class="lbl" data-i18n="gaming-stats-games">游戏数量</span></div>
+    <div class="game-stat"><span class="num">20+</span><span class="lbl" data-i18n="gaming-stats-done">全成就 / 通关</span></div>
+    <div class="game-stat"><span class="num">钻石</span><span class="lbl" data-i18n="gaming-stats-rank">最高段位</span></div>
   </div>
 
   <div class="platform-section">
-    <div class="platform-label">PC / 主机游戏</div>
+    <div class="platform-label" data-i18n="gaming-pc-label">PC / 主机游戏</div>
 
     <div class="game-search">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="text" id="game-filter" placeholder="搜索游戏名称..." oninput="filterGames()">
+      <input type="text" id="game-filter" data-i18n-placeholder="gaming-search-ph" placeholder="搜索游戏名称..." oninput="filterGames()">
     </div>
 
     <div class="games-grid" id="pc-games">
@@ -145,14 +145,14 @@
 
       <div class="game-card" data-name="战地 黑暗之魂 瓦罗兰特 耻辱 鬼泣 深度">
         <div class="game-card-body">
-          <div class="game-card-header"><h4>其他深度体验游戏</h4></div>
+          <div class="game-card-header"><h4 data-i18n="gaming-other-deep">其他深度体验游戏</h4></div>
           <p>战地风云 5：100+ 小时 &middot; 黑暗之魂 3：50+ 小时 &middot; 瓦罗兰特：50+ 小时<br>耻辱系列：50+ 小时（全流程通关）&middot; 鬼泣 5：15+ 小时</p>
         </div>
       </div>
 
       <div class="game-card" data-name="the finals 杀手 风之旅人 传送门 逃生 天际线 泰坦陨落 通关">
         <div class="game-card-body">
-          <div class="game-card-header"><h4>其他通关 / 体验游戏</h4></div>
+          <div class="game-card-header"><h4 data-i18n="gaming-other-clear">其他通关 / 体验游戏</h4></div>
           <p>THE FINALS：15+ 小时 &middot; 杀手：暗杀世界：50+ 小时（全流程通关）<br>风之旅人：10+ 小时 &middot; 传送门 2：15+ 小时（全流程通关）<br>逃生：5+ 小时 &middot; 城市：天际线：30+ 小时 &middot; 泰坦陨落 2：20+ 小时（全流程通关）</p>
         </div>
       </div>
@@ -161,7 +161,7 @@
   </div>
 
   <div class="platform-section">
-    <div class="platform-label">手机游戏</div>
+    <div class="platform-label" data-i18n="gaming-mobile-label">手机游戏</div>
 
     <div class="games-grid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr));">
       <div class="game-card" data-name="重返未来 1999">
@@ -195,17 +195,17 @@
     </div>
 
     <div class="gaming-note">
-      手机游戏以休闲体验为主，包含音乐节奏、角色扮演、模拟经营等多种类型，展示了广泛的游戏兴趣。
+      <span data-i18n="gaming-mobile-note">手机游戏以休闲体验为主，包含音乐节奏、角色扮演、模拟经营等多种类型，展示了广泛的游戏兴趣。</span>
     </div>
   </div>
 
 </div>
 
 <footer>
-  <p>BEST-辣椒 &copy; 2026 · 游戏经历汇总 · 总游戏时长超过 3000 小时 · <a href="https://space.bilibili.com/518565512" target="_blank" rel="noopener" style="color:var(--text-dim);">B站主页</a></p>
+  <p><span data-i18n="gaming-footer">BEST-辣椒 \&copy; 2026 · 游戏经历汇总 · 总游戏时长超过 3000 小时</span> · <a href="https://space.bilibili.com/518565512" target="_blank" rel="noopener" style="color:var(--text-dim);">B站主页</a></p>
 </footer>
 
-<script src="common.js?v=8"></script>
+<script src="common.js?v=9"></script>
 <script>
 function filterGames() {
   var q = document.getElementById('game-filter').value.toLowerCase().trim();

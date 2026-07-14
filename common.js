@@ -678,6 +678,64 @@ window.__MASCOT_QA = (function() {
   M['gaming-hero-p']       = { zh:'从竞技射击到开放世界，从主机大作到手游休闲 · 总时长 3000+ 小时  |  不完全汇总', en:'From competitive shooters to open worlds, AAA to mobile casual · 3000+ hours total  |  Incomplete Summary' };
   M['design-hero-h1']      = { zh:'可交互游戏原型', en:'Interactive Game Prototypes' };
 
+
+  // === Gaming page ===
+  M['gaming-stats-hours']  = { zh:'总游戏时长（小时）', en:'Total Play Time (hours)' };
+  M['gaming-stats-games']  = { zh:'游戏数量', en:'Games Played' };
+  M['gaming-stats-done']   = { zh:'全成就 / 通关', en:'100% / Completed' };
+  M['gaming-stats-rank']   = { zh:'最高段位', en:'Highest Rank' };
+  M['gaming-pc-label']     = { zh:'PC / 主机游戏', en:'PC / Console Games' };
+  M['gaming-mobile-label'] = { zh:'手机游戏', en:'Mobile Games' };
+  M['gaming-search-ph']    = { zh:'搜索游戏名称...', en:'Search games...' };
+  M['gaming-mobile-note']  = { zh:'手机游戏以休闲体验为主，包含音乐节奏、角色扮演、模拟经营等多种类型，展示了广泛的游戏兴趣。', en:'Mobile games span rhythm, RPG, simulation and more — showcasing broad gaming interests.' };
+  M['gaming-other-deep']   = { zh:'其他深度体验游戏', en:'Other Deep-Play Games' };
+  M['gaming-other-clear']  = { zh:'其他通关 / 体验游戏', en:'Other Completed / Played Games' };
+  M['gaming-footer']       = { zh:'BEST-辣椒 © 2026 · 游戏经历汇总 · 总游戏时长超过 3000 小时', en:'BEST-Chili © 2026 · Gaming Summary · 3000+ Hours Total' };
+
+  // === Bilibili page ===
+  M['bili-stats-fans']     = { zh:'粉丝', en:'Followers' };
+  M['bili-stats-plays']    = { zh:'总播放量', en:'Total Views' };
+  M['bili-live-tag']       = { zh:'实时', en:'Live' };
+  M['bili-section-videos'] = { zh:'视频系列', en:'Video Series' };
+  M['bili-section-audience'] = { zh:'观众画像', en:'Audience Profile' };
+  M['bili-section-strategy'] = { zh:'内容策略', en:'Content Strategy' };
+  M['bili-table-num']      = { zh:'#', en:'#' };
+  M['bili-table-game']     = { zh:'游戏', en:'Game' };
+  M['bili-table-find']     = { zh:'核心发现', en:'Key Discovery' };
+  M['bili-table-views']    = { zh:'播放', en:'Views' };
+  M['bili-table-coin']     = { zh:'硬币/点赞', en:'Coins/Likes' };
+  M['bili-insight-title']  = { zh:'数据洞察', en:'Data Insights' };
+  M['bili-radar-title']    = { zh:'指标雷达对比', en:'Metric Radar Comparison' };
+
+  // === Worldbuilding page ===
+  M['world-overview']      = { zh:'世界概览', en:'World Overview' };
+  M['world-power']         = { zh:'能力体系', en:'Power System' };
+  M['world-cities']        = { zh:'五大城市', en:'Five Cities' };
+  M['world-social']        = { zh:'社会系统', en:'Social Systems' };
+  M['world-history']       = { zh:'核心历史', en:'Core History' };
+  M['world-books']         = { zh:'核心理论著作', en:'Key Theoretical Works' };
+  M['world-three-sides']   = { zh:'三大侧系', en:'Three Branches' };
+  M['world-dual-major']    = { zh:'主修/辅修制', en:'Major/Minor System' };
+  M['world-tier']          = { zh:'等级体系：一阶至十阶', en:'Tier System: 1st to 10th' };
+  M['world-search-ph']     = { zh:'输入关键词搜索设定集...', en:'Search the setting...' };
+  M['world-full-btn']      = { zh:'阅读设定集全文（约3.2万字原版） →', en:'Read Full Setting (~32,000 words) →' };
+  M['world-full-desc']     = { zh:'含方言对照指南、机密档案、历史年表等共16个章节', en:'Includes dialect guide, classified archives, historical timeline — 16 chapters total' };
+  M['world-fig-map']       = { zh:'艾瑞斯大陆地图 · 图片由 GPT image2 生成 · 点击放大查看', en:'Iris Continent Map · Image by GPT image2 · Click to enlarge' };
+  M['world-fig-classes']   = { zh:'物理侧与魔法侧职阶示意图 · 图片由 GPT image2 生成 · 点击放大查看', en:'Physical & Magic Branch Job Classes · Image by GPT image2 · Click to enlarge' };
+  M['world-fig-war']       = { zh:'奥赖因战争示意图 · 图片由 GPT image2 生成 · 点击放大查看', en:'O'Lein War Diagram · Image by GPT image2 · Click to enlarge' };
+  M['world-city-img-note'] = { zh:'图片由 GPT image2 生成 · 点击放大', en:'Image by GPT image2 · Click to enlarge' };
+
+  // === Game Design page ===
+  M['design-radar']        = { zh:'能力者属性雷达评估', en:'Attribute Radar Assessment' };
+  M['design-calc']         = { zh:'战斗伤害公式演算', en:'Combat Damage Calculator' };
+  M['design-loot']         = { zh:'掉落模拟器', en:'Loot Simulator' };
+  M['design-quest']        = { zh:'公会任务交互式决策', en:'Guild Quest Decision Flow' };
+  M['design-board']        = { zh:'中世纪告示板 · 任务派发', en:'Medieval Notice Board · Quest Dispatch' };
+
+  // === Common elements ===
+  M['toc-label']           = { zh:'目录', en:'TOC' };
+  M['back-to-top']         = { zh:'↑', en:'↑' };
+
   function t(key) {
     var entry = M[key];
     if (!entry) return key;
