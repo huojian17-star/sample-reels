@@ -487,33 +487,63 @@
   var clicks = 0;
   var idleTimer = null;
   var idleFired = { 30: false, 60: false, 90: false };
+  var en = (localStorage.getItem('site-lang') || 'zh') === 'en';
 
   // 对话库
-  var normalMsgs = [
+  var normalMsgsZh = [
     '你好，欢迎来到我的求职个人网站！',
     '这里收录了我的游戏考据、世界观设定和交互原型~',
     '随便逛逛，有疑问随时找我！呃，虽然我只是一张图……'
   ];
-  var easterMsgs = [
+  var normalMsgsEn = [
+    "Hello! Welcome to my portfolio website!",
+    "Here you'll find my game analysis, worldbuilding, and interactive prototypes~",
+    "Look around, and ask me anything! Well... I'm just a PNG, but still."
+  ];
+  var normalMsgs = en ? normalMsgsEn : normalMsgsZh;
+  var easterMsgsZh = [
     '你知道吗？这个网站的总AI调用成本不到5块钱。',
     '嘘……设定集里藏了一些暗界生物的秘密档案。',
     'B站的视频拆解页里，有原游戏编剧的独家访谈翻译哦。',
     '渡鸦镇那个页面底部有个性格测试，试试你是哪个角色？',
     '游戏设计页里有个中世纪告示板，那是纯CSS画的。'
   ];
-  var sillyMsgs = [
+  var easterMsgsEn = [
+    "Fun fact: the total AI cost for this website was under $1 USD.",
+    "Shh... the worldbuilding section has secret files on Dark Realm creatures.",
+    "The Bilibili analysis page has exclusive translated interviews with the original game writers.",
+    "There's a personality quiz at the bottom of the Raven Town page — which character are you?",
+    "The game design page has a medieval bulletin board drawn entirely in pure CSS."
+  ];
+  var easterMsgs = en ? easterMsgsEn : easterMsgsZh;
+  var sillyMsgsZh = [
     '你已经点了我' + '好多次了。好吧，我承认我只是个像素图。',
     '别点了别点了！再点我就要从像素变成矢量图了！',
     '你知道吗，我的原型是作者花了几分钟在某个像素生成器里捏出来的。',
     '我要是能动的话早就跑了。但我是PNG格式的。PNG不支持动画。',
     '好吧好吧，最后告诉你一个秘密：这个对话框里的逗号都是英文逗号——等等，好像确实是。'
   ];
-  var idleMsgs = [
+  var sillyMsgsEn = [
+    "You've clicked me {count} times now. Fine, I admit it — I'm just a pixel image.",
+    "Stop clicking! One more and I'll turn from pixel art into vector art!",
+    "You know, the author spent like five minutes making me in some pixel generator.",
+    "I'd run away if I could. But I'm a PNG. PNGs don't support animation.",
+    "Alright, last secret: all the commas in this bubble are English commas — wait, they actually are."
+  ];
+  var sillyMsgs = en ? sillyMsgsEn : sillyMsgsZh;
+  var idleMsgsZh = [
     '你还在吗？……要不要去B站看看我的视频？',
     '页面停留这么久，看来你是真的在认真看。谢谢你。',
     '如果看完了，可以试试设定集页面的搜索功能。我做的。呃，作者做的。',
     '还在呢？要不……再点我一下？'
   ];
+  var idleMsgsEn = [
+    "Still there? ...Wanna check out my videos on Bilibili?",
+    "You've been here a while. You must really be reading carefully. Thank you.",
+    "If you're done browsing, try the search feature on the worldbuilding page. I made it. I mean, the author made it.",
+    "Oh, you're still here? Wanna... click me again?"
+  ];
+  var idleMsgs = en ? idleMsgsEn : idleMsgsZh;
 
   function popAnim() {
     bubble.classList.remove('pop');
@@ -536,6 +566,7 @@
   function getSillyMsg() {
     var n = clicks - normalMsgs.length - easterMsgs.length;
     var msg = sillyMsgs[Math.min(n, sillyMsgs.length - 1)];
+    if (en) return msg.replace('{count}', n);
     return msg.replace('好多次', n + '次');
   }
 
@@ -549,7 +580,7 @@
         active: true,
         time: Date.now()
       }));
-      say('好嘞！跟我来~');
+      say(en ? "Alright! Follow me~" : '好嘞！跟我来~');
       bubble.style.background = '';
       delete bubble._enterPage;
       setTimeout(function() { window.location.href = targetPage; }, 400);
@@ -586,7 +617,7 @@
   var zoneTimers = {};
 
   // 各模块介绍对话
-  var zoneDialogs = {
+  var zoneDialogsZh = {
     bilibili: [
       '这里有7期视频的完整数据，还能拖动排序哦~',
       '点进去可以对比任意两期视频的六维雷达图！',
@@ -637,6 +668,68 @@
       '跨专业做游戏，需要额外的证明——这个网站就是。'
     ]
   };
+  var zoneDialogsEn = {
+    bilibili: [
+      "Full data for 7 video episodes — you can even drag to reorder them~",
+      "Click in to compare any two episodes with a six-axis radar chart!",
+      "Vanished Games dev log — each episode is a story left behind.",
+      "Audience: 93.6% male, mostly 25-40 — pretty hardcore.",
+      "The Splinter Cell episode (#3) hit 46K views — the highest so far!"
+    ],
+    worldbuilding: [
+      "About 32,000 words of lore — from power systems to legal codes.",
+      "Physical side wields swords, Magic side casts spells, Research side runs everything.",
+      "Five great cities: Cosmos (martial), Stone Lake (forging), Fortune (trade), Skyline (astronomy), Whispering Ridge (prayer).",
+      "Classified files hide secrets of Dark Realm creatures... I'll stop there.",
+      "A dual-moon calendar — the cycles of Selene and Morne shape the entire continent."
+    ],
+    novel: [
+      "Raven doesn't feel cold — not a metaphor, she literally doesn't.",
+      "Seraphina got into a fight on her first day of school. Then got ostracized.",
+      "Peter wants to build a boat and sail away. But the snow has sealed every road.",
+      "The personality quiz at the bottom is pretty accurate — I got Raven.",
+      "Twelve chapters. It begins with a funeral and ends with snow."
+    ],
+    gamedesign: [
+      "The Adept Radar can identify 12 types! Plus hidden Dark Realm easter eggs.",
+      "Combat damage calculator — the formulas differ for Physical vs. Magic sides.",
+      "Guild mission: 5-step decision tree. One wrong choice and you fail — just like real design.",
+      "Notice board easter egg — wood grain texture drawn entirely in CSS. Zero images.",
+      "Loot drop simulator with full probability tables based on Dark Realm creature rarity."
+    ],
+    gameanalysis: [
+      "Breakdown of why 7 games failed, from a designer's perspective — not gossip, just lessons.",
+      "The case of 'Huan': idealism met code that had no ending.",
+      "Each analysis ends with 4 industry takeaways you can apply to real projects.",
+      "Silent Hills P.T. isn't just a horror game — it's a casualty of Konami's pivot.",
+      "Splinter Cell went from flagship to frozen — it traces Ubisoft's entire arc."
+    ],
+    scriptanalysis: [
+      'Full meta-analysis of 7 scripts — not "what was written" but "why it was written that way".',
+      "7 maroon cards in the flaws review — each one a real faceplant moment.",
+      "Data proves 'high views \u2260 high conversion' — something every content creator should know.",
+      "From Noclip to New Journalism — clear chains of influence on narrative style.",
+      "5 reusable methods — if you want to make deep game content too."
+    ],
+    about: [
+      "Full human-AI collaboration records — who did what and why.",
+      "Total AI cost for this entire site: under $1. A victory for MVP thinking!",
+      "Four creative leap cards — each one a subtle but pivotal turning point.",
+      "I'm job-hunting for game design roles, focused on systems and numbers.",
+      "Breaking into games from a different major takes extra proof. This site is it."
+    ]
+  };
+  var zoneDialogs = en ? zoneDialogsEn : zoneDialogsZh;
+
+  // 拖拽消息
+  var dragPickupMsgsZh = ['诶？！你要带我去哪？', '哇！飞起来了！', '别别别——行吧，跟你走。', '又来？上次拖我拖得那么快……', '好吧，临时导游模式启动。'];
+  var dragPickupMsgsEn = ["Hey! Where are you taking me?", "Whoa! I'm flying!", "No no no — fine, I'll go with you.", "Again? Last time you dragged me so fast...", "Alright, temporary tour guide mode activated."];
+
+  var speedDragMsgsZh = ['慢点慢点！我要晕像素了！！', '啊啊啊别甩我！我恐高——虽然我只是一张图……', '你拖这么快是想让我穿越到矢量图世界吗？', '救命！有人绑架像素小人啦！！', '又来了！我要散架了！', '好吧我认输，你拖吧。反正我也打不过你。'];
+  var speedDragMsgsEn = ["Slow down! I'm getting pixel-sick!!", "AAAH don't fling me! I'm afraid of heights — even though I'm just a picture...", "Are you trying to drag me into the vector dimension?!", "Help! Someone's kidnapping a pixel sprite!!", "Not again! I'm gonna fall apart!", "Fine, I give up. Drag away. Not like I can fight back."];
+
+  var dropMsgsZh = ['就放这了？行吧。', '这里风景不错。比刚才那个角落好。', '呼——落地了。像素脚都站麻了。', '要不要双击我一下，让我回家？', '如果你后悔了，双击我就能回原位哦~'];
+  var dropMsgsEn = ["Right here? Okay then.", "Nice view here. Better than that corner earlier.", "Phew — touchdown. My pixel feet are numb.", "Wanna double-click me to send me home?", "If you change your mind, double-click me and I'll go back~"];
 
   function startDrag(x, y, touch) {
     var rect = mascot.getBoundingClientRect();
@@ -711,7 +804,7 @@
       zoneTimers = {};
       // 拾起彩蛋
       bubble.style.visibility = 'visible';
-      say(pickRandom(['诶？！你要带我去哪？', '哇！飞起来了！', '别别别——行吧，跟你走。', '又来？上次拖我拖得那么快……', '好吧，临时导游模式启动。']));
+      say(pickRandom(en ? dragPickupMsgsEn : dragPickupMsgsZh));
       setTimeout(function() { if (isDragging) bubble.style.visibility = 'hidden'; }, 1800);
     }
 
@@ -740,7 +833,7 @@
     if (dt > 0 && dist / dt > 1.5 && speedMsgFrames <= 0) {
       speedMsgFrames = 20;
       bubble.style.visibility = 'visible';
-      say(pickRandom(['慢点慢点！我要晕像素了！！', '啊啊啊别甩我！我恐高——虽然我只是一张图……', '你拖这么快是想让我穿越到矢量图世界吗？', '救命！有人绑架像素小人啦！！', '又来了！我要散架了！', '好吧我认输，你拖吧。反正我也打不过你。']));
+      say(pickRandom(en ? speedDragMsgsEn : speedDragMsgsZh));
       setTimeout(function() { if (isDragging) bubble.style.visibility = 'hidden'; }, 2200);
     }
     if (speedMsgFrames > 0) speedMsgFrames--;
@@ -788,7 +881,9 @@
         bubble.style.visibility = 'visible';
         bubble.style.cursor = 'pointer';
         bubble.style.background = '#fffef5';
-        var inviteMsg = overCard.key === 'featured' ? '想让我带你体验交互原型吗？点我=一起去 | 拖走=下次' : '想让我跟你一起进去看看吗？点我=确定 | 拖走=不去';
+        var inviteMsg = overCard.key === 'featured'
+          ? (en ? "Want me to show you the interactive prototypes? Click = let's go | Drag away = next time" : '想让我带你体验交互原型吗？点我=一起去 | 拖走=下次')
+          : (en ? "Want me to come in with you? Click = yes | Drag away = no" : '想让我跟你一起进去看看吗？点我=确定 | 拖走=不去');
         say(inviteMsg);
         bubble._enterPage = overCard.page;
         bubble._enterZone = overCard.key;
@@ -894,7 +989,7 @@
 
     // 松手对话
     if (Math.random() < 0.4) {
-      say(pickRandom(['就放这了？行吧。', '这里风景不错。比刚才那个角落好。', '呼——落地了。像素脚都站麻了。', '要不要双击我一下，让我回家？', '如果你后悔了，双击我就能回原位哦~']));
+      say(pickRandom(en ? dropMsgsEn : dropMsgsZh));
     }
 
     // 启动漫游计时
@@ -939,7 +1034,7 @@
     if (bubble._enterPage) {
       var tp = bubble._enterPage;
       localStorage.setItem('mascot_guest', JSON.stringify({ page: tp, active: true, time: Date.now() }));
-      say('好嘞！跟我来~');
+      say(en ? "Alright! Follow me~" : '好嘞！跟我来~');
       bubble.style.background = '';
       delete bubble._enterPage;
       setTimeout(function() { window.location.href = tp; }, 400);
@@ -962,7 +1057,7 @@
     mascot.style.transition = 'left 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), top 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
     mascot.style.left = homeX + 'px';
     mascot.style.top  = homeY + 'px';
-    say('回家啦！双击随时可以送我回来~');
+    say(en ? "Home sweet home! Double-click to bring me back anytime~" : '回家啦！双击随时可以送我回来~');
     setTimeout(function() {
       mascot.style.position = '';
       mascot.style.left = '';
@@ -1054,7 +1149,7 @@
   // 首次加载：4秒后自动显示操作引导
   var firstHintTimer = setTimeout(function() {
     if (clicks === 0 && !wasDragged && !isDragging) {
-      say('提示：点我聊天 | 拖我闲逛 | 双击送我回家~');
+      say(en ? "Tip: Click to chat | Drag to wander | Double-click to send me home~" : '提示：点我聊天 | 拖我闲逛 | 双击送我回家~');
     }
   }, 4000);
 
