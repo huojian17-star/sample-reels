@@ -579,3 +579,147 @@ window.__MASCOT_QA = (function() {
 
   return { match: match, dbSize: DB.length };
 })();
+
+// ====== 9. 中英双语切换 ======
+(function() {
+  var LANG = localStorage.getItem('site-lang') || 'zh';
+  var M = {};
+
+  M['nav-about']           = { zh:'关于', en:'About' };
+  M['nav-bilibili']        = { zh:'B站', en:'Bilibili' };
+  M['nav-worldbuilding']   = { zh:'设定集', en:'World' };
+  M['nav-novel']           = { zh:'小说', en:'Novel' };
+  M['nav-game-design']     = { zh:'游戏设计', en:'Game Design' };
+  M['nav-game-analysis']   = { zh:'游戏拆解', en:'Analysis' };
+  M['nav-script-analysis'] = { zh:'文案拆解', en:'Scripts' };
+  M['nav-gaming']          = { zh:'游戏经历', en:'Gaming' };
+  M['nav-brand']           = { zh:'BEST-辣椒', en:'BEST-Chili' };
+  M['footer-text']         = { zh:'BEST-辣椒 © 2026', en:'BEST-Chili © 2026' };
+  M['footer-bilibili']     = { zh:'B站主页', en:'Bilibili' };
+  M['back-home']           = { zh:'← 返回首页', en:'← Back Home' };
+  M['back-worldbuilding']  = { zh:'← 返回设定集概述', en:'← Back to World' };
+  M['lang-label']          = { zh:'EN', en:'中' };
+  M['lang-title']          = { zh:'Switch to English', en:'切换到中文' };
+
+  // Homepage
+  M['home-title']          = { zh:'BEST-辣椒 · 求职作品集', en:'BEST-Chili · Portfolio' };
+  M['home-hero-h1']        = { zh:'BEST-辣椒 · 求职作品集', en:'BEST-Chili · Portfolio' };
+  M['home-hero-subtitle']  = { zh:'游戏考据作者 · 世界观构建者 · 交互原型设计师', en:'Game Historian · Worldbuilder · Interactive Prototype Designer' };
+  M['home-hero-desc']      = { zh:'挖掘被遗忘的游戏开发史 · 构建约3.2万字的奇幻世界 · 把设定变成可以玩的交互原型', en:'Unearthing forgotten game dev history · Building a ~32,000-word fantasy world · Turning settings into playable prototypes' };
+  M['home-plays-label']    = { zh:'B站总播放', en:'Bilibili Views' };
+  M['home-fans-label']     = { zh:'粉丝', en:'Followers' };
+  M['home-fans-live']      = { zh:'实时', en:'Live' };
+  M['home-words-label']    = { zh:'世界观设定', en:'World Setting' };
+  M['home-series-label']   = { zh:'视频系列期数', en:'Episodes' };
+  M['home-search-placeholder'] = { zh:'搜索全站内容——页面、设定、人物、视频、交互工具...', en:'Search site — pages, settings, characters, videos, tools...' };
+  M['home-search-hint']    = { zh:'输入关键词搜索', en:'Type to search' };
+  M['home-banner-title']   = { zh:'⚔ 可交互游戏原型', en:'⚔ Interactive Game Prototypes' };
+  M['home-banner-sub']     = { zh:'—— 不只是文档，是你可以上手玩的设计工具 ——', en:'Not just docs — design tools you can actually play with' };
+  M['home-banner-desc']    = { zh:'能力者属性雷达评估 · 战斗伤害公式演算 · 掉落模拟器<br>公会任务交互式决策 · 中世纪告示板彩蛋', en:'Attribute Radar · Combat Calculator · Loot Simulator<br>Quest Decision Flow · Medieval Notice Board Easter Egg' };
+  M['home-banner-cta']     = { zh:'⚔ 进入交互原型', en:'⚔ Enter Prototypes' };
+  M['home-card-about']     = { zh:'关于我', en:'About Me' };
+  M['home-card-about-p']   = { zh:'游戏考古的创作理念、世界观构建的方法论。冷峻克制的叙事风格，追求信息密度与节奏的平衡。', en:'Creative philosophy behind game archaeology and worldbuilding. Restrained, information-dense narrative style.' };
+  M['home-card-about-tease'] = { zh:'创作哲学 · 叙事方法论', en:'Philosophy · Narrative Methodology' };
+  M['home-card-about-arrow'] = { zh:'了解更多 →', en:'Learn More →' };
+  M['home-card-bili']      = { zh:'B站内容创作', en:'Bilibili Content' };
+  M['home-card-bili-p']    = { zh:'「消失游戏开发日志」系列7期，累计19.7万播放。含可排序视频对比、指标雷达图、观众画像与内容策略分析。', en:'7-episode series on canceled games, 197K views. Sortable video comparison, radar charts, audience profile & content strategy.' };
+  M['home-card-bili-tease'] = { zh:'拖动排序 · 雷达对比 · 数据洞察', en:'Drag Sort · Radar · Data Insights' };
+  M['home-card-bili-arrow'] = { zh:'浏览作品 →', en:'Browse →' };
+  M['home-card-world']     = { zh:'艾瑞斯大陆设定集', en:'Iris Continent Setting' };
+  M['home-card-world-p']   = { zh:'约3.2万字原创奇幻世界观。双能力体系、五大城市、经济法律系统、核心历史、机密档案与最高机密卷宗。', en:'~32,000-word original fantasy world. Dual power system, 5 cities, economy & law, history, classified archives.' };
+  M['home-card-world-tease'] = { zh:'折叠档案 · 神位阶隐藏交互', en:'Collapsible Archives · Mythic Tier' };
+  M['home-card-world-arrow'] = { zh:'探索世界 →', en:'Explore →' };
+  M['home-card-novel']     = { zh:'渡鸦镇', en:'Raven Town' };
+  M['home-card-novel-p']   = { zh:'长篇小说12章，哥特式小镇叙事。含「你是渡鸦镇的谁？」性格测试与可交互人物关系图。', en:'12-chapter Gothic novel. Includes personality quiz & interactive character relationship map.' };
+  M['home-card-novel-tease'] = { zh:'性格测试 · 人物关系图 · 十二章完整版', en:'Personality Quiz · Relationship Map · 12 Chapters' };
+  M['home-card-novel-arrow'] = { zh:'阅读小说 →', en:'Read →' };
+  M['home-card-analysis']  = { zh:'游戏拆解', en:'Game Analysis' };
+  M['home-card-analysis-p'] = { zh:'基于「消失游戏开发日志」系列的一手研究资料，从策划视角对《幻》和《寂静岭P.T.》进行完整的项目失败分析——核心设计问题、关键失败节点、以及可迁移至当代游戏开发的行业教训。', en:'Producer-perspective failure analysis of Phantom and Silent Hill P.T. — core design issues, key failure nodes, transferable industry lessons.' };
+  M['home-card-analysis-tease'] = { zh:'设计分析 · 失败节点 · 行业教训 · 假设推演', en:'Design Analysis · Failure Nodes · Industry Lessons' };
+  M['home-card-analysis-arrow'] = { zh:'阅读拆解 →', en:'Read Analysis →' };
+  M['home-card-script']    = { zh:'文案拆解', en:'Script Meta-Analysis' };
+  M['home-card-script-p']  = { zh:'对七期视频文案本身的元分析——叙事结构、风格演变、观众钩子设计、以及从Noclip/新新闻主义/B站知识区生态中汲取的创作方法论。不只是"写了什么"，更是"为什么这么写"。', en:'Meta-analysis of 7-episode scripts — narrative structure, style evolution, audience hooks, influences from Noclip, New Journalism, Bilibili ecosystem.' };
+  M['home-card-script-tease'] = { zh:'叙事哲学 · 逐期拆解 · 跨期对比 · 影响来源 · 可复用方法论', en:'Narrative Philosophy · Episode Breakdown · Cross-period Comparison' };
+  M['home-card-script-arrow'] = { zh:'阅读拆解 →', en:'Read →' };
+  M['home-design-note']    = { zh:'全站搜索不是"技术展示"——它是一个实用功能。HR可以直接搜"能力者""寂静岭""瑞雯"等关键词，快速定位到相关内容。索引覆盖了40+条目，包括所有页面和次级内容。', en:'Site search is not a tech demo — it\'s a practical tool. Recruiters can search keywords to find relevant content across 40+ indexed entries.' };
+  M['home-mascot-msg0']    = { zh:'你好，欢迎来到我的求职个人网站！', en:'Hello! Welcome to my portfolio site!' };
+  M['home-bubble-ask']     = { zh:'问我问题...', en:'Ask me...' };
+  M['home-bubble-placeholder'] = { zh:'输入问题，按回车...', en:'Ask a question, press Enter...' };
+
+  // About page
+  M['about-title']         = { zh:'关于 · BEST-辣椒', en:'About · BEST-Chili' };
+  M['about-hero-h1']       = { zh:'关于我', en:'About Me' };
+  M['about-hero-p']        = { zh:'一个同时沉迷于游戏考据与世界观构建的内容创作者', en:'A content creator immersed in game archaeology and worldbuilding' };
+  M['about-basic']         = { zh:'基本信息', en:'Basic Info' };
+  M['about-name']          = { zh:'姓名', en:'Name' };
+  M['about-email']         = { zh:'邮箱', en:'Email' };
+  M['about-edu']           = { zh:'教育经历', en:'Education' };
+  M['about-job-target']    = { zh:'求职意向', en:'Job Target' };
+  M['about-name-val']      = { zh:'邓恺恒 | BEST-辣椒（网名）', en:'Deng Kaiheng | BEST-Chili' };
+  M['about-edu-val']       = { zh:'湖南工商大学 | 工商管理 | 本科', en:'Hunan University of Commerce | Business Admin | Bachelor' };
+  M['about-job-val']       = { zh:'游戏策划 / 产品经理', en:'Game Designer / Product Manager' };
+  M['about-game-arch']     = { zh:'游戏考古', en:'Game Archaeology' };
+  M['about-game-arch-p1']  = { zh:'B站频道以<strong>"消失游戏开发日志"</strong>系列为核心...', en:'Bilibili channel centered on the <strong>"Lost Game Dev Log"</strong> series...' };
+
+  function t(key) {
+    var entry = M[key];
+    if (!entry) return key;
+    return entry[LANG] || entry['zh'] || key;
+  }
+
+  function apply() {
+    var els = document.querySelectorAll('[data-i18n]');
+    for (var i = 0; i < els.length; i++) {
+      var key = els[i].getAttribute('data-i18n');
+      if (key === 'html') {
+        els[i].innerHTML = t(els[i].getAttribute('data-i18n-html'));
+      } else {
+        els[i].textContent = t(key);
+      }
+    }
+    // Placeholders
+    var phs = document.querySelectorAll('[data-i18n-placeholder]');
+    for (var j = 0; j < phs.length; j++) {
+      phs[j].placeholder = t(phs[j].getAttribute('data-i18n-placeholder'));
+    }
+    // Title attributes
+    var ts = document.querySelectorAll('[data-i18n-title]');
+    for (var k = 0; k < ts.length; k++) {
+      ts[k].title = t(ts[k].getAttribute('data-i18n-title'));
+    }
+    // Update toggle button text
+    var btn = document.getElementById('lang-toggle');
+    if (btn) btn.textContent = t('lang-label');
+    // Update <title>
+    var titleEl = document.querySelector('title[data-i18n]');
+    if (titleEl) document.title = t(titleEl.getAttribute('data-i18n'));
+    // Save
+    localStorage.setItem('site-lang', LANG);
+  }
+
+  function toggle() {
+    LANG = LANG === 'zh' ? 'en' : 'zh';
+    apply();
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    // Add toggle button to all navs
+    var navs = document.querySelectorAll('nav .nav-inner');
+    for (var i = 0; i < navs.length; i++) {
+      if (navs[i].querySelector('#lang-toggle')) continue;
+      var btn = document.createElement('button');
+      btn.id = 'lang-toggle';
+      btn.textContent = t('lang-label');
+      btn.title = t('lang-title');
+      btn.setAttribute('data-i18n', 'lang-label');
+      btn.setAttribute('data-i18n-title', 'lang-title');
+      btn.style.cssText = 'background:none;border:1px solid var(--border);padding:4px 10px;border-radius:4px;font-size:11px;color:var(--text-dim);cursor:pointer;font-family:inherit;letter-spacing:1px;transition:all 0.2s;margin-left:auto;';
+      btn.onmouseenter = function() { this.style.color = 'var(--accent)'; this.style.borderColor = 'var(--accent)'; };
+      btn.onmouseleave = function() { this.style.color = 'var(--text-dim)'; this.style.borderColor = 'var(--border)'; };
+      btn.onclick = toggle;
+      navs[i].appendChild(btn);
+    }
+    // Initial apply
+    if (LANG === 'en') apply();
+  });
+})();

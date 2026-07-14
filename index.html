@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BEST-辣椒 · 求职作品集</title>
+<title data-i18n="home-title">BEST-辣椒 · 求职作品集</title>
 <link rel="stylesheet" href="style.css">
 <link rel="preload" as="image" href="pixel-avatar-clean-small.webp" type="image/webp" fetchpriority="high">
 <style>
@@ -295,16 +295,16 @@
 
 <nav>
   <div class="nav-inner">
-    <a href="index.html" class="nav-brand">BEST-辣椒</a>
+    <a href="index.html" class="nav-brand"><span data-i18n="nav-brand">BEST-辣椒</span></a>
     <div class="nav-links">
-      <a href="about.html">关于</a>
-      <a href="bilibili.html">B站</a>
-      <a href="worldbuilding.html">设定集</a>
-      <a href="novel.html">小说</a>
-      <a href="game-design.html">游戏设计</a>
-      <a href="game-analysis.html">游戏拆解</a>
-      <a href="script-analysis.html">文案拆解</a>
-      <a href="gaming.html">游戏经历</a>
+      <a href="about.html" data-i18n="nav-about">关于</a>
+      <a href="bilibili.html" data-i18n="nav-bilibili">B站</a>
+      <a href="worldbuilding.html" data-i18n="nav-worldbuilding">设定集</a>
+      <a href="novel.html" data-i18n="novel">小说</a>
+      <a href="game-design.html" data-i18n="nav-game-design">游戏设计</a>
+      <a href="game-analysis.html" data-i18n="nav-game-analysis">游戏拆解</a>
+      <a href="script-analysis.html" data-i18n="nav-script-analysis">文案拆解</a>
+      <a href="gaming.html" data-i18n="nav-gaming">游戏经历</a>
     </div>
   </div>
 </nav>
@@ -315,36 +315,36 @@
     <!-- 像素小人 + 对话框 -->
     <div class="pixel-mascot" id="pixel-mascot" style="display:inline-block;position:relative;margin-bottom:16px;">
       <div class="mascot-bubble" id="mascot-bubble">
-        <div id="bubble-text">你好，欢迎来到我的求职个人网站！</div>
+        <div id="bubble-text" data-i18n="home-mascot-msg0">你好，欢迎来到我的求职个人网站！</div>
         <div id="bubble-qa" style="margin-top:8px;display:none;border-top:1px dashed #d0c0a0;padding-top:8px;">
-          <input type="text" id="bubble-input" placeholder="输入问题，按回车..." style="width:100%;border:1px solid #c4b090;padding:6px 10px;font-size:13px;font-family:Georgia,serif;border-radius:4px;outline:none;box-sizing:border-box;">
+          <input type="text" id="bubble-input" placeholder="<span data-i18n="home-bubble-placeholder">输入问题，按回车...</span>" style="width:100%;border:1px solid #c4b090;padding:6px 10px;font-size:13px;font-family:Georgia,serif;border-radius:4px;outline:none;box-sizing:border-box;">
           <div id="bubble-answer" style="margin-top:8px;font-size:13px;color:#3a2a18;line-height:1.6;display:none;"></div>
         </div>
-        <div id="bubble-ask-hint" style="margin-top:8px;font-size:10px;color:#a8947a;cursor:pointer;text-align:center;letter-spacing:1px;" onclick="var qa=document.getElementById('bubble-qa');var hint=document.getElementById('bubble-ask-hint');var inp=document.getElementById('bubble-input');if(qa.style.display==='none'){qa.style.display='block';hint.textContent='收起提问';inp.focus()}else{qa.style.display='none';hint.textContent='问我问题...'};event.stopPropagation();">问我问题...</div>
+        <div id="bubble-ask-hint" style="margin-top:8px;font-size:10px;color:#a8947a;cursor:pointer;text-align:center;letter-spacing:1px;" onclick="var qa=document.getElementById('bubble-qa');var hint=document.getElementById('bubble-ask-hint');var inp=document.getElementById('bubble-input');if(qa.style.display==='none'){qa.style.display='block';hint.textContent='收起提问';inp.focus()}else{qa.style.display='none';hint.textContent='<span data-i18n="home-bubble-ask">问我问题...</span>'};event.stopPropagation();"><span data-i18n="home-bubble-ask">问我问题...</span></div>
       </div>
       <img id="mascot-img" src="pixel-avatar-clean-small.webp" alt="BEST-辣椒" style="width:100px;height:auto;display:block;cursor:grab;user-select:none;" draggable="false" fetchpriority="high" decoding="async">
     </div>
-    <h1>BEST-辣椒 · 求职作品集</h1>
-    <p class="hero-subtitle" style="font-size:16px;color:var(--accent);letter-spacing:2px;">游戏考据作者 · 世界观构建者 · 交互原型设计师</p>
-    <p class="hero-desc" style="font-size:13px;color:var(--text-dim);margin-top:10px;">
+    <h1 data-i18n="home-hero-h1">BEST-辣椒 · 求职作品集</h1>
+    <p class="hero-subtitle" style="font-size:16px;color:var(--accent);letter-spacing:2px;" data-i18n="home-hero-subtitle">游戏考据作者 · 世界观构建者 · 交互原型设计师</p>
+    <p class="hero-desc" style="font-size:13px;color:var(--text-dim);margin-top:10px;" data-i18n="home-hero-desc">
       挖掘被遗忘的游戏开发史 · 构建约3.2万字的奇幻世界 · 把设定变成可以玩的交互原型
     </p>
     <div class="hero-stats">
       <div class="stat-item">
         <span class="stat-num"><span id="counter-plays">0</span><span class="stat-unit">万</span></span>
-        <span class="stat-label">B站总播放</span>
+        <span class="stat-label"><span data-i18n="home-plays-label">B站总播放</span></span>
       </div>
       <div class="stat-item">
         <span class="stat-num" id="counter-fans">0</span>
-        <span class="stat-label">粉丝 <span style="font-size:9px;background:#22c55e20;color:#16a34a;padding:1px 5px;border-radius:6px;vertical-align:middle;letter-spacing:0;">实时</span></span>
+        <span class="stat-label"><span data-i18n="home-fans-label">粉丝</span> <span style="font-size:9px;background:#22c55e20;color:#16a34a;padding:1px 5px;border-radius:6px;vertical-align:middle;letter-spacing:0;"><span data-i18n="home-fans-live">实时</span></span></span>
       </div>
       <div class="stat-item">
         <span class="stat-num"><span id="counter-words">0</span><span class="stat-unit">万字</span></span>
-        <span class="stat-label">世界观设定</span>
+        <span class="stat-label"><span data-i18n="home-words-label">世界观设定</span></span>
       </div>
       <div class="stat-item">
         <span class="stat-num" id="counter-series">0</span>
-        <span class="stat-label">视频系列期数</span>
+        <span class="stat-label"><span data-i18n="home-series-label">视频系列期数</span></span>
       </div>
     </div>
   </div>
@@ -355,16 +355,16 @@
   <button onclick="var t=this.nextElementSibling;t.hidden=!t.hidden" style="font-size:12px;color:#fff;background:#a98446;border:none;padding:3px 10px;border-radius:10px;cursor:pointer;font-family:inherit;font-weight:500;margin-bottom:6px;">ⓘ 设计标注</button><span hidden style="font-size:12px;color:var(--text-dim);background:var(--bg-alt);padding:6px 10px;border-radius:4px;margin-bottom:8px;display:block;max-width:500px;line-height:1.6;">全站搜索不是"技术展示"——它是一个实用功能。HR可以直接搜"能力者""寂静岭""瑞雯"等关键词，快速定位到相关内容。索引覆盖了40+条目，包括所有页面和次级内容。</span>
   <div style="display:flex;gap:10px;align-items:center;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:12px 18px;box-shadow:0 2px 12px rgba(0,0,0,0.04);">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="2" style="flex-shrink:0;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    <input type="text" id="site-search-input" placeholder="搜索全站内容——页面、设定、人物、视频、交互工具..." style="flex:1;border:none;font-size:15px;font-family:inherit;background:transparent;color:var(--text);outline:none;">
-    <span id="site-search-hint" style="font-size:11px;color:var(--text-dim);white-space:nowrap;">输入关键词搜索</span>
+    <input type="text" id="site-search-input" data-i18n-placeholder="home-search-placeholder" placeholder="搜索全站内容——页面、设定、人物、视频、交互工具..." style="flex:1;border:none;font-size:15px;font-family:inherit;background:transparent;color:var(--text);outline:none;">
+    <span id="site-search-hint" style="font-size:11px;color:var(--text-dim);white-space:nowrap;" data-i18n="home-search-hint">输入关键词搜索</span>
   </div>
   <div id="site-search-results" style="display:none;position:absolute;top:100%;left:16px;right:16px;z-index:200;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;margin-top:4px;max-height:420px;overflow-y:auto;box-shadow:0 12px 40px rgba(0,0,0,0.12);"></div>
 </div>
 
 <!-- ====== 特色交互横幅 ====== -->
 <div class="featured-banner">
-  <h2>&#9876; 可交互游戏原型</h2>
-  <p class="banner-sub">—— 不只是文档，是你可以上手玩的设计工具 ——</p>
+  <h2 data-i18n="home-banner-title">&#9876; 可交互游戏原型</h2>
+  <p class="banner-sub" data-i18n="home-banner-sub">—— 不只是文档，是你可以上手玩的设计工具 ——</p>
   <p class="banner-desc">
     能力者属性雷达评估 &nbsp;·&nbsp; 战斗伤害公式演算 &nbsp;·&nbsp; 掉落模拟器<br>
     公会任务交互式决策 &nbsp;·&nbsp; 中世纪告示板彩蛋
@@ -377,7 +377,7 @@
     <span class="bf-item">&#9830; 性格测试</span>
     <span class="bf-item">&#9672; 关系图</span>
   </div>
-  <a href="game-design.html" class="banner-cta">&#9876; 进入交互原型</a>
+  <a href="game-design.html" class="banner-cta"><span data-i18n="home-banner-cta">&#9876; 进入交互原型</span></a>
 </div>
 
 <!-- ====== 导航卡片 · 三角形布局 ====== -->
@@ -474,7 +474,7 @@
 </style>
 
 <footer>
-  <p>BEST-辣椒 &copy; 2026 · <a href="https://space.bilibili.com/518565512" target="_blank" rel="noopener" style="color:var(--text-dim);">B站主页</a></p>
+  <p data-i18n="footer-text">BEST-辣椒 &copy; 2026 · <a href="https://space.bilibili.com/518565512" target="_blank" rel="noopener" style="color:var(--text-dim);"><span data-i18n="footer-bilibili">B站主页</span></a></p>
 </footer>
 
 <script>
@@ -1120,7 +1120,7 @@ window.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<script src="common.js?v=6"></script>
+<script src="common.js?v=7"></script>
 <script>
 // ====== 吉祥物智能问答输入绑定 ======
 (function() {
