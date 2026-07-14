@@ -7,106 +7,34 @@
 <link rel="stylesheet" href="style.css">
 <script>var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://hm.baidu.com/hm.js?ac32416394dc05dc67c7585f9a3957f5";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s)})();</script>
 <style>
-/* 游戏经历页面专属样式 */
-.game-stats-banner {
-  display: flex; justify-content: center; gap: 24px; flex-wrap: wrap;
-  margin: 28px 0 36px;
-}
-.game-stat {
-  text-align: center; padding: 16px 24px;
-  background: var(--bg-card); border: 1px solid var(--border);
-  border-radius: var(--radius); min-width: 120px;
-}
-.game-stat .num { font-size: 26px; font-weight: 700; color: var(--accent); display: block; }
-.game-stat .lbl { font-size: 11px; color: var(--text-dim); margin-top: 4px; letter-spacing: 1px; }
-
-.platform-section { margin-bottom: 40px; }
-.platform-label {
-  font-family: "Georgia", "Noto Serif SC", serif;
-  font-size: 20px; font-weight: 600; color: var(--text-bright);
-  margin-bottom: 20px; padding-bottom: 8px;
-  border-bottom: 2px solid var(--accent-dim); letter-spacing: 1px;
-}
-
-.games-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 16px;
-}
-@media (max-width: 500px) { .games-grid { grid-template-columns: 1fr; } }
-
-.game-card {
-  background: var(--bg-card); border: 1px solid var(--border);
-  border-left: 3px solid var(--accent); border-radius: var(--radius);
-  padding: 20px 22px; transition: all 0.25s ease;
-}
-.game-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
-  border-left-color: var(--accent-physical);
-}
-.game-card-header {
-  display: flex; justify-content: space-between; align-items: baseline;
-  margin-bottom: 10px; gap: 8px;
-}
-.game-card-header h4 {
-  font-size: 15px; font-weight: 600; color: var(--text-bright); margin: 0;
-}
-.game-hours {
-  font-size: 12px; color: var(--accent); font-weight: 500;
-  background: rgba(169,132,70,0.08); padding: 2px 10px;
-  border-radius: 10px; white-space: nowrap;
-}
-.game-card p {
-  font-size: 12px; color: var(--text-dim); line-height: 1.7; margin: 0 0 6px;
-}
-.game-tags { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 4px; }
-.tag-achievement {
-  font-size: 10px; padding: 2px 8px; border-radius: 8px;
-  background: #fef9f0; color: #8b6918; border: 1px solid #e8d5a0;
-  letter-spacing: 0.5px;
-}
-.tag-complete {
-  font-size: 10px; padding: 2px 8px; border-radius: 8px;
-  background: #edf7f5; color: #3d857b; border: 1px solid #b8d8d4;
-  letter-spacing: 0.5px;
-}
-.tag-rank {
-  font-size: 10px; padding: 2px 8px; border-radius: 8px;
-  background: #fdf0eb; color: #b85135; border: 1px solid #e8c8bd;
-  letter-spacing: 0.5px;
-}
-
-.mobile-list {
-  display: flex; flex-wrap: wrap; gap: 12px;
-}
-.mobile-item {
-  display: flex; align-items: center; gap: 8px;
-  padding: 10px 16px; background: var(--bg-card);
-  border: 1px solid var(--border); border-radius: 8px;
-  font-size: 13px; color: var(--text);
-  transition: all 0.2s;
-}
-.mobile-item:hover { border-color: var(--accent-dim); background: var(--bg-card-hover); }
-.mobile-emoji { font-size: 16px; }
-
-.gaming-note {
-  margin-top: 24px; padding: 14px 20px; background: var(--bg-alt);
-  border-radius: var(--radius); font-size: 12px; color: var(--text-dim);
-  line-height: 1.7;
-}
-
-.game-search {
-  display: flex; gap: 8px; align-items: center;
-  background: var(--bg-card); border: 1px solid var(--border);
-  border-radius: 8px; padding: 8px 14px; margin-bottom: 20px;
-  max-width: 400px;
-}
-.game-search input {
-  flex: 1; border: none; font-size: 13px; font-family: inherit;
-  background: transparent; color: var(--text); outline: none;
-}
-.game-search svg { flex-shrink: 0; }
+.game-stats-banner { display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin:28px 0 36px; }
+.game-stat { text-align:center;padding:16px 24px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);min-width:120px; }
+.game-stat .num { font-size:26px;font-weight:700;color:var(--accent);display:block; }
+.game-stat .lbl { font-size:11px;color:var(--text-dim);margin-top:4px;letter-spacing:1px; }
+.platform-section { margin-bottom:40px; }
+.platform-label { font-family:"Georgia","Noto Serif SC",serif;font-size:20px;font-weight:600;color:var(--text-bright);margin-bottom:20px;padding-bottom:8px;border-bottom:2px solid var(--accent-dim);letter-spacing:1px; }
+.games-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px; }
+@media (max-width:500px) { .games-grid { grid-template-columns:1fr; } }
+.game-card { background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all 0.25s ease; }
+.game-card:hover { transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.06); }
+.game-cover { width:100%;height:auto;aspect-ratio:460/215;object-fit:cover;display:block;border-bottom:1px solid var(--border); }
+.game-card-body { padding:18px 20px 20px;border-left:3px solid var(--accent); }
+.game-card:hover .game-card-body { border-left-color:var(--accent-physical); }
+.game-card-header { display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;gap:8px; }
+.game-card-header h4 { font-size:15px;font-weight:600;color:var(--text-bright);margin:0; }
+.game-hours { font-size:12px;color:var(--accent);font-weight:500;background:rgba(169,132,70,0.08);padding:2px 10px;border-radius:10px;white-space:nowrap; }
+.game-card p { font-size:12px;color:var(--text-dim);line-height:1.7;margin:0 0 6px; }
+.game-tags { margin-top:8px;display:flex;flex-wrap:wrap;gap:4px; }
+.tag-achievement { font-size:10px;padding:2px 8px;border-radius:8px;background:#fef9f0;color:#8b6918;border:1px solid #e8d5a0;letter-spacing:0.5px; }
+.tag-complete { font-size:10px;padding:2px 8px;border-radius:8px;background:#edf7f5;color:#3d857b;border:1px solid #b8d8d4;letter-spacing:0.5px; }
+.tag-rank { font-size:10px;padding:2px 8px;border-radius:8px;background:#fdf0eb;color:#b85135;border:1px solid #e8c8bd;letter-spacing:0.5px; }
+.mobile-list { display:flex;flex-wrap:wrap;gap:12px; }
+.mobile-item { display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;font-size:13px;color:var(--text);transition:all 0.2s; }
+.mobile-item:hover { border-color:var(--accent-dim);background:var(--bg-card-hover); }
+.gaming-note { margin-top:24px;padding:14px 20px;background:var(--bg-alt);border-radius:var(--radius);font-size:12px;color:var(--text-dim);line-height:1.7; }
+.game-search { display:flex;gap:8px;align-items:center;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:8px 14px;margin-bottom:20px;max-width:400px; }
+.game-search input { flex:1;border:none;font-size:13px;font-family:inherit;background:transparent;color:var(--text);outline:none; }
+.game-search svg { flex-shrink:0; }
 </style>
 </head>
 <body>
@@ -142,7 +70,6 @@
     <div class="game-stat"><span class="num">钻石</span><span class="lbl">最高段位</span></div>
   </div>
 
-  <!-- PC/主机 -->
   <div class="platform-section">
     <div class="platform-label">PC / 主机游戏</div>
 
@@ -154,111 +81,96 @@
     <div class="games-grid" id="pc-games">
 
       <div class="game-card" data-name="apex legends">
-        <div class="game-card-header">
-          <h4>APEX LEGENDS</h4>
-          <span class="game-hours">1200+ 小时</span>
+        <img class="game-cover" src="cover-apex.webp" alt="Apex Legends" loading="lazy" decoding="async">
+        <div class="game-card-body">
+          <div class="game-card-header"><h4>APEX LEGENDS</h4><span class="game-hours">1200+ 小时</span></div>
+          <p>全成就达成 · 钻石段位 · 多位英雄双锤骷髅海</p>
+          <div class="game-tags"><span class="tag-rank">钻石段位</span><span class="tag-achievement">全成就</span><span class="tag-complete">深度体验</span></div>
         </div>
-        <p>全成就达成 · 钻石段位 · 多位英雄双锤骷髅海</p>
-        <div class="game-tags"><span class="tag-rank">钻石段位</span><span class="tag-achievement">全成就</span><span class="tag-complete">深度体验</span></div>
       </div>
 
       <div class="game-card" data-name="荒野大镖客2">
-        <div class="game-card-header">
-          <h4>荒野大镖客 2</h4>
-          <span class="game-hours">300+ 小时</span>
+        <img class="game-cover" src="cover-rdr2.webp" alt="荒野大镖客2" loading="lazy" decoding="async">
+        <div class="game-card-body">
+          <div class="game-card-header"><h4>荒野大镖客 2</h4><span class="game-hours">300+ 小时</span></div>
+          <p>全成就达成 · 全剧情流程通关 · 沉浸式西部世界体验</p>
+          <div class="game-tags"><span class="tag-achievement">全成就</span><span class="tag-complete">剧情通关</span><span class="tag-complete">深度探索</span></div>
         </div>
-        <p>全成就达成 · 全剧情流程通关 · 沉浸式西部世界体验</p>
-        <div class="game-tags"><span class="tag-achievement">全成就</span><span class="tag-complete">剧情通关</span><span class="tag-complete">深度探索</span></div>
       </div>
 
       <div class="game-card" data-name="双人成行 双影奇境 逃出生天 合作">
-        <div class="game-card-header">
-          <h4>合作游戏系列</h4>
-          <span class="game-hours">全成就</span>
+        <img class="game-cover" src="cover-ittakestwo.webp" alt="合作游戏系列" loading="lazy" decoding="async">
+        <div class="game-card-body">
+          <div class="game-card-header"><h4>合作游戏系列</h4><span class="game-hours">全成就</span></div>
+          <p>双人成行 / 双影奇境 / 逃出生天 · 全成就达成 · 全流程通关</p>
+          <div class="game-tags"><span class="tag-achievement">全成就</span><span class="tag-complete">合作通关</span></div>
         </div>
-        <p>双人成行 / 双影奇境 / 逃出生天 · 全成就达成 · 全流程通关</p>
-        <div class="game-tags"><span class="tag-achievement">全成就</span><span class="tag-complete">合作通关</span></div>
       </div>
 
       <div class="game-card" data-name="赛博朋克2077">
-        <div class="game-card-header">
-          <h4>赛博朋克 2077</h4>
-          <span class="game-hours">200+ 小时</span>
+        <img class="game-cover" src="cover-cyberpunk.webp" alt="赛博朋克2077" loading="lazy" decoding="async">
+        <div class="game-card-body">
+          <div class="game-card-header"><h4>赛博朋克 2077</h4><span class="game-hours">200+ 小时</span></div>
+          <p>全流程通关 · 夜之城探索 · 多结局体验</p>
+          <div class="game-tags"><span class="tag-complete">剧情通关</span><span class="tag-complete">开放世界</span></div>
         </div>
-        <p>全流程通关 · 夜之城探索 · 多结局体验</p>
-        <div class="game-tags"><span class="tag-complete">剧情通关</span><span class="tag-complete">开放世界</span></div>
       </div>
 
       <div class="game-card" data-name="gta 侠盗猎车手">
-        <div class="game-card-header">
-          <h4>GTA 系列</h4>
-          <span class="game-hours">700+ 小时</span>
+        <img class="game-cover" src="cover-gta5.webp" alt="GTA系列" loading="lazy" decoding="async">
+        <div class="game-card-body">
+          <div class="game-card-header"><h4>GTA 系列</h4><span class="game-hours">700+ 小时</span></div>
+          <p>GTA 3 / 罪恶都市 / 圣安地列斯 / 4 / 5 · 全系列流程通关 · 开放世界探索</p>
+          <div class="game-tags"><span class="tag-complete">全系列通关</span><span class="tag-complete">开放世界</span></div>
         </div>
-        <p>GTA 3 / 罪恶都市 / 圣安地列斯 / 4 / 5 · 全系列流程通关 · 开放世界探索</p>
-        <div class="game-tags"><span class="tag-complete">全系列通关</span><span class="tag-complete">开放世界</span></div>
       </div>
 
       <div class="game-card" data-name="看门狗">
-        <div class="game-card-header">
-          <h4>看门狗系列</h4>
-          <span class="game-hours">200+ 小时</span>
+        <img class="game-cover" src="cover-watchdogs2.webp" alt="看门狗系列" loading="lazy" decoding="async">
+        <div class="game-card-body">
+          <div class="game-card-header"><h4>看门狗系列</h4><span class="game-hours">200+ 小时</span></div>
+          <p>看门狗 1 / 看门狗 2 · 全流程通关 · 黑客玩法体验</p>
+          <div class="game-tags"><span class="tag-complete">全系列通关</span><span class="tag-complete">开放世界</span></div>
         </div>
-        <p>看门狗 1 / 看门狗 2 · 全流程通关 · 黑客玩法体验</p>
-        <div class="game-tags"><span class="tag-complete">全系列通关</span><span class="tag-complete">开放世界</span></div>
       </div>
 
       <div class="game-card" data-name="刺客信条">
-        <div class="game-card-header">
-          <h4>刺客信条系列</h4>
-          <span class="game-hours">300+ 小时</span>
+        <img class="game-cover" src="cover-ac-unity.webp" alt="刺客信条系列" loading="lazy" decoding="async">
+        <div class="game-card-body">
+          <div class="game-card-header"><h4>刺客信条系列</h4><span class="game-hours">300+ 小时</span></div>
+          <p>2 代三部曲 / 3 / 黑旗 / 大革命 · 全流程通关 · 历史背景探索</p>
+          <div class="game-tags"><span class="tag-complete">多部通关</span><span class="tag-complete">动作冒险</span></div>
         </div>
-        <p>2代三部曲 / 3 / 黑旗 / 大革命 · 全流程通关 · 历史背景探索</p>
-        <div class="game-tags"><span class="tag-complete">多部通关</span><span class="tag-complete">动作冒险</span></div>
       </div>
 
       <div class="game-card" data-name="战地 黑暗之魂 瓦罗兰特 耻辱 鬼泣 深度">
-        <div class="game-card-header">
-          <h4>其他深度体验游戏</h4>
+        <div class="game-card-body">
+          <div class="game-card-header"><h4>其他深度体验游戏</h4></div>
+          <p>战地风云 5：100+ 小时 &middot; 黑暗之魂 3：50+ 小时 &middot; 瓦罗兰特：50+ 小时<br>耻辱系列：50+ 小时（全流程通关）&middot; 鬼泣 5：15+ 小时</p>
         </div>
-        <p>
-          战地风云 5：100+ 小时 &nbsp;·&nbsp;
-          黑暗之魂 3：50+ 小时 &nbsp;·&nbsp;
-          瓦罗兰特：50+ 小时<br>
-          耻辱系列：50+ 小时（全流程通关）&nbsp;·&nbsp;
-          鬼泣 5：15+ 小时
-        </p>
       </div>
 
       <div class="game-card" data-name="the finals 杀手 风之旅人 传送门 逃生 天际线 泰坦陨落 通关">
-        <div class="game-card-header">
-          <h4>其他通关 / 体验游戏</h4>
+        <div class="game-card-body">
+          <div class="game-card-header"><h4>其他通关 / 体验游戏</h4></div>
+          <p>THE FINALS：15+ 小时 &middot; 杀手：暗杀世界：50+ 小时（全流程通关）<br>风之旅人：10+ 小时 &middot; 传送门 2：15+ 小时（全流程通关）<br>逃生：5+ 小时 &middot; 城市：天际线：30+ 小时 &middot; 泰坦陨落 2：20+ 小时（全流程通关）</p>
         </div>
-        <p>
-          THE FINALS：15+ 小时 &nbsp;·&nbsp;
-          杀手：暗杀世界：50+ 小时（全流程通关）<br>
-          风之旅人：10+ 小时 &nbsp;·&nbsp;
-          传送门 2：15+ 小时（全流程通关）<br>
-          逃生：5+ 小时 &nbsp;·&nbsp;
-          城市：天际线：30+ 小时 &nbsp;·&nbsp;
-          泰坦陨落 2：20+ 小时（全流程通关）
-        </p>
       </div>
 
     </div>
   </div>
 
-  <!-- 手机游戏 -->
   <div class="platform-section">
     <div class="platform-label">手机游戏</div>
 
     <div class="mobile-list">
-      <div class="mobile-item"><span class="mobile-emoji">&#127918;</span> 重返未来 1999</div>
-      <div class="mobile-item"><span class="mobile-emoji">&#127926;</span> BanG Dream</div>
-      <div class="mobile-item"><span class="mobile-emoji">&#127911;</span> 世界计划 (pjsk)</div>
-      <div class="mobile-item"><span class="mobile-emoji">&#128128;</span> 元气骑士</div>
-      <div class="mobile-item"><span class="mobile-emoji">&#127747;</span> 西奥小镇</div>
-      <div class="mobile-item"><span class="mobile-emoji">&#128640;</span> 崩坏：星穹铁道</div>
-      <div class="mobile-item"><span class="mobile-emoji">&#127788;</span> 鸣潮</div>
+      <div class="mobile-item">重返未来 1999</div>
+      <div class="mobile-item">BanG Dream</div>
+      <div class="mobile-item">世界计划 (pjsk)</div>
+      <div class="mobile-item">元气骑士</div>
+      <div class="mobile-item">西奥小镇</div>
+      <div class="mobile-item">崩坏：星穹铁道</div>
+      <div class="mobile-item">鸣潮</div>
     </div>
 
     <div class="gaming-note">
@@ -274,7 +186,6 @@
 
 <script src="common.js"></script>
 <script>
-// 游戏搜索过滤
 function filterGames() {
   var q = document.getElementById('game-filter').value.toLowerCase().trim();
   var cards = document.querySelectorAll('#pc-games .game-card');
