@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head><meta charset="UTF-8"><title>Test</title></head>
-<body>
-<button onclick="document.getElementById('x').textContent='WORKS'">CLICK ME</button>
-<div id="x">NOT CLICKED</div>
-<p>If clicking changes NOT CLICKED to WORKS, basic JS works.</p>
+<head><meta charset="UTF-8"><title data-i18n="t-title">测试</title></head>
+<body style="font-family:Georgia,serif;max-width:600px;margin:40px auto;padding:20px;">
+<h1 data-i18n="t-h1">i18n 引擎测试</h1>
+<p data-i18n="t-p1">如果 EN 按钮出现在右上角，引擎已加载。</p>
+<p data-i18n="t-p2">点 EN 切换英文。</p>
+<script src="i18n.js"></script>
 </body>
 </html>
