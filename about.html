@@ -74,9 +74,9 @@
   <p data-i18n="about-worldbuild-p1">独立构建了<strong>「艾瑞斯大陆」</strong>奇幻世界观，累计设定文本约3.2万字。与常见的"剑与魔法"设定不同，这个世界观的核心张力来自三股力量的博弈：</p>
 
   <ul>
-    <li><strong>物理侧</strong> &mdash; 以肉身与兵器为媒介的能力者，崇尚力量与荣誉</li>
-    <li><strong>魔法侧</strong> &mdash; 以元素与秘法为媒介的能力者，追求知识与神秘</li>
-    <li><strong>研究侧</strong> &mdash; 无能力的普通人，依靠制度、资本与知识居中制衡，实际掌控着大陆的政治与经济命脉</li>
+    <li data-i18n="about-side-physical"><strong>物理侧</strong> &mdash; 以肉身与兵器为媒介的能力者，崇尚力量与荣誉</li>
+    <li data-i18n="about-side-magic"><strong>魔法侧</strong> &mdash; 以元素与秘法为媒介的能力者，追求知识与神秘</li>
+    <li data-i18n="about-side-research"><strong>研究侧</strong> &mdash; 无能力的普通人，依靠制度、资本与知识居中制衡，实际掌控着大陆的政治与经济命脉</li>
   </ul>
 
   <p>设定集覆盖了能力体系、五大城市生态、货币与银行系统、法律与治理架构、宗教与教育、核心历史（奥莱因战争）、暗界起源假说、方言系统、艺术流派、吟游诗人文学，以及最高机密等级的"玻利瓦尔真相"与"神话位阶"档案。</p>
@@ -291,5 +291,75 @@
 </footer>
 
 <script src="common.js?t=1784020389"></script>
+
+<script>
+// Inline i18n fallback - ensures translations work even if CDN caches common.js
+(function() {
+  var L = localStorage.getItem('site-lang') || 'zh';
+  if (L !== 'en') return;
+  // If user previously chose English, apply basic translations directly
+  var map = {
+    "about-title": "About · BEST-Chili",
+    "about-hero-h1": "About Me",
+    "about-hero-p": "A content creator immersed in game archaeology and worldbuilding",
+    "about-basic": "Basic Info",
+    "about-name": "Name",
+    "about-name-val": "Deng Kaiheng | BEST-Chili",
+    "about-email": "Email",
+    "about-edu": "Education",
+    "about-edu-val": "Hunan University of Commerce | Business Admin | Bachelor",
+    "about-job-target": "Job Target",
+    "about-job-val": "Game Designer / Product Manager",
+    "about-game-arch": "Game Archaeology",
+    "about-arch-p1": "My Bilibili channel centers on Lost Game Dev Log — tracing the stories behind canceled, shelved, and stillborn game projects. From Kojima vs. Konami in Silent Hill P.T., to Splinter Cell's slow marginalization by Ubisoft, to Beyond Good & Evil 2's record-breaking 17-year delay — every lost game carries a development history worth documenting.",
+    "about-arch-p2": "6 episodes published, 130K+ cumulative views. Splinter Cell episode peaked at 46K. The latest covers the most absurd fraud case in Chinese game history.",
+    "about-arch-quote": "Games aren't just code and art — they're complex negotiations of teams, capital, timing, and luck. Every lost game is a forgotten piece of history.",
+    "about-worldbuild": "Worldbuilding",
+    "about-worldbuild-p1": "Built the Iris Continent fantasy world — ~32,000 words. Unlike typical sword-and-sorcery settings, the core tension comes from a three-way power struggle:",
+    "about-narrative": "Narrative Style",
+    "about-narrative-p1": "Whether making videos or writing settings, my core principle is: balancing information density with narrative pacing.",
+    "about-narrative-p2": "Video essays are built on rigorous logic chains and primary sources. Worldbuilding takes a sociological lens — economics, political science, and legal history woven into fantasy.",
+    "about-narrative-p3": "Stylistically, I prefer a restrained, clinical tone — letting facts and logic drive the narrative rather than emotional appeal.",
+    "about-team-value": "What I Bring to a Team",
+    "about-card-cross": "Cross-Domain Content Judgment",
+    "about-card-cross-p": "Game archaeology, worldbuilding, narrative analysis, interactive prototypes — not dabbling, but delivering finished output. This portfolio is the proof.",
+    "about-card-ai": "Human-AI Collaboration",
+    "about-card-ai-p": "13-page portfolio, thousands of lines of code, hundreds of iterations — total AI cost under $0.70. I handle direction and judgment; AI handles execution.",
+    "about-card-data": "Data-Driven Validation",
+    "about-card-data-p": "Every metric tracked across 7 episodes. Same logic applies to game design: fun = retention; story = completion rate.",
+    "about-card-grit": "Relentless Problem-Solving",
+    "about-card-grit-p": "A simple live data sync feature took 5 attempts: Vercel, Cloudflare Workers, CORS proxies, EdgeOne Pages, finally GitHub Actions. About refusing to leave a problem unsolved.",
+    "about-card-perspective": "Player → Designer Mindset",
+    "about-card-perspective-p": "My analysis page isn't reviews — it's producer-perspective failure analysis. I can distinguish I don't like this as a player from this design is broken.",
+    "about-card-doc": "Communication & Documentation",
+    "about-card-doc-p": "~32,000 words of worldbuilding — structured, indexed, searchable. A designer's core output is documents: can you make your ideas clear and executable?",
+    "about-webpage": "About This Site · Human-AI Collaboration",
+    "about-team-p": "This portfolio — from first line of HTML to 13-page structure — was directed by me (direction, content, aesthetic judgment, iteration) and executed by Claude.",
+    "nav-about": "About",
+    "nav-bilibili": "Bilibili",
+    "nav-worldbuilding": "World",
+    "nav-novel": "Novel",
+    "nav-game-design": "Game Design",
+    "nav-game-analysis": "Analysis",
+    "nav-script-analysis": "Scripts",
+    "nav-gaming": "Gaming",
+    "nav-brand": "BEST-Chili",
+    "footer-text": "BEST-Chili © 2026",
+    "footer-bilibili": "Bilibili",
+    "back-home": "← Back Home",
+    "lang-label": "中",
+    "about-side-physical": "Physical Branch — ability users wielding weapons and physical enhancement, valuing strength and honor",
+    "about-side-magic": "Magic Branch — ability users wielding elements and arcane arts, pursuing knowledge and mystery",
+    "about-side-research": "Research Branch — ordinary people without powers, controlling the continent through institutions, capital, and knowledge",
+    "about-worldbuild-p2": "The setting covers the power system, five city ecosystems, currency and banking, legal and governance frameworks, religion and education, core history (the O'Lein War), dark realm origin hypotheses, dialect systems, art movements, bardic literature, and top-secret Bolivar Truth and Mythic Tier archives.",
+    "footer-text": "BEST-Chili © 2026"
+  };
+  var els = document.querySelectorAll('[data-i18n]');
+  for (var i = 0; i < els.length; i++) {
+    var key = els[i].getAttribute('data-i18n');
+    if (map[key]) els[i].textContent = map[key];
+  }
+})();
+</script>
 </body>
 </html>
