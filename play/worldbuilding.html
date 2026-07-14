@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title data-i18n="wb-title">艾瑞斯大陆设定集 · BEST-辣椒</title>
+<link rel="stylesheet" href="style.css">
+<script>var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://hm.baidu.com/hm.js?ac32416394dc05dc67c7585f9a3957f5";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s)})();</script>
+</head>
+<body>
+<div id="ai-disclaimer" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:2147483647;display:flex;align-items:center;justify-content:center;font-family:system-ui,-apple-system,sans-serif;">
+<div style="background:#fdfaf4;border:3px solid #4a3828;border-radius:12px;padding:32px 36px;max-width:600px;width:90%;max-height:85vh;overflow-y:auto;box-shadow:0 16px 48px rgba(0,0,0,0.4);text-align:center;">
+<div style="font-size:24px;margin-bottom:16px;">&#9888;&#65039;</div>
+<h2 style="font-size:18px;font-weight:700;color:#3a2a18;margin:0 0 16px 0;line-height:1.5;">AI-Assisted Design Notice<br><span style="font-size:14px;font-weight:400;color:#8a7a68;">AI 辅助设计声明</span></h2>
+<p style="font-size:13px;color:#5a4a38;line-height:1.9;text-align:left;margin:0 0 16px 0;">
+This portfolio site incorporates certain AI-assisted elements, aiming to demonstrate the integration of "human-AI collaboration" to optimize quality and pipeline efficiency. All core logical architectures, math models, and world-building texts are strictly handcrafted by the author. If you are sensitive to generative AI, please browse with caution. Thank you for your understanding.
+</p>
+<p style="font-size:13px;color:#5a4a38;line-height:1.9;text-align:left;margin:0 0 20px 0;">
+本网站包含一定比例的 AI 辅助设计元素，旨在展示在"人机协同"管线中，如何最大化把控作品的最终质量与研发效率。本站所涉全部核心逻辑、数值架构及文本设定均为本人手作产出。如您对生成式 AI 持有不同看法，请谨慎使用或浏览本站，感谢您的理解。
+</p>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand"><span data-i18n="nav-brand">BEST-辣椒</span></a>
+    <div class="nav-links">
+      <a href="about.html" data-i18n="nav-about">关于</a>
+      <a href="bilibili.html" data-i18n="nav-bilibili">B站</a>
+      <a href="worldbuilding.html" data-i18n="nav-worldbuilding">设定集</a>
+      <a href="novel.html" data-i18n="nav-novel">小说</a>
+      <a href="game-design.html" data-i18n="nav-game-design">游戏设计</a>
+      <a href="game-analysis.html" data-i18n="nav-game-analysis">游戏拆解</a>
+      <a href="script-analysis.html" data-i18n="nav-script-analysis">文案拆解</a>
+      <a href="gaming.html" data-i18n="nav-gaming">游戏经历</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <p data-i18n="x95a775"><a href="index.html" class="back-link">&larr; 返回首页</a></p>
+  <h1 data-i18n="world-hero-h1">艾瑞斯大陆设定集</h1>
+  <p data-i18n="world-hero-p">独立构建的原创奇幻世界观 · 累计约3.2万字</p>
+</div>
+
+<div class="content-section">
+
+  <!-- 搜索栏 -->
+  <div id="world-search-bar" style="z-index:50;background:var(--bg-alt);padding:16px 32px;margin:0 -32px 24px;border-bottom:2px solid var(--accent-dim);">
+    <div style="display:flex;gap:8px;align-items:center;max-width:100%;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="2" style="flex-shrink:0;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="world-search-input" data-i18n-placeholder="world-search-ph" placeholder="输入关键词搜索设定集..." style="flex:1;padding:10px 0;border:none;font-size:15px;font-family:inherit;background:transparent;color:var(--text);outline:none;"> <button onclick="var t=this.nextElementSibling;t.hidden=!t.hidden" style="font-size:11px;color:#fff;background:#a98446;border:none;padding:2px 8px;border-radius:10px;cursor:pointer;font-family:inherit;font-weight:500;vertical-align:middle;flex-shrink:0;margin-right:6px;">ⓘ 设计标注</button><span hidden style="font-size:11px;color:var(--text-dim);background:var(--bg-alt);padding:4px 8px;border-radius:4px;margin-right:6px;line-height:1.5;flex-shrink:0;" data-i18n="x9674d0">约3.2万字设定文档，搜索让HR快速定位感兴趣的关键词，把大量信息变成可检索的参考手册。</span>
+      <span id="search-count" style="font-size:11px;color:var(--text-dim);white-space:nowrap;min-width:50px;text-align:right;"></span>
+      <button id="search-prev-btn" style="background:var(--bg-card);border:1px solid var(--border);padding:6px 10px;border-radius:4px;font-size:12px;cursor:pointer;font-family:inherit;color:var(--text-dim);line-height:1;" title="上一个匹配">↑</button>
+      <button id="search-next-btn" style="background:var(--bg-card);border:1px solid var(--border);padding:6px 10px;border-radius:4px;font-size:12px;cursor:pointer;font-family:inherit;color:var(--text-dim);line-height:1;" title="下一个匹配">↓</button>
+    </div>
+  </div>
+
+  <!-- ====== 一、世界概览 ====== -->
+  <h2 data-i18n="world-overview">一、世界概览</h2>
+  <p data-i18n="xf6be52">「艾瑞斯大陆」是一个以<strong>"物理侧""魔法侧""研究侧"</strong>三足鼎立为核心的奇幻世界。物理侧能力者利用冷/热兵器和身体强化进行战斗（职阶如剑术师、骑士、刺客等），魔法侧能力者类似哈利波特或奇异博士那样施展法术（职阶如元素法师、咒术师、幻术师等），而<strong>研究侧</strong>则是无能力的普通人——他们依靠权力、资本和制度居中制衡，主导公会系统、法律制定与经济管理。</p>
+
+  <p data-i18n="x9b4740">三侧的博弈构成了整个世界的底层张力：能力者掌握力量，但研究侧掌握秩序；元老会议由物理侧与魔法侧的元老级别人物组成，拥有顶层决策权，但日常行政由研究侧把持。这种"无能力者统治有能力者"的政治结构，是艾瑞斯大陆最根本的设定特征。</p>
+
+  <div class="quote-block">
+    <p data-i18n="x89e706">"物理侧是剑，魔法侧是盾，而研究侧是握剑盾的手。" —— 元老会议首席长老就职宣言</p>
+  </div>
+
+  <figure style="margin:36px 0;text-align:center;">
+    <img src="iris-map.webp" alt="艾瑞斯大陆地图" loading="lazy" decoding="async" style="max-width:100%;width:auto;height:auto;border-radius:8px;border:1px solid var(--border);cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.06);" onclick="openLightbox(this.src)" title="点击放大查看">
+    <figcaption style="font-size:11px;color:var(--text-dim);margin-top:8px;" data-i18n="world-fig-map">艾瑞斯大陆地图 · 图片由 GPT image2 生成 · 点击放大查看</figcaption>
+  </figure>
+
+  <!-- ====== 二、能力体系 ====== -->
+  <h2 data-i18n="world-power">二、能力体系</h2>
+
+  <h3 data-i18n="world-three-sides">三大侧系</h3>
+  <div class="split-grid">
+    <div class="split-card">
+      <h4 style="color:var(--accent-physical);" data-i18n="x571ef7">物理侧 &mdash; 血肉与钢铁</h4>
+      <p data-i18n="x140a7e">能力偏重利用冷/热兵器和身体强化。七职阶：</p>
+      <ul>
+        <li data-i18n="x35f3fd"><strong>剑术师</strong>：近战剑技专精</li>
+        <li data-i18n="xaaa43e"><strong>骑士</strong>：专属马匹，机动力远超普通马车3-4倍</li>
+        <li data-i18n="x1efe13"><strong>刺客</strong>：潜行与情报获取</li>
+        <li><strong data-i18n="x35f3fd">狂战士</strong><span data-i18n="wb-phys-berserker">：极致攻击力</span></li>
+        <li><strong data-i18n="wb-phys-shielder-core">盾兵</strong><span data-i18n="wb-phys-shielder">：防御与护卫</span></li>
+        <li><strong data-i18n="wb-phys-spearman-core">枪兵</strong><span data-i18n="wb-phys-spearman">：长柄武器专精</span></li>
+        <li><strong data-i18n="wb-phys-archer-core">弓兵</strong><span data-i18n="wb-phys-archer">：远程精准打击</span></li>
+      </ul>
+    </div>
+    <div class="split-card">
+      <h4 style="color:var(--accent-magic);" data-i18n="xd86ddb">魔法侧 &mdash; 意志与元素</h4>
+      <p data-i18n="xfc62c0">能力类似法术施展，七职阶：</p>
+      <ul>
+        <li data-i18n="x46e7bd"><strong>元素法师</strong>：操控火水风土</li>
+        <li><strong data-i18n="wb-magic-hexer-core">咒术师</strong><span data-i18n="wb-magic-hexer">：诅咒与祝福</span></li>
+        <li data-i18n="x6e45a8"><strong>幻术师</strong>：制造幻象、认知干预</li>
+        <li data-i18n="xc0ba69"><strong>治愈师</strong>：最受尊敬的职阶</li>
+        <li data-i18n="xa0ce0c"><strong>屏障建构师</strong>：防护结界</li>
+        <li data-i18n="x5bbbda"><strong>魔导师</strong>：六阶以上可短距离传送（九阶可达50公里）</li>
+        <li data-i18n="x2f6556"><strong>召唤师</strong>：五阶以上可召唤飞龙（极速约63.5米/秒）</li>
+      </ul>
+    </div>
+  </div>
+
+  <p style="margin-top:20px;" data-i18n="xad60bb"><strong>研究侧</strong>：自身无能力，但研究他人能力来探究能力本质。提供"公会"系统，拥有专业的后勤、法律、经济学者团队。表面上是"服务者"，实则通过制度设计掌控着大陆的核心权力。</p>
+
+  <figure style="margin:36px 0;text-align:center;">
+    <img src="iris-job-classes.webp" alt="艾瑞斯大陆物理侧与魔法侧职阶示意图" loading="lazy" decoding="async" style="max-width:100%;width:auto;height:auto;border-radius:8px;border:1px solid var(--border);cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.06);" onclick="openLightbox(this.src)" title="点击放大查看">
+    <figcaption style="font-size:11px;color:var(--text-dim);margin-top:8px;" data-i18n="world-fig-classes">物理侧与魔法侧职阶示意图 · 图片由 GPT image2 生成 · 点击放大查看</figcaption>
+  </figure>
+
+  <h3 data-i18n="world-dual-major">主修/辅修制</h3>
+  <p data-i18n="x1acea3">同一侧的能力者可以主修一个职阶并辅修另一个职阶。但<strong>物理侧不能辅修魔法侧职阶，魔法侧同理</strong>——否则体内两股能量会冲突导致暴毙。大陆历史上曾有最高同时修四个职阶的能力者，但辅修越多，主修越弱，最终样样不精。（收录于《艾瑞斯大陆能力者图鉴》）</p>
+
+  <h3 data-i18n="world-tier">等级体系：一阶至十阶</h3>
+  <p data-i18n="x5717ed">每个职阶均有等级制度，每级可学习不同的能力。升级评估依据四大板块：<strong>力量、速度、技巧、思维</strong>（魔法侧额外增加"掌控度"和"释放威力"）。</p>
+
+  <p data-i18n="xccaab3">初习能力者强制从一阶开始。完成一次任务后，经四大板块考核可重新评定等级。早期寰宇城曾有枪兵初习者在讨伐魔物后，因表现出色直接从一阶跃升至三阶。</p>
+
+  <div class="classified-box">
+    <h4 data-i18n="x447946">一级机密：第十阶「神话位阶」</h4>
+    <p data-i18n="x6ddf14">十阶能力者被称为"法则化身"或"神话位阶"，其存在本身即可对局部现实规则产生可观测的、持续性的干涉。无法通过标准化考核认定晋升，唯一客观依据是引发大规模"现实参数异常现象"。</p>
+    <p data-i18n="xc3fcc4">历史上仅<strong>三位确认案例</strong>：</p>
+    <ul>
+      <li data-i18n="xbb81a3"><strong>「统帅」尤尔</strong>（物理侧）：神阶特质为【绝对统御】，在大范围内形成群体意志统合与强化场</li>
+      <li data-i18n="x466574"><strong>「源点」玻利瓦尔</strong>（魔法侧）：神阶特质为【根源操纵】，将自身意识与"魔法本源海"融合</li>
+      <li data-i18n="xb34c86"><strong>「调停者」</strong>（身份已涂抹，幻术师存疑）：神阶特质为【信息绝对权】，可对群体认知进行绝对性植入与修改</li>
+    </ul>
+    <p data-i18n="xdd2ead">元老会议战略框架下，神阶相关事务适用Ω级威胁预案。神阶能力者是文明面对绝对性毁灭威胁时的最终理论防线。</p>
+  </div>
+
+  <!-- ====== 三、五大城市 ====== -->
+  <h2 data-i18n="world-cities">三、五大城市</h2>
+
+  <div class="split-grid">
+    <div class="split-card">
+      <h4 style="color:var(--accent-physical);" data-i18n="xd12403">寰宇市 &mdash; 物理侧聚集区</h4>
+      <p data-i18n="x10c070">风格近似苏联中期，粗犷尚武。居民以物理侧能力者为主，角斗场文化盛行。奥莱因教的信仰中心，广场上矗立着赫尔加·斯顿贝克的著名雕塑《尤尔之陨》。方言"奥莱因铁舌"铿锵有力，咬字极重。</p>
+      <img src="huan-yu.webp" alt="寰宇市全景图" loading="lazy" decoding="async" style="width:100%;height:auto;border-radius:6px;border:1px solid var(--border);cursor:pointer;margin-top:14px;" onclick="openLightbox(this.src)" title="点击放大查看">
+      <p style="font-size:10px;color:var(--text-dim);margin-top:4px;" data-i18n="xfac6e9"><span data-i18n="world-city-img-note">图片由 GPT image2 生成 · 点击放大</span></p>
+    </div>
+    <div class="split-card">
+      <h4 style="color:var(--accent-magic);" data-i18n="x6c3656">天际市 &mdash; 魔法侧聚集区</h4>
+      <p data-i18n="x1e9526">继承古索莱恩城邦的秘法传统，神秘学与高雅气质混杂。高阶法师们倾向于使用基于双月周期的"星月循环"历法。方言"索莱恩秘语"轻柔婉转如吟唱。玻利瓦尔的相关研究在此被严密封锁。</p>
+      <img src="tian-ji.webp" alt="天际市全景图" loading="lazy" decoding="async" style="width:100%;height:auto;border-radius:6px;border:1px solid var(--border);cursor:pointer;margin-top:14px;" onclick="openLightbox(this.src)" title="点击放大查看">
+      <p style="font-size:10px;color:var(--text-dim);margin-top:4px;" data-i18n="xfac6e9"><span data-i18n="world-city-img-note">图片由 GPT image2 生成 · 点击放大</span></p>
+    </div>
+    <div class="split-card">
+      <h4 style="color:var(--accent-research);" data-i18n="x6f19bd">中心市 &mdash; 研究侧总部</h4>
+      <p data-i18n="xc64ec8">中美体制混合物，理性秩序。中央档案馆储存着从公开史料到一级机密的所有知识。大陆图书馆、中央银行、法务研究所均设于此。方言毫无地方特色，极度清晰——"标准音"的地位类似于新华社。</p>
+      <img src="zhong-xin.webp" alt="中心市全景图" loading="lazy" decoding="async" style="width:100%;height:auto;border-radius:6px;border:1px solid var(--border);cursor:pointer;margin-top:14px;" onclick="openLightbox(this.src)" title="点击放大查看">
+      <p style="font-size:10px;color:var(--text-dim);margin-top:4px;" data-i18n="xfac6e9"><span data-i18n="world-city-img-note">图片由 GPT image2 生成 · 点击放大</span></p>
+    </div>
+    <div class="split-card">
+      <h4 style="color:#6b5b52;" data-i18n="x7453aa">岩湖市 &mdash; 矿业重镇</h4>
+      <p data-i18n="x32506a">三大矿业总会寡头竞争：「深岩之子」（稀有金属）、「穹顶之指」（穹顶矿石垄断）、「磐石联合」（基础矿产）。穹顶矿脉的发现重塑了大陆力量格局。方言"深岩低语"惜字如金，近乎单词电报。</p>
+      <img src="yan-hu.webp" alt="岩湖市全景图" loading="lazy" decoding="async" style="width:100%;height:auto;border-radius:6px;border:1px solid var(--border);cursor:pointer;margin-top:14px;" onclick="openLightbox(this.src)" title="点击放大查看">
+      <p style="font-size:10px;color:var(--text-dim);margin-top:4px;" data-i18n="xfac6e9"><span data-i18n="world-city-img-note">图片由 GPT image2 生成 · 点击放大</span></p>
+    </div>
+    <div class="split-card" style="grid-column: 1 / -1;">
+      <h4 style="color:#c5a059;" data-i18n="x209855">富华城 &mdash; 商业中心</h4>
+      <p data-i18n="xa41405">六十年代美国黄金时期风格，市井浮华。大陆金融心脏——金狮鹫币的发行、商业储蓄银行、贸易博览会均在此。也是西尔维娅·佩恩"世俗派"艺术的发源地，《三枚银鹿角》的故事就发生在这里的"碎铃铛"小巷。方言"金湾快嘴"语速极快，连读吞音严重。</p>
+      <img src="fu-hua.webp" alt="富华城全景图" loading="lazy" decoding="async" style="width:100%;height:auto;border-radius:6px;border:1px solid var(--border);cursor:pointer;margin-top:14px;" onclick="openLightbox(this.src)" title="点击放大查看">
+      <p style="font-size:10px;color:var(--text-dim);margin-top:4px;" data-i18n="xfac6e9"><span data-i18n="world-city-img-note">图片由 GPT image2 生成 · 点击放大</span></p>
+    </div>
+  </div>
+
+  <p style="margin-top:20px;" data-i18n="x748bb5">各城市之间人员不断流通，内部还有"镇"和"村"等更小的聚落单位。各地方言不同，但存在通用语言。不同城市的习俗差异巨大——寰宇市和岩湖市粗犷、富华城浮华、天际市神秘、中心市理性。</p>
+
+  <!-- ====== 四、社会系统 ====== -->
+  <h2 data-i18n="world-social">四、社会系统</h2>
+
+  <h3 data-i18n="wb-currency-title">货币体系</h3>
+  <p data-i18n="x45d5bc"><strong>1枚金狮鹫币 = 10枚银鹿角币 = 500枚棕熊铜币</strong>。村/镇集市以棕熊铜币为主流；市区则使用银鹿角币和金狮鹫币，用于购买高级装备、药剂等。各地存在官方默许的"私有货币"，如岩湖城矿区中铁石矿作为替代货币流通。金狮鹫币体系由天才经济学家阿尔德里奇设计，其最后笔记中留下了著名暗语："狮鹫俯瞰，鹿角穿梭，而熊，终将觉醒。"</p>
+
+  <h3 data-i18n="wb-politics-title">政治架构</h3>
+  <p data-i18n="xebda69">研究侧主导日常行政，但顶层决策需经<strong>元老会议</strong>（物理侧与魔法侧元老级别人物）共同裁决。元老会议历以会议成立之年为纪元起点（CCC），之前的历史记为"前元老会议历"（Pre-CCC）。这一架构的微妙之处在于：研究侧掌握行政权，但元老会议中的能力者们拥有否决权——双方既相互制衡，又相互依赖。</p>
+
+  <h3 data-i18n="wb-law-title">法律体系</h3>
+  <p data-i18n="xe4285f">六部核心法典：《艾瑞斯大陆宪法》《能力者管理总则》《岩湖市矿区管理条例》《富华城商业规范》《日常管理条例》《地方自治权管理条例》。由中心市法务研究所制定，元老会议批准。执法部门招聘要求主修职阶三阶以上。灰色地带存在黑市，官方默许但不可招摇。</p>
+
+  <h3 data-i18n="wb-education-title">教育体系</h3>
+  <p data-i18n="x39c919">教科书由中心市统一编订。6-12岁义务教育阶段后分轨：觉醒为能力者→公会考试→能力者学校（天赋异禀者学费由市级财政保障）；未觉醒→普通考试（文学/数理逻辑学/语言学）→中学/大学→可进入中心市研究院或从事商业、医疗、矿业等职业。</p>
+
+  <div class="split-grid">
+    <div class="split-card">
+      <h4 data-i18n="wb-religion-title">宗教体系</h4>
+      <p data-i18n="xb590c5">早期研究侧压制宗教，后经元老会议裁决自由发展：</p>
+      <ul>
+        <li data-i18n="xd44307"><strong>奥莱因教</strong>（物理侧）：信仰神之子「尤尔」，催生了英雄情结，也异变出崇尚毁灭的"战争教会"</li>
+        <li data-i18n="x863d32"><strong>玻利瓦尔信仰</strong>（魔法侧）：被称为"魔法的源头"，故事神秘拗口，信仰飘忽不定</li>
+        <li data-i18n="x2d98bd"><strong>巫黑之神</strong>（暗界）：代表吞噬、虚无与毁灭，人界禁止传播</li>
+      </ul>
+    </div>
+    <div class="split-card">
+      <h4 data-i18n="wb-medical-title">医疗体系</h4>
+      <p data-i18n="x518e5d">村镇设"治疗点"（普通感冒约3棕熊币，骨折等约10银鹿角币）；市区设"救治中心"，由治愈师和顶尖医疗学者驻诊，费用更高。治愈师职阶在大瘟疫（CCC前150年）中证明价值后，成为最受尊敬的职阶之一。</p>
+    </div>
+  </div>
+
+  <h3 data-i18n="wb-transport-title">交通体系</h3>
+  <p data-i18n="x3ce47a">普通人以马车为主（约3棕熊币/公里），水路帆船（约2棕熊币/公里）。中心市正研发"汽车"。能力者则有专属方式：骑士马匹快3-4倍、魔导师短距离传送（六阶500米→九阶50公里）、召唤师飞龙（极速63.5米/秒）。</p>
+
+  <h3 data-i18n="wb-art-title">艺术与娱乐</h3>
+  <p data-i18n="wb-art-paragraph">大陆四大艺术流派：</p>
+  <ul>
+    <li data-i18n="x8569ca"><strong>奥莱因现实主义</strong>（赫尔加·斯顿贝克）：歌颂英雄形体与崇高情感，代表作《尤尔之陨》雕塑</li>
+    <li data-i18n="x13a437"><strong>索莱恩秘义派</strong>（埃拉多·维恩）：表现不可见之物的本质，画作《第十三种凝视》每次观看形态不同</li>
+    <li data-i18n="x9d12e4"><strong>研究侧结构主义</strong>（利奥波德·克莱因）：形式追随功能，定义中心市冷峻理性的城市风貌</li>
+    <li data-i18n="xc1fa50"><strong>富华城世俗派</strong>（西尔维娅·佩恩）：为凡人立传，《三枚银鹿角》震撼了整个大陆</li>
+  </ul>
+
+  <p data-i18n="xf2213b">娱乐方面：歌剧院、角斗场（物理侧）、决斗场、魔术会演（魔法侧）遍布各市。灰色地带存在赌场和妓院。四大吟游诗人——里昂·铁喉（《尤尔之陨》）、塞莱娜·维恩斯特（《玻利瓦尔的十二瞥视》）、阿尔瓦罗·克莱恩（《丰碑无需刀剑》）、西尔维娅·佩恩（《三枚银鹿角》）——各自代表不同的阵营立场。</p>
+
+  <!-- ====== 五、核心历史 ====== -->
+  <h2 data-i18n="world-history">五、核心历史：奥莱因战争</h2>
+
+  <figure style="margin:24px 0 32px;text-align:center;">
+    <img src="olein-war.webp" alt="奥赖因战争示意图" loading="lazy" decoding="async" style="max-width:100%;width:auto;height:auto;border-radius:8px;border:1px solid var(--border);cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.06);" onclick="openLightbox(this.src)" title="点击放大查看">
+    <figcaption style="font-size:11px;color:var(--text-dim);margin-top:8px;"><span data-i18n="world-fig-war">奥赖因战争示意图 · <span data-i18n="world-city-img-note">图片由 GPT image2 生成 · 点击放大</span>查看</span></figcaption>
+  </figure>
+
+  <h3 data-i18n="wb-history-chaos">混沌纪元</h3>
+  <p data-i18n="xe71305">在元老会议历建立前，人类文明分散成数个城邦，在恶劣环境和暗界生物的侵袭下挣扎求存。当时的主要势力包括：<strong>奥莱因王国</strong>（西方锻火之邦，物理侧雏形）、<strong>索莱恩城邦</strong>（北方秘法之邦，魔法侧雏形）、<strong>海裔民同盟</strong>（东方商业城邦联盟）、以及已被暗界摧毁的<strong>卡尔纳克王国</strong>（南方巨石之邦，其文明彻底掩埋在黄沙之下）。</p>
+
+  <h3 data-i18n="wb-history-godson">神之子与联盟</h3>
+  <p data-i18n="x40bb83">天火坠落后，婴孩<strong>尤尔（Yul）</strong>被发现于山巅，身旁插着燃烧银焰的断剑。他重铸断剑为"秩序之光"，成为奥莱因军事统帅。尤尔深知孤军难胜，艰难促成了抗暗界联盟：奥莱因提供战士与武器，索莱恩提供幻术、屏障与预言，海裔民以贸易换取粮食药品。</p>
+
+  <p data-i18n="xeefe52">战争持续数十年，以三场战役著称：<strong>血岩峡谷之战</strong>（证明暗界可被战胜）、<strong>坚守镜湖之围</strong>（展现尤尔智谋）、<strong>终焉之门战役</strong>（最终决战）。在终焉之门，尤尔与"暗影主宰"决战，以燃烧生命为代价将秩序之光插入悲叹裂隙，封印了暗界通道。</p>
+
+  <h3 data-i18n="wb-history-betrayal">背叛与陨落</h3>
+  <p data-i18n="x8b5c7d">尤尔牺牲后，联盟迅速瓦解。奥莱因陷入"守护派"与"征服派"的残酷内斗。一场针对索莱恩圣所的袭击引发了<strong>"秘法之断"</strong>——索莱恩秘法师启动巨大法术，引发地脉变动，用迷雾将奥莱因与外界隔绝。在内耗、孤立与资源枯竭中，奥莱因王国分崩离析。</p>
+
+  <h3 data-i18n="wb-history-legacy">战争遗产</h3>
+  <p data-i18n="xc79c5b">奥莱因战争彻底重塑了大陆：物理侧将尤尔神化，形成奥莱因教；魔法侧主动抹去战争贡献记录，将历史转化为晦涩秘仪；海裔民吸收流散人口发展为富华城；幸存学者建立了研究侧和中心市。物理侧与魔法侧之间的不信任种子，就此埋下。</p>
+
+  <p style="font-size:13px;color:var(--text-dim);" data-i18n="xe4ac8c">（注：上述为公众版本。战争真相中，索莱恩一位名为"博-L-瓦尔"的秘法大师在最终战役中发挥了扭转乾坤的作用，但此记录被封存于一级机密档案。详见下文。）</p>
+
+  <h3 data-i18n="wb-history-aftermath">后续重大事件</h3>
+  <ul>
+    <li data-i18n="x2a3c78"><strong>大瘟疫（CCC前150年）</strong>：席卷大陆的瘟疫确立了治愈师职阶的地位，催生了最早的公共卫生体系</li>
+    <li data-i18n="x900ef9"><strong>法典统一战争（CCC 50-80年）</strong>：研究侧推行统一法典，遭寰宇市和富华城抵制，最终由匿名高阶幻术师调停</li>
+    <li data-i18n="x4da2d3"><strong>暗潮再起（CCC 220-230年）</strong>：悲叹裂隙封印衰弱，暗界再次涌出。战后建立永固军事要塞"守望堡"</li>
+    <li data-i18n="xa2a473"><strong>富华城大萧条（CCC 350-370年）</strong>：经济危机后建立统一的金狮鹫币体系，研究侧权力渗透至经济毛细血管</li>
+    <li data-i18n="xfd53ab"><strong>穹顶发现（CCC 480年）</strong>：碎岩山地深处发现稀有能量晶体矿脉，引发新一轮资源竞争，研究侧掌控了关键战略资源</li>
+  </ul>
+
+  <!-- ====== 六、核心理论著作 ====== -->
+  <h2 data-i18n="world-books">六、核心理论著作</h2>
+
+  <div class="split-grid">
+    <div class="split-card">
+      <h4 data-i18n="x0acfa6">《银行、货币体系与经济命脉》</h4>
+      <p data-i18n="xfc49cf">阿尔伯图斯·维尔著，CCC 385年出版，大陆经济学基石之作。分四卷论述货币本质（"货币的本质是信用"）、银行系统运作、非官方经济体系（黑市、私有货币）、经济政策与周期性波动。书中那句"狮鹫俯瞰全局，鹿角穿梭流通，而沉睡的棕熊，终有一天会被贪婪或绝望唤醒"被视为对危机的隐晦预言。</p>
+    </div>
+    <div class="split-card">
+      <h4 data-i18n="x6df1a0">《论能力者与非能力者的劳动》</h4>
+      <p data-i18n="x5a2417">维尔又一力作。提出核心框架：<strong>"能力"本身是一种稀缺生产要素</strong>。论证一个三阶火焰法师的效率相当于五十名非能力者总和。提出著名的<strong>"维尔悖论"</strong>："一个社会的繁荣度取决于其能力者所能达到的生产力高度，而一个社会的稳定度则取决于其非能力者所能获得的生活保障下限。"第六章详细分析了公会任务经济体系。</p>
+    </div>
+    <div class="split-card">
+      <h4 data-i18n="x3ff6ad">《艾瑞斯大陆能力者图鉴》</h4>
+      <p data-i18n="x5cfa0d">西里尔·安瑟伦著，CCC 485年初出版。系统记录十四大职阶的能力进阶图表。但最具传奇色彩的是其<strong>失落的终章"万流归源：关于'天赋'之根的猜想"</strong>——提出了四种颠覆性假说（上古契约、外域遗泽、集体潜意识觉醒、人造之物）。终章在出版前被撤回，西里尔本人也在发行前夜被发现死于家中。官方结论为"过劳"，但他所有关于能力起源的手稿同时不翼而飞。</p>
+    </div>
+    <div class="split-card">
+      <h4 data-i18n="xb84b33">《艾瑞斯大陆社会生态研究》</h4>
+      <p data-i18n="x341a5b">中心市社会研究所官方权威社会百科全书，定期修订。涵盖衣食住行（各地饮食/服饰/居住风格）、经济科技（职业百工图、魔导工程）、社会秩序（五大城市详述、法律与治理、公共设施与福利）。代表研究侧的"官方视角"。</p>
+    </div>
+  </div>
+
+  <!-- ====== 七、最高机密档案 ====== -->
+  <div class="classified-box">
+    <h4 data-i18n="xeab787">一级机密：暗界五大起源假说</h4>
+    <p data-i18n="xf8f031">暗界的起源是艾瑞斯大陆最大的未解之谜。元老会议官方立场为"不作定论，以防任何单一理论被利用"。内部档案收录五种假说：</p>
+    <ol>
+      <li data-i18n="xf2abeb"><strong>"失败的创世"</strong>（魔法侧主流）：暗界是创世过程的副产品，是人界的黑暗倒影</li>
+      <li data-i18n="xb42e2f"><strong>"古神尸骸"</strong>（奥莱因教廷观点）：太古神祇的死亡尸骸化为暗界，为战争教会提供"净化"的理论依据</li>
+      <li data-i18n="x1b9e26"><strong>"实验失控"</strong>（研究侧高度怀疑）：暗界源于史前文明的禁忌实验，最令人不安——意味着悲剧可能重演</li>
+      <li data-i18n="x3b7f54"><strong>"异维度入侵"</strong>（基于空间魔法）：暗界是毗邻的敌对维度，研究重点应放在加固维度壁垒</li>
+      <li data-i18n="x78e92f"><strong>"集体意识阴影"</strong>（幻术师学派）：暗界是智慧生物集体负面情绪的具象化——战争本身会不断滋养暗界</li>
+    </ol>
+  </div>
+
+  <div class="classified-box">
+    <h4 data-i18n="x5ac88e">一级机密：玻利瓦尔的真相</h4>
+    <p data-i18n="x296f57">玻利瓦尔<strong>不是一个人，也不是一个神</strong>。它是一个"现象"、一个"协议"、一个"回路"。</p>
+    <p data-i18n="x929b52">魔法侧的"集体潜意识海"中，因智慧生物的强烈情绪（尤其是对暗界的恐惧和绝境中的求生意志）与原始魔法能量结合，自发涌现出一个宏大的、非人的"自我调节系统"。它的核心指令非常简单：<strong>"定义威胁"然后"凝聚力量"</strong>。</p>
+    <p data-i18n="x010d52">它通过定义"暗界"来创造一个可以被理解和对抗的"敌人"，同时从智慧生物中筛选出能与自身共鸣的个体，授予他们魔法能力（职阶、法术、等级）。魔法师的成长本质上是与系统同步率的提高——他们的魔法是从系统中"调用"预设好的"程序"。</p>
+    <p data-i18n="x393bf7">如果这个真相揭开，将导致：魔法的高贵与神秘感荡然无存；与暗界的战争可能只是系统维持自身的"无限循环"；为了维持"威胁"以继续"凝聚"，系统是否会主动强化暗界？这场战争是否永无尽头？</p>
+    <p style="font-size:12px;color:var(--accent-physical);" data-i18n="x43bb0d">安全警告：对"玻利瓦尔"的深入研究可能导致严重的认知偏差与精神不稳定。档案仅限元老会议首席长老及指定首席历史学家查阅。</p>
+  </div>
+
+  <!-- ====== 八、历法体系 ====== -->
+  <h2 data-i18n="wb-calendar-title">八、历法体系</h2>
+  <p data-i18n="x0001a7"><strong>元老会议历（CCC）</strong>由中心市天文与历史学者团队制定，是大陆官方通用历法。以"元老会议成立之年"为纪元起点。一年12个月（初生月、雨月、芽月、花月、阳月、暑月、收获月、金月、雾月、寒月、影月、炉火月），每月30日，全年360日。外加5个"庆典日"（新年、仲夏、丰收、先祖之夜、星辰归位），每四年增加第6个闰日。</p>
+  <p data-i18n="x336dec">同时并行的还有物理侧"奥莱因英雄纪年"、魔法侧"星月循环"（基于双月：银白色塞莱妮与湛蓝色墨恩的运行周期）、以及各地古老的地方历法。研究侧最高学术圈还使用"学术纪元"进行超长跨度研究。</p>
+
+  <!-- ====== 九、方言系统 ====== -->
+  <h2 data-i18n="wb-dialect-title">九、方言系统</h2>
+  <div class="split-grid">
+    <div class="split-card">
+      <h4 data-i18n="x8b9d11">奥莱因铁舌（寰宇市）</h4>
+      <p data-i18n="xc36814">铿锵有力，咬字极重。"这件事很重要"→"杰见儿事恨仲要嗷"，尾音拉长元音</p>
+    </div>
+    <div class="split-card">
+      <h4 data-i18n="xb3a49a">索莱恩秘语（天际市）</h4>
+      <p data-i18n="x1bd9fd">轻柔平滑如吟唱。"这个法术很精妙"→"泽伊法舒很晶缪哦"</p>
+    </div>
+    <div class="split-card">
+      <h4 data-i18n="wb-dialect-gold-bay">金湾快嘴（富华城）</h4>
+      <p data-i18n="x7529b3">语速极快，连读吞音。"这样不行，得加钱"→"酱布行得加钱诶"</p>
+    </div>
+    <div class="split-card">
+      <h4 data-i18n="wb-dialect-deep-rock">深岩低语（岩湖市）</h4>
+      <p data-i18n="x50ef25">极度简化，惜字如金。"下面危险，小心"→"下。险。慎。"</p>
+    </div>
+  </div>
+  <p style="margin-top:16px;" data-i18n="x73b78f">中心市方言无任何地方特色，字正腔圆——即为通用语标准发音。任何偏离标准的发音都会被礼貌地纠正："请您按照语音标准重新陈述一遍。"</p>
+
+  <div style="text-align:center;margin-top:56px;padding:40px 0;border-top:1px solid var(--border);">
+    <a href="worldbuilding-full.html" style="display:inline-block;padding:14px 40px;background:var(--accent);color:#fff;text-decoration:none;border-radius:4px;font-size:15px;font-weight:500;letter-spacing:1px;transition:opacity 0.2s;"><span data-i18n="world-full-btn">阅读设定集全文（约3.2万字原版） →</span></a>
+    <p style="color:var(--text-dim);font-size:13px;margin-top:16px;" data-i18n="x41172f"><span data-i18n="world-full-desc">含方言对照指南、机密档案、历史年表等共16个章节</span></p>
+  </div>
+
+  <div style="margin-top:40px;padding:16px 20px;background:var(--bg-alt);border-left:3px solid var(--accent-dim);font-size:12px;color:var(--text-dim);line-height:1.8;border-radius:0 4px 4px 0;"><strong style="color:var(--accent);" data-i18n="wb-team-value-strong">团队价值关联</strong><br><span data-i18n="wb-team-value-text">约3.2万字、16个章节、可搜索的结构化文档——这种"把想法写清楚、让别人看得懂、可检索"的能力，是游戏策划最核心的产出物。策划案、世界观文档、系统设计说明……格式不同，底层能力相通：结构化思维、细节执行力、持续迭代的耐心。</span></div>
+
+</div>
+
+<footer>
+  <p data-i18n="xc42eae">BEST-辣椒 &copy; 2026 · <a href="https://space.bilibili.com/518565512" target="_blank" rel="noopener" style="color:var(--text-dim);">B站主页</a></p>
+</footer>
+
+<script src="common.js?v=3"></script>
+<script>
+// ====== 设定集搜索 ======
+(function() {
+  var content = document.querySelector('.content-section');
+  if (!content) return;
+
+  var searchable = [];
+  var tags = ['P', 'H2', 'H3', 'H4', 'LI', 'TD', 'TH', 'DT', 'DD', 'BLOCKQUOTE', 'FIGCAPTION'];
+  var allElements = content.querySelectorAll(tags.join(','));
+  for (var i = 0; i < allElements.length; i++) {
+    if (!allElements[i].closest('#world-search-bar')) {
+      searchable.push(allElements[i]);
+    }
+  }
+
+  var originals = [];
+  var matchElements = [];
+  var currentMatch = -1;
+
+  function clearHighlights() {
+    for (var i = 0; i < searchable.length; i++) {
+      if (originals[i] !== undefined) {
+        searchable[i].innerHTML = originals[i];
+      }
+    }
+    matchElements.length = 0;
+    currentMatch = -1;
+  }
+
+  function doSearch(query) {
+    clearHighlights();
+    if (!query || query.length < 2) {
+      document.getElementById('search-count').textContent = '';
+      return;
+    }
+
+    var escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    var regex = new RegExp('(' + escaped + ')', 'gi');
+
+    for (var i = 0; i < searchable.length; i++) {
+      var el = searchable[i];
+      if (originals[i] === undefined) originals[i] = el.innerHTML;
+      var text = el.textContent || el.innerText || '';
+      if (regex.test(text)) {
+        regex.lastIndex = 0;
+        el.innerHTML = originals[i].replace(regex, '<mark style="background:#fde68a;color:#1a1a1a;padding:1px 3px;border-radius:2px;">$1</mark>');
+        var marks = el.querySelectorAll('mark');
+        for (var j = 0; j < marks.length; j++) {
+          matchElements.push(marks[j]);
+        }
+      }
+    }
+
+    document.getElementById('search-count').textContent = matchElements.length + ' 个匹配';
+    if (matchElements.length > 0) {
+      currentMatch = -1;
+      scrollToMatch(0);
+    }
+  }
+
+  function scrollToMatch(idx) {
+    if (idx < 0 || idx >= matchElements.length) return;
+    currentMatch = idx;
+    for (var i = 0; i < matchElements.length; i++) {
+      matchElements[i].style.background = '#fde68a';
+    }
+    matchElements[idx].style.background = '#f59e0b';
+    matchElements[idx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    document.getElementById('search-count').textContent = (idx + 1) + ' / ' + matchElements.length;
+  }
+
+  var input = document.getElementById('world-search-input');
+  var prevBtn = document.getElementById('search-prev-btn');
+  var nextBtn = document.getElementById('search-next-btn');
+  if (!input) return;
+
+  var searchBar = document.getElementById('world-search-bar');
+
+  var timer;
+  input.addEventListener('input', function() {
+    var val = input.value.trim();
+    // 有搜索内容时才置顶跟随
+    if (val.length >= 2 && searchBar) {
+      searchBar.classList.add('search-sticky');
+    } else if (val.length === 0 && searchBar) {
+      searchBar.classList.remove('search-sticky');
+    }
+    clearTimeout(timer);
+    timer = setTimeout(function() {
+      doSearch(val);
+    }, 200);
+  });
+
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (matchElements.length > 0) {
+        scrollToMatch((currentMatch + 1) % matchElements.length);
+      }
+    }
+  });
+
+  prevBtn.addEventListener('click', function() {
+    if (matchElements.length > 0) {
+      scrollToMatch(currentMatch <= 0 ? matchElements.length - 1 : currentMatch - 1);
+    }
+  });
+
+  nextBtn.addEventListener('click', function() {
+    if (matchElements.length > 0) {
+      scrollToMatch((currentMatch + 1) % matchElements.length);
+    }
+  });
+})();
+</script>
+
+<!-- Lightbox overlay -->
+<div id="lightbox-overlay" onclick="closeLightbox()" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.9);z-index:9999;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:12px;">
+  <span onclick="closeLightbox()" style="position:fixed;top:12px;right:18px;color:#fff;font-size:32px;z-index:10001;line-height:1;cursor:pointer;text-shadow:0 2px 8px rgba(0,0,0,0.6);">&times;</span>
+  <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;">
+    <img id="lightbox-img" src="" alt="" onclick="event.stopPropagation()" style="width:100%;max-width:100%;height:auto;object-fit:contain;box-shadow:0 8px 40px rgba(0,0,0,0.6);touch-action:pinch-zoom;user-select:none;">
+  </div>
+</div>
+<script>
+function openLightbox(src) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox-overlay').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('lightbox-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+</script>
+
+<script>
+// i18n
+(function(){
+var L=localStorage.getItem('site-lang')||'zh';
+var M={};
+M['about-arch-p1']={zh:'B站频道以"消失游戏开发日志"系列为核心，专注追溯那些被取消、被雪藏、胎死腹中的游戏作品背后的开发故事。从《寂静岭P.T.》中小岛秀夫与科乐美的权力斗争，到《细胞分裂》如何被育碧一步步边缘化，再到《超越善恶2》创下游戏史上最长跳票纪录——每一部"消失的游戏"都承载着值得被记录的开发史。',en:'My Bilibili channel centers on "Lost Game Dev Log" — tracing the stories behind canceled, shelved, and stillborn game projects. From Kojima vs. Konami in Silent Hill P.T., to Splinter Cell’s slow marginalization by Ubisoft, to Beyond Good & Evil 2’s record-breaking 17-year delay — every "lost game" carries a development history worth documenting.'};M['about-arch-p2']={zh:'目前该系列已发布6期，累计播放量超过13万，其中《细胞分裂》单期最高播放4.6万。最新一期探讨了国产沙盒游戏史上最抽象的欺诈事件，进一步拓展了系列的选题边界。',en:'6 episodes published, 130K+ cumulative views. Splinter Cell episode peaked at 46K. The latest covers the most absurd fraud case in Chinese game history, pushing the series’ scope further.'};M['about-arch-quote']={zh:'“游戏不只是代码和美术，它们是团队、资本、时机和运气的复杂博弈。每一部消失的游戏，都是一段被遗忘的历史。”',en:'“Games aren’t just code and art — they’re complex negotiations of teams, capital, timing, and luck. Every lost game is a forgotten piece of history.”'};M['about-card-ai-p']={zh:'十几页的作品集、上千行代码、几十次迭代——总成本不到5元。我掌握了如何把AI当成“超级执行层”来用的方法论：人类负责方向判断和审美决策，AI负责机械执行和批量处理。这套方法论可以迁移到游戏策划的任何文档密集型工作中。',en:'13-page portfolio, thousands of lines of code, hundreds of iterations — total AI cost under $0.70. I’ve developed a human-AI workflow: I handle direction, judgment, and aesthetics; AI handles execution and batch processing. This methodology transfers directly to design documentation.'};M['about-card-perspective-p']={zh:'游戏拆解页面不是“打分测评”，而是从策划的角度分析失败原因：核心设计缺陷、关键决策节点、假设推演。能区分“作为玩家我不喜欢”和“作为策划这个设计有问题”。',en:'My game analysis page isn’t reviews — it’s producer-perspective failure analysis: core design flaws, key decision nodes, counterfactual scenarios. I can distinguish “I don’t like this as a player” from “this design is broken.”'};M['about-card-doc-p']={zh:'约3.2万字的世界观设定不是“想到哪写到哪”，而是有体系、有索引、有搜索功能的结构化文档。策划的核心产出物就是文档——能不能把想法写清楚、让别人（包括AI）看得懂、可执行。',en:'~32,000 words of worldbuilding — not stream-of-consciousness, but structured, indexed, searchable documentation. A designer’s core output is documents: can you make your ideas clear, understandable, and executable — even for an AI?'};M['nav-about']={zh:'关于',en:'About'};M['nav-bilibili']={zh:'B站',en:'Bilibili'};M['nav-worldbuilding']={zh:'设定集',en:'World'};M['nav-novel']={zh:'小说',en:'Novel'};M['nav-game-design']={zh:'游戏设计',en:'Game Design'};M['nav-game-analysis']={zh:'游戏拆解',en:'Analysis'};M['nav-script-analysis']={zh:'文案拆解',en:'Scripts'};M['nav-gaming']={zh:'游戏经历',en:'Gaming'};M['nav-brand']={zh:'BEST-辣椒',en:'BEST-Chili'};M['footer-text']={zh:'BEST-辣椒 © 2026',en:'BEST-Chili © 2026'};M['footer-bilibili']={zh:'B站主页',en:'Bilibili'};M['back-home']={zh:'← 返回首页',en:'← Back Home'};M['back-worldbuilding']={zh:'← 返回设定集概述',en:'← Back to World'};M['lang-label']={zh:'EN',en:'中'};M['lang-title']={zh:'Switch to English',en:'切换到中文'};M['home-title']={zh:'BEST-辣椒 · 作品集',en:'BEST-Chili · Portfolio'};M['home-hero-h1']={zh:'BEST-辣椒 · 作品集',en:'BEST-Chili · Portfolio'};M['home-hero-subtitle']={zh:'游戏考据作者 · 世界观构建者 · 交互原型设计师',en:'Game Historian · Worldbuilder · Interactive Prototype Designer'};M['home-hero-desc']={zh:'挖掘被遗忘的游戏开发史 · 构建约3.2万字的奇幻世界 · 把设定变成可以玩的交互原型',en:'Unearthing forgotten game dev history · Building a ~32,000-word fantasy world · Turning settings into playable prototypes'};M['home-plays-label']={zh:'B站总播放',en:'Bilibili Views'};M['home-fans-label']={zh:'粉丝',en:'Followers'};M['home-fans-live']={zh:'实时',en:'Live'};M['home-words-label']={zh:'世界观设定',en:'World Setting'};M['home-series-label']={zh:'视频系列期数',en:'Episodes'};M['home-search-placeholder']={zh:'搜索全站内容——页面、设定、人物、视频、交互工具...',en:'Search site — pages, settings, characters, videos, tools...'};M['home-search-hint']={zh:'输入关键词搜索',en:'Type to search'};M['home-banner-title']={zh:'⚔ 可交互游戏原型',en:'⚔ Interactive Game Prototypes'};M['home-banner-sub']={zh:'—— 不只是文档，是你可以上手玩的设计工具 ——',en:'Not just docs — design tools you can actually play with'};M['home-banner-desc']={zh:'能力者属性雷达评估 · 战斗伤害公式演算 · 掉落模拟器<br>公会任务交互式决策 · 中世纪告示板彩蛋',en:'Attribute Radar · Combat Calculator · Loot Simulator<br>Quest Decision Flow · Medieval Notice Board Easter Egg'};M['home-banner-cta']={zh:'⚔ 进入交互原型',en:'⚔ Enter Prototypes'};M['home-card-about']={zh:'关于我',en:'About Me'};M['home-card-about-p']={zh:'游戏考古的创作理念、世界观构建的方法论。冷峻克制的叙事风格，追求信息密度与节奏的平衡。',en:'Creative philosophy behind game archaeology and worldbuilding. Restrained, information-dense narrative style.'};M['home-card-about-tease']={zh:'创作哲学 · 叙事方法论',en:'Philosophy · Narrative Methodology'};M['home-card-about-arrow']={zh:'了解更多 →',en:'Learn More →'};M['home-card-bili']={zh:'B站内容创作',en:'Bilibili Content'};M['home-card-bili-p']={zh:'「消失游戏开发日志」系列7期，累计19.7万播放。含可排序视频对比、指标雷达图、观众画像与内容策略分析。',en:'7-episode series on canceled games, 197K views. Sortable video comparison, radar charts, audience profile & content strategy.'};M['home-card-bili-tease']={zh:'拖动排序 · 雷达对比 · 数据洞察',en:'Drag Sort · Radar · Data Insights'};M['home-card-bili-arrow']={zh:'浏览作品 →',en:'Browse →'};M['home-card-world']={zh:'艾瑞斯大陆设定集',en:'Iris Continent Setting'};M['home-card-world-p']={zh:'约3.2万字原创奇幻世界观。双能力体系、五大城市、经济法律系统、核心历史、机密档案与最高机密卷宗。',en:'~32,000-word original fantasy world. Dual power system, 5 cities, economy & law, history, classified archives.'};M['home-card-world-tease']={zh:'折叠档案 · 神位阶隐藏交互',en:'Collapsible Archives · Mythic Tier'};M['home-card-world-arrow']={zh:'探索世界 →',en:'Explore →'};M['home-card-novel']={zh:'渡鸦镇',en:'Raven Town'};M['home-card-novel-p']={zh:'长篇小说12章，哥特式小镇叙事。含「你是渡鸦镇的谁？」性格测试与可交互人物关系图。',en:'12-chapter Gothic novel. Includes personality quiz & interactive character relationship map.'};M['home-card-novel-tease']={zh:'性格测试 · 人物关系图 · 十二章完整版',en:'Personality Quiz · Relationship Map · 12 Chapters'};M['home-card-novel-arrow']={zh:'阅读小说 →',en:'Read →'};M['home-card-analysis']={zh:'游戏拆解',en:'Game Analysis'};M['home-card-analysis-p']={zh:'基于「消失游戏开发日志」系列的一手研究资料，从策划视角对《幻》和《寂静岭P.T.》进行完整的项目失败分析——核心设计问题、关键失败节点、以及可迁移至当代游戏开发的行业教训。',en:'Producer-perspective failure analysis of Phantom and Silent Hill P.T. — core design issues, key failure nodes, transferable industry lessons.'};M['home-card-analysis-tease']={zh:'设计分析 · 失败节点 · 行业教训 · 假设推演',en:'Design Analysis · Failure Nodes · Industry Lessons'};M['home-card-analysis-arrow']={zh:'阅读拆解 →',en:'Read Analysis →'};M['home-card-script']={zh:'文案拆解',en:'Script Meta-Analysis'};M['home-card-script-p']={zh:'对七期视频文案本身的元分析——叙事结构、风格演变、观众钩子设计、以及从Noclip/新新闻主义/B站知识区生态中汲取的创作方法论。不只是"写了什么"，更是"为什么这么写"。',en:'Meta-analysis of 7-episode scripts — narrative structure, style evolution, audience hooks, influences from Noclip, New Journalism, Bilibili ecosystem.'};M['home-card-script-tease']={zh:'叙事哲学 · 逐期拆解 · 跨期对比 · 影响来源 · 可复用方法论',en:'Narrative Philosophy · Episode Breakdown · Cross-period Comparison'};M['home-card-script-arrow']={zh:'阅读拆解 →',en:'Read →'};M['home-mascot-msg0']={zh:'你好，欢迎来到我的创作个人网站！',en:'Hello! Welcome to my portfolio site!'};M['home-bubble-ask']={zh:'问我问题...',en:'Ask me...'};M['home-bubble-placeholder']={zh:'输入问题，按回车...',en:'Ask a question, press Enter...'};M['about-title']={zh:'关于 · BEST-辣椒',en:'About · BEST-Chili'};M['about-hero-h1']={zh:'关于我',en:'About Me'};M['about-hero-p']={zh:'一个同时沉迷于游戏考据与世界观构建的内容创作者',en:'A content creator immersed in game archaeology and worldbuilding'};M['about-basic']={zh:'基本信息',en:'Basic Info'};M['about-name']={zh:'姓名',en:'Name'};M['about-email']={zh:'邮箱',en:'Email'};M['about-edu']={zh:'教育经历',en:'Education'};M['about-job-target']={zh:'创作意向',en:'Job Target'};M['about-name-val']={zh:'作者 | BEST-辣椒（网名）',en:'The Author | BEST-Chili'};M['about-edu-val']={zh:'跨专业背景 | 本科',en:'Cross-disciplinary background | Bachelor'};M['about-job-val']={zh:'游戏策划 / 产品经理',en:'Game Designer / Product Manager'};M['about-game-arch']={zh:'游戏考古',en:'Game Archaeology'};M['about-worldbuild']={zh:'世界观构建',en:'Worldbuilding'};M['about-narrative']={zh:'叙事风格',en:'Narrative Style'};M['about-team-value']={zh:'我能为团队带来什么',en:'What I Bring to a Team'};M['about-webpage']={zh:'关于这份网页 · 人机协作',en:'About This Site · Human-AI Collaboration'};M['about-card-cross']={zh:'跨领域的内容判断力',en:'Cross-Domain Content Judgment'};M['about-card-ai']={zh:'人机协作的增效能力',en:'Human-AI Collaboration Efficiency'};M['about-card-data']={zh:'数据驱动的验证意识',en:'Data-Driven Validation Mindset'};M['about-card-grit']={zh:'遇到问题死磕到底',en:'Relentless Problem-Solving'};M['about-card-perspective']={zh:'从玩家视角到设计视角的切换',en:'Player Perspective → Designer Mindset'};M['about-card-doc']={zh:'沟通与文档能力',en:'Communication & Documentation'};M['about-card-cross-p']={zh:'能做游戏考据、能写世界观设定、能分析叙事结构、能设计交互原型——不是"每样都懂一点"，而是每样都有落地产出。策划岗最怕的是"想法很多但无法执行"，我的作品集本身就是执行能力的证明。',en:'Game archaeology, worldbuilding, narrative analysis, interactive prototypes — not dabbling, but delivering finished output. The worst hire is someone with endless ideas and zero execution. This portfolio is the proof.'};M['about-card-data-p']={zh:'B站七期视频的播放量、点赞转化率、收藏率、硬币比——每项指标都有记录和分析。知道怎么用数据判断内容质量、怎么从异常值中找到问题。这套思维方式在游戏策划中同样适用：玩法好不好，看留存；叙事好不好，看完播率。',en:'Every metric tracked across 7 episodes — views, like conversion, saves, coin ratio. I know how to read data for content quality and spot anomalies. Same logic applies to game design: fun = retention; story = completion rate.'};M['about-card-grit-p']={zh:'一个看起来很简单的"主页数据实时同步"需求，我试了Vercel、Cloudflare Workers、CORS代理、EdgeOne Pages、GitHub Actions——五套方案，前四个全失败，第五个才跑通。不是技术有多强，而是"问题不解决就不舒服"的性格。',en:'A seemingly simple "live data sync" feature took 5 attempts: Vercel, Cloudflare Workers, CORS proxies, EdgeOne Pages, finally GitHub Actions. Not about technical skill — about refusing to leave a problem unsolved.'};M['about-worldbuild-p1']={zh:'独立构建了「艾瑞斯大陆」奇幻世界观，累计设定文本约3.2万字。与常见的"剑与魔法"设定不同，这个世界观的核心张力来自三股力量的博弈：',en:'Built the "Iris Continent" fantasy world — ~32,000 words of setting documentation. Unlike typical sword-and-sorcery settings, the core tension comes from a three-way power struggle:'};M['about-narrative-p1']={zh:'无论做视频还是写设定，我追求的核心原则是：信息密度与叙事节奏的平衡。',en:'Whether making videos or writing settings, my core principle is: balancing information density with narrative pacing.'};M['about-narrative-p2']={zh:'游戏考据视频以严密的逻辑链条和一手资料为骨架，拒绝空洞的情绪输出；世界观构建则从社会学视角切入——将经济学、政治学、法律史等维度融入奇幻设定，让虚构世界拥有"非虚构"级别的可信度。',en:'Video essays are built on rigorous logic chains and primary sources — no empty emotional manipulation. Worldbuilding takes a sociological lens: economics, political science, and legal history woven into fantasy, giving fiction "non-fiction" credibility.'};M['about-narrative-p3']={zh:'在表达方式上，偏好冷峻、克制的语调，用事实和逻辑本身的力量驱动叙事，而非依赖情绪渲染。',en:'Stylistically, I prefer a restrained, clinical tone — letting facts and logic drive the narrative rather than emotional appeal.'};M['about-team-p']={zh:'作品集网站从第一行 HTML 到最终 13 页的完整结构，全程由我提供方向、内容、审美判断和迭代反馈，由 AI（Claude）执行编码和内容生成。以下记录的是这段协作如何工作，以及从中可以提取什么可复用的方法论。',en:'This portfolio — from first line of HTML to 13-page complete structure — was directed entirely by me (direction, content, aesthetic judgment, iteration) and executed by Claude (coding, debugging, content generation). Below is how this collaboration works and what reusable methodology emerged.'};M['home-card-bili-p-full']={zh:'「消失游戏开发日志」系列7期，累计19.7万播放。含可排序视频对比、指标雷达图、观众画像与内容策略分析。',en:'7-episode "Lost Game Dev Log" series, 197K views. Sortable video comparison, radar charts, audience profile & strategy analysis.'};M['home-card-world-p-full']={zh:'约3.2万字原创奇幻世界观。双能力体系、五大城市、经济法律系统、核心历史、机密档案与最高机密卷宗。',en:'~32,000-word original fantasy world. Dual power system, 5 cities, economy & law, core history, classified archives.'};M['home-card-novel-p-full']={zh:'长篇小说12章，哥特式小镇叙事。含性格测试与可交互人物关系图。',en:'12-chapter Gothic novel. Personality quiz & interactive character map.'};M['home-card-analysis-p-full']={zh:'从策划视角分析7款游戏的失败节点与行业教训——核心设计问题、关键失败原因、可迁移至当代游戏开发的教训。',en:'Producer-perspective failure analysis of 7 games — core design issues, key failure nodes, transferable industry lessons.'};M['home-card-script-p-full']={zh:'对七期视频文案本身的元分析——叙事结构、风格演变、观众钩子设计、创作方法论。不只是"写了什么"，更是"为什么这么写"。',en:'Meta-analysis of 7 video scripts — narrative structure, style evolution, audience hooks, creative methodology. Not just "what was written," but "why it was written that way."'};M['bili-hero-h1']={zh:'B站内容创作',en:'Bilibili Content'};M['bili-hero-p']={zh:'「消失游戏开发日志」系列——专注追溯被取消/雪藏/胎死腹中的游戏作品背后的开发故事与商业博弈。已发布7期，累计播放量19.7万。',en:'\\"Lost Game Dev Log\\" series — tracing the stories behind canceled, shelved, and stillborn game projects. 7 episodes, 197K total views.'};M['world-hero-h1']={zh:'艾瑞斯大陆设定集',en:'Iris Continent Setting'};M['world-hero-p']={zh:'独立构建的原创奇幻世界观 · 累计约3.2万字',en:'Original fantasy world · ~32,000 words'};M['gaming-hero-h1']={zh:'游戏经历',en:'Gaming Experience'};M['gaming-hero-p']={zh:'从竞技射击到开放世界，从主机大作到手游休闲 · 总时长 3000+ 小时  |  不完全汇总',en:'From competitive shooters to open worlds, AAA to mobile casual · 3000+ hours total  |  Incomplete Summary'};M['design-hero-h1']={zh:'可交互游戏原型',en:'Interactive Game Prototypes'};M['gaming-stats-hours']={zh:'总游戏时长（小时）',en:'Total Play Time (hours)'};M['gaming-stats-games']={zh:'游戏数量',en:'Games Played'};M['gaming-stats-done']={zh:'全成就 / 通关',en:'100% / Completed'};M['gaming-stats-rank']={zh:'最高段位',en:'Highest Rank'};M['gaming-pc-label']={zh:'PC / 主机游戏',en:'PC / Console Games'};M['gaming-mobile-label']={zh:'手机游戏',en:'Mobile Games'};M['gaming-search-ph']={zh:'搜索游戏名称...',en:'Search games...'};M['gaming-mobile-note']={zh:'手机游戏以休闲体验为主，包含音乐节奏、角色扮演、模拟经营等多种类型，展示了广泛的游戏兴趣。',en:'Mobile games span rhythm, RPG, simulation and more — showcasing broad gaming interests.'};M['gaming-other-deep']={zh:'其他深度体验游戏',en:'Other Deep-Play Games'};M['gaming-other-clear']={zh:'其他通关 / 体验游戏',en:'Other Completed / Played Games'};M['gaming-footer']={zh:'BEST-辣椒 © 2026 · 游戏经历汇总 · 总游戏时长超过 3000 小时',en:'BEST-Chili © 2026 · Gaming Summary · 3000+ Hours Total'};M['bili-stats-fans']={zh:'粉丝',en:'Followers'};M['bili-stats-plays']={zh:'总播放量',en:'Total Views'};M['bili-live-tag']={zh:'实时',en:'Live'};M['bili-section-videos']={zh:'视频系列',en:'Video Series'};M['bili-section-audience']={zh:'观众画像',en:'Audience Profile'};M['bili-section-strategy']={zh:'内容策略',en:'Content Strategy'};M['bili-table-num']={zh:'#',en:'#'};M['bili-table-game']={zh:'游戏',en:'Game'};M['bili-table-find']={zh:'核心发现',en:'Key Discovery'};M['bili-table-views']={zh:'播放',en:'Views'};M['bili-table-coin']={zh:'硬币/点赞',en:'Coins/Likes'};M['bili-insight-title']={zh:'数据洞察',en:'Data Insights'};M['bili-radar-title']={zh:'指标雷达对比',en:'Metric Radar Comparison'};M['world-overview']={zh:'世界概览',en:'World Overview'};M['world-power']={zh:'能力体系',en:'Power System'};M['world-cities']={zh:'五大城市',en:'Five Cities'};M['world-social']={zh:'社会系统',en:'Social Systems'};M['world-history']={zh:'核心历史',en:'Core History'};M['world-books']={zh:'核心理论著作',en:'Key Theoretical Works'};M['world-three-sides']={zh:'三大侧系',en:'Three Branches'};M['world-dual-major']={zh:'主修/辅修制',en:'Major/Minor System'};M['world-tier']={zh:'等级体系：一阶至十阶',en:'Tier System: 1st to 10th'};M['world-search-ph']={zh:'输入关键词搜索设定集...',en:'Search the setting...'};M['world-full-btn']={zh:'阅读设定集全文（约3.2万字原版） →',en:'Read Full Setting (~32,000 words) →'};M['world-full-desc']={zh:'含方言对照指南、机密档案、历史年表等共16个章节',en:'Includes dialect guide, classified archives, historical timeline — 16 chapters total'};M['world-fig-map']={zh:'艾瑞斯大陆地图 · 图片由 GPT image2 生成 · 点击放大查看',en:'Iris Continent Map · Image by GPT image2 · Click to enlarge'};M['world-fig-classes']={zh:'物理侧与魔法侧职阶示意图 · 图片由 GPT image2 生成 · 点击放大查看',en:'Physical & Magic Branch Job Classes · Image by GPT image2 · Click to enlarge'};M['world-fig-war']={zh:'奥赖因战争示意图 · 图片由 GPT image2 生成 · 点击放大查看',en:'O\\u2019Lein War Diagram \\u00b7 Image by GPT image2 \\u00b7 Click to enlarge'};M['world-city-img-note']={zh:'图片由 GPT image2 生成 · 点击放大',en:'Image by GPT image2 · Click to enlarge'};M['design-radar']={zh:'能力者属性雷达评估',en:'Attribute Radar Assessment'};M['design-calc']={zh:'战斗伤害公式演算',en:'Combat Damage Calculator'};M['design-loot']={zh:'掉落模拟器',en:'Loot Simulator'};M['design-quest']={zh:'公会任务交互式决策',en:'Guild Quest Decision Flow'};M['design-board']={zh:'中世纪告示板 · 任务派发',en:'Medieval Notice Board · Quest Dispatch'};M['toc-label']={zh:'目录',en:'TOC'};M['back-to-top']={zh:'↑',en:'↑'};M['about-architecture']={zh:'关键架构决策',en:'Key Architecture Decisions'};M['about-creative-stack']={zh:'创意栈：谁决定了"做什么"和"做成什么样"',en:'Creative Stack: Who Decides What & How'};M['about-frontend']={zh:'前端技术',en:'Frontend'};M['about-side-physical']={zh:'物理侧 — 以肉身与兵器为媒介的能力者，崇尚力量与荣誉',en:'Physical Branch — ability users wielding weapons and physical enhancement, valuing strength and honor'};M['about-side-magic']={zh:'魔法侧 — 以元素与秘法为媒介的能力者，追求知识与神秘',en:'Magic Branch — ability users wielding elements and arcane arts, pursuing knowledge and mystery'};M['about-side-research']={zh:'研究侧 — 无能力的普通人，依靠制度、资本与知识居中制衡，实际掌控着大陆的政治与经济命脉',en:'Research Branch — ordinary people without powers, controlling the continent through institutions, capital, and knowledge'};M['about-stage1']={zh:'阶段一：静态展示站',en:'Stage 1: Static Showcase'};M['about-stage2']={zh:'阶段二：交互化转型',en:'Stage 2: Interactive Transformation'};M['about-stage3']={zh:'阶段三：内容升维',en:'Stage 3: Content Upgrade'};M['about-stage4']={zh:'阶段四：审美打磨与元反思',en:'Stage 4: Polish & Meta-Reflection'};M['about-stat-css']={zh:'行 CSS',en:'Lines of CSS'};M['about-stat-human-ai']={zh:'人类 + AI',en:'Human + AI'};M['about-stat-js']={zh:'行 JavaScript',en:'Lines of JS'};M['about-stat-modules']={zh:'交互式模块',en:'Interactive Modules'};M['about-stat-pages']={zh:'独立页面',en:'Pages'};M['about-tech-stack']={zh:'技术栈：这份网页是用什么和怎么搭建的',en:'Tech Stack: How This Site Was Built'};M['about-th-detail']={zh:'具体表现',en:'How It Manifests'};M['about-th-lead']={zh:'谁主导',en:'Led By'};M['about-th-tech']={zh:'技术',en:'Technology'};M['about-th-tool']={zh:'工具',en:'Tool'};M['about-th-type']={zh:'决策类型',en:'Decision Type'};M['about-th-use']={zh:'用途',en:'Purpose'};M['about-th-why']={zh:'为什么选它',en:'Why'};M['about-tools']={zh:'辅助工具',en:'Supporting Tools'};M['about-worldbuild-p2']={zh:'设定集覆盖了能力体系、五大城市生态、货币与银行系统、法律与治理架构、宗教与教育、核心历史（奥莱因战争）、暗界起源假说、方言系统、艺术流派、吟游诗人文学，以及最高机密等级的"玻利瓦尔真相"与"神话位阶"档案。',en:'The setting covers the power system, five city ecosystems, currency and banking, legal and governance frameworks, religion and education, core history (the O’Lein War), dark realm origin hypotheses, dialect systems, art movements, bardic literature, and top-secret Bolivar Truth and Mythic Tier archives.'};M['novel']={zh:'小说',en:'Novel'};M['t-h1']={zh:'i18n 引擎测试',en:'i18n Engine Test'};M['t-p1']={zh:'如果右上角有 EN 按钮，外部加载成功。',en:'If EN button appears, external load works.'};M['t-p2']={zh:'点 EN 看能否切换英文。',en:'Click EN to toggle English.'};M['t-title']={zh:'测试',en:'Test'};M['x95a775']={zh:'&larr; 返回首页',en:'&larr; Back Home'};M['x9674d0']={zh:'约3.2万字设定文档，搜索让HR快速定位感兴趣的关键词，把大量信息变成可检索的参考手册。',en:'~32,000 words of setting docs — search lets recruiters quickly locate keywords, turning bulk info into a searchable reference.'};M['xf6be52']={zh:'「艾瑞斯大陆」是一个以"物理侧""魔法侧""研究侧"三足鼎立为核心的奇幻世界。物理侧能力者利用冷/热兵器和身体强化进行战斗（职阶如剑术师、骑士、刺客等），魔法侧能力者类似哈利波特或奇异博士那样施展法术（职阶如元素法师、咒术师、幻术师等），研究侧则是无能力的普通人，但依靠制度、资本与知识居中制衡，实际掌控着大陆的政治与经济命脉。',en:'The "Iris Continent" is a fantasy world built on a three-way balance: "Physical Branch," "Magic Branch," and "Research Branch." Physical ability users fight with weapons and physical enhancement (classes like Swordsmaster, Knight, Assassin); Magic users cast spells like Harry Potter or Doctor Strange (Elemental Mage, Hexer, Illusionist); the Research Branch are ordinary people without powers, but they control the continent\'s political and economic lifelines through institutions, capital, and knowledge.'};M['x9b4740']={zh:'三侧的博弈构成了整个世界的底层张力：能力者掌握力量，但研究侧掌握秩序；元老会议由物理侧与魔法侧的元老级别人物组成，拥有顶层决策权，但日常行政由研究侧把持。这种"无能力者统治有能力者"的政治结构，是艾瑞斯大陆最根本的设定特征。',en:'The three-way game forms the world\'s core tension: ability users hold power, but the Research Branch holds order. The Elder Council (top decision-making body) consists of Physical and Magic Branch elders, but daily administration is run by the Research Branch. This "powerless ruling the powerful" political structure is the defining feature of the Iris Continent.'};M['x89e706']={zh:'"物理侧是剑，魔法侧是盾，而研究侧是握剑盾的手。" —— 元老会议首席长老就职宣言',en:'"The Physical Branch is the sword, the Magic Branch is the shield, and the Research Branch is the hand that wields both." — Inaugural declaration of the Chief Elder'};M['x571ef7']={zh:'物理侧 &mdash; 血肉与钢铁',en:'Physical Branch &mdash; Flesh & Steel'};M['x140a7e']={zh:'能力偏重利用冷/热兵器和身体强化。七职阶：',en:'Abilities focus on cold/hot weapons and physical enhancement. Seven classes:'};M['x35f3fd']={zh:'剑术师',en:'Swordsmaster'};M['xaaa43e']={zh:'骑士',en:'Knight'};M['x1efe13']={zh:'刺客',en:'Assassin'};M['xd86ddb']={zh:'魔法侧 &mdash; 意志与元素',en:'Magic Branch &mdash; Will & Elements'};M['xfc62c0']={zh:'能力类似法术施展，七职阶：',en:'Abilities are spell-like. Seven classes:'};M['x46e7bd']={zh:'元素法师',en:'Elemental Mage'};M['x6e45a8']={zh:'幻术师',en:'Illusionist'};M['xc0ba69']={zh:'治愈师',en:'Healer'};M['xa0ce0c']={zh:'屏障建构师',en:'Barrier Constructor'};M['x5bbbda']={zh:'魔导师',en:'Archmage'};M['x2f6556']={zh:'召唤师',en:'Summoner'};M['xad60bb']={zh:'研究侧',en:'Research Branch'};M['x1acea3']={zh:'同一侧的能力者可以主修一个职阶并辅修另一个职阶。但物理侧不能辅修魔法侧职阶，魔法侧同理',en:'Ability users within the same branch can major in one class and minor in another. But Physical Branch cannot minor in Magic Branch classes, and vice versa.'};M['x5717ed']={zh:'每个职阶均有等级制度，每级可学习不同的能力。升级评估依据四大板块：力量、速度、技巧、思维',en:'Each class has a tier system; each tier unlocks different abilities. Promotion evaluation is based on four panels: Strength, Speed, Technique, Mind.'};M['xccaab3']={zh:'初习能力者强制从一阶开始。完成一次任务后，经四大板块考核可重新评定等级。早期寰宇城曾有枪兵初习者在讨伐魔物后，因表现出色直接从一阶跃升至三阶。',en:'Rookies must start at Tier 1. After completing a quest, they can be re-evaluated via the four panels. In early Huanyu City, a Spearman rookie jumped from Tier 1 to Tier 3 after outstanding performance in a monster subjugation.'};M['x447946']={zh:'一级机密：第十阶「神话位阶」',en:'Tier 1 Classified: Tenth Tier "Mythic Tier"'};M['x6ddf14']={zh:'十阶能力者被称为"法则化身"或"神话位阶"，其存在本身即可对局部现实规则产生可观测的、持续性的干涉。无法通过标准化考核认定晋升，唯一客观依据是引发大规模"现实参数异常现象"。',en:'Tier 10 ability users are called "Rule Incarnates" or "Mythic Tier." Their very existence causes observable, persistent interference with local reality rules. They cannot be promoted via standardized tests — the only objective evidence is triggering large-scale "reality parameter anomalies."'};M['xc3fcc4']={zh:'历史上仅三位确认案例',en:'Only three confirmed cases in history'};M['xbb81a3']={zh:'「统帅」尤尔',en:'"The Commander" Yul'};M['x466574']={zh:'「源点」玻利瓦尔',en:'"The Origin" Bolivar'};M['xb34c86']={zh:'「调停者」',en:'"The Mediator"'};M['xdd2ead']={zh:'元老会议战略框架下，神阶相关事务适用Ω级威胁预案。神阶能力者是文明面对绝对性毁灭威胁时的最终理论防线。',en:'Under the Elder Council\'s strategic framework, Mythic Tier affairs trigger Omega-level threat protocols. Mythic Tier ability users are civilization\'s final theoretical line of defense against absolute existential threats.'};M['xd12403']={zh:'寰宇市 &mdash; 物理侧聚集区',en:'Huanyu City &mdash; Physical Branch Hub'};M['x10c070']={zh:'风格近似苏联中期，粗犷尚武。居民以物理侧能力者为主，角斗场文化盛行。奥莱因教的信仰中心，广场上矗立着赫尔加·斯顿贝克的著名雕塑《尤尔之陨》。方言"奥莱因铁舌"铿锵有力，咬字极重。',en:'Style resembles mid-Soviet era — rugged and martial. Mostly Physical Branch residents, with a strong arena culture. The faith center of O\'Leinism, with Helga Steinbeck\'s famous sculpture "The Fall of Yul" in the plaza. The "O\'Lein Iron Tongue" dialect is forceful with heavy enunciation.'};M['xfac6e9']={zh:'图片由 GPT image2 生成 · 点击放大',en:'Image by GPT image2 · Click to enlarge'};M['x6c3656']={zh:'天际市 &mdash; 魔法侧聚集区',en:'Tianji City &mdash; Magic Branch Hub'};M['x1e9526']={zh:'继承古索莱恩城邦的秘法传统，神秘学与高雅气质混杂。高阶法师们倾向于使用基于双月周期的"星月循环"历法。方言"索莱恩秘语"轻柔婉转如吟唱。玻利瓦尔的相关研究在此被严密封锁。',en:'Inherits the arcane traditions of ancient Solene city-states, blending mysticism with elegance. High-rank mages prefer the "Lunar Cycle" calendar based on dual moons. The "Solene Whisper" dialect is soft and melodic. Bolivar-related research is strictly sealed here.'};M['x6f19bd']={zh:'中心市 &mdash; 研究侧总部',en:'Central City &mdash; Research Branch HQ'};M['xc64ec8']={zh:'中美体制混合物，理性秩序。中央档案馆储存着从公开史料到一级机密的所有知识。大陆图书馆、中央银行、法务研究所均设于此。方言毫无地方特色，极度清晰——"标准音"的地位类似于新华社。',en:'A Sino-American institutional hybrid, defined by rational order. The Central Archives stores all knowledge from public records to Tier 1 classified. The Continental Library, Central Bank, and Legal Research Institute are all based here. The dialect has no local flavor — extremely clear, serving as the "standard pronunciation."'};M['x7453aa']={zh:'岩湖市 &mdash; 矿业重镇',en:'Yanhu City &mdash; Mining Stronghold'};M['x32506a']={zh:'三大矿业总会寡头竞争：「深岩之子」（稀有金属）、「穹顶之指」（穹顶矿石垄断）、「磐石联合」（基础矿产）。穹顶矿脉的发现重塑了大陆力量格局。方言"深岩低语"惜字如金，近乎单词电报。',en:'Three mining guilds compete as oligopolies: "Children of Deep Rock" (rare metals), "Finger of the Dome" (dome ore monopoly), "Bedrock United" (basic minerals). The Dome Vein discovery reshaped the continent\'s power structure. The "Deep Rock Whisper" dialect is extremely terse, almost like telegrams.'};M['x209855']={zh:'富华城 &mdash; 商业中心',en:'Fuhua City &mdash; Commercial Hub'};M['xa41405']={zh:'六十年代美国黄金时期风格，市井浮华。大陆金融心脏——金狮鹫币的发行、商业储蓄银行、贸易博览会均在此。也是西尔维娅·佩恩"世俗派"艺术的发源地，《三枚银鹿角》的故事就发生在这里的"碎铃铛"小巷。方言"金湾快嘴"语速极快，连读吞音严重。',en:'1960s American golden-age style, flashy and commercial. The continent\'s financial heart — Gold Griffin coin issuance, commercial banks, and trade expos are all here. Birthplace of Sylvia Payn\'s "Secular School" art; "Three Silver Antlers" is set in its "Broken Bell" alley. The "Golden Bay Rapid" dialect is extremely fast with heavy elision.'};M['x748bb5']={zh:'各城市之间人员不断流通，内部还有"镇"和"村"等更小的聚落单位。各地方言不同，但存在通用语言。不同城市的习俗差异巨大——寰宇市和岩湖市粗犷、富华城浮华、天际市神秘、中心市理性。',en:'People flow constantly between cities, with smaller "towns" and "villages" within. Dialects differ but a common tongue exists. Customs vary wildly: Huanyu and Yanhu are rugged, Fuhua is flashy, Tianji is mystical, Central is rational.'};M['x45d5bc']={zh:'1枚金狮鹫币 = 10枚银鹿角币 = 500枚棕熊铜币',en:'1 Gold Griffin = 10 Silver Antlers = 500 Brown Bear Coppers'};M['xebda69']={zh:'研究侧主导日常行政，但顶层决策需经元老会议',en:'Research Branch runs daily administration, but top-level decisions require Elder Council approval'};M['xe4285f']={zh:'六部核心法典：《艾瑞斯大陆宪法》《能力者管理总则》《岩湖市矿区管理条例》《富华城商业规范》《日常管理条例》《地方自治权管理条例》。由中心市法务研究所制定，元老会议批准。执法部门招聘要求主修职阶三阶以上。灰色地带存在黑市，官方默许但不可招摇。',en:'Six core codices: Iris Continent Constitution, Ability User Management Code, Yanhu Mining Regulations, Fuhua Commercial Standards, Daily Management Regulations, Local Autonomy Regulations. Drafted by Central City Legal Research Institute, approved by Elder Council. Law enforcement requires Tier 3+ major class. Black markets exist in gray zones — tacitly permitted but must stay low-profile.'};M['x39c919']={zh:'教科书由中心市统一编订。6-12岁义务教育阶段后分轨：觉醒为能力者→公会考试→能力者学校（天赋异禀者学费由市级财政保障）；未觉醒→普通考试（文学/数理逻辑学/语言学）→中学/大学→可进入中心市研究院或从事商业、医疗、矿业等职业。',en:'Textbooks are centrally compiled by Central City. After 6-12 years compulsory education, students track: awakened ability users → Guild exam → ability user schools (gifted students\' tuition covered by city); non-awakened → standard exam (Literature/Mathematical Logic/Linguistics) → middle school/university → Central City Research Institute or careers in commerce, medicine, mining, etc.'};M['xb590c5']={zh:'早期研究侧压制宗教，后经元老会议裁决自由发展：',en:'The Research Branch initially suppressed religion, later ruled by Elder Council to allow free development:'};M['xd44307']={zh:'奥莱因教',en:'O\'Leinism'};M['x863d32']={zh:'玻利瓦尔信仰',en:'Bolivar Faith'};M['x2d98bd']={zh:'巫黑之神',en:'Voodoo Dark God'};M['x518e5d']={zh:'村镇设"治疗点"（普通感冒约3棕熊币，骨折等约10银鹿角币）；市区设"救治中心"，由治愈师和顶尖医疗学者驻诊，费用更高。治愈师职阶在大瘟疫（CCC前150年）中证明价值后，成为最受尊敬的职阶之一。',en:'Villages have "healing posts" (common cold ~3 coppers, fractures ~10 silvers); cities have "treatment centers" staffed by Healers and top medical scholars, at higher cost. The Healer class became one of the most respected after proving their worth in the Great Plague (150 pre-CCC).'};M['x3ce47a']={zh:'普通人以马车为主（约3棕熊币/公里），水路帆船（约2棕熊币/公里）。中心市正研发"汽车"。能力者则有专属方式：骑士马匹快3-4倍、魔导师短距离传送（六阶500米→九阶50公里）、召唤师飞龙（极速63.5米/秒）。',en:'Common folk use horse carriages (~3 coppers/km) or sailboats (~2 coppers/km). Central City is developing "automobiles." Ability users have exclusive modes: Knight horses are 3-4x faster, Archmages short-distance teleport (Tier 6: 500m → Tier 9: 50km), Summoners ride dragons (top speed 63.5 m/s).'};M['x8569ca']={zh:'奥莱因现实主义',en:'O\'Lein Realism'};M['x13a437']={zh:'索莱恩秘义派',en:'Solene Arcane School'};M['x9d12e4']={zh:'研究侧结构主义',en:'Research Branch Structuralism'};M['xc1fa50']={zh:'富华城世俗派',en:'Fuhua Secular School'};M['xf2213b']={zh:'娱乐方面：歌剧院、角斗场（物理侧）、决斗场、魔术会演（魔法侧）遍布各市。灰色地带存在赌场和妓院。四大吟游诗人——里昂·铁喉（《尤尔之陨》）、塞莱娜·维恩斯特（《玻利瓦尔的十二瞥视》）、阿尔瓦罗·克莱恩（《丰碑无需刀剑》）、西尔维娅·佩恩（《三枚银鹿角》）——各自代表不同的阵营立场。',en:'Entertainment: opera houses, arenas (Physical Branch), duel grounds, magic shows (Magic Branch) in all cities. Gray zones have casinos and brothels. Four bards — Leon Ironthroat ("Fall of Yul"), Serena Winst ("Twelve Glimpses of Bolivar"), Alvaro Klein ("Monuments Need No Swords"), Sylvia Payn ("Three Silver Antlers") — each represent different factional positions.'};M['xe71305']={zh:'在元老会议历建立前，人类文明分散成数个城邦，在恶劣环境和暗界生物的侵袭下挣扎求存。当时的主要势力包括：奥莱因王国、索莱恩城邦联盟、海裔民部落、以及散落各地的早期学者共同体。',en:'Before the Elder Council Calendar, human civilization was scattered into city-states, struggling against harsh environments and Dark Realm creatures. Major forces included: the O\'Lein Kingdom, the Solene City-State League, the Sea-Born tribes, and scattered communities of early scholars.'};M['x40bb83']={zh:'天火坠落后，婴孩尤尔（Yul）被奥莱因国王收养。尤尔展现出前所未有的物理侧能力天赋，十岁即达五阶，被尊为"奥莱因之盾"。',en:'After the Skyfire fell, the infant Yul was adopted by the O\'Lein king. Yul showed unprecedented Physical Branch talent, reaching Tier 5 at age ten, hailed as "Shield of O\'Lein."'};M['xeefe52']={zh:'战争持续数十年，以三场战役著称：血岩峡谷之战、银月原野之战、以及最终的索莱恩保卫战。',en:'The war lasted decades, marked by three famous battles: Battle of Bloodrock Canyon, Battle of Silver Moon Fields, and the final Siege of Solene.'};M['x8b5c7d']={zh:'尤尔牺牲后，联盟迅速瓦解。奥莱因陷入"守护派"与"征服派"的残酷内斗。一场针对索莱恩圣所的袭击引发了"秘法之断"——魔法侧与物理侧决裂的标志性事件。',en:'After Yul\'s death, the alliance collapsed. O\'Lein fell into brutal infighting between "Guardians" and "Conquerors." An attack on the Solene Sanctuary triggered the "Arcane Schism" — the defining event of the Magic-Physical split.'};M['xc79c5b']={zh:'奥莱因战争彻底重塑了大陆：物理侧将尤尔神化，形成奥莱因教；魔法侧主动抹去战争贡献记录，将历史转化为晦涩秘仪；海裔民吸收流散人口发展为富华城；幸存学者建立了研究侧和中心市。物理侧与魔法侧之间的不信任种子，就此埋下。',en:'The O\'Lein War reshaped the continent: the Physical Branch deified Yul, forming O\'Leinism; the Magic Branch deliberately erased their war contributions, turning history into obscure arcana; the Sea-Born absorbed refugees and grew into Fuhua City; surviving scholars founded the Research Branch and Central City. The seeds of Physical-Magic distrust were sown.'};M['xe4ac8c']={zh:'（注：上述为公众版本。战争真相中，索莱恩一位名为"博-L-瓦尔"的秘法大师在最终战役中发挥了扭转乾坤的作用，但此记录被封存于一级机密档案。详见下文。）',en:'(Note: The above is the public version. In truth, a Solene archmage named "Bo-L-Var" played a pivotal role in the final battle, but this record is sealed in Tier 1 classified archives. See below.)'};M['x2a3c78']={zh:'大瘟疫（CCC前150年）',en:'Great Plague (150 pre-CCC)'};M['x900ef9']={zh:'法典统一战争（CCC 50-80年）',en:'Codex Unification Wars (CCC 50-80)'};M['x4da2d3']={zh:'暗潮再起（CCC 220-230年）',en:'Dark Tide Resurgence (CCC 220-230)'};M['xa2a473']={zh:'富华城大萧条（CCC 350-370年）',en:'Fuhua Great Depression (CCC 350-370)'};M['xfd53ab']={zh:'穹顶发现（CCC 480年）',en:'Dome Discovery (CCC 480)'};M['x0acfa6']={zh:'《银行、货币体系与经济命脉》',en:'On Banks, Currency Systems, and Economic Lifelines'};M['xfc49cf']={zh:'阿尔伯图斯·维尔著，CCC 385年出版，大陆经济学基石之作。分四卷论述货币本质（"货币的本质是信用"）、银行系统运作、非官方经济体系（黑市、私有货币）、经济政策与周期性波动。书中那句"狮鹫俯瞰全局，鹿角穿梭流通，而沉睡的棕熊，终有一天会被贪婪或绝望唤醒"被视为对危机的隐晦预言。',en:'By Albertus Weir, published CCC 385, the cornerstone of continental economics. Four volumes cover the nature of money ("money\'s essence is credit"), banking systems, unofficial economies (black markets, private currencies), and economic policy with cyclical fluctuations. The quote "The griffin overlooks all, the antler flows through all, and the slumbering bear shall one day be woken by greed or despair" is seen as a veiled prophecy of crisis.'};M['x6df1a0']={zh:'《论能力者与非能力者的劳动》',en:'On the Labor of Ability Users and Non-Ability Users'};M['x5a2417']={zh:'维尔又一力作。提出核心框架："能力"本身是一种稀缺生产要素，其分配的不均衡是大陆经济不平等的根源。书末提出"能力税"构想——由研究侧主导征收，用于补贴非能力者公共服务。',en:'Weir\'s next major work. Core framework: "ability" itself is a scarce factor of production, and its unequal distribution is the root of continental economic inequality. The book ends with a proposed "ability tax" — collected by the Research Branch to subsidize non-ability-user public services.'};M['x3ff6ad']={zh:'《艾瑞斯大陆能力者图鉴》',en:'Illustrated Compendium of Iris Continent Ability Users'};M['x5cfa0d']={zh:'西里尔·安瑟伦著，CCC 485年初出版。系统记录十四大职阶的能力进阶图表。但最具传奇色彩的是其失落的终章"万流归源：关于\'天赋\'之根的猜想"——据传暗示了能力体系的统一起源。',en:'By Cyril Anselm, published CCC 485. Systematically charts advancement paths of all fourteen classes. Most legendary is its lost final chapter "All Streams Return to the Source: Conjecture on the Root of \'Talent\'" — rumored to hint at a unified origin of the ability system.'};M['xb84b33']={zh:'《艾瑞斯大陆社会生态研究》',en:'Studies in the Social Ecology of the Iris Continent'};M['x341a5b']={zh:'中心市社会研究所官方权威社会百科全书，定期修订。涵盖衣食住行（各地饮食/服饰/居住风格）、经济科技（职业百工图、魔导工程）、社会秩序（五大城市详述、法律与治理、公共设施与福利）。代表研究侧的"官方视角"。',en:'The Central City Social Research Institute\'s authoritative social encyclopedia, regularly revised. Covers daily life (regional food/clothing/housing), economy & tech (occupations, magitech engineering), and social order (five cities, law & governance, public facilities & welfare). Represents the Research Branch\'s "official perspective."'};M['xeab787']={zh:'一级机密：暗界五大起源假说',en:'Tier 1 Classified: Five Hypotheses on the Origin of the Dark Realm'};M['xf8f031']={zh:'暗界的起源是艾瑞斯大陆最大的未解之谜。元老会议官方立场为"不作定论，以防任何单一理论被利用"。内部档案收录五种假说：',en:'The origin of the Dark Realm is the Iris Continent\'s greatest unsolved mystery. The Elder Council\'s official position is "no definitive conclusion, lest any single theory be weaponized." Internal archives contain five hypotheses:'};M['xf2abeb']={zh:'"失败的创世"',en:'"Failed Genesis"'};M['xb42e2f']={zh:'"古神尸骸"',en:'"Corpse of an Old God"'};M['x1b9e26']={zh:'"实验失控"',en:'"Experiment Gone Wrong"'};M['x3b7f54']={zh:'"异维度入侵"',en:'"Interdimensional Invasion"'};M['x78e92f']={zh:'"集体意识阴影"',en:'"Shadow of Collective Consciousness"'};M['x5ac88e']={zh:'一级机密：玻利瓦尔的真相',en:'Tier 1 Classified: The Truth of Bolivar'};M['x296f57']={zh:'玻利瓦尔不是一个人，也不是一个神',en:'Bolivar is neither a person nor a god'};M['x929b52']={zh:'魔法侧的"集体潜意识海"中，因智慧生物的强烈情绪（尤其是对暗界的恐惧和绝境中的求生意志）与原始魔法能量结合，自发涌现出一个宏大的、非人的"自我调节系统"。它的核心指令非常简单："定义威胁"然后"凝聚力量"',en:'Within the Magic Branch\'s "collective subconscious sea," intense emotions from sentient beings (especially fear of the Dark Realm and survival will in desperation) combined with raw magical energy, spontaneously giving rise to a vast, non-human "self-regulating system." Its core directives are simple: "define threat" then "consolidate force."'};M['x010d52']={zh:'它通过定义"暗界"来创造一个可以被理解和对抗的"敌人"，同时从智慧生物中筛选出能与自身共鸣的个体，授予他们魔法能力（职阶、法术、等级）。魔法师的成长本质上是与系统同步率的提高——他们的魔法是从系统中"调用"预设好的"程序"。',en:'It creates a comprehensible, fightable "enemy" by defining the "Dark Realm," while selecting individuals who resonate with it and granting them magical abilities (classes, spells, tiers). A mage\'s growth is essentially an increase in synchronization rate with the system — their magic is "calling" preset "programs" from the system.'};M['x393bf7']={zh:'如果这个真相揭开，将导致：魔法的高贵与神秘感荡然无存；与暗界的战争可能只是系统维持自身的"无限循环"；为了维持"威胁"以继续"凝聚"，系统是否会主动强化暗界？这场战争是否永无尽头？',en:'If this truth is revealed: magic\'s nobility and mystery would evaporate; the war against the Dark Realm might be just the system\'s "infinite loop" for self-maintenance; to sustain "threat" and continue "consolidation," would the system actively strengthen the Dark Realm? Will this war ever end?'};M['x43bb0d']={zh:'安全警告：对"玻利瓦尔"的深入研究可能导致严重的认知偏差与精神不稳定。档案仅限元老会议首席长老及指定首席历史学家查阅。',en:'Security Warning: Deep research into "Bolivar" may cause severe cognitive bias and mental instability. Archives are restricted to the Chief Elder and designated Chief Historian.'};M['x0001a7']={zh:'元老会议历（CCC）',en:'Elder Council Calendar (CCC)'};M['x336dec']={zh:'同时并行的还有物理侧"奥莱因英雄纪年"、魔法侧"星月循环"（基于双月：银白色塞莱妮与湛蓝色墨恩的运行周期）、以及各地古老的地方历法。研究侧最高学术圈还使用"学术纪元"进行超长跨度研究。',en:'Parallel calendars include the Physical Branch\'s "O\'Lein Heroic Era," the Magic Branch\'s "Lunar Cycle" (based on dual moons: silvery Selene and azure Moen), and various ancient local calendars. The Research Branch\'s top academic circles also use the "Academic Epoch" for ultra-long-span research.'};M['x8b9d11']={zh:'奥莱因铁舌（寰宇市）',en:'O\'Lein Iron Tongue (Huanyu City)'};M['xc36814']={zh:'铿锵有力，咬字极重。"这件事很重要"→"杰见儿事恨仲要嗷"，尾音拉长元音',en:'Forceful with heavy enunciation. "This matters" → drawn-out final vowels.'};M['xb3a49a']={zh:'索莱恩秘语（天际市）',en:'Solene Whisper (Tianji City)'};M['x1bd9fd']={zh:'轻柔平滑如吟唱。"这个法术很精妙"→"泽伊法舒很晶缪哦"',en:'Soft and melodic like singing. "This spell is exquisite" → whispered vowels.'};M['x7529b3']={zh:'语速极快，连读吞音。"这样不行，得加钱"→"酱布行得加钱诶"',en:'Extremely fast with heavy elision. "This won\'t do, need more pay" → slurred rapid-fire.'};M['x50ef25']={zh:'极度简化，惜字如金。"下面危险，小心"→"下。险。慎。"',en:'Extremely simplified, terse. "Danger below, careful" → "Down. Danger. Careful."'};M['x73b78f']={zh:'中心市方言无任何地方特色，字正腔圆——即为通用语标准发音。任何偏离标准的发音都会被礼貌地纠正："请您按照语音标准重新陈述一遍。"',en:'Central City dialect has no local flavor — perfect enunciation, the standard pronunciation of the common tongue. Any deviation is politely corrected: "Please restate according to phonetic standards."'};M['x41172f']={zh:'含方言对照指南、机密档案、历史年表等共16个章节',en:'Includes dialect guide, classified archives, historical timeline — 16 chapters total'};M['xc42eae']={zh:'BEST-辣椒 &copy; 2026 · B站主页',en:'BEST-Chili &copy; 2026 · Bilibili'};M['wb-title']={zh:'艾瑞斯大陆设定集 · BEST-辣椒',en:'Iris Continent Setting · BEST-Chili'};M['wb-phys-berserker']={zh:'：极致攻击力',en:': Ultimate Offensive Power'};M['wb-phys-shielder']={zh:'：防御与护卫',en:': Defense and Guardian'};M['wb-phys-spearman']={zh:'：长柄武器专精',en:': Polearm Specialist'};M['wb-phys-archer']={zh:'：远程精准打击',en:': Ranged Precision Strike'};M['wb-phys-shielder-core']={zh:'盾兵',en:'Shielder'};M['wb-phys-spearman-core']={zh:'枪兵',en:'Spearman'};M['wb-phys-archer-core']={zh:'弓兵',en:'Archer'};M['wb-magic-hexer']={zh:'：诅咒与祝福',en:': Curses and Blessings'};M['wb-magic-hexer-core']={zh:'咒术师',en:'Hexer'};M['wb-currency-title']={zh:'货币体系',en:'Currency System'};M['wb-politics-title']={zh:'政治架构',en:'Political Structure'};M['wb-law-title']={zh:'法律体系',en:'Legal System'};M['wb-education-title']={zh:'教育体系',en:'Education System'};M['wb-religion-title']={zh:'宗教体系',en:'Religious System'};M['wb-medical-title']={zh:'医疗体系',en:'Medical System'};M['wb-transport-title']={zh:'交通体系',en:'Transportation System'};M['wb-art-title']={zh:'艺术与娱乐',en:'Art and Entertainment'};M['wb-art-paragraph']={zh:'大陆四大艺术流派：',en:'Four major continental art movements:'};M['wb-history-chaos']={zh:'混沌纪元',en:'The Age of Chaos'};M['wb-history-godson']={zh:'神之子与联盟',en:'The God-Son and the Alliance'};M['wb-history-betrayal']={zh:'背叛与陨落',en:'Betrayal and Fall'};M['wb-history-legacy']={zh:'战争遗产',en:'Legacy of the War'};M['wb-history-aftermath']={zh:'后续重大事件',en:'Major Subsequent Events'};M['wb-calendar-title']={zh:'八、历法体系',en:'8. Calendar Systems'};M['wb-dialect-title']={zh:'九、方言系统',en:'9. Dialect Systems'};M['wb-dialect-gold-bay']={zh:'金湾快嘴（富华城）',en:'Golden Bay Rapid (Fuhua City)'};M['wb-dialect-deep-rock']={zh:'深岩低语（岩湖市）',en:'Deep Rock Whisper (Yanhu City)'};M['wb-team-value-strong']={zh:'团队价值关联',en:'Team Value Link'};M['wb-team-value-text']={zh:'约3.2万字、16个章节、可搜索的结构化文档——这种"把想法写清楚、让别人看得懂、可检索"的能力，是游戏策划最核心的产出物。策划案、世界观文档、系统设计说明……格式不同，底层能力相通：结构化思维、细节执行力、持续迭代的耐心。',en:'~32,000 words, 16 chapters, searchable structured documentation — the ability to "write clearly, ensure readability, and make it searchable" is a game designer\'s core output. Design docs, worldbuilding, system specs... different formats, same underlying skills: structured thinking, attention to detail, patience for iteration.'};function t(k){var e=M[k];if(e)return e[L]||e['zh'];var el=document.querySelector('[data-i18n="'+k+'"]');if(el){var o=el.getAttribute('data-i18n-orig');if(o)return o;}return k;}
+function ap(){var els=document.querySelectorAll('[data-i18n]');
+for(var i=0;i<els.length;i++){var k=els[i].getAttribute('data-i18n');if(!els[i].getAttribute('data-i18n-orig'))els[i].setAttribute('data-i18n-orig',els[i].innerHTML);els[i].innerHTML=t(k);}
+var btn=document.getElementById('lang-toggle');if(btn)btn.textContent=t('lang-label');
+var ti=document.querySelector('title[data-i18n]');if(ti)document.title=t(ti.getAttribute('data-i18n'));
+localStorage.setItem('site-lang',L);}
+function tg(){L=L==='zh'?'en':'zh';ap();}
+document.addEventListener('DOMContentLoaded',function(){
+var btn=document.createElement('button');btn.id='lang-toggle';btn.textContent=t('lang-label');
+btn.style.cssText='position:fixed;top:12px;right:20px;z-index:9999;background:var(--bg-card,#fff);border:1px solid var(--border,#ccc);padding:4px 12px;border-radius:4px;font-size:12px;color:var(--text-dim,#666);cursor:pointer;font-family:inherit;letter-spacing:1px;box-shadow:0 2px 8px rgba(0,0,0,.06);';
+btn.onclick=tg;document.body.appendChild(btn);if(L==='en')ap();});
+})();
+</script>
+<script>
+(function(){
+  if (localStorage.getItem('ai-agreed') === '1') return;
+  var overlay = document.createElement('div');
+  overlay.id = 'ai-disclaimer';
+  overlay.innerHTML = '<div style="background:#fdfaf4;border:3px solid #4a3828;border-radius:12px;padding:32px 36px;max-width:600px;width:90%;max-height:85vh;overflow-y:auto;box-shadow:0 16px 48px rgba(0,0,0,0.4);text-align:center;">'+
+    '<div style="font-size:24px;margin-bottom:16px;">&#9888;&#65039;</div>'+
+    '<h2 style="font-size:18px;font-weight:700;color:#3a2a18;margin:0 0 16px 0;line-height:1.5;">AI-Assisted Design Notice<br><span style="font-size:14px;font-weight:400;color:#8a7a68;">AI \u8f85\u52a9\u8bbe\u8ba1\u58f0\u660e</span></h2>'+
+    '<p style="font-size:13px;color:#5a4a38;line-height:1.9;text-align:left;margin:0 0 16px 0;">This portfolio site incorporates certain AI-assisted elements, aiming to demonstrate the integration of \"human-AI collaboration\" to optimize quality and pipeline efficiency. All core logical architectures, math models, and world-building texts are strictly handcrafted by the author. If you are sensitive to generative AI, please browse with caution. Thank you for your understanding.</p>'+
+    '<p style="font-size:13px;color:#5a4a38;line-height:1.9;text-align:left;margin:0 0 20px 0;">\u672c\u7f51\u7ad9\u5305\u542b\u4e00\u5b9a\u6bd4\u4f8b\u7684 AI \u8f85\u52a9\u8bbe\u8ba1\u5143\u7d20\uff0c\u65e8\u5728\u5c55\u793a\u5728\u201c\u4eba\u673a\u534f\u540c\u201d\u7ba1\u7ebf\u4e2d\uff0c\u5982\u4f55\u6700\u5927\u5316\u628a\u63a7\u4f5c\u54c1\u7684\u6700\u7ec8\u8d28\u91cf\u4e0e\u7814\u53d1\u6548\u7387\u3002\u672c\u7ad9\u6240\u6d89\u5168\u90e8\u6838\u5fc3\u903b\u8f91\u3001\u6570\u503c\u67b6\u6784\u53ca\u6587\u672c\u8bbe\u5b9a\u5747\u4e3a\u672c\u4eba\u624b\u4f5c\u4ea7\u51fa\u3002\u5982\u60a8\u5bf9\u751f\u6210\u5f0f AI \u6301\u6709\u4e0d\u540c\u770b\u6cd5\uff0c\u8bf7\u8c28\u614e\u4f7f\u7528\u6216\u6d4f\u89c8\u672c\u7ad9\uff0c\u611f\u8c22\u60a8\u7684\u7406\u89e3\u3002</p>'+
+    '<button id="ai-agree-btn" style="background:#a98446;color:#fff;border:none;padding:12px 32px;border-radius:6px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;">Yes, I agree&nbsp;/&nbsp;\u662f\u7684\uff0c\u6211\u540c\u610f</button>'+
+    '</div>';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:2147483647;display:flex;align-items:center;justify-content:center;font-family:system-ui,-apple-system,sans-serif;';
+  document.body.appendChild(overlay);
+  overlay.querySelector('button').onclick = function() {
+    overlay.remove();
+    try { localStorage.setItem('ai-agreed', '1'); } catch(e) {}
+  };
+})();
+</script>
+</body>
+</html>

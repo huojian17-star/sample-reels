@@ -6,7 +6,7 @@ Injects AI disclaimer modal into all pages.
 import re, io, sys, os, shutil
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
 
-PUBLIC = 'public'
+PUBLIC = 'play'
 
 # ===== AI Disclaimer Modal =====
 DISCLAIMER_HTML = """
