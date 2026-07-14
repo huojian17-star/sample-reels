@@ -1,3 +1,4 @@
+// common.js v2 — mascot i18n + QA bilingual
 // ====== 1. 当前页导航高亮 ======
 (function() {
   var path = window.location.pathname;
