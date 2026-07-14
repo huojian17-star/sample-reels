@@ -1,0 +1,677 @@
+// common.js v2 — mascot i18n + QA bilingual
+// ====== 1. 当前页导航高亮 ======
+(function() {
+  var path = window.location.pathname;
+  var page = path.substring(path.lastIndexOf('/') + 1) || 'index.html';
+  var links = document.querySelectorAll('.nav-links a');
+  for (var i = 0; i < links.length; i++) {
+    if (links[i].getAttribute('href') === page) {
+      links[i].style.color = 'var(--accent)';
+      links[i].style.fontWeight = '500';
+    }
+  }
+})();
+
+// ====== 2. 手机汉堡菜单 ======
+(function() {
+  var navInner = document.querySelector('nav .nav-inner');
+  if (!navInner) return;
+  var links = navInner.querySelector('.nav-links');
+  if (!links) return;
+
+  var btn = document.createElement('button');
+  btn.className = 'hamburger-btn';
+  btn.innerHTML = '\u2630';
+  btn.setAttribute('aria-label', '\u83dc\u5355');
+  navInner.appendChild(btn);
+
+  btn.addEventListener('click', function() {
+    var open = links.classList.toggle('nav-open');
+    btn.innerHTML = open ? '\u2715' : '\u2630';
+  });
+
+  var items = links.querySelectorAll('a');
+  for (var i = 0; i < items.length; i++) {
+    items[i].addEventListener('click', function() {
+      links.classList.remove('nav-open');
+      btn.innerHTML = '\u2630';
+    });
+  }
+})();
+
+// ====== 3. 访客小人（从首页带来的） ======
+(function() {
+  var guestData = null;
+  try { guestData = JSON.parse(localStorage.getItem('mascot_guest') || '{}'); } catch(e) {}
+  if (!guestData || !guestData.active) return;
+  var path = window.location.pathname;
+  var page = path.substring(path.lastIndexOf('/') + 1) || 'index.html';
+  if (page !== guestData.page && !path.endsWith(guestData.page)) return;
+
+  // 清除标记，防止刷新后反复出现
+  localStorage.removeItem('mascot_guest');
+
+  // 各页面专属对话
+  var pageDialogs = {
+    'bilibili.html': {
+      zh: [
+        '这期视频的数据亮点是……你看到那个排序按钮了吗？',
+        '试试拖动排序，按播放量、点赞率、硬币比……各有发现。',
+        '雷达对比图——同时选两期视频，六维指标一目了然。',
+        '观众93.6%是男性，说明硬核游戏考据的受众很明确。',
+        '每期视频下面都有我的复盘笔记——不只是数据，还有创作心得。',
+      ],
+      en: [
+        'Check out the data highlights — see the sort buttons?',
+        'Try drag-sorting by views, likes, or coin ratio — each reveals something different.',
+        'Radar comparison chart — pick two episodes and see all six metrics at a glance.',
+        '93.6% male audience — hardcore game archaeology has a pretty clear demographic.',
+        'My review notes are under each video — not just numbers, but creative insights too.',
+      ]
+    },
+    'worldbuilding.html': {
+      zh: [
+        '欢迎来到艾瑞斯大陆！三侧体系是这个世界的基础。',
+        '物理侧有7个职阶——剑术师、骑士、刺客……你适合哪个？',
+        '五大城市各有特色，低语岭是最神秘的一个。',
+        '顶上那个搜索框我做的！作者做的。试试搜"暗界"。',
+        '机密档案里记载了暗界生物的等级分类……点到为止。',
+      ],
+      en: [
+        'Welcome to the Iris Continent! The three-branch system is the foundation of this world.',
+        '7 classes in the Physical Branch — Swordsmaster, Knight, Assassin... which one fits you?',
+        'Five cities, each with its own character. Whisper Ridge is the most mysterious.',
+        'That search box at the top? The author made it. Try searching ‘Dark Realm’.',
+        'The classified archives contain dark realm creature tier classifications... but I’ve said too much.',
+      ]
+    },
+    'novel.html': {
+      zh: [
+        '渡鸦镇的故事从一场葬礼开始。安德森夫人——记住这个名字。',
+        '瑞雯不怕冷。真的，不是比喻。她感觉不到温度。',
+        '底部有个性格测试——我上次测出来是瑞雯。',
+        '人物关系图可以悬停和点击，试试看。',
+        '索菲娜第一天上学就打架了。但她不是坏人。',
+      ],
+      en: [
+        'Raven Town begins with a funeral. Mrs. Anderson — remember that name.',
+        'Raven doesn’t feel cold. Literally. Not a metaphor. She can’t sense temperature.',
+        'There’s a personality quiz at the bottom — I got Raven last time I tried.',
+        'The character relationship map responds to hover and click — give it a try.',
+        'Sophina got into a fight on her first day of school. But she’s not a bad person.',
+      ]
+    },
+    'game-design.html': {
+      zh: [
+        '这里有5个可交互的原型工具！能力者雷达评估是第一个。',
+        '伤害计算器——选物理侧还是魔法侧，公式不一样的。',
+        '公会任务决策有5步，每一步选错都会失败。和真实设计一样。',
+        '告示板彩蛋是纯CSS画的——你看那个木板纹理。',
+        '掉落模拟器按暗界生物的稀有度表做了完整概率系统。',
+      ],
+      en: [
+        '5 interactive prototype tools here! The Ability Radar is the first one.',
+        'Damage Calculator — Physical Branch and Magic Branch use different formulas.',
+        'The guild quest flow has 5 decision steps. One wrong move and you fail — just like real design.',
+        'The notice board easter egg is pure CSS — check out that wood grain texture.',
+        'The loot simulator uses the full dark realm creature rarity table for its probability system.',
+      ]
+    },
+    'game-analysis.html': {
+      zh: [
+        '7款游戏的失败分析，从策划视角每条都值得读。',
+        '《幻》那篇——理想主义遇到了没有结局的代码。',
+        '每篇末尾有4条行业教训，可以直接用到项目里。',
+        '《寂静岭P.T.》不只是恐怖游戏，它是科乐美转型的牺牲品。',
+        '看完了可以对比文案拆解页——那边分析的是我的视频脚本。',
+      ],
+      en: [
+        '7 game failure analyses from a designer’s perspective — every one is worth reading.',
+        'The Phantom article — idealism meets code that never shipped.',
+        'Each article ends with 4 industry lessons you can apply to real projects.',
+        'Silent Hill P.T. isn’t just a horror game — it’s a casualty of Konami’s corporate pivot.',
+        'When you’re done, compare with the Script Analysis page — that one analyzes my video writing.',
+      ]
+    },
+    'script-analysis.html': {
+      zh: [
+        '7期视频文案的完整元分析——不是写了什么，是为什么这样写。',
+        '缺点复盘有7张棕红卡片，每张都是一次真实翻车。',
+        '数据验证了"高播放≠高转化"，做内容的人必看。',
+        '从Noclip到新新闻主义，我的叙事风格有清晰的来源。',
+        '最后5条方法论是可复用的——如果你也想做深度游戏内容。',
+      ],
+      en: [
+        'Complete meta-analysis of 7 video scripts — not what I wrote, but why I wrote it that way.',
+        '7 rust-red cards for weakness reviews — each one is a real post-mortem.',
+        'Data proves ‘high views != high conversion’ — essential reading for content creators.',
+        'From Noclip to New Journalism, my narrative style has clear influences.',
+        'The final 5 methodology points are reusable — if you want to make deep-dive game content too.',
+      ]
+    },
+    'about.html': {
+      zh: [
+        '关于页面——这里有人机协作的完整决策记录。',
+        '四次创意跃迁卡，每次都是作品集迭代的转折点。',
+        '整个网站AI成本不到5块钱！MVP思维的胜利。',
+        '作者，跨专业背景——跨专业做游戏。',
+        '联系方式在页面顶部——如果有游戏公司的HR在看的话……',
+      ],
+      en: [
+        'About page — here’s the full record of human-AI collaboration decisions.',
+        'Four creative leap cards, each a turning point in the portfolio’s evolution.',
+        'Total AI cost for this whole site: under $0.70! A victory for MVP thinking.',
+        'Cross-disciplinary background — bringing management thinking into game design.',
+        'Contact info’s at the top of the page — in case any game studio HR is reading...',
+      ]
+    },
+  };
+  var defaultDialogs = {
+    zh: ['这个页面挺有意思的，到处逛逛？'],
+    en: ['This page is pretty interesting — take a look around?']
+  };
+  var dialogs = pageDialogs[page] || defaultDialogs;
+
+  // 注入小人
+  var mascot = document.createElement('div');
+  mascot.id = 'guest-mascot';
+  mascot.style.cssText = 'position:fixed;bottom:80px;right:24px;z-index:9999;cursor:grab;user-select:none;';
+  mascot.innerHTML = '<div id="guest-bubble" style="position:absolute;bottom:110%;left:50%;transform:translateX(-50%);background:#fdfaf4;border:3px solid #4a3828;padding:10px 16px;max-width:380px;min-width:100px;text-align:center;font-size:13px;color:#3a2a18;line-height:1.5;word-break:keep-all;box-shadow:4px 4px 0 0 #2a1a08;font-family:Georgia,serif;cursor:pointer;display:none;"></div><img id="guest-img" src="pixel-avatar-clean-small.webp" alt="小人" style="width:80px;height:auto;display:block;" draggable="false">';
+  document.body.appendChild(mascot);
+
+  var bubble = document.getElementById('guest-bubble');
+  var img = document.getElementById('guest-img');
+  var recent = [];
+  var isDrag = false, wasDrag = false;
+  var startX, startY, startLeft, startTop, offX, offY;
+  var lastMsg = '';
+
+  function pickMsg() {
+    var isEn = (localStorage.getItem('site-lang') || 'zh') === 'en';
+    var msgs = isEn ? (dialogs.en || dialogs.zh) : dialogs.zh;
+    var pool = msgs.filter(function(m) { return m !== lastMsg && recent.indexOf(m) === -1; });
+    if (pool.length === 0) { pool = msgs; recent.length = 0; }
+    var m = pool[Math.floor(Math.random() * pool.length)];
+    recent.push(m); if (recent.length > 6) recent.shift();
+    lastMsg = m;
+    return m;
+  }
+
+  function say(msg) {
+    bubble.textContent = msg;
+    // 自适应宽度：让气泡贴合文字
+    var L = msg.length;
+    bubble.style.width = 'auto';
+    bubble.style.maxWidth = L <= 10 ? '220px' : L <= 18 ? '320px' : L <= 30 ? '420px' : '520px';
+    bubble.style.minWidth = '80px';
+    bubble.style.left = '50%';
+    bubble.style.transform = 'translateX(-50%)';
+    bubble.style.display = 'block';
+    bubble.classList.remove('pop');
+    void bubble.offsetWidth;
+    bubble.classList.add('pop');
+
+    // 防止气泡超出屏幕边缘
+    var br = bubble.getBoundingClientRect();
+    var shift = 0;
+    if (br.left < 8) shift = 8 - br.left;
+    if (br.right > window.innerWidth - 8) shift = (window.innerWidth - 8) - br.right;
+    if (shift !== 0) {
+      bubble.style.left = '50%';
+      bubble.style.transform = 'translateX(calc(-50% + ' + shift + 'px))';
+    }
+  }
+
+  // 点击/触摸小人：对话
+  var lastTalkTime = 0;
+  function doTalk() {
+    var now = Date.now();
+    if (now - lastTalkTime < 400) return; // 防双击
+    lastTalkTime = now;
+    if (wasDrag || isDrag) return;
+    img.style.transform = 'scale(1.12)';
+    setTimeout(function() { img.style.transform = ''; }, 150);
+    say(pickMsg());
+    wasDrag = false;
+  }
+  img.addEventListener('click', function(e) { e.stopPropagation(); doTalk(); });
+  img.addEventListener('touchend', function(e) { e.stopPropagation(); doTalk(); });
+
+  // 双击：回家
+  img.addEventListener('dblclick', function(e) {
+    e.preventDefault(); e.stopPropagation();
+    say((localStorage.getItem('site-lang')||'zh')==='en'?"I’m heading back! See you on the homepage~":'那我先回去了！首页等你~');
+    setTimeout(function() {
+      mascot.style.transition = 'opacity 0.4s';
+      mascot.style.opacity = '0';
+      setTimeout(function() { mascot.remove(); }, 400);
+    }, 600);
+  });
+
+  // 拖拽
+  img.addEventListener('mousedown', function(e) {
+    e.preventDefault(); e.stopPropagation();
+    wasDrag = false; isDrag = false;
+    var r = mascot.getBoundingClientRect();
+    startX = e.clientX; startY = e.clientY;
+    startLeft = r.left; startTop = r.top;
+    offX = e.clientX - r.left; offY = e.clientY - r.top;
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+  });
+  img.addEventListener('touchstart', function(e) {
+    if (e.touches.length !== 1) return;
+    e.stopPropagation();
+    wasDrag = false; isDrag = false;
+    var r = mascot.getBoundingClientRect();
+    startX = e.touches[0].clientX; startY = e.touches[0].clientY;
+    startLeft = r.left; startTop = r.top;
+    offX = e.touches[0].clientX - r.left; offY = e.touches[0].clientY - r.top;
+    document.addEventListener('touchmove', onTouch, { passive: false });
+    document.addEventListener('touchend', onUp);
+  }, { passive: true });
+
+  function onMove(e) { moveDrag(e.clientX, e.clientY); }
+  function onTouch(e) { e.preventDefault(); if (e.touches.length === 1) moveDrag(e.touches[0].clientX, e.touches[0].clientY); }
+  function moveDrag(x, y) {
+    if (!isDrag && Math.abs(x - startX) + Math.abs(y - startY) < 5) return;
+    if (!isDrag) { isDrag = true; wasDrag = true; bubble.style.display = 'none'; }
+    var tx = x - offX, ty = y - offY;
+    tx = Math.max(-40, Math.min(window.innerWidth - 40, tx));
+    ty = Math.max(-40, Math.min(window.innerHeight - 40, ty));
+    mascot.style.left = tx + 'px';
+    mascot.style.top  = ty + 'px';
+  }
+  function onUp() {
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup', onUp);
+    document.removeEventListener('touchmove', onTouch);
+    document.removeEventListener('touchend', onUp);
+    if (!isDrag) return;
+    isDrag = false;
+    wasDrag = false;
+    bubble.style.display = '';
+    if (Math.random() < 0.35) say(pickMsg());
+  }
+
+  // 来一句开场白
+  setTimeout(function() { say((localStorage.getItem('site-lang')||'zh')==='en'?"Hey, I followed you here! Look around and click me to chat~":'嘿，我跟你进来了！随便逛逛，点我聊天~'); }, 600);
+})();
+
+// ====== 4. 表格响应式——自动包裹滚动容器 + 滚动提示 ======
+(function() {
+  var tables = document.querySelectorAll('.info-table');
+  for (var i = 0; i < tables.length; i++) {
+    var t = tables[i];
+    if (t.parentNode.classList.contains('table-wrap')) continue;
+    var wrap = document.createElement('div');
+    wrap.className = 'table-wrap';
+    t.parentNode.insertBefore(wrap, t);
+    wrap.appendChild(t);
+
+    // 添加滚动提示
+    var hint = document.createElement('div');
+    hint.className = 'table-scroll-hint';
+    hint.innerHTML = '\u2194 \u5DE6\u53F3\u6ED1\u52A8\u67E5\u770B\u66F4\u591A';
+    hint.style.cssText = 'text-align:center;font-size:10px;color:var(--accent);margin-top:6px;letter-spacing:1px;display:none;';
+    wrap.parentNode.insertBefore(hint, wrap.nextSibling);
+
+    // 检测是否有溢出内容
+    function checkOverflow() {
+      hint.style.display = (wrap.scrollWidth > wrap.clientWidth + 2) ? 'block' : 'none';
+      // 右侧渐变遮罩
+      if (wrap.scrollWidth > wrap.clientWidth + 2) {
+        wrap.classList.add('has-overflow');
+      } else {
+        wrap.classList.remove('has-overflow');
+      }
+    }
+    checkOverflow();
+    wrap.addEventListener('scroll', checkOverflow);
+    window.addEventListener('resize', checkOverflow);
+  }
+})();
+
+// ====== 5. 设计标注——样式升级 + 点击查看 ======
+(function() {
+  // 强制升级所有设计标注徽章
+  var allSpans = document.getElementsByTagName('span');
+  for (var i = 0; i < allSpans.length; i++) {
+    var b = allSpans[i];
+    var t = b.getAttribute('title') || '';
+    if (t.indexOf('设计意图') === -1 && t.indexOf('设计说明') === -1) continue;
+    b.dataset.note = t;
+    b.removeAttribute('title');
+    b.style.cssText = 'font-size:13px;color:#fff;background:#a98446;padding:3px 12px;border-radius:10px;vertical-align:middle;letter-spacing:0.3px;cursor:pointer;font-weight:500;display:inline-block;margin:0 2px;';
+    b.textContent = '\u24D8 设计标注';
+  }
+
+  // 全局点击：展示 / 关闭设计说明弹窗
+  document.addEventListener('click', function(e) {
+    var badge = e.target.closest('[data-note]');
+    var existing = document.querySelector('.design-note-tip');
+
+    if (!badge) { if (existing) existing.remove(); return; }
+    e.stopPropagation();
+    if (existing && existing._badge === badge) { existing.remove(); return; }
+    if (existing) existing.remove();
+
+    var tip = document.createElement('div');
+    tip.className = 'design-note-tip';
+    tip._badge = badge;
+    tip.textContent = badge.dataset.note;
+    tip.style.cssText = 'position:absolute;z-index:99999;background:#fffef5;border:2px solid #a98446;border-radius:6px;padding:12px 16px;font-size:13px;color:#333;line-height:1.8;max-width:300px;box-shadow:0 8px 30px rgba(0,0,0,0.18);pointer-events:auto;';
+    document.body.appendChild(tip);
+
+    var br = badge.getBoundingClientRect();
+    tip.style.left = Math.max(8, Math.min(window.innerWidth - 308, br.left)) + 'px';
+    tip.style.top = (br.bottom + 8) + 'px';
+
+    tip.addEventListener('click', function(ev) { ev.stopPropagation(); tip.remove(); });
+  });
+})();
+
+// ====== 6. 侧边栏目录导航 ======
+(function() {
+  function buildTOC() {
+    var cs = document.querySelector('.content-section');
+    if (!cs) return;
+    var hs = cs.querySelectorAll('h2, h3');
+    if (hs.length < 2) return;
+
+    // 构建树
+    var tree = [], curH2 = null;
+    for (var i = 0; i < hs.length; i++) {
+      var h = hs[i];
+      if (!h.id) h.id = 'toc-' + i;
+      if (h.tagName === 'H2') { curH2 = { el: h, id: h.id, text: h.textContent.trim(), kids: [] }; tree.push(curH2); }
+      else if (h.tagName === 'H3' && curH2) { curH2.kids.push({ el: h, id: h.id, text: h.textContent.trim() }); }
+    }
+    if (tree.length < 2) return;
+
+    // 抽屉面板
+    var side = document.createElement('nav');
+    side.id = 'page-toc';
+    side.style.cssText = 'position:fixed;left:0;top:70px;width:260px;max-height:calc(100vh - 80px);overflow-y:auto;z-index:95;font-size:12px;line-height:1.7;background:#fff;border-right:1px solid #e6e1da;border-bottom:1px solid #e6e1da;border-radius:0 8px 8px 0;padding:20px;box-shadow:4px 4px 24px rgba(0,0,0,0.1);transform:translateX(-100%);transition:transform 0.3s ease;';
+    side.setAttribute('aria-label', 'page nav');
+
+    var hd = document.createElement('div');
+    hd.textContent = '目录';
+    hd.style.cssText = 'font-size:11px;font-weight:600;color:#70747c;letter-spacing:2px;margin-bottom:12px;';
+    side.appendChild(hd);
+
+    var ul = document.createElement('ul');
+    ul.style.cssText = 'list-style:none;padding:0;margin:0;';
+    var links = [];
+
+    function makeLink(item, indent) {
+      var li = document.createElement('li');
+      var a = document.createElement('a');
+      a.href = '#' + item.id;
+      a.textContent = item.text;
+      a.style.cssText = 'display:block;padding:' + (indent ? '3px 8px 3px 20px' : '4px 8px') + ';color:#70747c;text-decoration:none;border-radius:4px;transition:all 0.15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:' + (indent ? '11px' : '12px') + ';';
+      a.onmouseenter = function() { if (!this.classList.contains('active')) this.style.background = '#f4f1eb'; };
+      a.onmouseleave = function() { if (!this.classList.contains('active')) this.style.background = ''; };
+      a.onclick = function(e) {
+        e.preventDefault();
+        var t = document.getElementById(this.getAttribute('href').slice(1));
+        if (t) { window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' }); }
+        toggleSidebar();
+      };
+      li.appendChild(a);
+      links.push({ link: a, el: item.el });
+      return li;
+    }
+
+    for (var ti = 0; ti < tree.length; ti++) {
+      ul.appendChild(makeLink(tree[ti], false));
+      for (var ci = 0; ci < tree[ti].kids.length; ci++) {
+        ul.appendChild(makeLink(tree[ti].kids[ci], true));
+      }
+    }
+    side.appendChild(ul);
+
+    // 标签
+    var tab = document.createElement('div');
+    tab.id = 'toc-tab';
+    tab.textContent = '\u2630 \u76EE\u5F55';
+    tab.title = '';
+    tab.style.cssText = 'position:fixed;left:0;top:50%;transform:translateY(-50%);z-index:96;min-width:62px;height:30px;background:#fff;border:1px solid #e6e1da;border-left:none;border-radius:0 8px 8px 0;cursor:grab;display:flex;align-items:center;justify-content:center;gap:4px;padding:4px 10px;font-size:13px;color:#70747c;box-shadow:2px 2px 8px rgba(0,0,0,0.06);transition:left 0.3s ease;line-height:1;user-select:none;';
+
+    var overlay = document.createElement('div');
+    overlay.id = 'toc-overlay';
+    overlay.style.cssText = 'position:fixed;inset:0;z-index:94;background:rgba(0,0,0,0.3);display:none;';
+
+    var open = false;
+    function toggleSidebar() {
+      open = !open;
+      side.style.transform = open ? 'translateX(0)' : 'translateX(-100%)';
+      tab.style.left = open ? '260px' : '0';
+      overlay.style.display = open ? 'block' : 'none';
+      document.body.style.overflow = open ? 'hidden' : '';
+    }
+
+    tab.onclick = function(e) { if (!wasSwiping) toggleSidebar(); };
+    overlay.onclick = toggleSidebar;
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && open) toggleSidebar(); });
+
+    // 拖拽展开
+    var wasSwiping = false;
+    var dragStartX = 0, dragOpenAtStart = false;
+
+    function onDragStart(e) {
+      wasSwiping = false;
+      dragStartX = e.touches ? e.touches[0].clientX : e.clientX;
+      dragOpenAtStart = open;
+      side.style.transition = 'none';
+      tab.style.transition = 'none';
+      document.addEventListener('mousemove', onDragMove);
+      document.addEventListener('mouseup', onDragEnd);
+      document.addEventListener('touchmove', onDragMove, { passive: false });
+      document.addEventListener('touchend', onDragEnd);
+    }
+    function onDragMove(e) {
+      var x = e.touches ? e.touches[0].clientX : e.clientX;
+      var delta = x - dragStartX;
+      if (Math.abs(delta) < 3) return;
+      wasSwiping = true;
+      if (e.touches) e.preventDefault();
+      // 仅右拖展开、左拖关闭
+      if (delta > 0 && !open) {
+        var p = Math.min(delta / 260, 1);
+        var ease = 1 - (1 - p) * (1 - p); // ease-out
+        side.style.transform = 'translateX(' + (-100 + ease * 100) + '%)';
+        tab.style.left = (ease * 260) + 'px';
+      } else if (delta < 0 && open) {
+        var p2 = Math.min(-delta / 260, 1);
+        var ease2 = 1 - (1 - p2) * (1 - p2);
+        side.style.transform = 'translateX(' + (-ease2 * 100) + '%)';
+        tab.style.left = (260 - ease2 * 260) + 'px';
+      }
+    }
+    function onDragEnd() {
+      document.removeEventListener('mousemove', onDragMove);
+      document.removeEventListener('mouseup', onDragEnd);
+      document.removeEventListener('touchmove', onDragMove);
+      document.removeEventListener('touchend', onDragEnd);
+      side.style.transition = 'transform 0.3s ease';
+      tab.style.transition = 'left 0.3s ease';
+      if (wasSwiping) {
+        // 判定：拖过一半就切换状态
+        var curX = parseFloat(side.style.transform.replace('translateX(', '')) || 0;
+        open = curX > -50;
+        side.style.transform = open ? 'translateX(0)' : 'translateX(-100%)';
+        tab.style.left = open ? '260px' : '0';
+        overlay.style.display = open ? 'block' : 'none';
+        document.body.style.overflow = open ? 'hidden' : '';
+      }
+    }
+    tab.addEventListener('mousedown', onDragStart);
+    tab.addEventListener('touchstart', onDragStart, { passive: true });
+
+    // 左边缘隐形拖拽带（方便手指从屏幕左边滑入）
+    var edge = document.createElement('div');
+    edge.style.cssText = 'position:fixed;left:0;top:0;bottom:0;width:10px;z-index:97;';
+    edge.addEventListener('mousedown', onDragStart);
+    edge.addEventListener('touchstart', onDragStart, { passive: true });
+    document.body.appendChild(edge);
+
+    document.body.appendChild(side);
+    document.body.appendChild(tab);
+    document.body.appendChild(overlay);
+
+    // IntersectionObserver
+    var obs = new IntersectionObserver(function(entries) {
+      for (var ei = 0; ei < entries.length; ei++) {
+        if (!entries[ei].isIntersecting) continue;
+        var id = entries[ei].target.id;
+        for (var ai = 0; ai < links.length; ai++) {
+          if (links[ai].el.id === id) {
+            links[ai].link.classList.add('active');
+            links[ai].link.style.background = '#a98446';
+            links[ai].link.style.color = '#fff';
+          } else {
+            links[ai].link.classList.remove('active');
+            links[ai].link.style.background = '';
+            links[ai].link.style.color = '';
+          }
+        }
+        break;
+      }
+    }, { rootMargin: '-80px 0px -60% 0px' });
+
+    for (var oi = 0; oi < links.length; oi++) obs.observe(links[oi].el);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', buildTOC);
+  else buildTOC();
+})();
+
+// ====== 7. 回到顶部 ======
+(function() {
+  var btn = document.createElement('button');
+  btn.className = 'back-to-top';
+  btn.innerHTML = '\u2191';
+  btn.setAttribute('aria-label', '\u56de\u5230\u9876\u90e8');
+  document.body.appendChild(btn);
+
+  var ticking = false;
+  window.addEventListener('scroll', function() {
+    if (!ticking) {
+      requestAnimationFrame(function() {
+        btn.classList.toggle('show', window.scrollY > 300);
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+
+  btn.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+
+// ====== 8. 吉祥物智能问答 (Bilingual CN/EN) ======
+window.__MASCOT_QA = (function() {
+  var DB = [
+    { q: ['名字','叫什么','你是谁','你的名字'], a: '我叫 BEST-辣椒，是作者的像素分身！你也可以直接叫我「辣椒」~', en_q: ['name','who are you','your name','identity'], en_a: "I’m BEST-Chili, The Author’s pixel avatar! You can just call me 'Chili'~" },
+    { q: ['作者','主人','作者','谁做的'], a: '我的作者是作者，跨专业背景意向游戏策划/产品经理~', en_q: ['deng kaiheng','owner','author','creator','who made'], en_a: 'My creator is The Author, a cross-disciplinary background at Cross-disciplinary background, aiming for game design / product manager roles~' },
+    { q: ['干什么','干嘛','是什么','什么网站','介绍','说明','这是','干嘛的','用途','功能','有什么','有哪些','能干嘛','能做什么','有什么内容','干啥','干啥的'], a: '这是作者的作品集网站！包含 B站内容创作（7期视频+数据雷达）、艾瑞斯大陆世界观设定集（约3.2万字）、渡鸦镇小说（12章+性格测试）、5个可交互游戏原型（雷达评估/战斗计算器/掉落模拟等）、7款游戏策划视角拆解、文案元分析，以及游戏经历汇总。导航栏有全部入口，每个页面都有交互彩蛋——试试拖拽我到处走？', en_q: ['what','what is this','intro','introduction','about','purpose','features','what can you do','overview','what does','what site'], en_a: "This is The Author’s career portfolio website! It features: Bilibili content creation (7 videos + data radar), the Iris Continent worldbuilding compendium (~32,000 words), the Raven Town novel (12 chapters + personality quiz), 5 interactive game design prototypes (ability radar / combat calculator / loot simulator and more), 7 game deconstructions from a designer’s perspective, copywriting meta-analysis, and a game history summary. Everything’s in the nav bar — and every page has interactive easter eggs. Try dragging me around?" },
+    { q: ['联系','邮箱','电话','怎么找','联系方式'], a: '邮箱 deng_kaiheng04@foxmail.com，电话 。更多信息在「关于」页面顶部~', en_q: ['contact','email','phone','how to reach','get in touch'], en_a: 'Email: deng_kaiheng04@foxmail.com, Phone: . More info at the top of the About page~' },
+    { q: ['学校','大学','学历','专业'], a: '跨专业背景，本科。', en_q: ['school','university','degree','major','education'], en_a: 'Cross-disciplinary background, ' },
+    { q: ['创作','找工作','岗位','意向','策划','产品经理'], a: '作者主投游戏策划和产品经理岗，校招方向。这个网站就是他的作品集~', en_q: ['job','looking for','position','game design','product manager','career'], en_a: "He’s targeting game design and product manager roles through campus recruitment. This website is his portfolio~" },
+    { q: ['网站','网页','作品集','怎么做的','怎么做','技术'], a: '纯 HTML/CSS/JS，零框架零依赖。全程 AI 协作开发，累计 200+ 次交互编辑，总成本不到 5 块钱！', en_q: ['website','webpage','tech stack','how built','technology','how was'], en_a: 'Pure HTML/CSS/JS — zero frameworks, zero dependencies. Built entirely through AI-assisted collaboration, 200+ interactive editing rounds, total cost under 5 RMB!' },
+    { q: ['成本','多少钱','花费','价格','钱','5元'], a: '整个网站的总 AI 调用成本不到 5 元人民币。一杯咖啡的价格，验证了一个完整的创意假设——这就是 MVP 思维。', en_q: ['cost','price','money','how much','cheap','5 rmb','budget'], en_a: "Total AI API cost for the entire site: under 5 RMB. That’s one cup of coffee to validate a complete creative hypothesis — that’s MVP thinking right there." },
+    { q: ['b站','bilibili','B站','频道','视频'], a: 'B站频道叫「BEST-辣椒」，主打「消失游戏开发日志」系列，7期视频，累计 19.7 万播放。在导航栏点「B站」就能看到完整数据和雷达对比~', en_q: ['bilibili','channel','videos','b站','b site'], en_a: "The Bilibili channel is called 'BEST-Chili,' featuring the 'Lost Game Dev Log' series — 7 videos with 197K total views. Click 'Bilibili' in the nav bar to see the full data and comparison radar~" },
+    { q: ['播放','播放量','数据','粉丝'], a: 'B站累计 19.7 万播放，主页的粉丝和播放数据通过 GitHub Actions 每 30 分钟自动更新一次（经历了 5 次方案迭代才跑通）。', en_q: ['views','plays','data','followers','stats','metrics'], en_a: '197K total views on Bilibili. The follower and view stats on the homepage auto-update every 30 minutes via GitHub Actions — took 5 iterations to get it working reliably.' },
+    { q: ['最火','最热','最高播放','最受欢迎'], a: '#3 细胞分裂那期有 4.6 万播放，是目前最高的！不过 #1 热血无赖的硬币/点赞比最高，52%——因为联系到了原游戏编剧做独家访谈。', en_q: ['most popular','most views','best performing','top video','highest'], en_a: "Episode #3 on Splinter Cell hit 46K views — the highest so far! But episode #1 on Sleeping Dogs has the best coin-to-like ratio at 52%, because he landed an exclusive interview with the original game writer." },
+    { q: ['系列','消失游戏','开发日志','视频系列'], a: '「消失游戏开发日志」——专注追溯被取消、被雪藏、胎死腹中的游戏背后的开发故事。已发布7期，从寂静岭P.T.到国产沙盒欺诈案都有涉及。', en_q: ['series','lost game','dev log','video series','lost games'], en_a: "'Lost Game Dev Log' — a series tracing the development stories behind cancelled, shelved, and stillborn games. 7 episodes so far, covering everything from Silent Hills P.T. to a Chinese sandbox fraud case." },
+    { q: ['世界观','设定','艾瑞斯','大陆','设定集'], a: '「艾瑞斯大陆」——约3.2万字的原创奇幻世界观。物理侧/魔法侧/研究侧三足鼎立，14个职阶，五大城市，还有机密档案和神话位阶！在导航栏点「设定集」进去看~', en_q: ['worldbuilding','setting','iris','continent','compendium','lore'], en_a: "'The Iris Continent' — an original fantasy worldbuilding project at ~32,000 words. Three factions (Physical / Magical / Research), 14 classes, five major cities, plus classified archives and mythic ranks! Click 'Setting Compendium' in the nav bar~" },
+    { q: ['字数','多少字','世界观多少','几万字'], a: '设定集约 3.2 万字，之前写的是六万字——最近重新统计后修正了。', en_q: ['word count','how many words','how long','length'], en_a: 'The setting compendium is about 32,000 words. It was previously listed as 60,000 — recently corrected after a proper recount.' },
+    { q: ['物理侧','魔法侧','研究侧','侧系','能力'], a: '物理侧用剑，魔法侧施法，研究侧是无能力的普通人——但他们靠制度和知识掌控着大陆的实权。这就是艾瑞斯大陆最核心的设定张力。', en_q: ['physical','magical','research','faction','branch','powers','ability system'], en_a: "The Physical branch wields swords, the Magical branch casts spells, and the Research branch has no powers at all — yet they control the continent through institutions and knowledge. That’s the core dramatic tension of the Iris Continent." },
+    { q: ['城市','五大城市','什么地方','地点'], a: '寰宇市（物理/尚武）、天际市（魔法/神秘）、中心市（研究/理性）、岩湖市（矿业/粗犷）、富华城（商业/浮华）。设定集里有每座城市的全景图哦~', en_q: ['cities','five cities','locations','places','city'], en_a: 'Cosmos City (Physical / Martial), Skyline City (Magical / Mystical), Central City (Research / Rational), Rocklake City (Mining / Rugged), and Fortune City (Commerce / Glamour). There are panoramic illustrations of each city in the compendium~' },
+    { q: ['小说','渡鸦镇','故事','瑞雯','索菲娜','彼得','角色'], a: '《渡鸦镇》——12章哥特式小镇叙事。从一场葬礼开始，三个少年各自以不同的方式对抗沉闷的现实。导航栏点「小说」，底部还有性格测试~', en_q: ['novel','raven town','story','raven','sophina','peter','characters'], en_a: "'Raven Town' — a 12-chapter gothic small-town narrative. It starts at a funeral, and three teenagers each fight against the stifling reality in their own way. Click 'Novel' in the nav bar — there’s a personality quiz at the bottom too~" },
+    { q: ['游戏设计','交互','原型','雷达','计算器','掉落','任务','告示板'], a: '「游戏设计」页面有5个可交互原型：能力者雷达评估、战斗伤害计算器、掉落模拟器、公会任务决策、中世纪告示板。都是可以上手玩的——导航栏点「游戏设计」~', en_q: ['game design','prototype','interactive','radar','calculator','loot','quest','notice board'], en_a: "The 'Game Design' page has 5 interactive prototypes: Ability Radar Assessment, Combat Damage Calculator, Loot Simulator, Guild Quest Decision Maker, and a Medieval Notice Board. All playable — click 'Game Design' in the nav bar~" },
+    { q: ['游戏拆解','拆解','分析','失败'], a: '「游戏拆解」页面从策划视角分析了7款游戏的失败原因——《幻》《寂静岭P.T.》《细胞分裂》《热血无赖》……每篇结尾有4条行业教训。导航栏点「游戏拆解」~', en_q: ['deconstruction','analysis','breakdown','failure','game analysis'], en_a: "The 'Game Deconstructions' page analyzes 7 games from a designer’s perspective — 'Phantom,' 'Silent Hills P.T.,' 'Splinter Cell,' 'Sleeping Dogs,' and more. Each entry ends with 4 industry takeaways. Click 'Game Deconstructions' in the nav bar~" },
+    { q: ['文案拆解','文案','叙事','脚本','方法论'], a: '「文案拆解」是对7期视频文案本身的元分析——不只是「写了什么」，更是「为什么这么写」。包含缺点复盘、数据验证和5条可复用方法论。', en_q: ['copywriting','writing','script','meta analysis','methodology','narrative'], en_a: "The 'Copywriting Analysis' page is a meta-analysis of the 7 video scripts themselves — not just 'what was written,' but 'why it was written that way.' Includes weakness retrospectives, data validation, and 5 reusable methodology takeaways." },
+    { q: ['游戏经历','玩过','游戏时长','什么游戏','apex','gta','荒野大镖客','赛博朋克'], a: '作者游戏时长 3000+ 小时！APEX 1200小时钻石段位，荒野大镖客2全成就，GTA系列全通关……导航栏「游戏经历」有完整列表和封面图~', en_q: ['game history','games played','playtime','apex','gta','red dead','cyberpunk','hours'], en_a: '3,000+ hours of playtime! 1,200 hours in Apex Legends at Diamond rank, 100% completion on Red Dead Redemption 2, all GTA titles cleared... Click \'Game History\' in the nav bar for the full list with cover art~' },
+    { q: ['ai','人工智能','claude','gpt','大模型','prompt'], a: '这个网站是用 Claude 做的！200+ 次交互编辑，纯 AI 协作。作者负责方向、内容和审美判断，AI 负责编码执行——这套方法论叫「人机协作」，「关于」页面有完整记录。', en_q: ['ai','artificial intelligence','claude','gpt','llm','prompt','how was'], en_a: "This site was built with Claude! 200+ interactive editing sessions, pure AI collaboration. The author handled direction, content, and aesthetic judgment — AI handled code execution. This methodology is called 'human-AI collaboration.' Full documentation on the About page." },
+    { q: ['面试','hr','招聘','简历','pdf'], a: '网站首页有精简版 PDF 作品集，直接打印就行。如果 HR 在看的话——欢迎点击导航栏到处逛逛，每个页面都有交互彩蛋~', en_q: ['interview','hr','recruiting','resume','pdf','hiring'], en_a: "There’s a compact PDF portfolio version on the homepage — ready to print. If you’re an HR person reading this — feel free to explore the nav bar. Every page has interactive easter eggs~" },
+    { q: ['人物','图片','地图','全景','封面','图'], a: '网站里的地图、城市全景图、职阶示意图、战争示意图和游戏封面都是由 GPT image2 生成的，每张图片下面都有标注。', en_q: ['images','maps','panoramic','cover art','illustrations','pictures'], en_a: 'All the maps, city panoramas, class diagrams, battle illustrations, and game cover art on this site were generated by GPT image2. Every image has a caption underneath.' },
+    { q: ['百度','统计','访问','流量','谁看过'], a: '网站接入了百度统计，作者可以看到有多少人来访、看了哪些页面。不过不会收集任何个人信息——放心逛~', en_q: ['analytics','traffic','visitors','baidu','tracking','who visited'], en_a: "The site uses Baidu Analytics, so the author can see how many visitors came and which pages they viewed. No personal data is collected though — browse worry-free~" },
+    { q: ['github','actions','更新','实时','同步','数据更新'], a: 'B站数据通过 GitHub Actions 每 30 分钟自动更新一次。这个方案是经历了 4 次失败（Vercel→Cloudflare→CORS代理→EdgeOne）之后才找到的第 5 种方法。「关于」页面有完整的迭代记录~', en_q: ['github','actions','update','sync','automation','data update','live'], en_a: 'Bilibili stats update every 30 minutes via GitHub Actions. This solution was the 5th attempt after 4 failures (Vercel → Cloudflare → CORS proxy → EdgeOne). Full iteration log on the About page~' },
+    { q: ['跨专业','为什么选','为什么做游戏','专业不对口'], a: '跨专业到游戏策划，看起来跨度大，但其实逻辑是通的——管理学教的是「如何在资源约束下协调多方达成目标」，游戏策划做的也是这件事。B站视频系列、世界观设定、交互原型这些都不是课堂作业，是实打实的自驱产出。跨专业不可怕，可怕的是跨了还不做事。', en_q: ['cross disciplinary','business','why games','switching','different major','background'], en_a: "Cross-disciplinary to game design looks like a big leap, but the logic actually lines up — management teaches 'how to coordinate multiple stakeholders under resource constraints to achieve a goal,' which is exactly what game design is. Plus, the Bilibili series, the worldbuilding compendium, the interactive prototypes — none of these were class assignments. They’re all self-driven output. Switching majors isn’t scary. What’s scary is switching without doing the work. He did the work." },
+    { q: ['实习','工作经历','经验','做过什么'], a: '作者目前是校招状态，没有正式的工作经历。但B站自媒体运营了三年、六万字世界观独立构建、这个网站从零搭建——这些都不是等着被布置的作业，而是自己找方向、自己定标准、自己迭代出来的项目。某种意义上，比被动接受的实习更有说服力。', en_q: ['internship','experience','work','projects','what has he done','background'], en_a: "He’s currently a graduating student with no formal work experience. But running a Bilibili channel for three years, independently building a 32,000-word world, and creating this site from scratch — none of these were assigned. He found the direction, set his own standards, and iterated on his own. In a way, that’s more telling than passive internships." },
+    { q: ['优势','竞争力','亮点','凭什么','为什么录用','录用你'], a: '三个核心差异点：1）有完整的从0到1产出能力——六万字设定不是「想法」，是写完的文档；2）能用AI大幅提效——这个网站不到5元成本就是证明；3）数据意识——B站每期视频都做指标复盘，不是凭感觉做事。策划岗最怕招到「想法很多但无法落地」的人，而他刚好相反。', en_q: ['advantages','strengths','why hire','competitive','differentiators','edge','selling point'], en_a: "Three key differentiators: 1) Proven 0-to-1 execution — the 32,000-word compendium isn’t an 'idea,' it’s a finished document; 2) AI leverage — this entire site cost less than 5 RMB, proving real productivity gains; 3) Data literacy — every Bilibili video has a metrics review, not gut-feel decisions. The worst hire for a design role is someone with 'lots of ideas but zero execution.' He’s the opposite." },
+    { q: ['缺点','不足','短板','弱项'], a: '最明显的短板是没有实际游戏项目经验——这是事实，校招生也正常。但反过来看，三年自驱产出（视频+设定+网站）说明他不需要等别人给任务才能动。另一个可以提升的点是代码能力不是科班水平，但作为策划，能跟程序沟通就够了——这个网站的代码量本身就是证明。', en_q: ['weaknesses','shortcomings','disadvantages','gaps','limitations'], en_a: "The most obvious gap is no shipped game title — which is true, and normal for a new grad. But three years of self-driven output (videos + compendium + website) shows he doesn’t need someone to hand him tasks. Another area to grow: his coding isn’t CS-degree level, but as a designer, communicating with engineers is the goal — and the codebase of this site speaks for itself." },
+    { q: ['职业规划','规划','未来','目标','发展','方向','想做什么','生涯'], a: '作者想做系统策划或数值策划——喜欢在规则和数据之间找平衡。短期目标是进一家有成熟研发流程的公司，跟着项目走完完整研发周期；长期希望能在世界观驱动的RPG或模拟经营方向深耕。这个网站和设定集就是方向感的证据。', en_q: ['career plan','future','goals','direction','ambition','aspiration','what next'], en_a: "He’s aiming for systems design or numerical design — loves finding balance between rules and data. Short-term: join a company with a mature development pipeline and complete a full production cycle. Long-term: go deep in worldbuilding-driven RPGs or simulation/management games. This website and the compendium are proof of direction." },
+    { q: ['薪资','工资','待遇','月薪','年薪','期望','多少钱一个月'], a: '校招期望薪资在7k-10k之间（视城市和公司而定），更看重岗位匹配度和成长空间。如果有作品集加成的话，可以面议~', en_q: ['salary','pay','compensation','expectation','monthly'], en_a: 'Expected new-grad salary: 7K–10K RMB/month (depending on city and company). Role fit and growth potential matter more. Negotiable with portfolio bonus points~' },
+    { q: ['入职','到岗','报到','什么时候','毕业'], a: '可沟通。', en_q: ['start date','onboarding','when start','graduate','available','graduation'], en_a: "Available. Specific timing is flexible~" },
+    { q: ['加班','工作强度','996','熬夜'], a: '作者对加班的看法是：有意义的冲刺期可以接受（比如版本上线前），但长期无效加班消耗的是创造力和判断力——这两样恰恰是策划岗最需要的。做B站视频的DDL压力也没少经历，所以抗压能力没问题，但不会被压垮。', en_q: ['overtime','996','work hours','crunch','work life balance'], en_a: "His take on crunch: meaningful sprint periods are fine (e.g., pre-launch), but chronic low-impact overtime drains creativity and judgment — the two things a designer needs most. He’s been through plenty of deadline pressure making Bilibili videos, so stress resistance is there. But he won’t burn out for nothing." },
+    { q: ['行业','游戏行业','看法','趋势','前景','现状'], a: '游戏行业正在经历一个「挤泡沫」的阶段——版号收紧、买量成本飙升、玩家对换皮游戏的容忍度降到冰点。这对认真做产品的团队其实是好事：劣质供给出清，优质内容的价值会凸显。作者做「消失游戏开发日志」系列就是相信——游戏不只是商业，值得被认真记录和分析。', en_q: ['industry','gaming industry','trend','landscape','market','state of'], en_a: "The gaming industry is in a 'bubble-squeezing' phase — tighter licensing, soaring user acquisition costs, and zero tolerance for reskin games. That’s actually good news for teams making real products: low-quality supply gets flushed out, and good content stands out. That’s exactly why he started the 'Lost Game Dev Log' series — games deserve to be documented and analyzed, not just monetized." },
+    { q: ['时间','多久','花了多久','多长时间','做了多久'], a: '这个网站从2025年4月开始做，断断续续迭代了几个月，累计200+次交互编辑。B站视频系列从2023年11月开始，世界观也是差不多同期启动的。三个项目并行推进，属于长期主义型选手。', en_q: ['how long','time spent','duration','timeline','when start'], en_a: "This website started in April 2025, with on-and-off iteration over several months, totaling 200+ editing sessions. The Bilibili video series started November 2023, and the worldbuilding project kicked off around the same time. Three projects in parallel — he’s a long-game kind of person." },
+    { q: ['天气','下雨','热','冷','温度','气温','今天天气'], a: '我这里永远是恒温的——像素没有体温，也就没有四季。不过如果你那边天气不好，正好待在家逛我的网站呀~', en_q: ['weather','rain','hot','cold','temperature','raining'], en_a: "It’s always room temperature here — pixels don’t have body heat, so there’s no seasons either. But if the weather’s bad where you are, perfect excuse to stay in and explore my website~" },
+    { q: ['吃饭','吃了','饿','吃了吗','你喜欢吃','食物','好吃','晚饭','午饭','早餐'], a: '我是一张图，不用吃饭。但如果要我推荐的话——像素风味的方块面包，8-bit 口味的汽水，再配一盘低多边形烤肉。开玩笑的，快去吃饭吧别饿着~', en_q: ['food','eat','hungry','dinner','lunch','breakfast','meal'], en_a: "I’m an image — I don’t eat. But if I had to recommend something: pixel-flavored cube bread, 8-bit soda, and a side of low-poly roast. Just kidding — go eat something before you starve~" },
+    { q: ['开心','高兴','心情','难过','情绪','生气','感觉','怎么样'], a: '我只是一堆像素点组成的图像，没有真实的情绪——但每次有人跟我聊天我都觉得自己的分辨率变高了那么一点点！你今天心情如何？', en_q: ['happy','sad','mood','feeling','emotion','angry','how are you'], en_a: "I’m just a bunch of pixels — I don’t have real emotions. But every time someone chats with me, I feel my resolution go up just a tiny bit! How are you doing today?" },
+    { q: ['几岁','年龄','多大','多大了','年纪'], a: '我是2025年4月被捏出来的，算下来应该叫一岁半？不过作者说他花了几分钟就捏完了我——所以从工作量来说，我可能只有几分钟。', en_q: ['age','how old','birthday','years old'], en_a: "I was created in April 2025, so that makes me about one and a half? Although the author says he put me together in a few minutes — so in terms of actual work, I might only be a few minutes old." },
+    { q: ['爱好','喜欢什么','兴趣','喜欢做','平时做','会做什么'], a: '我的爱好包括：被拖拽、说废话、在首页飘来飘去、以及回答各种问题。对了，我特别喜欢被双击——那样我就能飞回家了！', en_q: ['hobbies','interests','what do you like','what do you do'], en_a: "My hobbies include: getting dragged around, saying nonsense, floating on the homepage, and answering questions. Oh, and I especially love being double-clicked — that sends me flying back home!" },
+    { q: ['可爱','好看','帅','丑','像素','形象','像素风','长什么样'], a: '谢谢夸奖！我是作者在一个像素生成器里花了几分钟捏出来的，顶着一个小圆脸和像素头发。虽然比不上3A大作的角色建模，但胜在……加载速度快？', en_q: ['cute','looks','appearance','pixel art','ugly','handsome','what do you look like'], en_a: "Thanks! The author threw me together in a pixel art generator in a few minutes — round face, pixel hair. I might not match AAA character models, but hey... I load really fast?" },
+    { q: ['真人','假人','是人吗','ai','机器人','你是真的','人工'], a: '我不是真人，也不是真正的AI。我是一段预设的JavaScript代码，靠关键词匹配来回答——比ChatGPT差远了，但好处是零API成本，永远不会宕机。如果你问到我不会的问题，我会诚实地告诉你我不知道。', en_q: ['real','fake','human','robot','bot','are you real','artificial'], en_a: "I’m not a real person, and I’m not true AI either. I’m a preset piece of JavaScript that matches keywords — nowhere near ChatGPT, but the upside is zero API cost and I never go down. If you ask something I don’t know, I’ll honestly tell you I don’t know." },
+    { q: ['讲笑话','讲个故事','无聊','逗我','好玩','段子'], a: '为什么像素小人从来不打麻将？因为一碰就糊了！（像素画质的那种糊）好吧这个笑话太冷了——要不你拖着我到处走走？首页上有好几个模块卡片可以互动。', en_q: ['joke','tell me','bored','entertain','story','fun','funny'], en_a: "Why do pixel characters never play mahjong? Because they blur every time they get touched! ...Okay that was bad. Why don’t you drag me around instead? There are interactive module cards all over the homepage." },
+    { q: ['睡觉','休息','累','困','不累吗','24小时','关机'], a: '我24小时在线，不需要睡觉、不需要充电、不需要工资——HR看到这里应该会很心动吧。开玩笑的，你累了就休息，网站永远在这里等你~', en_q: ['sleep','rest','tired','24 hour','always on','shutdown'], en_a: "I’m online 24/7 — no sleep, no charging, no salary required. HR people reading this should be very interested right now. Just kidding — you go rest when you’re tired. The website will be here waiting~" },
+    { q: ['推荐','游戏推荐','安利','玩什么','有什么好玩的','推荐游戏'], a: '要说推荐的话——试试《双人成行》和《双影奇境》，全成就通关的体验真的很好；如果喜欢硬核一点的，《黑暗之魂3》50多个小时的折磨绝对值回票价。更多游戏见「游戏经历」页面~', en_q: ['recommend','suggestion','what to play','game rec','recommendation','any games'], en_a: "If I had to recommend — try 'It Takes Two' and 'Split Fiction,' getting full achievements on both was an amazing experience. If you prefer something harder, 50+ hours of suffering in 'Dark Souls III' is absolutely worth the price. More games on the 'Game History' page~" },
+    { q: ['聊天','聊聊','闲聊','唠嗑','扯淡','唠会'], a: '好啊，聊什么？我可以跟你聊游戏、聊世界观设定、聊B站视频、聊作者的创作意向、聊网站的制作过程。当然，如果你只是想找人说说话，我也在~', en_q: ['chat','talk','conversation','chitchat','small talk'], en_a: "Sure, what about? I can talk games, worldbuilding, Bilibili videos, the author’s career goals, how this site was made. Or if you just want someone to talk to — I’m here~" },
+    { q: ['懂了吗','明白','理解','知道','你懂','听懂'], a: '我其实不太懂——我是靠关键词匹配回答的，不是真的理解你的话。但我会尽力匹配最相关的答案。没匹配到你想要的话，试试换个说法？', en_q: ['understand','comprehend','you get it','do you know'], en_a: "I don’t really understand — I match keywords, I don’t actually comprehend what you’re saying. But I’ll try my best to match the most relevant answer. If I missed the mark, try rephrasing?" },
+    { q: ['名字谁取的','谁给你起的','为什么叫辣椒','网名','起名'], a: '「BEST-辣椒」这个网名是作者自己起的，至于为什么叫辣椒——可能是他觉得自己的性格有点辣？我是他的像素分身，所以也跟着叫这个名字了。', en_q: ['name origin','who named','why chili','username','naming'], en_a: "'BEST-Chili' is the author’s own username. As for why 'Chili' — maybe he thinks his personality is a bit spicy? I’m his pixel avatar, so I inherited the name too." },
+    { q: ['骂','笨','傻','蠢','没用','弱智','垃圾'], a: '你说得对，我只是一段if-else，确实挺蠢的。但我的优点也很明显：不要钱、不抱怨、永远在线。要不试试问点我能答的？比如「这个网站是做什么的」~', en_q: ['stupid','dumb','useless','idiot','trash','garbage','silly'], en_a: "You’re right — I’m just a bunch of if-else statements, pretty dumb indeed. But my advantages are clear: free, never complains, always online. Want to try asking something I can answer? Like 'what is this website'~" },
+
+    { q: ['你好','嗨','hello','hi','在吗'], a: '你好呀！我是 BEST-辣椒的像素分身，有什么想了解的可以问我~', en_q: ['hello','hi','hey','yo','sup','greetings'], en_a: "Hey there! I’m BEST-Chili’s pixel avatar — ask me anything you’d like to know~" },
+    { q: ['谢谢','感谢','thanks','多谢','辛苦'], a: '不客气！有问题随时找我，我24小时在线——毕竟我只是一张图，不用睡觉~', en_q: ['thanks','thank you','appreciate','grateful'], en_a: "You’re welcome! Hit me up anytime — I’m online 24/7. After all, I’m just an image, no sleep needed~" },
+    { q: ['再见','拜拜','bye','走了','88'], a: '拜拜！逛完了记得去B站看看视频，或者去关于页面看看人机协作的记录~', en_q: ['bye','goodbye','see you','later','cya','88'], en_a: "Bye! Before you go — check out the Bilibili videos, or read about the human-AI collaboration on the About page~" },
+    { q: ['好玩','有趣','有意思','彩蛋','隐藏'], a: '试试在首页拖拽我到处走！拖到不同的模块卡片上会有不同的介绍。双击我能回家。设定集里还有隐藏的机密档案和暗界彩蛋~', en_q: ['fun','interesting','easter egg','hidden','secrets','cool'], en_a: 'Try dragging me around the homepage! Drag me onto different module cards for different introductions. Double-click me to send me home. There are also hidden classified files and shadow realm easter eggs in the setting compendium~' }
+  ];
+
+  var FALLBACKS = [
+    '这个问题超出我的像素大脑了……试试顶部的全站搜索框？它覆盖了40多个条目，比我能答的多得多。',
+    '我只是个吉祥物，不是真AI。但你可以试试导航栏的「全站搜索」——那个能搜全站所有页面和内容。',
+    '问到知识盲区了！要不你去「关于」页面看看？或者用顶部的搜索框搜一下~',
+    '唔……这个问题作者还没教我。点击顶部的搜索图标试试？那个才是真正的全站搜索引擎。',
+    '抱歉，我的词库还没覆盖这个问题。试试在搜索框里输入关键词？比如搜「能力者」「寂静岭」「渡鸦镇」都能找到相关内容。'
+  ];
+
+  var EN_FALLBACKS = [
+    "That’s beyond my pixel brain... Try the full-site search bar at the top? It covers 40+ entries, way more than I can answer.",
+    "I’m just a mascot, not real AI. But try the 'Site Search' in the nav bar — it searches every page and piece of content across the whole site.",
+    "You’ve hit my knowledge blind spot! How about checking the About page? Or use the search icon at the top~",
+    "Hmm... the author hasn’t taught me this one yet. Click the search icon at the top — that’s the real full-site search engine.",
+    "Sorry, my vocabulary doesn’t cover this one yet. Try searching with keywords? Stuff like 'ability,' 'Silent Hill,' or 'Raven Town' all bring up relevant content."
+  ];
+
+  var lastFallback = -1;
+
+  function match(query) {
+    var isEn = (localStorage.getItem('site-lang') || 'zh') === 'en';
+    var q = query.toLowerCase().replace(/[？?！!。，,、\s]/g, '');
+    var best = null, bestScore = 0;
+    for (var i = 0; i < DB.length; i++) {
+      var keywords = isEn ? (DB[i].en_q || DB[i].q) : DB[i].q;
+      for (var j = 0; j < keywords.length; j++) {
+        var kw = keywords[j];
+        if (q.indexOf(kw) !== -1) {
+          if (kw.length > bestScore) { best = DB[i]; bestScore = kw.length; }
+        }
+      }
+    }
+    if (best) return isEn ? (best.en_a || best.a) : best.a;
+    // Fallback
+    var fallbacks = isEn ? EN_FALLBACKS : FALLBACKS;
+    var idx;
+    do { idx = Math.floor(Math.random() * fallbacks.length); }
+    while (idx === lastFallback && fallbacks.length > 1);
+    lastFallback = idx;
+    return fallbacks[idx];
+  }
+
+  return { match: match, dbSize: DB.length };
+})();
+
