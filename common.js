@@ -722,7 +722,7 @@ window.__MASCOT_QA = (function() {
   M['world-full-desc']     = { zh:'含方言对照指南、机密档案、历史年表等共16个章节', en:'Includes dialect guide, classified archives, historical timeline — 16 chapters total' };
   M['world-fig-map']       = { zh:'艾瑞斯大陆地图 · 图片由 GPT image2 生成 · 点击放大查看', en:'Iris Continent Map · Image by GPT image2 · Click to enlarge' };
   M['world-fig-classes']   = { zh:'物理侧与魔法侧职阶示意图 · 图片由 GPT image2 生成 · 点击放大查看', en:'Physical & Magic Branch Job Classes · Image by GPT image2 · Click to enlarge' };
-  M['world-fig-war']       = { zh:'奥赖因战争示意图 · 图片由 GPT image2 生成 · 点击放大查看', en:'O'Lein War Diagram · Image by GPT image2 · Click to enlarge' };
+  M['world-fig-war']       = { zh:'奥赖因战争示意图 · 图片由 GPT image2 生成 · 点击放大查看', en:'O\u2019Lein War Diagram \u00b7 Image by GPT image2 \u00b7 Click to enlarge' };
   M['world-city-img-note'] = { zh:'图片由 GPT image2 生成 · 点击放大', en:'Image by GPT image2 · Click to enlarge' };
 
   // === Game Design page ===
