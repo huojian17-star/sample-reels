@@ -580,9 +580,9 @@ window.__MASCOT_QA = (function() {
   return { match: match, dbSize: DB.length };
 })();
 
-// ====== 9. 中英双语切换 ======
+// ====== 9. 中英双语切换 (simplified) ======
 (function() {
-  var LANG = localStorage.getItem('site-lang') || 'zh';
+  var L = localStorage.getItem('site-lang') || 'zh';
   var M = {};
 
   M['nav-about']           = { zh:'关于', en:'About' };
@@ -756,64 +756,37 @@ window.__MASCOT_QA = (function() {
   M['back-to-top']         = { zh:'↑', en:'↑' };
 
   function t(key) {
-    var entry = M[key];
-    if (!entry) return key;
-    return entry[LANG] || entry['zh'] || key;
+    var e = M[key];
+    if (!e) return key;
+    return e[L] || e['zh'] || key;
   }
-
   function apply() {
     var els = document.querySelectorAll('[data-i18n]');
     for (var i = 0; i < els.length; i++) {
-      var key = els[i].getAttribute('data-i18n');
-      if (key === 'html') {
-        els[i].innerHTML = t(els[i].getAttribute('data-i18n-html'));
-      } else {
-        els[i].textContent = t(key);
-      }
+      var k = els[i].getAttribute('data-i18n');
+      els[i].textContent = t(k);
     }
-    // Placeholders
     var phs = document.querySelectorAll('[data-i18n-placeholder]');
     for (var j = 0; j < phs.length; j++) {
       phs[j].placeholder = t(phs[j].getAttribute('data-i18n-placeholder'));
     }
-    // Title attributes
-    var ts = document.querySelectorAll('[data-i18n-title]');
-    for (var k = 0; k < ts.length; k++) {
-      ts[k].title = t(ts[k].getAttribute('data-i18n-title'));
-    }
-    // Update toggle button text
     var btn = document.getElementById('lang-toggle');
     if (btn) btn.textContent = t('lang-label');
-    // Update <title>
     var titleEl = document.querySelector('title[data-i18n]');
     if (titleEl) document.title = t(titleEl.getAttribute('data-i18n'));
-    // Save
-    localStorage.setItem('site-lang', LANG);
+    localStorage.setItem('site-lang', L);
   }
-
   function toggle() {
-    LANG = LANG === 'zh' ? 'en' : 'zh';
+    L = L === 'zh' ? 'en' : 'zh';
     apply();
   }
-
   document.addEventListener('DOMContentLoaded', function() {
-    // Add toggle button to all navs
-    var navs = document.querySelectorAll('nav .nav-inner');
-    for (var i = 0; i < navs.length; i++) {
-      if (navs[i].querySelector('#lang-toggle')) continue;
-      var btn = document.createElement('button');
-      btn.id = 'lang-toggle';
-      btn.textContent = t('lang-label');
-      btn.title = t('lang-title');
-      btn.setAttribute('data-i18n', 'lang-label');
-      btn.setAttribute('data-i18n-title', 'lang-title');
-      btn.style.cssText = 'background:none;border:1px solid var(--border);padding:4px 10px;border-radius:4px;font-size:11px;color:var(--text-dim);cursor:pointer;font-family:inherit;letter-spacing:1px;transition:all 0.2s;margin-left:auto;';
-      btn.onmouseenter = function() { this.style.color = 'var(--accent)'; this.style.borderColor = 'var(--accent)'; };
-      btn.onmouseleave = function() { this.style.color = 'var(--text-dim)'; this.style.borderColor = 'var(--border)'; };
-      btn.onclick = toggle;
-      navs[i].appendChild(btn);
-    }
-    // Initial apply
-    if (LANG === 'en') apply();
+    var btn = document.createElement('button');
+    btn.id = 'lang-toggle';
+    btn.textContent = t('lang-label');
+    btn.style.cssText = 'position:fixed;top:12px;right:20px;z-index:9999;background:var(--bg-card,#fff);border:1px solid var(--border,#ccc);padding:4px 12px;border-radius:4px;font-size:12px;color:var(--text-dim,#666);cursor:pointer;font-family:inherit;letter-spacing:1px;box-shadow:0 2px 8px rgba(0,0,0,0.06);';
+    btn.onclick = toggle;
+    document.body.appendChild(btn);
+    if (L === 'en') apply();
   });
 })();
