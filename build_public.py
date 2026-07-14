@@ -20,11 +20,11 @@ This portfolio site incorporates certain AI-assisted elements, aiming to demonst
 <p style="font-size:13px;color:#5a4a38;line-height:1.9;text-align:left;margin:0 0 20px 0;">
 本网站包含一定比例的 AI 辅助设计元素，旨在展示在"人机协同"管线中，如何最大化把控作品的最终质量与研发效率。本站所涉全部核心逻辑、数值架构及文本设定均为本人手作产出。如您对生成式 AI 持有不同看法，请谨慎使用或浏览本站，感谢您的理解。
 </p>
-<button id="ai-agree-btn" onclick="document.getElementById('ai-disclaimer').style.display='none';localStorage.setItem('ai-agreed','1');" style="background:#a98446;color:#fff;border:none;padding:12px 32px;border-radius:6px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;letter-spacing:0.5px;transition:background 0.2s;" onmouseover="this.style.background='#8a6a2e'" onmouseout="this.style.background='#a98446'">Yes, I agree &nbsp;/&nbsp; 是的，我同意</button>
+<button id="ai-agree-btn" onclick="document.getElementById('ai-disclaimer').remove();localStorage.setItem('ai-agreed','1');" style="background:#a98446;color:#fff;border:none;padding:12px 32px;border-radius:6px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;letter-spacing:0.5px;transition:background 0.2s;" onmouseover="this.style.background='#8a6a2e'" onmouseout="this.style.background='#a98446'">Yes, I agree &nbsp;/&nbsp; 是的，我同意</button>
 </div></div>
 <script>
 if (localStorage.getItem('ai-agreed') === '1') {
-  document.getElementById('ai-disclaimer').style.display = 'none';
+  var d = document.getElementById('ai-disclaimer'); if (d) d.remove();
 }
 </script>
 """
