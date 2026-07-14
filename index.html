@@ -317,10 +317,10 @@
       <div class="mascot-bubble" id="mascot-bubble">
         <div id="bubble-text" data-i18n="home-mascot-msg0">你好，欢迎来到我的求职个人网站！</div>
         <div id="bubble-qa" style="margin-top:8px;display:none;border-top:1px dashed #d0c0a0;padding-top:8px;">
-          <input type="text" id="bubble-input" placeholder="<span data-i18n="home-bubble-placeholder">输入问题，按回车...</span>" style="width:100%;border:1px solid #c4b090;padding:6px 10px;font-size:13px;font-family:Georgia,serif;border-radius:4px;outline:none;box-sizing:border-box;">
+          <input type="text" id="bubble-input" data-i18n-placeholder="home-bubble-placeholder" placeholder="输入问题，按回车..." style="width:100%;border:1px solid #c4b090;padding:6px 10px;font-size:13px;font-family:Georgia,serif;border-radius:4px;outline:none;box-sizing:border-box;">
           <div id="bubble-answer" style="margin-top:8px;font-size:13px;color:#3a2a18;line-height:1.6;display:none;"></div>
         </div>
-        <div id="bubble-ask-hint" style="margin-top:8px;font-size:10px;color:#a8947a;cursor:pointer;text-align:center;letter-spacing:1px;" onclick="var qa=document.getElementById('bubble-qa');var hint=document.getElementById('bubble-ask-hint');var inp=document.getElementById('bubble-input');if(qa.style.display==='none'){qa.style.display='block';hint.textContent='收起提问';inp.focus()}else{qa.style.display='none';hint.textContent='<span data-i18n="home-bubble-ask">问我问题...</span>'};event.stopPropagation();"><span data-i18n="home-bubble-ask">问我问题...</span></div>
+        <div id="bubble-ask-hint" style="margin-top:8px;font-size:10px;color:#a8947a;cursor:pointer;text-align:center;letter-spacing:1px;" onclick="var qa=document.getElementById('bubble-qa');var hint=this;var inp=document.getElementById('bubble-input');if(qa.style.display==='none'){qa.style.display='block';inp.focus()}else{qa.style.display='none'};event.stopPropagation();"><span data-i18n="home-bubble-ask">问我问题...</span></div>
       </div>
       <img id="mascot-img" src="pixel-avatar-clean-small.webp" alt="BEST-辣椒" style="width:100px;height:auto;display:block;cursor:grab;user-select:none;" draggable="false" fetchpriority="high" decoding="async">
     </div>
