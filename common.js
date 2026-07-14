@@ -659,7 +659,24 @@ window.__MASCOT_QA = (function() {
   M['about-edu-val']       = { zh:'湖南工商大学 | 工商管理 | 本科', en:'Hunan University of Commerce | Business Admin | Bachelor' };
   M['about-job-val']       = { zh:'游戏策划 / 产品经理', en:'Game Designer / Product Manager' };
   M['about-game-arch']     = { zh:'游戏考古', en:'Game Archaeology' };
-  M['about-game-arch-p1']  = { zh:'B站频道以<strong>"消失游戏开发日志"</strong>系列为核心...', en:'Bilibili channel centered on the <strong>"Lost Game Dev Log"</strong> series...' };
+  M['about-worldbuild']    = { zh:'世界观构建', en:'Worldbuilding' };
+  M['about-narrative']     = { zh:'叙事风格', en:'Narrative Style' };
+  M['about-team-value']    = { zh:'我能为团队带来什么', en:'What I Bring to a Team' };
+  M['about-webpage']       = { zh:'关于这份网页 · 人机协作', en:'About This Site · Human-AI Collaboration' };
+  M['about-card-cross']    = { zh:'跨领域的内容判断力', en:'Cross-Domain Content Judgment' };
+  M['about-card-ai']       = { zh:'人机协作的增效能力', en:'Human-AI Collaboration Efficiency' };
+  M['about-card-data']     = { zh:'数据驱动的验证意识', en:'Data-Driven Validation Mindset' };
+  M['about-card-grit']     = { zh:'遇到问题死磕到底', en:'Relentless Problem-Solving' };
+  M['about-card-perspective'] = { zh:'从玩家视角到设计视角的切换', en:'Player Perspective → Designer Mindset' };
+  M['about-card-doc']      = { zh:'沟通与文档能力', en:'Communication & Documentation' };
+
+  M['bili-hero-h1']        = { zh:'B站内容创作', en:'Bilibili Content' };
+  M['bili-hero-p']         = { zh:'「消失游戏开发日志」系列——专注追溯被取消/雪藏/胎死腹中的游戏作品背后的开发故事与商业博弈。已发布7期，累计播放量19.7万。', en:'\"Lost Game Dev Log\" series — tracing the stories behind canceled, shelved, and stillborn game projects. 7 episodes, 197K total views.' };
+  M['world-hero-h1']       = { zh:'艾瑞斯大陆设定集', en:'Iris Continent Setting' };
+  M['world-hero-p']        = { zh:'独立构建的原创奇幻世界观 · 累计约3.2万字', en:'Original fantasy world · ~32,000 words' };
+  M['gaming-hero-h1']      = { zh:'游戏经历', en:'Gaming Experience' };
+  M['gaming-hero-p']       = { zh:'从竞技射击到开放世界，从主机大作到手游休闲 · 总时长 3000+ 小时  |  不完全汇总', en:'From competitive shooters to open worlds, AAA to mobile casual · 3000+ hours total  |  Incomplete Summary' };
+  M['design-hero-h1']      = { zh:'可交互游戏原型', en:'Interactive Game Prototypes' };
 
   function t(key) {
     var entry = M[key];
