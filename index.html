@@ -317,7 +317,7 @@
       <div class="mascot-bubble" id="mascot-bubble">
         <div id="bubble-text">你好，欢迎来到我的求职个人网站！</div>
         <div id="bubble-qa" style="margin-top:8px;display:none;border-top:1px dashed #d0c0a0;padding-top:8px;">
-          <input type="text" id="bubble-input" placeholder="输入问题，按回车..." style="width:100%;border:1px solid #c4b090;padding:6px 10px;font-size:13px;font-family:Georgia,serif;border-radius:4px;outline:none;box-sizing:border-box;" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(!q)return;var a=window.__MASCOT_QA.match(q);document.getElementById('bubble-answer').innerHTML=a;document.getElementById('bubble-answer').style.display='block';this.value='';var b=document.getElementById('mascot-bubble');b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop');}">
+          <input type="text" id="bubble-input" placeholder="输入问题，按回车..." style="width:100%;border:1px solid #c4b090;padding:6px 10px;font-size:13px;font-family:Georgia,serif;border-radius:4px;outline:none;box-sizing:border-box;">
           <div id="bubble-answer" style="margin-top:8px;font-size:13px;color:#3a2a18;line-height:1.6;display:none;"></div>
         </div>
         <div id="bubble-ask-hint" style="margin-top:8px;font-size:10px;color:#a8947a;cursor:pointer;text-align:center;letter-spacing:1px;" onclick="var qa=document.getElementById('bubble-qa');var hint=document.getElementById('bubble-ask-hint');var inp=document.getElementById('bubble-input');if(qa.style.display==='none'){qa.style.display='block';hint.textContent='收起提问';inp.focus()}else{qa.style.display='none';hint.textContent='问我问题...'};event.stopPropagation();">问我问题...</div>
@@ -1122,6 +1122,27 @@ window.addEventListener('DOMContentLoaded', function() {
 
 <script src="common.js"></script>
 <script>
+// ====== 吉祥物智能问答输入绑定 ======
+(function() {
+  var inp = document.getElementById('bubble-input');
+  if (!inp) return;
+  inp.addEventListener('keydown', function(e) {
+    if (e.key !== 'Enter') return;
+    var q = this.value.trim();
+    if (!q) return;
+    var answer = document.getElementById('bubble-answer');
+    if (window.__MASCOT_QA) {
+      answer.innerHTML = window.__MASCOT_QA.match(q);
+    } else {
+      answer.textContent = 'QA 系统加载中，请稍后再试~';
+    }
+    answer.style.display = 'block';
+    this.value = '';
+    var b = document.getElementById('mascot-bubble');
+    b.classList.remove('pop'); void b.offsetWidth; b.classList.add('pop');
+  });
+})();
+
 // ====== 全站搜索 ======
 (function() {
   var input = document.getElementById('site-search-input');
