@@ -42,18 +42,14 @@
   }
 
   document.addEventListener('DOMContentLoaded', function() {
-    var navs = document.querySelectorAll('nav .nav-inner');
-    for (var i = 0; i < navs.length; i++) {
-      if (navs[i].querySelector('#lang-toggle')) continue;
-      var btn = document.createElement('button');
-      btn.id = 'lang-toggle';
-      btn.textContent = t('lang-label');
-      btn.style.cssText = 'background:none;border:1px solid var(--border);padding:4px 10px;border-radius:4px;font-size:11px;color:var(--text-dim);cursor:pointer;font-family:inherit;letter-spacing:1px;margin-left:auto;';
-      btn.onmouseenter = function() { this.style.color = 'var(--accent)'; this.style.borderColor = 'var(--accent)'; };
-      btn.onmouseleave = function() { this.style.color = 'var(--text-dim)'; this.style.borderColor = 'var(--border)'; };
-      btn.onclick = toggle;
-      navs[i].appendChild(btn);
-    }
+    var btn = document.createElement('button');
+    btn.id = 'lang-toggle';
+    btn.textContent = t('lang-label');
+    btn.style.cssText = 'position:fixed;top:12px;right:20px;z-index:9999;background:var(--bg-card,#fff);border:1px solid var(--border,#ccc);padding:4px 12px;border-radius:4px;font-size:12px;color:var(--text-dim,#666);cursor:pointer;font-family:inherit;letter-spacing:1px;box-shadow:0 2px 8px rgba(0,0,0,0.08);';
+    btn.onmouseenter = function() { this.style.color = 'var(--accent,#a98446)'; this.style.borderColor = 'var(--accent,#a98446)'; };
+    btn.onmouseleave = function() { this.style.color = 'var(--text-dim,#666)'; this.style.borderColor = 'var(--border,#ccc)'; };
+    btn.onclick = toggle;
+    document.body.appendChild(btn);
     if (LANG === 'en') apply();
   });
 })();
