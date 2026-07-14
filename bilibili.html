@@ -412,10 +412,12 @@ function showCompareInsight(a, b) {
   container.innerHTML = html;
 }
 
-// 启动
-buildSortBar();
-renderVideoGrid();
-buildCompareSelects();
+// 启动（等 i18n 引擎加载后执行）
+document.addEventListener('DOMContentLoaded', function() {
+  buildSortBar();
+  renderVideoGrid();
+  buildCompareSelects();
+});
 </script>
 
 <script src="common.js"></script>
