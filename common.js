@@ -52,43 +52,124 @@
 
   // 各页面专属对话
   var pageDialogs = {
-    'bilibili.html': [
-      '这期视频的数据亮点是……你看到那个排序按钮了吗？', '试试拖动排序，按播放量、点赞率、硬币比……各有发现。',
-      '雷达对比图——同时选两期视频，六维指标一目了然。', '观众93.6%是男性，说明硬核游戏考据的受众很明确。',
-      '每期视频下面都有我的复盘笔记——不只是数据，还有创作心得。'
-    ],
-    'worldbuilding.html': [
-      '欢迎来到艾瑞斯大陆！三侧体系是这个世界的基础。', '物理侧有7个职阶——剑术师、骑士、刺客……你适合哪个？',
-      '五大城市各有特色，低语岭是最神秘的一个。', '顶上那个搜索框我做的！作者做的。试试搜"暗界"。',
-      '机密档案里记载了暗界生物的等级分类……点到为止。'
-    ],
-    'novel.html': [
-      '渡鸦镇的故事从一场葬礼开始。安德森夫人——记住这个名字。', '瑞雯不怕冷。真的，不是比喻。她感觉不到温度。',
-      '底部有个性格测试——我上次测出来是瑞雯。', '人物关系图可以悬停和点击，试试看。',
-      '索菲娜第一天上学就打架了。但她不是坏人。'
-    ],
-    'game-design.html': [
-      '这里有5个可交互的原型工具！能力者雷达评估是第一个。', '伤害计算器——选物理侧还是魔法侧，公式不一样的。',
-      '公会任务决策有5步，每一步选错都会失败。和真实设计一样。', '告示板彩蛋是纯CSS画的——你看那个木板纹理。',
-      '掉落模拟器按暗界生物的稀有度表做了完整概率系统。'
-    ],
-    'game-analysis.html': [
-      '7款游戏的失败分析，从策划视角每条都值得读。', '《幻》那篇——理想主义遇到了没有结局的代码。',
-      '每篇末尾有4条行业教训，可以直接用到项目里。', '《寂静岭P.T.》不只是恐怖游戏，它是科乐美转型的牺牲品。',
-      '看完了可以对比文案拆解页——那边分析的是我的视频脚本。'
-    ],
-    'script-analysis.html': [
-      '7期视频文案的完整元分析——不是写了什么，是为什么这样写。', '缺点复盘有7张棕红卡片，每张都是一次真实翻车。',
-      '数据验证了"高播放≠高转化"，做内容的人必看。', '从Noclip到新新闻主义，我的叙事风格有清晰的来源。',
-      '最后5条方法论是可复用的——如果你也想做深度游戏内容。'
-    ],
-    'about.html': [
-      '关于页面——这里有人机协作的完整决策记录。', '四次创意跃迁卡，每次都是作品集迭代的转折点。',
-      '整个网站AI成本不到5块钱！MVP思维的胜利。', '邓恺恒，湖南工商大学，工商管理——跨专业做游戏。',
-      '联系方式在页面顶部——如果有游戏公司的HR在看的话……'
-    ]
+    'bilibili.html': {
+      zh: [
+        '这期视频的数据亮点是……你看到那个排序按钮了吗？',
+        '试试拖动排序，按播放量、点赞率、硬币比……各有发现。',
+        '雷达对比图——同时选两期视频，六维指标一目了然。',
+        '观众93.6%是男性，说明硬核游戏考据的受众很明确。',
+        '每期视频下面都有我的复盘笔记——不只是数据，还有创作心得。',
+      ],
+      en: [
+        'Check out the data highlights — see the sort buttons?',
+        'Try drag-sorting by views, likes, or coin ratio — each reveals something different.',
+        'Radar comparison chart — pick two episodes and see all six metrics at a glance.',
+        '93.6% male audience — hardcore game archaeology has a pretty clear demographic.',
+        'My review notes are under each video — not just numbers, but creative insights too.',
+      ]
+    },
+    'worldbuilding.html': {
+      zh: [
+        '欢迎来到艾瑞斯大陆！三侧体系是这个世界的基础。',
+        '物理侧有7个职阶——剑术师、骑士、刺客……你适合哪个？',
+        '五大城市各有特色，低语岭是最神秘的一个。',
+        '顶上那个搜索框我做的！作者做的。试试搜"暗界"。',
+        '机密档案里记载了暗界生物的等级分类……点到为止。',
+      ],
+      en: [
+        'Welcome to the Iris Continent! The three-branch system is the foundation of this world.',
+        '7 classes in the Physical Branch — Swordsmaster, Knight, Assassin... which one fits you?',
+        'Five cities, each with its own character. Whisper Ridge is the most mysterious.',
+        'That search box at the top? The author made it. Try searching 'Dark Realm'.',
+        'The classified archives contain dark realm creature tier classifications... but I've said too much.',
+      ]
+    },
+    'novel.html': {
+      zh: [
+        '渡鸦镇的故事从一场葬礼开始。安德森夫人——记住这个名字。',
+        '瑞雯不怕冷。真的，不是比喻。她感觉不到温度。',
+        '底部有个性格测试——我上次测出来是瑞雯。',
+        '人物关系图可以悬停和点击，试试看。',
+        '索菲娜第一天上学就打架了。但她不是坏人。',
+      ],
+      en: [
+        'Raven Town begins with a funeral. Mrs. Anderson — remember that name.',
+        'Raven doesn't feel cold. Literally. Not a metaphor. She can't sense temperature.',
+        'There's a personality quiz at the bottom — I got Raven last time I tried.',
+        'The character relationship map responds to hover and click — give it a try.',
+        'Sophina got into a fight on her first day of school. But she's not a bad person.',
+      ]
+    },
+    'game-design.html': {
+      zh: [
+        '这里有5个可交互的原型工具！能力者雷达评估是第一个。',
+        '伤害计算器——选物理侧还是魔法侧，公式不一样的。',
+        '公会任务决策有5步，每一步选错都会失败。和真实设计一样。',
+        '告示板彩蛋是纯CSS画的——你看那个木板纹理。',
+        '掉落模拟器按暗界生物的稀有度表做了完整概率系统。',
+      ],
+      en: [
+        '5 interactive prototype tools here! The Ability Radar is the first one.',
+        'Damage Calculator — Physical Branch and Magic Branch use different formulas.',
+        'The guild quest flow has 5 decision steps. One wrong move and you fail — just like real design.',
+        'The notice board easter egg is pure CSS — check out that wood grain texture.',
+        'The loot simulator uses the full dark realm creature rarity table for its probability system.',
+      ]
+    },
+    'game-analysis.html': {
+      zh: [
+        '7款游戏的失败分析，从策划视角每条都值得读。',
+        '《幻》那篇——理想主义遇到了没有结局的代码。',
+        '每篇末尾有4条行业教训，可以直接用到项目里。',
+        '《寂静岭P.T.》不只是恐怖游戏，它是科乐美转型的牺牲品。',
+        '看完了可以对比文案拆解页——那边分析的是我的视频脚本。',
+      ],
+      en: [
+        '7 game failure analyses from a designer's perspective — every one is worth reading.',
+        'The Phantom article — idealism meets code that never shipped.',
+        'Each article ends with 4 industry lessons you can apply to real projects.',
+        'Silent Hill P.T. isn't just a horror game — it's a casualty of Konami's corporate pivot.',
+        'When you're done, compare with the Script Analysis page — that one analyzes my video writing.',
+      ]
+    },
+    'script-analysis.html': {
+      zh: [
+        '7期视频文案的完整元分析——不是写了什么，是为什么这样写。',
+        '缺点复盘有7张棕红卡片，每张都是一次真实翻车。',
+        '数据验证了"高播放≠高转化"，做内容的人必看。',
+        '从Noclip到新新闻主义，我的叙事风格有清晰的来源。',
+        '最后5条方法论是可复用的——如果你也想做深度游戏内容。',
+      ],
+      en: [
+        'Complete meta-analysis of 7 video scripts — not what I wrote, but why I wrote it that way.',
+        '7 rust-red cards for weakness reviews — each one is a real post-mortem.',
+        'Data proves 'high views != high conversion' — essential reading for content creators.',
+        'From Noclip to New Journalism, my narrative style has clear influences.',
+        'The final 5 methodology points are reusable — if you want to make deep-dive game content too.',
+      ]
+    },
+    'about.html': {
+      zh: [
+        '关于页面——这里有人机协作的完整决策记录。',
+        '四次创意跃迁卡，每次都是作品集迭代的转折点。',
+        '整个网站AI成本不到5块钱！MVP思维的胜利。',
+        '邓恺恒，湖南工商大学，工商管理——跨专业做游戏。',
+        '联系方式在页面顶部——如果有游戏公司的HR在看的话……',
+      ],
+      en: [
+        'About page — here's the full record of human-AI collaboration decisions.',
+        'Four creative leap cards, each a turning point in the portfolio's evolution.',
+        'Total AI cost for this whole site: under $0.70! A victory for MVP thinking.',
+        'Deng Kaiheng, Hunan University of Commerce, Business Administration — cross-disciplinary game design.',
+        'Contact info's at the top of the page — in case any game studio HR is reading...',
+      ]
+    },
   };
-  var dialogs = pageDialogs[page] || ['这个页面挺有意思的，到处逛逛？'];
+  var defaultDialogs = {
+    zh: ['这个页面挺有意思的，到处逛逛？'],
+    en: ['This page is pretty interesting — take a look around?']
+  };
+  var dialogs = pageDialogs[page] || defaultDialogs;
 
   // 注入小人
   var mascot = document.createElement('div');
@@ -105,8 +186,10 @@
   var lastMsg = '';
 
   function pickMsg() {
-    var pool = dialogs.filter(function(m) { return m !== lastMsg && recent.indexOf(m) === -1; });
-    if (pool.length === 0) { pool = dialogs; recent.length = 0; }
+    var isEn = (localStorage.getItem('site-lang') || 'zh') === 'en';
+    var msgs = isEn ? (dialogs.en || dialogs.zh) : dialogs.zh;
+    var pool = msgs.filter(function(m) { return m !== lastMsg && recent.indexOf(m) === -1; });
+    if (pool.length === 0) { pool = msgs; recent.length = 0; }
     var m = pool[Math.floor(Math.random() * pool.length)];
     recent.push(m); if (recent.length > 6) recent.shift();
     lastMsg = m;
@@ -156,7 +239,7 @@
   // 双击：回家
   img.addEventListener('dblclick', function(e) {
     e.preventDefault(); e.stopPropagation();
-    say('那我先回去了！首页等你~');
+    say((localStorage.getItem('site-lang')||'zh')==='en'?"I'm heading back! See you on the homepage~":'那我先回去了！首页等你~');
     setTimeout(function() {
       mascot.style.transition = 'opacity 0.4s';
       mascot.style.opacity = '0';
@@ -211,7 +294,7 @@
   }
 
   // 来一句开场白
-  setTimeout(function() { say('嘿，我跟你进来了！随便逛逛，点我聊天~'); }, 600);
+  setTimeout(function() { say((localStorage.getItem('site-lang')||'zh')==='en'?"Hey, I followed you here! Look around and click me to chat~":'嘿，我跟你进来了！随便逛逛，点我聊天~'); }, 600);
 })();
 
 // ====== 4. 表格响应式——自动包裹滚动容器 + 滚动提示 ======
