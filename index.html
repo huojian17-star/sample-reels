@@ -314,7 +314,14 @@
   <div class="hero-content">
     <!-- 像素小人 + 对话框 -->
     <div class="pixel-mascot" id="pixel-mascot" style="display:inline-block;position:relative;margin-bottom:16px;">
-      <div class="mascot-bubble" id="mascot-bubble">你好，欢迎来到我的求职个人网站！</div>
+      <div class="mascot-bubble" id="mascot-bubble">
+        <div id="bubble-text">你好，欢迎来到我的求职个人网站！</div>
+        <div id="bubble-qa" style="margin-top:8px;display:none;border-top:1px dashed #d0c0a0;padding-top:8px;">
+          <input type="text" id="bubble-input" placeholder="输入问题，按回车..." style="width:100%;border:1px solid #c4b090;padding:6px 10px;font-size:13px;font-family:Georgia,serif;border-radius:4px;outline:none;box-sizing:border-box;" onkeydown="if(event.key==='Enter'){var q=this.value.trim();if(!q)return;var a=window.__MASCOT_QA.match(q);document.getElementById('bubble-answer').innerHTML=a;document.getElementById('bubble-answer').style.display='block';this.value='';var b=document.getElementById('mascot-bubble');b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop');}">
+          <div id="bubble-answer" style="margin-top:8px;font-size:13px;color:#3a2a18;line-height:1.6;display:none;"></div>
+        </div>
+        <div id="bubble-ask-hint" style="margin-top:8px;font-size:10px;color:#a8947a;cursor:pointer;text-align:center;letter-spacing:1px;" onclick="var qa=document.getElementById('bubble-qa');var hint=document.getElementById('bubble-ask-hint');var inp=document.getElementById('bubble-input');if(qa.style.display==='none'){qa.style.display='block';hint.textContent='收起提问';inp.focus()}else{qa.style.display='none';hint.textContent='问我问题...'};event.stopPropagation();">问我问题...</div>
+      </div>
       <img id="mascot-img" src="pixel-avatar-clean-small.webp" alt="BEST-辣椒" style="width:100px;height:auto;display:block;cursor:grab;user-select:none;" draggable="false" fetchpriority="high" decoding="async">
     </div>
     <h1>BEST-辣椒 · 求职作品集</h1>
@@ -515,7 +522,8 @@
   }
 
   function say(msg) {
-    bubble.textContent = msg;
+    var bt = document.getElementById('bubble-text');
+    if (bt) bt.textContent = msg; else bubble.textContent = msg;
     var len = msg.length;
     if (len <= 10) { bubble.style.maxWidth = '220px'; }
     else if (len <= 18) { bubble.style.maxWidth = '320px'; }
