@@ -1,36 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<title>i18n Test</title>
-<style>
-body { font-family: Georgia,serif; max-width:600px; margin:40px auto; padding:20px; background:#faf9f6; }
-h1 { color:#333; } p { color:#666; line-height:1.8; }
-#lang-toggle { background:none;border:1px solid #ccc;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:12px;float:right; }
-</style>
-</head>
+<head><meta charset="UTF-8"><title>Test</title></head>
 <body>
-<button id="lang-toggle" onclick="toggleLang()">EN</button>
-<h1 data-i18n="t1">这是一个测试</h1>
-<p data-i18n="t2">如果你看到英文，说明引擎正常。</p>
-<p data-i18n="t3">点 EN 按钮切换语言。</p>
-
-<script>
-var map = {
-  t1: {zh:'这是一个测试', en:'This is a test'},
-  t2: {zh:'如果你看到英文，说明引擎正常。', en:'If you see English, the engine works.'},
-  t3: {zh:'点 EN 按钮切换语言。', en:'Click EN to toggle language.'},
-};
-var lang = 'zh';
-function toggleLang() {
-  lang = lang === 'zh' ? 'en' : 'zh';
-  var els = document.querySelectorAll('[data-i18n]');
-  for (var i = 0; i < els.length; i++) {
-    var k = els[i].getAttribute('data-i18n');
-    if (map[k]) els[i].textContent = map[k][lang];
-  }
-  document.getElementById('lang-toggle').textContent = lang === 'zh' ? 'EN' : '\u4e2d';
-}
-</script>
+<button onclick="document.getElementById('x').textContent='WORKS'">CLICK ME</button>
+<div id="x">NOT CLICKED</div>
+<p>If clicking changes NOT CLICKED to WORKS, basic JS works.</p>
 </body>
 </html>
