@@ -376,18 +376,18 @@ function showCompareInsight(a, b) {
   // 播放量对比
   var playWinner = a.plays > b.plays ? '#' + a.order : '#' + b.order;
   html += '<p style="font-size:13px;color:var(--text);line-height:1.9;">';
-  html += t('bl-compare-views-label');' + playWinner + ' 更高（' + (Math.max(a.plays, b.plays)/10000).toFixed(1) + '万 vs ' + (Math.min(a.plays, b.plays)/10000).toFixed(1) + '万）。';
+  html += t('bl-compare-views-label') + ' ' + playWinner + ' 更高（' + (Math.max(a.plays, b.plays)/10000).toFixed(1) + '万 vs ' + (Math.min(a.plays, b.plays)/10000).toFixed(1) + '万）。';
   html += '</p>';
 
   // 转化率对比
   var likeWinner = a.likeRate > b.likeRate ? '#' + a.order : '#' + b.order;
   html += '<p style="font-size:13px;color:var(--text);line-height:1.9;">';
-  html += t('bl-compare-likes-label');' + likeWinner + ' 更高（' + Math.max(a.likeRate, b.likeRate).toFixed(1) + ' vs ' + Math.min(a.likeRate, b.likeRate).toFixed(1) + '/千播）。';
+  html += t('bl-compare-likes-label') + ' ' + likeWinner + ' 更高（' + Math.max(a.likeRate, b.likeRate).toFixed(1) + ' vs ' + Math.min(a.likeRate, b.likeRate).toFixed(1) + '/千播）。';
   html += '</p>';
 
   var coinWinner = a.coinLikeRatio > b.coinLikeRatio ? '#' + a.order : '#' + b.order;
   html += '<p style="font-size:13px;color:var(--text);line-height:1.9;">';
-  html += t('bl-compare-coins-label');' + coinWinner + ' 更高（' + Math.max(a.coinLikeRatio, b.coinLikeRatio).toFixed(0) + '% vs ' + Math.min(a.coinLikeRatio, b.coinLikeRatio).toFixed(0) + '%）。<span style="font-size:11px;color:var(--text-dim);" data-i18n="xf26f42">硬币是B站最贵的免费货币，高硬币/点赞比通常意味着核心粉丝认可度更高。</span>';
+  html += t('bl-compare-coins-label') + ' ' + coinWinner + ' 更高（' + Math.max(a.coinLikeRatio, b.coinLikeRatio).toFixed(0) + '% vs ' + Math.min(a.coinLikeRatio, b.coinLikeRatio).toFixed(0) + '%）。<span style="font-size:11px;color:var(--text-dim);" data-i18n="xf26f42">硬币是B站最贵的免费货币，高硬币/点赞比通常意味着核心粉丝认可度更高。</span>';
   html += '</p>';
 
   // 定位判断
