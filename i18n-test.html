@@ -1,10 +1,23 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head><meta charset="UTF-8"><title data-i18n="t-title">测试</title></head>
-<body style="font-family:Georgia,serif;max-width:600px;margin:40px auto;padding:20px;">
-<h1 data-i18n="t-h1">i18n 引擎测试</h1>
-<p data-i18n="t-p1">如果 EN 按钮出现在右上角，引擎已加载。</p>
-<p data-i18n="t-p2">点 EN 切换英文。</p>
-<script src="i18n.js"></script>
+<head><meta charset="UTF-8"><title>Test</title>
+<style>body{font-family:Georgia,serif;max-width:600px;margin:40px auto;padding:20px;background:#faf9f6}
+h1{color:#333}p{color:#666;line-height:1.8}
+#lt{position:fixed;top:12px;right:20px;background:#fff;border:1px solid #ccc;padding:4px 12px;border-radius:4px;font-size:12px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+</style></head>
+<body>
+<button id="lt" onclick="tgl()">EN</button>
+<h1 id="x1">i18n 引擎测试</h1>
+<p id="x2">如果看到这句话变成英文，说明引擎正常。</p>
+<p id="x3">点右上角 EN 按钮切换。</p>
+<script>
+var L='zh';
+var M={x1:{zh:'i18n 引擎测试',en:'i18n Engine Test'},
+       x2:{zh:'如果看到这句话变成英文，说明引擎正常。',en:'If you see this in English, the engine works.'},
+       x3:{zh:'点右上角 EN 按钮切换。',en:'Click EN to toggle language.'}};
+function tgl(){L=L==='zh'?'en':'zh';
+document.getElementById('lt').textContent=L==='zh'?'EN':'中';
+for(var k in M)document.getElementById(k).textContent=M[k][L];}
+</script>
 </body>
 </html>
