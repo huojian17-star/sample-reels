@@ -293,11 +293,9 @@
 <script src="common.js?t=1784020389"></script>
 
 <script>
-// Inline i18n fallback - ensures translations work even if CDN caches common.js
+// Self-contained i18n for about page
 (function() {
   var L = localStorage.getItem('site-lang') || 'zh';
-  if (L !== 'en') return;
-  // If user previously chose English, apply basic translations directly
   var map = {
     "about-title": "About · BEST-Chili",
     "about-hero-h1": "About Me",
@@ -354,11 +352,41 @@
     "about-worldbuild-p2": "The setting covers the power system, five city ecosystems, currency and banking, legal and governance frameworks, religion and education, core history (the O'Lein War), dark realm origin hypotheses, dialect systems, art movements, bardic literature, and top-secret Bolivar Truth and Mythic Tier archives.",
     "footer-text": "BEST-Chili © 2026"
   };
-  var els = document.querySelectorAll('[data-i18n]');
-  for (var i = 0; i < els.length; i++) {
-    var key = els[i].getAttribute('data-i18n');
-    if (map[key]) els[i].textContent = map[key];
+  function apply(lang) {
+    L = lang;
+    localStorage.setItem('site-lang', lang);
+    var els = document.querySelectorAll('[data-i18n]');
+    for (var i = 0; i < els.length; i++) {
+      var key = els[i].getAttribute('data-i18n');
+      if (map[key]) els[i].textContent = lang === 'en' ? map[key] : els[i].getAttribute('data-i18n-orig');
+    }
+    var btn = document.getElementById('lang-toggle-inline');
+    if (btn) btn.textContent = lang === 'zh' ? 'EN' : '中';
   }
+
+  // Save original Chinese text on first load
+  var all = document.querySelectorAll('[data-i18n]');
+  for (var i = 0; i < all.length; i++) {
+    var el = all[i];
+    if (!el.getAttribute('data-i18n-orig')) {
+      el.setAttribute('data-i18n-orig', el.textContent);
+    }
+  }
+
+  // Add inline toggle button
+  document.addEventListener('DOMContentLoaded', function() {
+    var navInner = document.querySelector('nav .nav-inner');
+    if (navInner && !document.getElementById('lang-toggle-inline')) {
+      var btn = document.createElement('button');
+      btn.id = 'lang-toggle-inline';
+      btn.textContent = L === 'zh' ? 'EN' : '中';
+      btn.style.cssText = 'background:none;border:1px solid var(--border);padding:4px 10px;border-radius:4px;font-size:11px;color:var(--text-dim);cursor:pointer;font-family:inherit;letter-spacing:1px;margin-left:auto;';
+      btn.onclick = function() { apply(L === 'zh' ? 'en' : 'zh'); };
+      navInner.appendChild(btn);
+    }
+    // Apply saved language
+    if (L === 'en') apply('en');
+  });
 })();
 </script>
 </body>
