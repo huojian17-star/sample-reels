@@ -20,18 +20,22 @@ This portfolio site incorporates certain AI-assisted elements, aiming to demonst
 <p style="font-size:13px;color:#5a4a38;line-height:1.9;text-align:left;margin:0 0 20px 0;">
 本网站包含一定比例的 AI 辅助设计元素，旨在展示在"人机协同"管线中，如何最大化把控作品的最终质量与研发效率。本站所涉全部核心逻辑、数值架构及文本设定均为本人手作产出。如您对生成式 AI 持有不同看法，请谨慎使用或浏览本站，感谢您的理解。
 </p>
-<button id="ai-agree-btn" onclick="document.getElementById('ai-disclaimer').remove();localStorage.setItem('ai-agreed','1');" style="background:#a98446;color:#fff;border:none;padding:12px 32px;border-radius:6px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;letter-spacing:0.5px;transition:background 0.2s;" onmouseover="this.style.background='#8a6a2e'" onmouseout="this.style.background='#a98446'">Yes, I agree &nbsp;/&nbsp; 是的，我同意</button>
+<button id="ai-agree-btn" onclick="agreeAI()" style="background:#a98446;color:#fff;border:none;padding:12px 32px;border-radius:6px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;letter-spacing:0.5px;pointer-events:auto;">Yes, I agree &nbsp;/&nbsp; 是的，我同意</button>
 </div></div>
+"""
+
+DISCLAIMER_SCRIPT = """
 <script>
-if (localStorage.getItem('ai-agreed') === '1') {
-  var d = document.getElementById('ai-disclaimer'); if (d) d.remove();
-}
+function agreeAI(){ var d=document.getElementById('ai-disclaimer'); if(d)d.remove(); try{localStorage.setItem('ai-agreed','1')}catch(e){} }
+window.addEventListener('load',function(){ try{ if(localStorage.getItem('ai-agreed')==='1') document.getElementById('ai-disclaimer').remove(); }catch(e){} });
 </script>
 """
 
 def inject_disclaimer(html):
-    """Inject the disclaimer right after <body> tag."""
-    return html.replace('<body>', '<body>\n' + DISCLAIMER_HTML.strip(), 1)
+    """Inject the disclaimer HTML after <body>, and the script before </body>."""
+    html = html.replace('<body>', '<body>\n' + DISCLAIMER_HTML.strip(), 1)
+    html = html.replace('</body>', DISCLAIMER_SCRIPT.strip() + '\n</body>', 1)
+    return html
 
 def desensitize(text):
     """Apply all personal info replacements."""
@@ -162,8 +166,18 @@ def process_index_html(html):
     return html
 
 # ===== Main =====
+# First, copy source files to public/
+os.makedirs(PUBLIC, exist_ok=True)
+for f in os.listdir('.'):
+    if f.endswith(('.html', '.css', '.js', '.webp', '.svg')):
+        if f.startswith('_') or f.startswith('check-') or f in ('core.js','i18n.js','remote-check.js','deployed-core.js','verify-core.js','i18n-test.html','test-check.html','portfolio-print.html','novel-full.html','worldbuilding-full.html','build_public.py','live-about.html','remote-about.html'):
+            continue
+        if f in ('avatar.jpg','avatar.webp'):
+            continue
+        shutil.copy(f, os.path.join(PUBLIC, f))
+
 html_files = [f for f in os.listdir(PUBLIC) if f.endswith('.html')]
-js_files = [f for f in os.listdir(PUBLIC) if f.endswith('.js') and f != 'check-v11.js']
+js_files = [f for f in os.listdir(PUBLIC) if f.endswith('.js')]
 css_files = [f for f in os.listdir(PUBLIC) if f.endswith('.css')]
 
 print(f'Processing {len(html_files)} HTML files, {len(js_files)} JS files...')
@@ -206,12 +220,5 @@ for fn in js_files:
     with open(path, 'w', encoding='utf-8') as f:
         f.write(js)
     print(f'  {fn}: done')
-
-# Remove unwanted files
-for rm in ['check-v11.js']:
-    p = os.path.join(PUBLIC, rm)
-    if os.path.exists(p):
-        os.remove(p)
-        print(f'  Removed {rm}')
 
 print('\nBuild complete!')
