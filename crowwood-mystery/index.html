@@ -11,14 +11,24 @@
   .page-hero .sub { font-size: 15px; color: var(--text-dim); margin-top: 4px; }
   .page-hero .ver { display: inline-block; margin-top: 10px; font-size: 12px; color: var(--text-dim); border: 1px solid var(--border); padding: 2px 10px; letter-spacing: 1px; }
 
-  .content { max-width: var(--max-w); margin: 0 auto; padding: 0 20px 60px; }
+  .content-section { max-width: var(--max-w); margin: 0 auto; padding: 0 20px 60px; }
+  .content-section h2 { font-family: "Georgia","Noto Serif SC",serif; font-size: 20px; color: var(--text-bright); margin: 36px 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border); letter-spacing: 1px; }
+  .content-section h3 { font-size: 15px; color: var(--text-bright); margin: 20px 0 8px; }
+  .content-section p { margin-bottom: 10px; font-size: 14px; line-height: 1.85; }
+  .content-section ul { margin: 8px 0 16px 20px; font-size: 14px; line-height: 1.85; }
+  .content-section li { margin-bottom: 4px; }
 
   .screenshots { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
 
-  .features { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
-  .feat { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; }
-  .feat .t { font-size: 14px; font-weight: 600; color: var(--text-bright); margin-bottom: 4px; }
-  .feat .d { font-size: 13px; color: var(--text-dim); line-height: 1.7; }
+  .split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+  .split-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; }
+  .split-card h4 { font-size: 15px; color: var(--text-bright); margin-bottom: 8px; }
+
+  .quote-block { margin: 20px 0; padding: 16px 24px; border-left: 3px solid var(--accent-dim); background: var(--bg-alt); font-style: italic; color: var(--text-dim); }
+
+  .flow-list { list-style: none; margin: 8px 0 16px; padding: 0; }
+  .flow-list li { padding: 6px 0 6px 20px; border-left: 2px solid var(--border); margin-left: 6px; font-size: 14px; }
+  .flow-list li:last-child { border-left-color: var(--accent); }
 
   .log-entry { margin-bottom: 8px; font-size: 14px; color: var(--text); }
   .log-date { color: var(--text-dim); font-size: 12px; margin-right: 12px; }
@@ -49,66 +59,124 @@
 </nav>
 
 <div class="page-hero">
+  <p><a href="../index.html" class="back-link">&larr; 返回首页</a></p>
   <h1>鸦林镇疑案</h1>
   <p class="sub">Crowwood Mystery &middot; 1989</p>
   <p style="font-size:14px;color:var(--text-dim);max-width:540px;margin:10px auto 0;">A pixel-art detective text adventure set in a small town where nothing ever happens &mdash; until it does.</p>
   <span class="ver">v0.1 Demo &middot; Godot 4</span>
 </div>
 
-<div class="content">
+<div class="content-section">
 
-<h3 style="font-family:'Georgia','Noto Serif SC',serif;font-size:18px;color:var(--text-bright);margin:32px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--border);letter-spacing:1px;">Screenshots</h3>
+<!-- ====== 一、游戏概述 ====== -->
+<h2>一、游戏概述</h2>
+
+<p>《鸦林镇疑案》是一款<strong>侦探题材文字冒险游戏</strong>，使用 Godot 4 引擎开发。故事设定在 1989 年美国中西部一个虚构小镇——鸦林镇。玩家扮演一位干了十五年的老警长，接到报案后赶往玫瑰街 114 号，发现女主人死于钝器伤、十二岁的少年窒息而亡、男主人连人带皮卡沉进了三里外的鸦湖水库。</p>
+
+<p>游戏的核心体验不在于"找到凶手是谁"，而在于<strong>你如何一步步拼凑出真相</strong>。你手下的警力有限，只能同时追两条线；你收集到的每条线索都会被记入笔记本，但其中有些可能是误导；你审讯嫌疑人时，只能用笔记本里实际存在的线索来质问对方。真正的侦探工作不是灵光一现，而是把碎片串成链条。</p>
+
+<div class="quote-block">
+  <p>"你不是在破案。你是在为一家人找回名字。"</p>
+</div>
+
+<!-- ====== 二、核心系统 ====== -->
+<h2>二、核心系统</h2>
+
+<div class="split-grid">
+  <div class="split-card">
+    <h4>&#x1F4D3; 线索笔记（N 键）</h4>
+    <p>调查过程中接触到的每一条信息都会被自动记录到笔记本中。笔记对所有线索一视同仁——不管是确凿的物证还是道听途说的猜测。</p>
+    <p>绿色 ✓ 标记表示已核实的线索；黄色 ? 标记表示尚未验证（可能是误导）；蓝色 ◆ 标记表示通过推理系统自行推导出的结论。玩家需要自己判断每条线索的可信度。</p>
+  </div>
+  <div class="split-card">
+    <h4>&#x1F4AD; 思维笔记（T 键）</h4>
+    <p>在调查的关键节点，游戏会要求玩家暂停并整理思路。输入任意推理关键词，引擎会匹配 230+ 词库，给出具体的方向提示。命中足够多的关键词时，可以解锁隐藏的推论线索——这些推论无法通过常规调查获得。</p>
+    <p>审讯场景下，思维笔记变为自由提问模式：输入你想问嫌疑人的问题，系统根据关键词匹配给出回应。</p>
+  </div>
+</div>
+
+<div class="split-grid">
+  <div class="split-card">
+    <h4>&#x2696; 动态审讯</h4>
+    <p>审讯嫌疑人的选项<strong>不是预设的</strong>——取决于你在笔记本里实际收集到了哪些线索。线索太少时，选项区会显示"???（未发现线索）"占位。选错线索会让嫌疑人冷笑回怼，选对才能逼出新供词。</p>
+    <p>每场审讯前有一次强制思考环节：你必须在思维笔记中至少输入一个关键词，整理清楚思路之后才能走进审讯室。</p>
+  </div>
+  <div class="split-card">
+    <h4>&#x1F4C1; 四结局 + 证据分系统</h4>
+    <p>游戏有四个结局：<strong>完美定罪</strong>（证据充分、真凶伏法）、<strong>部分正义</strong>（定罪但缺少关键证据链）、<strong>无罪释放</strong>（证据不足、嫌疑人脱罪）、<strong>抓错人</strong>（前夫被冤枉、真凶逍遥）。</p>
+    <p>结局由两个变量决定：是否找到了凶器锤子、证据质量分数（取决于调查顺序、探员派遣选择、推理质量）。</p>
+  </div>
+</div>
+
+<!-- ====== 三、剧情分支 ====== -->
+<h2>三、剧情分支</h2>
+
+<p>游戏流程约 10&ndash;15 分钟。虽然总时长不长，但分支密度较高——<strong>三个关键决策点</strong>决定了调查的方向和结局走向：</p>
+
+<h3>调查路线（3 条）</h3>
+<ul class="flow-list">
+  <li><strong>搜室内</strong> &rarr; 先查客厅、厨房、二楼，发现金斯顿家政来电记录和账本异常</li>
+  <li><strong>搜车库</strong> &rarr; 先查工具箱和工装靴，发现金斯顿名片和工作服，获得靴印铁证</li>
+  <li><strong>直接去水库</strong> &rarr; 跳过现场搜查，水库底淤泥太厚找不到锤子 &rarr; 必然走向结局 D</li>
+</ul>
+
+<h3>探员派遣（选 2/3）</h3>
+<ul>
+  <li><strong>查男主人</strong> &rarr; 发现工友欠债、借锤子、索要安眠药</li>
+  <li><strong>查女主人</strong> &rarr; 发现十二年旧情、前夫骚扰史</li>
+  <li><strong>查儿子</strong> &rarr; 发现校园霸凌、被霸凌者是董事长儿子</li>
+  <li><strong>（思考奖励）查金斯顿家政</strong> &rarr; 发现工友的真实身份和每月"咨询费"</li>
+</ul>
+
+<h3>审讯风格（3 种）</h3>
+<ul>
+  <li><strong>冷静盘问</strong> &rarr; 步步为营、逐步核实不在场证明</li>
+  <li><strong>施加压力</strong> &rarr; 用目击者证词施压、逼出情绪反应</li>
+  <li><strong>骗取信任</strong> &rarr; 以"你不是凶手"为切入点、引导对方主动吐露</li>
+</ul>
+
+<!-- ====== 四、截图 ====== -->
+<h2>四、截图</h2>
 <div class="screenshots">
   <figure style="margin:0;text-align:center;">
     <img src="images/house_exterior.jpg" alt="House Exterior" loading="lazy" decoding="async"
          style="width:100%;height:auto;border-radius:8px;border:1px solid var(--border);cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.06);"
          onclick="openLightbox(this.src)" title="点击放大查看">
-    <figcaption style="font-size:11px;color:var(--text-dim);margin-top:8px;">
-      玫瑰街114号 &middot; 案发现场 &middot; 图片由 GPT image2 生成 &middot; 点击放大查看
-    </figcaption>
+    <figcaption style="font-size:11px;color:var(--text-dim);margin-top:8px;">玫瑰街114号 &middot; 案发现场 &middot; 图片由 GPT image2 生成 &middot; 点击放大查看</figcaption>
   </figure>
   <figure style="margin:0;text-align:center;">
     <img src="images/garage.jpg" alt="Garage" loading="lazy" decoding="async"
          style="width:100%;height:auto;border-radius:8px;border:1px solid var(--border);cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.06);"
          onclick="openLightbox(this.src)" title="点击放大查看">
-    <figcaption style="font-size:11px;color:var(--text-dim);margin-top:8px;">
-      车库 &middot; 失踪的锤子 &middot; 图片由 GPT image2 生成 &middot; 点击放大查看
-    </figcaption>
+    <figcaption style="font-size:11px;color:var(--text-dim);margin-top:8px;">车库 &middot; 失踪的锤子 &middot; 图片由 GPT image2 生成 &middot; 点击放大查看</figcaption>
   </figure>
   <figure style="margin:0;text-align:center;">
     <img src="images/interrogation_room.jpg" alt="Interrogation Room" loading="lazy" decoding="async"
          style="width:100%;height:auto;border-radius:8px;border:1px solid var(--border);cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.06);"
          onclick="openLightbox(this.src)" title="点击放大查看">
-    <figcaption style="font-size:11px;color:var(--text-dim);margin-top:8px;">
-      审讯室 &middot; 对峙前夫 &middot; 图片由 GPT image2 生成 &middot; 点击放大查看
-    </figcaption>
+    <figcaption style="font-size:11px;color:var(--text-dim);margin-top:8px;">审讯室 &middot; 对峙前夫 &middot; 图片由 GPT image2 生成 &middot; 点击放大查看</figcaption>
   </figure>
   <figure style="margin:0;text-align:center;">
     <img src="images/reservoir.jpg" alt="Reservoir" loading="lazy" decoding="async"
          style="width:100%;height:auto;border-radius:8px;border:1px solid var(--border);cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.06);"
          onclick="openLightbox(this.src)" title="点击放大查看">
-    <figcaption style="font-size:11px;color:var(--text-dim);margin-top:8px;">
-      鸦湖水库 &middot; 沉没的皮卡 &middot; 图片由 GPT image2 生成 &middot; 点击放大查看
-    </figcaption>
+    <figcaption style="font-size:11px;color:var(--text-dim);margin-top:8px;">鸦湖水库 &middot; 沉没的皮卡 &middot; 图片由 GPT image2 生成 &middot; 点击放大查看</figcaption>
   </figure>
 </div>
 
-<h3 style="font-family:'Georgia','Noto Serif SC',serif;font-size:18px;color:var(--text-bright);margin:32px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--border);letter-spacing:1px;">Features</h3>
-<div class="features">
-  <div class="feat"><div class="t">线索笔记 (N)</div><div class="d">每条线索自动记录。注意，有些线索可能是误导信息。</div></div>
-  <div class="feat"><div class="t">思维笔记 (T)</div><div class="d">自由输入推理，连接关键词解锁隐藏推论。关键节点必须整理思路才能推进。</div></div>
-  <div class="feat"><div class="t">动态审讯</div><div class="d">审讯选项取决于你实际收集到的线索。选错线索会被嫌疑人回怼。</div></div>
-  <div class="feat"><div class="t">多重结局</div><div class="d">完美定罪、部分正义、无罪释放、抓错人 &mdash; 取决于调查质量和关键选择。</div></div>
-</div>
+<!-- ====== 五、开发日志 ====== -->
+<h2>五、开发日志</h2>
+<div class="log-entry"><span class="log-date">2026-07-20</span> 双笔记系统（线索笔记 + 思维笔记）上线。强制思考节点集成。ESC 系统菜单 + 9 存档位 + F5/F7 快速存取。</div>
+<div class="log-entry"><span class="log-date">2026-07-19</span> 四结局分支逻辑完善。车库 / 室内 / 直接水库三条调查路线。剧情扩展至 10&ndash;15 分钟可游玩流程。</div>
+<div class="log-entry"><span class="log-date">2026-07-18</span> AI 生成场景素材接入。去 1-bit 着色器，改用灰度素材 + CRT 扫描线后期效果。角色立绘接入。</div>
+<div class="log-entry"><span class="log-date">2026-07-17</span> 项目启动。序章完成。基础对话系统、场景切换、选择分支框架搭建。CRT 着色器 + 音效系统就绪。</div>
 
-<h3 style="font-family:'Georgia','Noto Serif SC',serif;font-size:18px;color:var(--text-bright);margin:32px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--border);letter-spacing:1px;">Development Log</h3>
-<div class="log-entry"><span class="log-date">2026-07-20</span> 双笔记系统（线索笔记 + 思维笔记）上线。强制思考节点集成。ESC 系统菜单 + 9 存档位。</div>
-<div class="log-entry"><span class="log-date">2026-07-19</span> 四结局分支逻辑完善。车库 / 室内 / 直接水库三条调查路线。剧情扩展至 10&ndash;15 分钟流程。</div>
-<div class="log-entry"><span class="log-date">2026-07-18</span> AI 生成场景素材接入。去 1-bit 着色器，改用灰度素材 + CRT 后期效果。</div>
-<div class="log-entry"><span class="log-date">2026-07-17</span> 项目启动。序章完成。基础对话系统、场景切换、选择分支框架搭建。</div>
+<!-- ====== 六、技术 & 下载 ====== -->
+<h2>六、技术 &amp; 下载</h2>
+<p>引擎：Godot 4.6 &middot; 渲染管线：GL Compatibility &middot; 语言：GDScript &middot; 分辨率：960×640</p>
+<p>场景素材由 GPT image2 生成后经对比度调整与 Floyd-Steinberg 抖动处理。角色立绘由 AI 生成后手工去背景。音效为程序化生成 + 公有领域音乐。</p>
 
-<h3 style="font-family:'Georgia','Noto Serif SC',serif;font-size:18px;color:var(--text-bright);margin:32px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--border);letter-spacing:1px;">Download</h3>
-<p class="dl"><a href="CrowwoodMystery_v0.1.zip">&#8595; Windows (36 MB)</a> &middot; v0.1 Demo</p>
+<p class="dl" style="margin-top:16px;"><a href="CrowwoodMystery_v0.1.zip">&#8595; Windows (36 MB)</a> &middot; v0.1 Demo</p>
 <p class="dl">macOS / Linux / HTML5 &middot; 如有需求可构建</p>
 
 </div>
@@ -131,7 +199,6 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') close
 </script>
 <script src="../common.js"></script>
 <script>
-// Nav highlight
 (function() {
   var links = document.querySelectorAll('.nav-links a');
   for (var i = 0; i < links.length; i++) {
