@@ -3,137 +3,72 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Crowwood Mystery / 鸦林镇疑案</title>
+<title>鸦林镇疑案 &middot; Crowwood Mystery</title>
+<link rel="stylesheet" href="../style.css">
 <style>
-  :root {
-    --bg: #0a0a0c;
-    --surface: #111115;
-    --border: #222228;
-    --text: #c0c0c0;
-    --dim: #606068;
-    --accent: #8a7860;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
-    line-height: 1.7;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 40px 20px 80px;
-  }
-  h1 { font-size: 2rem; letter-spacing: 4px; color: #d0c8b8; margin-bottom: 4px; }
-  h2 { font-size: 1.1rem; color: var(--dim); font-weight: normal; margin-bottom: 24px; }
-  h3 {
-    font-size: 0.95rem; color: var(--accent); text-transform: uppercase;
-    letter-spacing: 2px; margin: 40px 0 12px;
-    padding-bottom: 6px; border-bottom: 1px solid var(--border);
-  }
-  p { margin-bottom: 10px; }
-  a { color: var(--accent); }
+  .page-hero { text-align: center; padding: 60px 32px 40px; background: linear-gradient(180deg, #f4f1eb 0%, var(--bg) 100%); }
+  .page-hero h1 { font-family: "Georgia","Noto Serif SC",serif; font-size: 34px; letter-spacing: 4px; }
+  .page-hero .sub { font-size: 15px; color: var(--text-dim); margin-top: 4px; }
+  .page-hero .ver { display: inline-block; margin-top: 10px; font-size: 12px; color: var(--text-dim); border: 1px solid var(--border); padding: 2px 10px; letter-spacing: 1px; }
 
-  .hero { text-align: center; margin-bottom: 32px; }
-  .version {
-    display: inline-block; background: var(--surface); border: 1px solid var(--border);
-    padding: 3px 12px; font-size: 0.8rem; color: var(--dim); letter-spacing: 1px;
-  }
+  .content { max-width: var(--max-w); margin: 0 auto; padding: 0 20px 60px; }
 
-  .screenshots { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 16px 0; }
-  .screenshots img { width: 100%; border: 1px solid var(--border); }
-  .screenshots figcaption { font-size: 0.75rem; color: var(--dim); text-align: center; margin-top: 2px; }
+  .screenshots { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+  .screenshots img { width: 100%; border: 1px solid var(--border); border-radius: var(--radius); }
+  .screenshots figcaption { font-size: 12px; color: var(--text-dim); text-align: center; margin-top: 4px; }
 
-  .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
-  .feature {
-    background: var(--surface); border: 1px solid var(--border);
-    padding: 14px 16px; font-size: 0.88rem;
-  }
-  .feature .icon { font-size: 1.1rem; margin-right: 6px; }
-  .feature .title { color: #c8b898; margin-bottom: 4px; }
+  .features { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+  .feat { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; }
+  .feat .t { font-size: 14px; font-weight: 600; color: var(--text-bright); margin-bottom: 4px; }
+  .feat .d { font-size: 13px; color: var(--text-dim); line-height: 1.7; }
 
-  .log-entry { margin-bottom: 8px; font-size: 0.88rem; }
-  .log-date { color: var(--dim); font-size: 0.75rem; margin-right: 10px; white-space: nowrap; }
+  .log-entry { margin-bottom: 8px; font-size: 14px; color: var(--text); }
+  .log-date { color: var(--text-dim); font-size: 12px; margin-right: 12px; }
 
-  .dl-btn {
-    display: inline-block; background: var(--surface); border: 1px solid var(--accent);
-    color: var(--accent); padding: 10px 28px; text-decoration: none;
-    font-size: 0.95rem; letter-spacing: 2px; margin-top: 8px;
-  }
-  .dl-btn:hover { background: var(--accent); color: var(--bg); }
+  .dl { margin: 8px 0; font-size: 14px; color: var(--text-dim); }
 
-  footer { margin-top: 48px; font-size: 0.75rem; color: var(--dim); text-align: center; }
+  footer { text-align: center; padding: 40px 20px; font-size: 12px; color: var(--text-dim); border-top: 1px solid var(--border); margin-top: 40px; }
+  footer a { color: var(--accent); text-decoration: none; }
 </style>
 </head>
 <body>
 
-<div class="hero">
-  <h1>CROWWOOD MYSTERY</h1>
-  <p style="font-size:1.05rem;color:var(--dim)">鸦林镇疑案 &middot; 1989</p>
-  <p style="font-size:0.88rem;color:var(--dim);margin-top:6px">A pixel-art detective text adventure set in a small town where nothing ever happens &mdash; until it does.</p>
-  <span class="version">v0.1 Demo &middot; Godot 4</span>
+<div class="page-hero">
+  <h1>鸦林镇疑案</h1>
+  <p class="sub">Crowwood Mystery &middot; 1989</p>
+  <p style="font-size:14px;color:var(--text-dim);max-width:540px;margin:10px auto 0;">A pixel-art detective text adventure set in a small town where nothing ever happens &mdash; until it does.</p>
+  <span class="ver">v0.1 Demo &middot; Godot 4</span>
 </div>
 
-<h3>Screenshots</h3>
+<div class="content">
+
+<h3 style="font-family:'Georgia','Noto Serif SC',serif;font-size:18px;color:var(--text-bright);margin:32px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--border);letter-spacing:1px;">Screenshots</h3>
 <div class="screenshots">
-  <figure>
-    <img src="images/house_exterior.jpg" alt="House Exterior">
-    <figcaption>玫瑰街114号 · 案发现场</figcaption>
-  </figure>
-  <figure>
-    <img src="images/garage.jpg" alt="Garage">
-    <figcaption>车库 · 失踪的锤子</figcaption>
-  </figure>
-  <figure>
-    <img src="images/interrogation_room.jpg" alt="Interrogation Room">
-    <figcaption>审讯室 · 对峙前夫</figcaption>
-  </figure>
-  <figure>
-    <img src="images/reservoir.jpg" alt="Reservoir">
-    <figcaption>鸦湖水库 · 沉没的皮卡</figcaption>
-  </figure>
+  <figure><img src="images/house_exterior.jpg" alt="House Exterior"><figcaption>玫瑰街114号 &middot; 案发现场</figcaption></figure>
+  <figure><img src="images/garage.jpg" alt="Garage"><figcaption>车库 &middot; 失踪的锤子</figcaption></figure>
+  <figure><img src="images/interrogation_room.jpg" alt="Interrogation Room"><figcaption>审讯室 &middot; 对峙前夫</figcaption></figure>
+  <figure><img src="images/reservoir.jpg" alt="Reservoir"><figcaption>鸦湖水库 &middot; 沉没的皮卡</figcaption></figure>
 </div>
 
-<h3>Features</h3>
-<div class="feature-grid">
-  <div class="feature">
-    <div class="title"><span class="icon">&#x1F4D3;</span> 线索笔记 (N)</div>
-    收集的每条线索自动记录。注意——有些线索可能是误导信息。
-  </div>
-  <div class="feature">
-    <div class="title"><span class="icon">&#x1F4AD;</span> 思维笔记 (T)</div>
-    自由输入推理。连接关键词解锁隐藏推论。关键节点必须整理思路才能推进。
-  </div>
-  <div class="feature">
-    <div class="title"><span class="icon">&#x2696;</span> 动态审讯</div>
-    审讯选项取决于你实际收集到的线索。选错线索会被嫌疑人怼回来。
-  </div>
-  <div class="feature">
-    <div class="title"><span class="icon">&#x1F4C1;</span> 4 种结局</div>
-    完美定罪、部分正义、无罪释放、抓错人——取决于调查质量和关键选择。
-  </div>
+<h3 style="font-family:'Georgia','Noto Serif SC',serif;font-size:18px;color:var(--text-bright);margin:32px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--border);letter-spacing:1px;">Features</h3>
+<div class="features">
+  <div class="feat"><div class="t">线索笔记 (N)</div><div class="d">每条线索自动记录。注意，有些线索可能是误导信息。</div></div>
+  <div class="feat"><div class="t">思维笔记 (T)</div><div class="d">自由输入推理，连接关键词解锁隐藏推论。关键节点必须整理思路才能推进。</div></div>
+  <div class="feat"><div class="t">动态审讯</div><div class="d">审讯选项取决于你实际收集到的线索。选错线索会被嫌疑人回怼。</div></div>
+  <div class="feat"><div class="t">多重结局</div><div class="d">完美定罪、部分正义、无罪释放、抓错人 &mdash; 取决于调查质量和关键选择。</div></div>
 </div>
 
-<h3>Development Log</h3>
-<div class="log-entry">
-  <span class="log-date">2026-07-20</span>
-  双笔记系统（线索笔记 + 思维笔记）上线。强制思考节点集成。ESC 系统菜单 + 9 存档位。
-</div>
-<div class="log-entry">
-  <span class="log-date">2026-07-19</span>
-  四结局分支逻辑完善。车库/室内/直接水库三条调查路线。剧情扩展至 10-15 分钟流程。
-</div>
-<div class="log-entry">
-  <span class="log-date">2026-07-18</span>
-  AI 生成场景素材接入。去 1-bit 着色器，改用灰度素材 + CRT 后期效果。
-</div>
-<div class="log-entry">
-  <span class="log-date">2026-07-17</span>
-  项目启动。序章完成。基础对话系统、场景切换、选择分支框架搭建。
-</div>
+<h3 style="font-family:'Georgia','Noto Serif SC',serif;font-size:18px;color:var(--text-bright);margin:32px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--border);letter-spacing:1px;">Development Log</h3>
+<div class="log-entry"><span class="log-date">2026-07-20</span> 双笔记系统（线索笔记 + 思维笔记）上线。强制思考节点集成。ESC 系统菜单 + 9 存档位。</div>
+<div class="log-entry"><span class="log-date">2026-07-19</span> 四结局分支逻辑完善。车库 / 室内 / 直接水库三条调查路线。剧情扩展至 10&ndash;15 分钟流程。</div>
+<div class="log-entry"><span class="log-date">2026-07-18</span> AI 生成场景素材接入。去 1-bit 着色器，改用灰度素材 + CRT 后期效果。</div>
+<div class="log-entry"><span class="log-date">2026-07-17</span> 项目启动。序章完成。基础对话系统、场景切换、选择分支框架搭建。</div>
 
-<h3>Download</h3>
-<p style="color:var(--dim);font-size:0.88rem">Windows &middot; 即将提供下载链接</p>
-<p style="color:var(--dim);font-size:0.88rem">macOS / Linux / HTML5 &middot; 如有需求可构建</p>
+<h3 style="font-family:'Georgia','Noto Serif SC',serif;font-size:18px;color:var(--text-bright);margin:32px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--border);letter-spacing:1px;">Download</h3>
+<p class="dl">Windows &middot; 即将提供下载链接</p>
+<p class="dl">macOS / Linux / HTML5 &middot; 如有需求可构建</p>
+
+</div>
 
 <footer>
   Crowwood Mystery &copy; 2026 &middot; Built with Godot 4 &middot; <a href="../">Back to Portfolio</a>
