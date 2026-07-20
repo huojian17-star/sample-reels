@@ -129,18 +129,5 @@ function openLightbox(src) { document.getElementById('lightbox-img').src = src; 
 function closeLightbox() { document.getElementById('lightbox-overlay').style.display = 'none'; document.body.style.overflow = ''; }
 document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeLightbox(); });
 </script>
-<script src="../common.js"></script>
-<script>
-// Nav highlight for game subpage
-(function() {
-  var links = document.querySelectorAll('.nav-links a');
-  for (var i = 0; i < links.length; i++) {
-    if (links[i].getAttribute('href') === 'index.html') {
-      links[i].style.color = 'var(--accent)';
-      links[i].style.fontWeight = '500';
-    }
-  }
-})();
-</script>
 </body>
 </html>
