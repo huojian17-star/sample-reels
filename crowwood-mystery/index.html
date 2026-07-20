@@ -31,6 +31,23 @@
 </head>
 <body>
 
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-brand">BEST-辣椒</a>
+    <div class="nav-links">
+      <a href="../about.html">关于</a>
+      <a href="../bilibili.html">B站</a>
+      <a href="../worldbuilding.html">设定集</a>
+      <a href="../novel.html">小说</a>
+      <a href="../game-design.html">游戏设计</a>
+      <a href="../game-analysis.html">游戏拆解</a>
+      <a href="../script-analysis.html">文案拆解</a>
+      <a href="../gaming.html">游戏经历</a>
+      <a href="index.html">鸦林镇疑案</a>
+    </div>
+  </div>
+</nav>
+
 <div class="page-hero">
   <h1>鸦林镇疑案</h1>
   <p class="sub">Crowwood Mystery &middot; 1989</p>
@@ -111,6 +128,19 @@
 function openLightbox(src) { document.getElementById('lightbox-img').src = src; document.getElementById('lightbox-overlay').style.display = 'block'; document.body.style.overflow = 'hidden'; }
 function closeLightbox() { document.getElementById('lightbox-overlay').style.display = 'none'; document.body.style.overflow = ''; }
 document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeLightbox(); });
+</script>
+<script src="../common.js"></script>
+<script>
+// Nav highlight for game subpage
+(function() {
+  var links = document.querySelectorAll('.nav-links a');
+  for (var i = 0; i < links.length; i++) {
+    if (links[i].getAttribute('href') === 'index.html') {
+      links[i].style.color = 'var(--accent)';
+      links[i].style.fontWeight = '500';
+    }
+  }
+})();
 </script>
 </body>
 </html>
