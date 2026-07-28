@@ -68,7 +68,6 @@ a.new { color: var(--link-red); }  /* red links for non-existent pages */
   border: 1px solid #a7d7f9;
   border-right: none;
   min-height: 600px;
-  max-width: 1060px;
 }
 #content h1 {
   font-family: "Linux Libertine", Georgia, Times, serif;
