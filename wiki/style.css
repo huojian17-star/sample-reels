@@ -70,7 +70,6 @@ a.new { color: var(--link-red); }  /* red links for non-existent pages */
   min-height: 600px;
   max-width: 1060px;
 }
-.wikitable { clear: both; }
 #content h1 {
   font-family: "Linux Libertine", Georgia, Times, serif;
   font-size: 1.8em;
@@ -87,13 +86,11 @@ a.new { color: var(--link-red); }  /* red links for non-existent pages */
   border-bottom: 1px solid var(--border);
   margin: 1em 0 0.25em 0;
   padding-bottom: 0.17em;
-  clear: both;
 }
 #content h3 {
   font-size: 1.2em;
   font-weight: bold;
   margin: 1em 0 0.25em 0;
-  clear: both;
 }
 #content h4 {
   font-size: 1em;
