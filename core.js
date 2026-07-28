@@ -593,6 +593,7 @@ window.__MASCOT_QA = (function() {
   M['nav-game-analysis']   = { zh:'游戏拆解', en:'Analysis' };
   M['nav-script-analysis'] = { zh:'文案拆解', en:'Scripts' };
   M['nav-gaming']          = { zh:'游戏经历', en:'Gaming' };
+  M['nav-wiki']            = { zh:'百科', en:'Wiki' };
   M['nav-brand']           = { zh:'BEST-辣椒', en:'BEST-Chili' };
   M['footer-text']         = { zh:'BEST-辣椒 © 2026', en:'BEST-Chili © 2026' };
   M['footer-bilibili']     = { zh:'B站主页', en:'Bilibili' };
