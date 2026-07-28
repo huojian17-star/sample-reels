@@ -172,6 +172,7 @@ sup.reference a { font-weight: normal; }
 .noprint { }
 .hatnote { font-style: italic; padding: 0.2em 0; color: var(--text-dim); }
 .thumb { border: 1px solid #c8ccd1; background: var(--infobox-bg); padding: 3px; margin: 0.5em 0 0.5em 1.4em; float: right; clear: right; }
+.tleft { float: left; clear: left; margin: 0.5em 1.4em 0.5em 0; }
 .thumbinner { text-align: center; font-size: 94%; }
 .thumbcaption { padding: 3px; }
 blockquote {
