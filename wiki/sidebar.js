@@ -7,7 +7,8 @@
     'zurich_facility.html', 'project_echelon.html',
     'paper_morrow_2024.html', 'category_fictional.html',
     'version_history.html', 'classified_2027.html',
-    'categories.html', 'special.html', 'search.html', 'restricted_log.html'
+    'categories.html', 'special.html', 'search.html', 'restricted_log.html',
+    'talk_ai_timeline.html', 'talk_zurich_facility.html'
   ];
 
   // Backlinks data: which pages link to which
