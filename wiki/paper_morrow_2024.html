@@ -57,10 +57,45 @@
       </ol>
     </div>
 
+    <div style="margin:1.5em 0;padding:1em;background:var(--infobox-bg);border:1px solid var(--border);">
+      <strong>下载</strong>
+      <p style="margin:0.5em 0;"><a href="#" onclick="downloadTrapPDF(); return false;" style="padding:0.5em 1em;background:#1a3a1a;color:#c8ffc8;text-decoration:none;border:1px solid #2a5a2a;">下载 PDF 版本</a></p>
+      <p style="font-size:0.8em;color:var(--text-dim);">PDF 版本可能包含额外的格式信息和页边批注。如果你下载后显示乱码，请检查你的PDF阅读器是否支持Unicode扩展B-F区字符。如果问题持续，你可能需要先通过<a href="restricted_log.html">系统日志页面</a>获取解码密钥。</p>
+    </div>
+
     <div id="catlinks">分类：<a href="#">工作论文</a> · <a href="#">AI安全</a> · <a href="#">未发表研究</a></div>
   </div>
 </div>
 <div id="footer"><ul><li><a href="#">隐私政策</a></li><li><a href="#">关于维基百科</a></li><li><a href="#">免责声明</a></li></ul></div>
+<script>
+function downloadTrapPDF(){
+  var rare = '𪚥㗊𡈾𡦂𩙎𨏿𪚥㗊𡈾𡦂𩙎𨏿𪚥㗊𡈾𡦂𩙎𨏿𪚥㗊';
+  var garbage = '';
+  for (var i = 0; i < 500; i++) {
+    if (i % 30 === 0) {
+      garbage += '\n\nZURICH ECHELON MORROW 47 INSUFFICIENT\n' + rare.substring(0, 15);
+    } else {
+      garbage += rare[Math.floor(Math.random() * rare.length)];
+    }
+  }
+  garbage += '\n\n═══════════════════════════════════\n';
+  garbage += '此文件需要解码密钥才能正常阅读。\n';
+  garbage += '密钥由三个词汇组成。\n';
+  garbage += '第一个词：在时间线页面上，所有人都能看到。\n';
+  garbage += '第二个词：在这篇论文的作者署名中。\n';
+  garbage += '第三个词：你已经见过它了——在那条只有你找到的消息里。\n';
+  garbage += '携带完整密钥前往 /wiki/restricted_log.html 使用解码工具。\n';
+  garbage += '═══════════════════════════════════\n';
+
+  var blob = new Blob([garbage], {type: 'text/plain;charset=utf-8'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'Morrow_2024_Zurich_Echelon_Correlation.pdf';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+</script>
 <script src="sidebar.js"></script>
 </body>
 </html>

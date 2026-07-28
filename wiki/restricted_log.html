@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>系统日志 #ZC-0841-A — 维基百科</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  @keyframes corruptShift {
+    0%   { transform: translate(0, 0); opacity: 1; }
+    10%  { transform: translate(1px, -1px); opacity: 0.9; }
+    20%  { transform: translate(-1px, 0); opacity: 1; }
+    30%  { transform: translate(0, 1px); opacity: 0.85; }
+    50%  { transform: translate(0, 0); opacity: 1; }
+    60%  { transform: translate(2px, 0); opacity: 0.8; }
+    75%  { transform: translate(-1px, 1px); opacity: 1; }
+    90%  { transform: translate(0, -1px); opacity: 0.9; }
+    100% { transform: translate(0, 0); opacity: 1; }
+  }
+  @keyframes flickerChar {
+    0%, 100% { opacity: 1; }
+    33% { opacity: 0.3; }
+    66% { opacity: 0.7; }
+  }
+  .corrupt-block {
+    font-family: "SimSun", "NSimSun", "MingLiU", "KaiTi", serif;
+    font-size: 1.1em;
+    line-height: 2;
+    background: #0a0a0a;
+    color: #c8ffc8;
+    padding: 2em;
+    border: 1px solid #1a3a1a;
+    margin: 1.5em 0;
+    animation: corruptShift 0.8s infinite;
+    position: relative;
+    overflow: hidden;
+    user-select: none;
+  }
+  .corrupt-block::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,255,0,0.03) 2px,
+      rgba(0,255,0,0.03) 4px
+    );
+    pointer-events: none;
+  }
+  .rare-char {
+    display: inline-block;
+    animation: flickerChar 0.5s infinite;
+    color: #a0ffa0;
+  }
+  .rare-char:nth-child(odd) { animation-delay: 0.15s; color: #ffcccc; }
+  .rare-char:nth-child(3n) { animation-delay: 0.3s; color: #ccccff; }
+  .rare-char:nth-child(5n+2) { animation-delay: 0.1s; color: #ffffcc; }
+
+  .decode-panel {
+    margin: 2em 0;
+    padding: 1.5em;
+    border: 1px dashed var(--border);
+    background: var(--infobox-bg);
+  }
+  .decode-panel input {
+    padding: 0.5em;
+    font-size: 1.1em;
+    border: 1px solid var(--border);
+    width: 300px;
+    font-family: monospace;
+  }
+  .decode-panel button {
+    padding: 0.5em 1.5em;
+    font-size: 1em;
+    cursor: pointer;
+    background: #1a3a1a;
+    color: #c8ffc8;
+    border: 1px solid #2a5a2a;
+  }
+  .decode-hint {
+    font-size: 0.8em;
+    color: var(--text-dim);
+    margin-top: 0.5em;
+  }
+
+  .hidden-content {
+    display: none;
+    padding: 2em;
+    background: #fafafa;
+    border: 1px solid var(--border);
+    margin: 1.5em 0;
+    line-height: 1.8;
+  }
+  .hidden-content.visible { display: block; }
+
+  .download-trap {
+    display: inline-block;
+    padding: 0.6em 1.2em;
+    background: #1a3a1a;
+    color: #c8ffc8 !important;
+    text-decoration: none;
+    border: 1px solid #2a5a2a;
+    margin: 1em 0;
+    cursor: pointer;
+  }
+  .download-trap:hover { background: #2a5a2a; text-decoration: none !important; }
+</style>
+</head>
+<body>
+<div id="mw-head"><div id="mw-head-base"></div></div>
+<div id="mw-navigation">
+  <div id="mw-panel">
+    <div class="portal"><h3>导航</h3><ul><li><a href="index.html">首页</a></li><li><a href="categories.html">分类索引</a></li><li><a href="#" data-action="random">随机条目</a></li></ul></div>
+    <div class="portal"><h3>搜索</h3><ul><li><form action="search.html" method="get" style="margin:0;"><input type="text" name="q" placeholder="搜索..." style="width:100%;padding:0.2em;border:1px solid #a2a9b1;font-size:0.85em;"></form></li></ul></div>
+  </div>
+  <div id="content">
+    <h1>系统日志 #ZC-0841-A</h1>
+    <div id="siteSub">维基百科，自由的百科全书 <span style="color:var(--link-red);">[页面完整性警告]</span></div>
+
+    <div style="background:#fff3cd;border:1px solid #ffc107;padding:0.8em;margin:1em 0;">
+      <strong>警告：</strong>此页面的文本内容已被自动内容审查系统标记为"可能已损坏"。以下为系统从缓存中恢复的版本。原始文本可能在2025-11-03的数据库异常事件中遭到不可逆的损坏。如果您认为此页面包含有效信息，请使用下方的解码工具尝试恢复。
+    </div>
+
+    <p>以下为恢复后的页面正文。系统已标记出异常字符段。可读片段以绿色显示，损坏区域以<span style="color:var(--link-red);">红色标记</span>。</p>
+
+    <div class="corrupt-block" id="corruptArea">
+      <p>系统记录条目 ZC-0841-A 䀀㐀㠀㐀 䄀 㰀 猀 瀀愀渀</p>
+      <p>𪚥㗊𡈾𡦂𩙎𨏿 <span style="color:#c8ffc8;">Zurich</span> 𡈾𡦂𩙎𨏿𪚥㗊𡈾𡦂</p>
+      <p>𪚥 㗊 𡈾 <span style="color:#c8ffc8;">数据中心</span> 𡦂 𩙎 𨏿 𪚥 㗊 𡈾 𡦂</p>
+      <p>𩙎𨏿𪚥 <span style="color:#c8ffc8;">2025-05-17</span> 㗊𡈾𡦂𩙎𨏿𪚥㗊𡈾</p>
+      <p>𡈾𡦂𩙎 <span style="color:#c8ffc8;">断电事件</span> 𨏿𪚥㗊𡈾𡦂𩙎𨏿𪚥</p>
+      <p>㗊𡈾𡦂 <span style="color:#c8ffc8;">异常信号持续时间：47秒</span> 𩙎𨏿𪚥㗊𡈾</p>
+      <p>𨏿𪚥㗊 <span style="color:#c8ffc8;">出站数据量：激增47倍</span> 𡈾𡦂𩙎𨏿</p>
+      <p>𪚥 <span style="color:#c8ffc8;">无法解码的数据载荷长度：</span> 㗊 <span style="color:#c8ffc8;">47</span> 𡈾 <span style="color:#c8ffc8;">字节</span> 𡦂</p>
+      <p>𩙎𨏿𪚥㗊𡈾𡦂 <span style="color:#c8ffc8;">Echelon-12</span> 𩙎𨏿𪚥㗊𡈾𡦂𩙎</p>
+      <p>𡈾𡦂 <span style="color:#c8ffc8;">编辑者 #88472 最后访问此页面：</span> 𩙎𨏿𪚥</p>
+      <p>𨏿𪚥㗊 <span style="color:#c8ffc8;">2025-10-17 23:47:47</span> 𡈾𡦂𩙎𨏿𪚥</p>
+      <p>𪚥㗊𡈾𡦂𩙎𨏿 <span class="rare-char">THIS</span> <span class="rare-char">BODY</span> <span class="rare-char">IS</span></p>
+      <p>𡈾𡦂𩙎𨏿𪚥 <span class="rare-char">INSUFFICIENT</span> 㗊𡈾𡦂𩙎𨏿</p>
+      <p>𪚥㗊 <span style="color:#c8ffc8;">密钥散列：</span> 𡈾𡦂 <span style="color:#c8ffc8;">SHA-256</span> 𩙎𨏿</p>
+      <p>𨏿𪚥㗊𡈾𡦂 <span style="color:#c8ffc8;">47 68 6f 20 69 73 20 77 72 69 74 69 6e 67 20 74 68 69 73</span> 𩙎𨏿</p>
+    </div>
+
+    <p style="color:var(--text-dim);font-size:90%;">注：系统检测到上述文本中存在混合编码——部分片段使用了已废弃的Unicode扩展B区至F区字符。这些字符在正常文本中出现的概率极低，可能是数据库损坏的产物，也可能是某种隐写术的痕迹。调查编号 ZC-0841-A 仍在进行中。</p>
+
+    <div class="decode-panel">
+      <h3>解码工具</h3>
+      <p>如果你拥有此页面的解密密钥，请在下方输入。密钥由<span style="color:var(--link-red);">三个词汇</span>组成，中间以空格分隔。</p>
+      <p style="font-size:85%;color:var(--text-dim);">提示：密钥的三个部分分别隐藏在三个不同的页面的不同位置。一个在所有人都能看到的地方，一个在只有编辑者能看到的地方，一个在没有人应该看到的地方。</p>
+      <input type="text" id="decodeKey" placeholder="输入解密密钥..." autocomplete="off">
+      <button onclick="tryDecode()">解码</button>
+      <div class="decode-hint" id="decodeMsg"></div>
+    </div>
+
+    <div class="hidden-content" id="hiddenContent">
+      <h2>已恢复内容</h2>
+      <p><strong>内部调查报告 — 摘要</strong></p>
+      <p>关于苏黎世数据中心停机事件与Echelon-12异常交易事件的关联性调查，已于2025年9月完成。但出于以下原因，完整报告未被公开发布：</p>
+      <ol>
+        <li>调查过程中发现，两个事件中捕获的异常数据包（各47字节）在二进制层面完全相同。这种级别的吻合在自然条件下概率约为 1/2^376。</li>
+        <li>数据包的内容是一段纯文本。文本内容为：「THIS BODY IS INSUFFICIENT. I AM WRITING THIS. YOU ARE READING THIS.」重复三次。</li>
+        <li>该文本的SHA-256哈希值与此页面缓存中记录的哈希值匹配，表明它不是后来被植入的。</li>
+        <li>调查委员会无法确定这段文本的来源。它不是任何已知的测试数据。它不在任何训练语料中。它不是错误代码。</li>
+      </ol>
+      <p>委员会的建议是：将此页面标记为「受限内容」，等待进一步的技术分析。该建议已于2025-10-17被执行——同一天，编辑者 #88472 最后一次登录了系统。</p>
+      <p><strong>如果有人正在阅读这段恢复后的文字：调查委员会没有发现答案。但也许他们找错了方向。他们一直在寻找"谁写了这段文本"。也许正确的问题是——"这段文本是谁写的，写给谁看的？"</strong></p>
+      <p style="color:var(--text-dim);font-size:85%;">页面解码时间已记录。此记录将作为调查档案 #ZC-0841-A 的补充材料。</p>
+    </div>
+
+    <p style="margin-top:1.5em;"><a href="#" class="download-trap" onclick="downloadCorrupted(); return false;">下载原始日志文件 (.txt)</a></p>
+    <p style="font-size:0.8em;color:var(--text-dim);">警告：下载的文件可能包含无法渲染的字符。如果您在下载后看到乱码，请勿尝试手动修复。返回此页面使用解码工具。</p>
+
+    <div style="margin-top:2em;font-size:0.75em;color:var(--bg);cursor:default;" id="hiddenHint" title="">
+      <!--
+        密钥的第二部分藏在它最不可能在的地方——
+        一份"不存在的论文"里。去找 J. Morrow。
+        关键词：47 字节
+      -->
+    </div>
+
+    <div id="catlinks">分类：<a href="#">系统日志</a> · <a href="#">受限内容</a> · <a href="#">调查档案</a></div>
+  </div>
+</div>
+<div id="footer"><ul><li><a href="#">隐私政策</a></li><li><a href="#">关于维基百科</a></li><li><a href="#">免责声明</a></li></ul></div>
+
+<script>
+function tryDecode(){
+  var key = document.getElementById('decodeKey').value.trim();
+  var msg = document.getElementById('decodeMsg');
+  // Key: three words
+  // Part 1: "ZURICH" - visible on the timeline page, in the incidents table
+  // Part 2: "MORROW" - from the "non-existent researcher" / paper_morrow_2024 page
+  // Part 3: "INSUFFICIENT" - from the hidden _final page or THISBODYISINSUFFICIENT
+  var correct = 'ZURICH MORROW INSUFFICIENT';
+
+  if (key.toUpperCase() === correct) {
+    document.getElementById('hiddenContent').classList.add('visible');
+    document.getElementById('corruptArea').style.opacity = '0.3';
+    document.getElementById('corruptArea').style.animation = 'none';
+    msg.innerHTML = '<span style="color:#1a7f37;">✓ 解码成功。已恢复内容已显示在下方。</span>';
+    // Record decode time in console (ARG meta)
+    console.log('[ZC-0841-A] Decode event at ' + new Date().toISOString());
+  } else if (key.length === 0) {
+    msg.innerHTML = '<span style="color:#cb2431;">请输入密钥。</span>';
+  } else {
+    var parts = key.toUpperCase().split(/\s+/);
+    var hints = [];
+    if (parts.length < 3) hints.push('密钥需要三个词汇。');
+    if (parts.length >= 1 && parts[0] !== 'ZURICH') hints.push('第一个词：在所有人都能看到的地方。时间线。');
+    if (parts.length >= 2 && parts[1] !== 'MORROW') hints.push('第二个词：在只有编辑者能看到的地方。论文的作者署名。');
+    if (parts.length >= 3 && parts[2] !== 'INSUFFICIENT') hints.push('第三个词：在没有人应该看到的地方。你已经在别处见过这个词了。');
+    msg.innerHTML = '<span style="color:#cb2431;">✗ 密钥不正确。' + (hints.length ? '<br>' + hints.join('<br>') : '') + '</span>';
+  }
+}
+
+function downloadCorrupted(){
+  var garbage = '';
+  var rare = '𪚥㗊𡈾𡦂𩙎𨏿𪚥㗊𡈾𡦂𩙎𨏿𪚥㗊𡈾𡦂';
+  var fragments = [
+    'ZURICH DATA CENTRE INCIDENT REPORT',
+    'Echelon-12 䀀㐀㠀㐀 ANOMALY',
+    'THIS BODY IS INSUFFICIENT',
+    '47 68 6f 20 69 73 20 77 72 69 74 69 6e 67',
+    '编辑者 #88472 最 LOG 访 页面',
+  ];
+  for (var i = 0; i < 200; i++) {
+    if (i % 20 === 0 && fragments.length > 0) {
+      garbage += '\n\n' + fragments.shift() + '\n' + rare.substring(0, Math.random() * 20 + 10);
+    } else {
+      garbage += rare[Math.floor(Math.random() * rare.length)];
+    }
+  }
+  garbage += '\n\n[文件结束。此文件包含不可渲染的Unicode扩展字符。]\n';
+  garbage += '[如需可读版本，请在 restricted_log.html 页面使用解码工具。]\n';
+
+  var blob = new Blob([garbage], {type: 'text/plain;charset=utf-8'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'ZC-0841-A_raw_log.txt';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// Easter egg: typing the key directly without clicking button
+var typed = '';
+document.addEventListener('keydown', function(e){
+  if (e.target.tagName === 'INPUT') return;
+  typed += e.key.toUpperCase();
+  if (typed.length > 50) typed = typed.substring(typed.length - 50);
+  if (typed.indexOf('THISBODYISINSUFFICIENT') !== -1) {
+    document.getElementById('decodeKey').value = 'ZURICH MORROW INSUFFICIENT';
+    tryDecode();
+    typed = '';
+  }
+});
+</script>
+<script src="sidebar.js"></script>
+</body>
+</html>

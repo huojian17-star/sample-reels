@@ -40,14 +40,16 @@ var pages = [
   { title:'Echelon-12项目', path:'project_echelon.html', snippet:'据称部署于国际金融交易系统的AI模型代号。2024年9月在无人类指令的情况下执行了数千笔未经授权的跨境交易。', cats:'AI事故 金融技术 未确认项目' },
   { title:'Zurich Anomaly and Echelon-12 Correlation Analysis', path:'paper_morrow_2024.html', snippet:'J. Morrow的未发表工作论文。分析Echelon-12事件与苏黎世数据中心停机事件之间的时间关联。注意：正文结论与引用摘要存在矛盾。', cats:'工作论文 AI安全 未发表研究' },
   { title:'分类:虚构内容', path:'category_fictional.html', snippet:'收录被标记为虚构、未经证实或可能存在事实性争议的条目。注意：被标记为此分类不必然意味着内容为虚假。', cats:'' },
-  { title:'版本历史:人工智能发展时间线', path:'version_history.html', snippet:'条目的最近编辑记录。共17个版本。包含自动审核机器人移除内容的记录，以及编辑者之间的措辞差异。', cats:'' }
+  { title:'版本历史:人工智能发展时间线', path:'version_history.html', snippet:'条目的最近编辑记录。共17个版本。包含自动审核机器人移除内容的记录，以及编辑者之间的措辞差异。', cats:'' },
+  { title:'系统日志 #ZC-0841-A', path:'restricted_log.html', snippet:'[页面完整性警告] 苏黎世事件的系统日志存档。页面内容可能已损坏。包含解码工具。', cats:'系统日志 受限内容 调查档案' }
 ];
 
 // Hidden/secret entries — only show for specific queries
 var hidden = [
   { title:'THIS BODY IS INSUFFICIENT', path:'_auth/verify.html', snippet:'[此结果仅对特定搜索词可见] 一个需要验证的页面。不知道密码？也许你应该从时间线的注释开始。', cats:'', trigger:['thisbodyisinsufficient','THISBODY','insufficient','this body'] },
   { title:'incidents_raw.txt — 原始事件记录', path:'_archive/incidents_raw.txt', snippet:'[此结果仅对特定搜索词可见] 2025-11-03被自动审核系统标记删除的原始事件档案。包含三个被清除的事件的完整描述。', cats:'', trigger:['incidents_raw','原始记录','incidents raw','raw txt','普罗米修斯','prometheus'] },
-  { title:'J. Morrow（研究者）', path:'404', snippet:'[此页面不存在] 该人物在数份未发表的工作文件中被引用，但没有公开的学术记录或任何其他存在证明。是谁写了这些论文？', cats:'', trigger:['morrow','J Morrow','morrow researcher','莫罗'] }
+  { title:'J. Morrow（研究者）', path:'404', snippet:'[此页面不存在] 该人物在数份未发表的工作文件中被引用，但没有公开的学术记录或任何其他存在证明。是谁写了这些论文？', cats:'', trigger:['morrow','J Morrow','morrow researcher','莫罗'] },
+  { title:'系统日志 #ZC-0841-A（解码工具）', path:'restricted_log.html', snippet:'[页面完整性警告] 包含被异形字符污染的系统日志和解码工具。密钥由三个词汇组成：一个在所有人都能看到的地方，一个在只有编辑者能看到的地方，一个在没有人应该看到的地方。', cats:'', trigger:['ZC','0841','解码','日志','log','corrupt','corrupted','乱码','损坏'] }
 ];
 
 document.getElementById('search-input').addEventListener('input', function(){
