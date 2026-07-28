@@ -68,7 +68,9 @@ a.new { color: var(--link-red); }  /* red links for non-existent pages */
   border: 1px solid #a7d7f9;
   border-right: none;
   min-height: 600px;
+  max-width: 1060px;
 }
+.wikitable { clear: both; }
 #content h1 {
   font-family: "Linux Libertine", Georgia, Times, serif;
   font-size: 1.8em;
@@ -85,11 +87,13 @@ a.new { color: var(--link-red); }  /* red links for non-existent pages */
   border-bottom: 1px solid var(--border);
   margin: 1em 0 0.25em 0;
   padding-bottom: 0.17em;
+  clear: both;
 }
 #content h3 {
   font-size: 1.2em;
   font-weight: bold;
   margin: 1em 0 0.25em 0;
+  clear: both;
 }
 #content h4 {
   font-size: 1em;
@@ -141,7 +145,7 @@ a.new { color: var(--link-red); }  /* red links for non-existent pages */
 .toc .tocnumber { color: var(--text-dim); }
 
 /* ===== REFERENCES ===== */
-.references { font-size: 90%; }
+.references { font-size: 90%; clear: both; line-height: 1.5; }
 .references ol { margin-left: 1.5em; }
 .references li { margin-bottom: 0.5em; }
 .reference-text { font-size: 92%; }
@@ -155,6 +159,7 @@ sup.reference a { font-weight: normal; }
   padding: 0.5em;
   margin-top: 1em;
   font-size: 0.85em;
+  clear: both;
 }
 
 /* ===== FOOTER ===== */
@@ -173,8 +178,11 @@ sup.reference a { font-weight: normal; }
 .hatnote { font-style: italic; padding: 0.2em 0; color: var(--text-dim); }
 .thumb { border: 1px solid #c8ccd1; background: var(--infobox-bg); padding: 3px; margin: 0.5em 0 0.5em 1.4em; float: right; clear: right; }
 .tleft { float: left; clear: left; margin: 0.5em 1.4em 0.5em 0; }
+.thumb img { max-width: 100%; height: auto; }
 .thumbinner { text-align: center; font-size: 94%; }
 .thumbcaption { padding: 3px; }
+.thumb-removed { opacity: 0.75; filter: grayscale(30%); }
+.thumb-removed .thumbcaption { color: var(--link-red); font-style: italic; }
 blockquote {
   margin: 1em 2em;
   padding: 0.5em 1em;
