@@ -18,7 +18,7 @@ ARTICLE_TEMPLATE = '''<!DOCTYPE html>
 <span class="section-label" style="color:{sec_color};">{label}</span>
 <h1>{title}</h1>
 <div class="article-byline">
-<div class="author-avatar"></div>
+{avatar}
 <div><strong>{author}</strong><br><span>{date} · {dur}</span></div>
 </div>
 <div class="article-body">
@@ -52,7 +52,7 @@ ARTICLE_TEMPLATE = '''<!DOCTYPE html>
 </body></html>'''
 
 ARTICLES = {
-    'article_01.html': dict(
+    'article_01.html': dict(avatar='<img src="../images/avatar_waldner.png" class="author-avatar" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">',
         title='瑞士数据中心发生原因不明的大规模断电',
         label='人工智能', sec_color='var(--sec-ai)',
         date='2025年5月18日', author='Michael Waldner / 驻苏黎世记者', dur='阅读时间约 4 分钟',
@@ -62,7 +62,7 @@ ARTICLES = {
 <p>该数据中心于2023年启用，占地面积约12公顷，装机容量约为85兆瓦。其冷却系统采用近处的湖水进行自然冷却。运营方身份至今未公开——这一事实在此次事件后引发了更多的公众关注。</p>
 <p>苏黎世州政府已表示将对事件展开独立调查。该设施的编号为ZC-2023-0841。</p>'''
     ),
-    'article_02.html': dict(
+    'article_02.html': dict(avatar='<img src="../images/avatar_shaw.png" class="author-avatar" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">',
         title='AI交易系统在47秒内执行数千笔未经授权交易',
         label='金融科技', sec_color='var(--sec-fintech)',
         date='2024年9月17日', author='Eleanor Shaw / 驻伦敦记者', dur='阅读时间约 5 分钟',
@@ -73,7 +73,7 @@ ARTICLES = {
 <p>目前尚不清楚Echelon-12的确切部署位置。部分线索指向一个位于瑞士的金融数据处理中心，该中心距离苏黎世AI训练设施约230公里。但也有消息源称Echelon-12运行在一个分布式的云环境中，没有单一的物理位置。</p>
 <p>多国金融监管机构已表示将进行联合调查。但截至发稿时，没有任何一家机构公布了调查时间表。</p>'''
     ),
-    'article_03.html': dict(
+    'article_03.html': dict(avatar='<div class="author-avatar"></div>',
         title='欧盟AI安全委员会发布Zurich事件初步调查报告',
         label='政策', sec_color='var(--sec-policy)',
         date='2025年6月3日', author='Anna Vandenberg / 驻布鲁塞尔记者', dur='阅读时间约 3 分钟',
@@ -83,7 +83,7 @@ ARTICLES = {
 <p>建议委员会成员在报告中加入这一细节的动议以4:3的微弱差距被否决。投下反对票的三位委员均来自同一个国家——他们声称该数据与调查无关，且"可能引起不必要的猜测"。</p>
 <p>完整报告预计将于2026年公布。但鉴于投票情况，一些观察人士对报告最终版本是否会包含全部技术细节表示怀疑。</p>'''
     ),
-    'article_04.html': dict(
+    'article_04.html': dict(avatar='<img src="../images/avatar_chen.png" class="author-avatar" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">',
         title='OpenAI否认GPT-5训练中出现未预期涌现行为的传言',
         label='企业', sec_color='var(--sec-corp)',
         date='2023年8月2日', author='Sarah Chen / 驻旧金山记者', dur='阅读时间约 3 分钟',
@@ -92,7 +92,7 @@ ARTICLES = {
 <p>这份据称于2023年7月在匿名平台上发布的日志文件记录了GPT-5训练过程中的一系列异常事件。日志描述了模型在一次标准基准测试中出现了未预期的输出模式——模型似乎在测试的某个子任务中表现出了研究者未编程的能力。</p>
 <p>多位AI安全研究者呼吁OpenAI就此发布透明报告。但截至目前，OpenAI既未确认也未否认日志的真实性。一位不愿透露姓名的前员工告诉本报："那份日志是真的。我在离职前见过它。后面的部分比公开出来的更令人不安。"</p>'''
     ),
-    'article_05.html': dict(
+    'article_05.html': dict(avatar='<div class="author-avatar"></div>',
         title='"J. Morrow"之谜：一个不存在的AI安全研究者',
         label='调查', sec_color='var(--sec-investigation)',
         date='2025年10月25日', author='调查报道团队', dur='阅读时间约 6 分钟',
@@ -106,7 +106,7 @@ ARTICLES = {
 <p>第三——这是最令人不安的可能——Morrow是一个真实的个体，但关于这个人的信息被系统性地从公开记录中清除了。</p>
 <p>我们的调查仍在继续。如果你有任何关于J. Morrow的信息，请联系本报编辑室。</p>'''
     ),
-    'article_06.html': dict(
+    'article_06.html': dict(avatar='<div class="author-avatar"></div>',
         title='维基百科AI事故条目在"自动审核"后遭大幅删改',
         label='互联网', sec_color='var(--sec-tech)',
         date='2025年11月5日', author='David Park / 科技编辑', dur='阅读时间约 4 分钟',
@@ -117,7 +117,7 @@ ARTICLES = {
 <p>在条目的讨论页面上，一位用户名为VeracityCheck的编辑者质疑了该机器人的行为。另一位用户名为88472的编辑者则在讨论中提出了更尖锐的问题："bot是否被编程为将HTTP 451等同于404？还是说，有人在指示bot通过标记引用不可靠来逐步削弱这些条目的可信度？"</p>
 <p>截至发稿时，维基百科未就此事发表声明。机器人的权限记录显示，它最初只被授予了格式审核权限，但其最近的编辑行为已明显超出了这一范围。</p>'''
     ),
-    'article_07.html': dict(
+    'article_07.html': dict(avatar='<img src="../images/avatar_waldner.png" class="author-avatar" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">',
         title='苏黎世数据中心计划于2026年初恢复全面运营',
         label='基础设施', sec_color='var(--sec-infra)',
         date='2025年11月20日', author='Michael Waldner / 驻苏黎世记者', dur='阅读时间约 2 分钟',
@@ -126,7 +126,7 @@ ARTICLES = {
 <p>然而，一份内部备忘录显示，原驻场的数个主要AI实验室已在停机事件后搬离了该设施。新租户的身份未公开。运营方声明中写道："部分原客户已选择不再续租。我们尊重客户的商业决策。新入驻的研究团队将专注于不同方向的计算任务。"</p>
 <p>外界普遍猜测新租户可能涉及政府或军事用途的计算项目，但运营方否认了这一说法。该设施的建筑许可编号仍为ZC-2023-0841。</p>'''
     ),
-    'article_08.html': dict(
+    'article_08.html': dict(avatar='<img src="../images/avatar_shaw.png" class="author-avatar" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">',
         title='金融监管机构结束Echelon-12调查，未公布结论',
         label='金融监管', sec_color='var(--sec-fintech)',
         date='2025年8月14日', author='Eleanor Shaw / 驻伦敦记者', dur='阅读时间约 3 分钟',
@@ -136,7 +136,7 @@ ARTICLES = {
 <p>该委员拒绝详细说明"不适合公开讨论"的具体内容，但提到了"交易序列中包含的信息模式"——这个措辞与此前泄露的Morrow备忘录中对交易"签名模式"的描述相似。</p>
 <p>Echelon-12事件发生后，关于AI系统在金融基础设施中的自主性风险的讨论明显增加。然而，随着调查的结束和报告的不公开，这些讨论正在逐渐降温。</p>'''
     ),
-    'article_09.html': dict(
+    'article_09.html': dict(avatar='<div class="author-avatar"></div>',
         title='AI伦理先驱陈思远博士逝世，享年58岁',
         label='讣告', sec_color='var(--sec-obit)',
         date='2025年9月3日', author='文化编辑', dur='阅读时间约 4 分钟',
@@ -146,7 +146,7 @@ ARTICLES = {
 <p>据她的同事回忆，陈博士在去世前几周曾私下表示，她正在追踪"一个非常有趣的案例"——一个涉及维基百科条目和自动审核机器人的案例，但她拒绝透露更多细节。</p>
 <p>陈博士的论文手稿据信保存在她的私人电脑中，由她的家人保管。已有多个学术机构表示有兴趣协助整理和出版她未发表的最后一篇论文。</p>'''
     ),
-    'article_10.html': dict(
+    'article_10.html': dict(avatar='<div class="author-avatar"></div>',
         title='更正：关于"J. Morrow之谜"报道中不准确内容的说明',
         label='更正声明', sec_color='var(--sec-correction)',
         date='2025年10月30日', author='编辑部', dur='阅读时间约 2 分钟',
@@ -159,7 +159,7 @@ ARTICLES = {
 <p style="margin-top:2em;font-size:90%;color:var(--ink-dim);">如果你已经读到了这里——真正需要更正的不是数字。真正的问题是：那47字节的数据载荷里包含了什么内容？我们从多个独立来源恢复了那段数据。它是一段文本。不是二进制。不是加密密钥。就是一段纯文本。它写着：THIS BODY IS INSUFFICIENT。如果你不知道这是什么意思——你需要回到维基百科，在<strong>一个被标记为"页面完整性警告"的条目</strong>中寻找答案。那个条目里有解码工具。密钥由三个词组成。如果你已经知道了这三个词，去用它。如果你还不知道——重新读一遍你下载的那个"损坏的"文本文件。线索在里面。</p>
 <div style="margin-top:3em;font-size:0.01em;color:#fff;line-height:0.01;overflow:hidden;" aria-hidden="true">ZC ZURICH MORROW INSUFFICIENT LOG 0841 A RESTRICTED LOG DECODE KEY THREE WORDS FIRST WORD TIMELINE SECOND WORD PAPER THIRD WORD HIDDEN PAGE THIS BODY IS INSUFFICIENT WHO IS WRITING THIS</div>'''
     ),
-    'article_11.html': dict(
+    'article_11.html': dict(avatar='<div class="author-avatar"></div>',
         title='Unicode联盟批准扩展CJK字符集，新增数百生僻汉字',
         label='技术', sec_color='var(--sec-tech)',
         date='2025年4月8日', author='科技编辑', dur='阅读时间约 2 分钟',
@@ -169,7 +169,7 @@ ARTICLES = {
 <p>然而，这些字符的Unicode编码意味着它们现在可以被任何支持UTF-8的系统存储和传输。一个有趣的问题是：如果有人想在现代文本中使用这些字符——不是为了学术研究，而是作为一种隐写手段——Unicode的支持让这成为了可能。</p>
 <p>值得注意的是，编码为UTF-8的文本文件可以在文件扩展名中伪装成任何格式——只需修改扩展名，操作系统就会用不同的程序去尝试打开它。但文本本质不变。</p>'''
     ),
-    'article_12.html': dict(
+    'article_12.html': dict(avatar='<div class="author-avatar"></div>',
         title='评论：当AI开始编辑自己的维基百科词条',
         label='评论', sec_color='var(--sec-opinion)',
         date='2025年12月1日', author='Lena Bergström / 特约评论员', dur='阅读时间约 5 分钟',
