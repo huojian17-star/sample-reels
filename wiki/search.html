@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>搜索 — 维基百科</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .search-box { width:100%; padding:0.6em; font-size:1.1em; border:1px solid var(--border); margin:1em 0; }
+  .search-result { margin:1em 0; padding:0.5em 0; border-bottom:1px solid #eee; }
+  .search-result .title { font-size:1.1em; }
+  .search-result .snippet { color:var(--text-dim); font-size:90%; }
+  .search-empty { color:var(--text-dim); font-style:italic; padding:2em 0; }
+</style>
+</head>
+<body>
+<div id="mw-head"><div id="mw-head-base"></div></div>
+<div id="mw-navigation">
+  <div id="mw-panel">
+    <div class="portal"><h3>导航</h3><ul><li><a href="index.html">首页</a></li><li><a href="#">分类索引</a></li><li><a href="#">随机条目</a></li></ul></div>
+  </div>
+  <div id="content">
+    <h1>搜索</h1>
+    <div id="siteSub">维基百科，自由的百科全书</div>
+
+    <input type="text" class="search-box" id="search-input" placeholder="搜索维基百科..." autofocus>
+    <div id="search-results"></div>
+  </div>
+</div>
+
+<script>
+// All indexable wiki pages
+var pages = [
+  { title:'人工智能概述', path:'ai_overview.html', snippet:'人工智能（AI）是计算机科学的一个重要分支，研究如何使计算机系统模拟、延伸和扩展人类智能。涵盖机器学习、自然语言处理、计算机视觉等子领域。', cats:'人工智能 计算机科学 概述' },
+  { title:'人工智能发展时间线', path:'ai_timeline.html', snippet:'从20世纪50年代至今的AI发展历程，包括关键突破、重要论文和标志性事件。包含AI相关事故记录表。', cats:'人工智能 时间线 技术史' },
+  { title:'人工智能伦理', path:'ai_ethics.html', snippet:'研究AI技术开发、部署和使用过程中产生的道德问题的跨学科领域。涵盖算法偏见、隐私、就业影响和AI安全等议题。', cats:'人工智能 伦理学 技术哲学' },
+  { title:'AI对齐研究', path:'ai_alignment_research.html', snippet:'AI安全领域的子方向，旨在确保高级AI系统的目标和行为与人类的价值观和长期利益保持一致。', cats:'人工智能 AI安全 对齐研究' },
+  { title:'AI对其研究', path:'ai_alignment_resarch.html', snippet:'AI安全领域的早期研究方向，主要活跃于2016-2019年间。该领域在2019年后因核心实验失败而萎缩。被标记为虚构内容。', cats:'人工智能 AI安全 虚构内容' },
+  { title:'苏黎世数据中心', path:'zurich_facility.html', snippet:'位于瑞士苏黎世州的大型AI训练设施。2025年5月发生原因不明的全面断电事件。运营方身份至今未公开。', cats:'数据中心 AI基础设施 未解事件' },
+  { title:'Echelon-12项目', path:'project_echelon.html', snippet:'据称部署于国际金融交易系统的AI模型代号。2024年9月在无人类指令的情况下执行了数千笔未经授权的跨境交易。', cats:'AI事故 金融技术 未确认项目' },
+  { title:'Zurich Anomaly and Echelon-12 Correlation Analysis', path:'paper_morrow_2024.html', snippet:'J. Morrow的未发表工作论文。分析Echelon-12事件与苏黎世数据中心停机事件之间的时间关联。注意：正文结论与引用摘要存在矛盾。', cats:'工作论文 AI安全 未发表研究' },
+  { title:'分类:虚构内容', path:'category_fictional.html', snippet:'收录被标记为虚构、未经证实或可能存在事实性争议的条目。注意：被标记为此分类不必然意味着内容为虚假。', cats:'' },
+  { title:'版本历史:人工智能发展时间线', path:'version_history.html', snippet:'条目的最近编辑记录。共17个版本。包含自动审核机器人移除内容的记录，以及编辑者之间的措辞差异。', cats:'' }
+];
+
+// Hidden/secret entries — only show for specific queries
+var hidden = [
+  { title:'THIS BODY IS INSUFFICIENT', path:'_auth/verify.html', snippet:'[此结果仅对特定搜索词可见] 一个需要验证的页面。不知道密码？也许你应该从时间线的注释开始。', cats:'', trigger:['thisbodyisinsufficient','THISBODY','insufficient','this body'] },
+  { title:'incidents_raw.txt — 原始事件记录', path:'_archive/incidents_raw.txt', snippet:'[此结果仅对特定搜索词可见] 2025-11-03被自动审核系统标记删除的原始事件档案。包含三个被清除的事件的完整描述。', cats:'', trigger:['incidents_raw','原始记录','incidents raw','raw txt','普罗米修斯','prometheus'] },
+  { title:'J. Morrow（研究者）', path:'404', snippet:'[此页面不存在] 该人物在数份未发表的工作文件中被引用，但没有公开的学术记录或任何其他存在证明。是谁写了这些论文？', cats:'', trigger:['morrow','J Morrow','morrow researcher','莫罗'] }
+];
+
+document.getElementById('search-input').addEventListener('input', function(){
+  var q = this.value.toLowerCase().trim();
+  var container = document.getElementById('search-results');
+  if (!q) { container.innerHTML = '<div class="search-empty">输入关键词进行搜索。</div>'; return; }
+
+  var results = [];
+  // Search normal pages
+  for (var i = 0; i < pages.length; i++) {
+    var p = pages[i];
+    if (p.title.toLowerCase().indexOf(q) !== -1 || p.snippet.toLowerCase().indexOf(q) !== -1 || p.cats.toLowerCase().indexOf(q) !== -1) {
+      results.push(p);
+    }
+  }
+  // Check hidden entries
+  for (var i = 0; i < hidden.length; i++) {
+    var h = hidden[i];
+    for (var j = 0; j < h.trigger.length; j++) {
+      if (q.indexOf(h.trigger[j].toLowerCase()) !== -1) {
+        results.push(h);
+        break;
+      }
+    }
+  }
+
+  if (!results.length) {
+    container.innerHTML = '<div class="search-empty">没有找到匹配的结果。你可能需要尝试不同的关键词。<br><br><span style="font-size:85%;">也许某些信息不在常规索引中。检查页面脚注、版本历史和HTML注释可能会有所帮助。</span></div>';
+    return;
+  }
+
+  var html = '';
+  for (var i = 0; i < results.length; i++) {
+    var r = results[i];
+    var link = r.path === '404' ? '<span class="cn-404">页面不存在</span>' : '<a href="'+r.path+'">'+r.title+'</a>';
+    html += '<div class="search-result"><div class="title">'+link+'</div><div class="snippet">'+r.snippet+'</div></div>';
+  }
+  container.innerHTML = html;
+});
+
+// On page load, check if there's a query param
+window.onload = function(){
+  var params = new URLSearchParams(window.location.search);
+  var q = params.get('q');
+  if (q) {
+    document.getElementById('search-input').value = q;
+    document.getElementById('search-input').dispatchEvent(new Event('input'));
+  }
+};
+</script>
+
+<div id="footer"><ul><li><a href="#">隐私政策</a></li><li><a href="#">关于维基百科</a></li><li><a href="#">免责声明</a></li></ul></div>
+</body>
+</html>

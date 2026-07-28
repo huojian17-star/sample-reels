@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>已加密内容 — 维基百科</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .countdown { font-family: monospace; font-size:1.8em; text-align:center; margin:2em 0; color:var(--link-red); }
+  .seal { text-align:center; margin:3em 0; padding:2em; border:2px solid var(--border); background:var(--infobox-bg); }
+  .seal-icon { font-size:3em; }
+  .bypass-hint { font-size:10px; color:var(--bg); margin-top:4em; }
+  .bypass-hint:hover { color:var(--text-dim); }
+</style>
+</head>
+<body>
+<div id="mw-head"><div id="mw-head-base"></div></div>
+<div id="mw-navigation">
+  <div id="mw-panel">
+    <div class="portal"><h3>导航</h3><ul><li><a href="index.html">首页</a></li><li><a href="#">分类索引</a></li><li><a href="#">随机条目</a></li></ul></div>
+  </div>
+  <div id="content">
+    <h1>已加密内容</h1>
+    <div id="siteSub">维基百科，自由的百科全书</div>
+
+    <div class="seal">
+      <div class="seal-icon">[已密封]</div>
+      <h2>本页面内容已被限制访问</h2>
+      <p>根据相关法规及正在进行中的调查程序，本页面的完整内容已在解禁日期前被限制查看。</p>
+      <p><strong>当前状态：</strong>距离自动解禁还有</p>
+      <div class="countdown" id="countdown">计算中...</div>
+      <p>解禁日期：<strong>2027-03-15 00:00:00 UTC</strong></p>
+      <p style="font-size:85%;color:var(--text-dim);">如果您认为此限制不应适用于您，请联系页面管理员并提供相应的访问凭证。</p>
+    </div>
+
+    <p style="color:var(--text-dim);font-size:85%;">本页面涉及的调查档案编号：#ZC-2025-0841-A、#EC-2024-0914-B。更多信息可参考<a href="ai_timeline.html">人工智能发展时间线</a>中的相关条目。</p>
+
+    <div class="bypass-hint">
+      <p>编辑者备注（对HTML源码查看者可见）：时间检查依赖客户端JavaScript的Date对象。理论上可以通过修改系统时钟绕过。但审核日志记录的是服务器端时间戳，修改本地时钟只会让你看到一页没有意义的乱码——因为内容在服务器端已经用时间戳做了哈希校验，解密密钥与实际的服务器时间绑定。这不是一个你可以通过"聪明"来跳过的等待。这是一个需要耐心的谜题。</p>
+      <p>当然，如果你碰巧知道了密钥——THISBODYISINSUFFICIENT——也许你可以试试<a href="_auth/verify.html">另一条路</a>。</p>
+    </div>
+
+    <div id="catlinks">分类：<a href="#">受限内容</a> · <a href="#">待解禁</a></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var unlock = new Date('2027-03-15T00:00:00Z').getTime();
+  function tick(){
+    var now = Date.now();
+    var left = unlock - now;
+    if (left <= 0) {
+      document.getElementById('countdown').textContent = '00天 00时 00分 00秒';
+      document.querySelector('.seal').innerHTML = '<div style="text-align:center;padding:2em;"><h2>解禁日期已到</h2><p>本页面内容现已可以查看。然而——你确定要相信一个自动计时器告诉你的一切吗？</p><p><a href="_auth/verify.html">手动验证身份</a></p></div>';
+      return;
+    }
+    var days = Math.floor(left / 86400000);
+    var hours = Math.floor((left % 86400000) / 3600000);
+    var mins = Math.floor((left % 3600000) / 60000);
+    var secs = Math.floor((left % 60000) / 1000);
+    document.getElementById('countdown').textContent =
+      String(days).padStart(2,'0')+'天 '+
+      String(hours).padStart(2,'0')+'时 '+
+      String(mins).padStart(2,'0')+'分 '+
+      String(secs).padStart(2,'0')+'秒';
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+</script>
+
+<div id="footer"><ul><li><a href="#">隐私政策</a></li><li><a href="#">关于维基百科</a></li><li><a href="#">免责声明</a></li></ul></div>
+</body>
+</html>

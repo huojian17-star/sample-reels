@@ -36,6 +36,13 @@
         <li><a href="#">页面信息</a></li>
       </ul>
     </div>
+    <div class="portal">
+      <h3>搜索</h3>
+      <ul>
+        <li><form action="search.html" method="get" style="margin:0;"><input type="text" name="q" placeholder="搜索..." style="width:100%;padding:0.2em;border:1px solid #a2a9b1;font-size:0.85em;"></form></li>
+      </ul>
+    </div>
+
   </div>
 
   <div id="content">
@@ -47,29 +54,33 @@
       <div style="flex:1;">
         <h2>精选条目</h2>
         <h3><a href="ai_overview.html">人工智能概述</a></h3>
-        <p>对人工智能领域的基本概念、主要分支和发展现状的概述。涵盖机器学习、自然语言处理、计算机视觉等子领域，以及当前主要的AI公司和研究方向。</p>
+        <p>对人工智能领域的基本概念、主要分支和发展现状的概述。涵盖机器学习、自然语言处理、计算机视觉等子领域。</p>
 
         <h3><a href="ai_timeline.html">人工智能发展时间线</a></h3>
-        <p>从20世纪50年代至今的AI发展历程，包括关键突破、重要论文和标志性事件。</p>
+        <p>从20世纪50年代至今的AI发展历程，包括关键突破、重要论文和标志性事件。<a href="version_history.html">（查看版本历史）</a></p>
 
         <h3><a href="ai_ethics.html">人工智能伦理</a></h3>
         <p>探讨AI技术带来的伦理挑战，包括隐私、偏见、就业影响和长期存在风险。</p>
+
+        <h3><a href="ai_alignment_research.html">AI对齐研究</a></h3>
+        <p>确保高级AI系统与人类价值观保持一致的研究方向。涉及价值对齐、可扩展监督和机械可解释性。</p>
       </div>
       <div style="flex:1;">
         <h2>你知道吗...</h2>
         <ul style="line-height:1.8;">
-          <li>人工智能的概念最早可以追溯到古希腊神话中的机械人塔洛斯？</li>
-          <li>2014年，一个聊天机器人首次通过了图灵测试？</li>
+          <li>2025年苏黎世一个AI数据中心发生了原因不明的全面断电？</li>
+          <li>一个名为Echelon-12的AI系统曾在无人指令下执行了数千笔交易？</li>
           <li>截至2026年，全球已有超过60个国家制定了AI相关法规？</li>
-          <li>最大的神经网络模型参数量已经超过了人脑的突触数量？</li>
+          <li>某些维基百科条目被分类为"虚构内容"——但你真的确定它们都是虚构的吗？</li>
         </ul>
 
-        <h2>新闻动态</h2>
-        <ul style="line-height:1.8;">
-          <li>国际AI安全峰会在日内瓦召开</li>
-          <li>新版AI伦理框架获多国签署</li>
-          <li>开源大语言模型性能首次超越闭源模型</li>
-        </ul>
+        <div style="margin-top:1em;">
+          <h2>搜索</h2>
+          <form action="search.html" method="get" style="display:flex;gap:4px;">
+            <input type="text" name="q" placeholder="搜索维基百科..." style="flex:1;padding:0.4em;border:1px solid var(--border);font-size:0.9em;">
+            <button type="submit" style="padding:0.4em 1em;background:var(--infobox-bg);border:1px solid var(--border);cursor:pointer;">搜索</button>
+          </form>
+        </div>
       </div>
     </div>
 
