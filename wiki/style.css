@@ -1,0 +1,203 @@
+/* ===== Wikipedia Vector Skin Clone ===== */
+:root {
+  --bg: #f6f6f6;
+  --content-bg: #ffffff;
+  --border: #a2a9b1;
+  --link: #0645ad;
+  --link-visited: #0b0080;
+  --link-red: #ba0000;
+  --text: #202122;
+  --text-dim: #54595d;
+  --infobox-bg: #f8f9fa;
+  --header-bg: linear-gradient(to bottom, #ffffff 50%, #f6f6f6 100%);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.875em;
+  line-height: 1.6;
+}
+
+a { color: var(--link); text-decoration: none; }
+a:visited { color: var(--link-visited); }
+a:hover { text-decoration: underline; }
+a.new { color: var(--link-red); }  /* red links for non-existent pages */
+
+/* ===== TOP BAR ===== */
+#mw-head {
+  background: var(--header-bg);
+  height: 80px;
+  position: relative;
+}
+#mw-head-base {
+  height: 80px;
+}
+#mw-navigation { position: relative; }
+
+/* ===== SIDEBAR ===== */
+#mw-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 176px;
+  padding: 1em 0 0 1em;
+  font-size: 0.8125em;
+}
+#mw-panel .portal { margin-bottom: 1.5em; }
+#mw-panel .portal h3 {
+  font-size: 0.75em;
+  color: var(--text-dim);
+  text-transform: none;
+  font-weight: normal;
+  margin-bottom: 0.3em;
+  padding: 0.25em 0;
+  border-bottom: 1px solid var(--border);
+}
+#mw-panel .portal ul { list-style: none; }
+#mw-panel .portal li { padding: 0.25em 0; line-height: 1.125em; }
+
+/* ===== CONTENT AREA ===== */
+#content {
+  margin-left: 176px;
+  padding: 1.25em 1.5em 1.5em 1.5em;
+  background: var(--content-bg);
+  border: 1px solid #a7d7f9;
+  border-right: none;
+  min-height: 600px;
+}
+#content h1 {
+  font-family: "Linux Libertine", Georgia, Times, serif;
+  font-size: 1.8em;
+  font-weight: normal;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0.25em;
+  padding-bottom: 0.17em;
+  word-wrap: break-word;
+}
+#content h2 {
+  font-family: "Linux Libertine", Georgia, Times, serif;
+  font-size: 1.5em;
+  font-weight: normal;
+  border-bottom: 1px solid var(--border);
+  margin: 1em 0 0.25em 0;
+  padding-bottom: 0.17em;
+}
+#content h3 {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin: 1em 0 0.25em 0;
+}
+#content h4 {
+  font-size: 1em;
+  font-weight: bold;
+  margin: 1em 0 0.25em 0;
+}
+
+#siteSub { font-size: 0.85em; color: var(--text-dim); margin-bottom: 1em; }
+
+/* ===== INFOBOX (right-floated fact box) ===== */
+.infobox {
+  border: 1px solid var(--border);
+  border-spacing: 3px;
+  background: var(--infobox-bg);
+  color: var(--text);
+  padding: 0.2em;
+  font-size: 88%;
+  line-height: 1.5em;
+  margin: 0.5em 0 0.5em 1em;
+  float: right;
+  clear: right;
+  width: 22em;
+  max-width: 100%;
+}
+.infobox th, .infobox td { vertical-align: top; text-align: left; }
+.infobox-title { font-size: 125%; font-weight: bold; text-align: center; padding: 0.2em; }
+.infobox-header { text-align: center; background: #eaecf0; }
+.infobox-image { text-align: center; padding: 0.2em; }
+.infobox-label { white-space: nowrap; padding-right: 0.5em; }
+
+/* ===== TOC ===== */
+.toc {
+  border: 1px solid var(--border);
+  background: var(--infobox-bg);
+  padding: 0.5em 1em;
+  font-size: 95%;
+  display: inline-block;
+  margin: 1em 0;
+}
+.toc h2 {
+  font-size: 100%;
+  font-weight: bold;
+  border: none;
+  margin: 0;
+  display: inline;
+}
+.toc ul { list-style: none; margin: 0.3em 0 0 1.5em; }
+.toc li { margin-bottom: 0.1em; }
+.toc .tocnumber { color: var(--text-dim); }
+
+/* ===== REFERENCES ===== */
+.references { font-size: 90%; }
+.references ol { margin-left: 1.5em; }
+.references li { margin-bottom: 0.5em; }
+.reference-text { font-size: 92%; }
+sup.reference { font-size: 0.75em; }
+sup.reference a { font-weight: normal; }
+
+/* ===== CATEGORIES ===== */
+#catlinks {
+  border: 1px solid var(--border);
+  background: var(--infobox-bg);
+  padding: 0.5em;
+  margin-top: 1em;
+  font-size: 0.85em;
+}
+
+/* ===== FOOTER ===== */
+#footer {
+  margin-left: 176px;
+  padding: 1em 1.5em;
+  font-size: 0.8em;
+  color: var(--text-dim);
+}
+#footer ul { list-style: none; display: inline; }
+#footer li { display: inline; margin-right: 1em; }
+
+/* ===== UTILITY CLASSES ===== */
+.mw-editsection { font-size: 0.75em; margin-left: 0.5em; }
+.noprint { }
+.hatnote { font-style: italic; padding: 0.2em 0; color: var(--text-dim); }
+.thumb { border: 1px solid #c8ccd1; background: var(--infobox-bg); padding: 3px; margin: 0.5em 0 0.5em 1.4em; float: right; clear: right; }
+.thumbinner { text-align: center; font-size: 94%; }
+.thumbcaption { padding: 3px; }
+blockquote {
+  margin: 1em 2em;
+  padding: 0.5em 1em;
+  border-left: 3px solid #eaecf0;
+  color: var(--text-dim);
+}
+
+/* ARG-specific: missing citation warning */
+.cn-missing { background: #fef6e7; border: 1px solid #fc3; padding: 0.2em 0.4em; color: #663d00; }
+.cn-404 { color: var(--link-red); cursor: not-allowed; text-decoration: line-through; }
+
+/* Glitch effect for corrupted pages */
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 1px); }
+  40% { transform: translate(2px, -1px); }
+  60% { transform: translate(-1px, 0); }
+  80% { transform: translate(1px, 0); }
+  100% { transform: translate(0); }
+}
+.glitch { animation: glitch 0.3s infinite; }
+
+@media (max-width: 850px) {
+  #mw-panel { display: none; }
+  #content, #footer { margin-left: 0; }
+  .infobox { float: none; width: 100%; margin: 1em 0; }
+}

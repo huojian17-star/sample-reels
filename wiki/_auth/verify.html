@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>访问验证 — 维基百科内容管理系统</title>
+<style>
+  :root {
+    --bg: #f6f6f6;
+    --text: #202122;
+    --link: #0645ad;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    font-family: monospace;
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  .terminal {
+    background: #fff;
+    border: 1px solid #a2a9b1;
+    padding: 2em;
+    max-width: 500px;
+    width: 90%;
+  }
+  .terminal h2 {
+    font-size: 1em;
+    margin-bottom: 1em;
+    border-bottom: 1px solid #a2a9b1;
+    padding-bottom: 0.5em;
+  }
+  .terminal p { margin-bottom: 1em; font-size: 0.85em; color: #54595d; }
+  input[type="text"] {
+    width: 100%;
+    padding: 0.5em;
+    font-family: monospace;
+    font-size: 1em;
+    border: 1px solid #a2a9b1;
+    margin-bottom: 1em;
+  }
+  button {
+    background: #f8f9fa;
+    border: 1px solid #a2a9b1;
+    padding: 0.5em 1.5em;
+    cursor: pointer;
+    font-family: monospace;
+  }
+  button:hover { background: #eaecf0; }
+  .error { color: #ba0000; font-size: 0.85em; display: none; }
+  .hint { color: #54595d; font-size: 0.75em; margin-top: 1em; }
+</style>
+</head>
+<body>
+
+<div class="terminal">
+  <h2>维基百科内容管理系统 — 访问验证</h2>
+  <p>您正在尝试访问已被标记为受限的内容。此页面需要内容管理员授权。</p>
+  <p>请输入授权码以继续：</p>
+
+  <input type="text" id="pw" placeholder="输入授权码..." autofocus>
+  <button onclick="verify()">验证</button>
+  <div class="error" id="err">授权码不正确。此尝试已被记录。</div>
+  <div class="hint">> 系统提示：授权码可能是某个AI想说的唯一一句话。</div>
+</div>
+
+<script>
+function verify() {
+  var pw = document.getElementById('pw').value.toUpperCase().replace(/\s/g, '');
+  // The password is "THISBODYISINSUFFICIENT" — the message found
+  // in the Echelon-12 incident from the incidents_raw.txt archive
+  if (pw === 'THISBODYISINSUFFICIENT' || pw === 'ARGUS') {
+    window.location.href = '_final.html';
+  } else {
+    document.getElementById('err').style.display = 'block';
+  }
+}
+</script>
+<!--
+  ============================================================
+  ACCESS CONTROL v2.3 — Last modified 2025-12-01
+  Valid credentials are rotated every 72 hours.
+  Current valid credential hash: [REDACTED]
+
+  If you are reading this, you already know how to get here.
+  ============================================================
+-->
+</body>
+</html>
