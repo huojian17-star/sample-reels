@@ -1,0 +1,136 @@
+:root {
+  --bg: #f5f5f5;
+  --text: #1a1a1a;
+  --text-dim: #666;
+  --link: #c00;
+  --link-hover: #900;
+  --header-bg: #1a1a1a;
+  --card-bg: #fff;
+  --border: #e0e0e0;
+  --accent: #c00;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 16px;
+  line-height: 1.7;
+}
+a { color: var(--link); text-decoration: none; }
+a:hover { color: var(--link-hover); text-decoration: underline; }
+
+/* Header */
+.site-header {
+  background: var(--header-bg);
+  color: #fff;
+  padding: 1em 0;
+  border-bottom: 3px solid var(--accent);
+}
+.header-inner {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 1em;
+}
+.site-name {
+  font-size: 2em;
+  font-weight: bold;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  letter-spacing: -1px;
+}
+.site-tagline {
+  font-size: 0.8em;
+  color: #999;
+  font-family: Arial, sans-serif;
+}
+
+/* Layout */
+.main-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1.5em 1em;
+}
+
+/* Article cards on index */
+.article-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  padding: 1.2em 1.5em;
+  margin-bottom: 0.8em;
+}
+.article-card h2 {
+  font-size: 1.2em;
+  margin-bottom: 0.3em;
+  font-weight: normal;
+}
+.article-card .meta {
+  font-size: 0.8em;
+  color: var(--text-dim);
+  font-family: Arial, sans-serif;
+  margin-bottom: 0.5em;
+}
+.article-card .blurb {
+  font-size: 0.9em;
+  color: #444;
+}
+
+/* Full article */
+.article-full h1 {
+  font-size: 2em;
+  margin-bottom: 0.2em;
+  line-height: 1.3;
+}
+.article-full .byline {
+  font-size: 0.85em;
+  color: var(--text-dim);
+  font-family: Arial, sans-serif;
+  margin-bottom: 1.5em;
+  padding-bottom: 1em;
+  border-bottom: 1px solid var(--border);
+}
+.article-full p {
+  margin-bottom: 1em;
+}
+.article-full .correction-label {
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  padding: 0.8em 1em;
+  margin: 1.5em 0;
+  font-style: italic;
+  font-size: 0.9em;
+}
+.article-full .correction-label strong {
+  color: #c00;
+}
+
+/* Section label */
+.section-label {
+  font-family: Arial, sans-serif;
+  font-size: 0.75em;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent);
+  font-weight: bold;
+  margin-bottom: 0.3em;
+}
+
+/* Footer */
+.site-footer {
+  max-width: 800px;
+  margin: 2em auto;
+  padding: 1em;
+  text-align: center;
+  font-size: 0.8em;
+  color: var(--text-dim);
+  font-family: Arial, sans-serif;
+  border-top: 1px solid var(--border);
+}
+
+/* Hidden clue styles */
+.clue-hidden { color: var(--bg); }
+.clue-hidden:hover { color: var(--text); }
+
+@media (max-width: 600px) {
+  .site-name { font-size: 1.4em; }
+  .article-full h1 { font-size: 1.4em; }
+}
