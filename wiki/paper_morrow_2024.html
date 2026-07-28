@@ -59,8 +59,8 @@
 
     <div style="margin:1.5em 0;padding:1em;background:var(--infobox-bg);border:1px solid var(--border);">
       <strong>下载</strong>
-      <p style="margin:0.5em 0;"><a href="#" onclick="downloadTrapPDF(); return false;" style="padding:0.5em 1em;background:#1a3a1a;color:#c8ffc8;text-decoration:none;border:1px solid #2a5a2a;">下载 PDF 版本</a></p>
-      <p style="font-size:0.8em;color:var(--text-dim);">PDF 版本可能包含额外的格式信息和页边批注。如果你下载后显示乱码，请检查你的PDF阅读器是否支持Unicode扩展B-F区字符。如果问题持续，你可能需要先通过<a href="restricted_log.html">系统日志页面</a>获取解码密钥。</p>
+      <p style="margin:0.5em 0;"><a href="#" onclick="downloadTrapPDF(); return false;" style="padding:0.5em 1em;background:#1a3a1a;color:#c8ffc8;text-decoration:none;border:1px solid #2a5a2a;">下载论文全文（.txt）</a></p>
+      <p style="font-size:0.8em;color:var(--text-dim);">文件为UTF-8纯文本格式。部分字符使用了Unicode扩展B-F区编码——如果你的文本编辑器显示为方框或空白，请尝试使用支持扩展字符集的编辑器（如VS Code、Notepad++）打开。如果你看到的全是无法理解的生僻汉字，这篇论文可能需要先通过<a href="restricted_log.html">系统日志页面</a>解码。</p>
     </div>
 
     <div id="catlinks">分类：<a href="#">工作论文</a> · <a href="#">AI安全</a> · <a href="#">未发表研究</a></div>
@@ -91,7 +91,7 @@ function downloadTrapPDF(){
   var url = URL.createObjectURL(blob);
   var a = document.createElement('a');
   a.href = url;
-  a.download = 'Morrow_2024_Zurich_Echelon_Correlation.pdf';
+  a.download = 'Morrow_2024_Zurich_Echelon_Correlation.txt';
   a.click();
   URL.revokeObjectURL(url);
 }
