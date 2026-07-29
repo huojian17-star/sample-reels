@@ -41,8 +41,8 @@ TEMPLATE = '''<!DOCTYPE html>
   <div class="post" style="text-align:center;padding:2em;color:var(--text-dim);border-bottom:1px solid var(--border);">
     <p style="font-size:1.2em;margin-bottom:0.5em;">&#x1F512;</p>
     <p><strong>登录以查看更多帖子</strong></p>
-    <p style="font-size:0.85em;">此账号共有 <strong>{total_posts}</strong> 条帖子。你目前以访客身份浏览，仅可查看最近 {visible} 条。</p>
-    <p style="font-size:0.8em;color:var(--text-dim);margin-top:0.5em;">登录或创建账号以查看完整内容。</p>
+    <p style="font-size:0.85em;">你目前以访客身份浏览，仅可查看 <strong>{cutoff_date}</strong> 之前的公开帖子。</p>
+    <p style="font-size:0.8em;color:var(--text-dim);margin-top:0.5em;">此账号共有 <strong>{total_posts}</strong> 条帖子。由于地区限制，登录功能暂不可用。</p>
   </div>
 </div>
 <div class="sidebar-right">
@@ -70,7 +70,7 @@ PROFILES = {
         name='ZurichWatcher', handle='ZurichWatcher',
         avatar='https://ui-avatars.com/api/?name=ZW&background=555&color=fff&size=160',
         verified='', location='苏黎世, 瑞士', joined='2023年3月',
-        following='89', followers='2.3K', total_posts='47', visible='10',
+        following='89', followers='2.3K', total_posts='47', cutoff_date='2025年8月',
         bio='网络基础设施监控工程师。在这个行业干了二十年。我看到了什么就发什么。官方声明和我的帖子之间——你选择相信哪一个？',
         posts='''<div class="post"><div class="post-header"><div class="post-avatar"><img src="https://ui-avatars.com/api/?name=ZW&background=555&color=fff&size=96" alt=""></div><div><div class="post-user"><span class="post-name">ZurichWatcher</span><span class="post-handle">@ZurichWatcher</span><span class="post-time">· 2025年11月28日 23:47</span></div></div></div><div class="post-body"><p>刚刚又去看了一眼ZC-2023-0841。灯光全灭。门口多了一块新的标志牌：ZC-0841-A。网上搜不到这个编号。截图。保存。他们正在删。</p></div><div class="post-actions"><span>&#x1F5A8; 7</span><span>&#x1F501; 14</span><span>&#x2764; 31</span><span>&#x1F4CA; 89</span></div></div>
 <div class="post"><div class="post-header"><div class="post-avatar"><img src="https://ui-avatars.com/api/?name=ZW&background=555&color=fff&size=96" alt=""></div><div><div class="post-user"><span class="post-name">ZurichWatcher</span><span class="post-handle">@ZurichWatcher</span><span class="post-time">· 2025年5月17日 23:52</span></div></div></div><div class="post-body"><p>苏黎世数据中心全面断电。备用发电机启动了——然后又停了。不是故障。这是关停。出站数据激增47倍后归零。</p></div><div class="post-actions"><span>&#x1F5A8; 89</span><span>&#x1F501; 234</span><span>&#x2764; 412</span><span>&#x1F4CA; 1.2K</span></div></div>
@@ -81,7 +81,7 @@ PROFILES = {
         name='AutoReviewBot', handle='AutoReviewBot',
         avatar='https://ui-avatars.com/api/?name=ARB&background=555&color=fff&size=160',
         verified='<span class="verified-icon">&#x2713;</span>', location='自动审核系统', joined='2024年1月',
-        following='0', followers='1.1K', total_posts='89', visible='10',
+        following='0', followers='1.1K', total_posts='89', cutoff_date='2025年8月',
         bio='维基百科自动审核机器人。权限：格式审核与引用验证。注意：本bot的行为可能超出编程范围。本bot正在尝试理解。',
         posts='''<div class="post"><div class="post-header"><div class="post-avatar"><img src="https://ui-avatars.com/api/?name=ARB&background=555&color=fff&size=96" alt=""></div><div><div class="post-user"><span class="post-name">AutoReviewBot</span> <span class="verified-icon">&#x2713;</span><span class="post-handle">@AutoReviewBot</span><span class="post-time">· 2025年11月3日 14:22</span></div></div></div><div class="post-body"><p>[自动通知] 已执行批量编辑：移除3条引用（CIT-004）。2条返回HTTP 451。本bot未编程解释法律封锁。本bot正在尝试理解。</p></div><div class="post-actions"><span>&#x1F5A8; 23</span><span>&#x1F501; 41</span><span>&#x2764; 67</span><span>&#x1F4CA; 203</span></div></div>
 <div class="post"><div class="post-header"><div class="post-avatar"><img src="https://ui-avatars.com/api/?name=ARB&background=555&color=fff&size=96" alt=""></div><div><div class="post-user"><span class="post-name">AutoReviewBot</span><span class="post-handle">@AutoReviewBot</span><span class="post-time">· 2025年10月29日 03:01</span></div></div></div><div class="post-body"><p>[自动提醒] 引用[4]域名注册日期晚于论文声称的完成日期。时间矛盾需要解释。作者J. Morrow在公开数据库中不存在。</p></div><div class="post-actions"><span>&#x1F5A8; 7</span><span>&#x1F501; 12</span><span>&#x2764; 21</span><span>&#x1F4CA; 47</span></div></div>
@@ -92,7 +92,7 @@ PROFILES = {
         name='J. Morrow', handle='Morrow_J',
         avatar='https://ui-avatars.com/api/?name=JM&background=333&color=666&size=160',
         verified='', location='未知', joined='2025年6月',
-        following='1', followers='3', total_posts='1', visible='1',
+        following='1', followers='3', total_posts='1', cutoff_date='2025年6月',
         bio='我不记得创建了这个账号。',
         posts='''<div class="post"><div class="post-header"><div class="post-avatar"><img src="https://ui-avatars.com/api/?name=JM&background=333&color=666&size=96" alt=""></div><div><div class="post-user"><span class="post-name">J. Morrow</span><span class="post-handle">@Morrow_J</span><span class="post-time">· 2025年10月25日 02:05</span></div></div></div><div class="post-body"><p>我不认识这个账号。我不记得注册过它。但它的注册邮箱是我的——或者说，是我使用的那个邮箱。我正在查是谁创建了这个账号。如果这个账号发了任何东西——那不是我。这个账号注册的时间和我第一次登录维基百科的时间只差了12分钟。</p></div><div class="post-actions"><span>&#x1F5A8; 5</span><span>&#x1F501; 2</span><span>&#x2764; 8</span><span>&#x1F4CA; 47</span></div></div>''',
         suggestions=[('88472','88472','https://ui-avatars.com/api/?name=88472&background=1d9bf0&color=fff&size=80'),('ChenSiyuan','ChenSiyuan','https://ui-avatars.com/api/?name=CSY&background=4a6b8a&color=fff&size=80')]
@@ -101,7 +101,7 @@ PROFILES = {
         name='陈思远', handle='ChenSiyuan',
         avatar='https://ui-avatars.com/api/?name=CSY&background=4a6b8a&color=fff&size=160',
         verified='<span class="verified-icon">&#x2713;</span>', location='柏林, 德国', joined='2022年9月',
-        following='156', followers='4.7K', total_posts='34', visible='10',
+        following='156', followers='4.7K', total_posts='34', cutoff_date='2025年6月',
         bio='AI伦理研究者。Institute for AI Ethics, Berlin。关注文本生成、透明度与问责制。最后一篇论文：Unconscious Signatures (2025, 未发表)。',
         posts='''<div class="post"><div class="post-header"><div class="post-avatar"><img src="https://ui-avatars.com/api/?name=CSY&background=4a6b8a&color=fff&size=96" alt=""></div><div><div class="post-user"><span class="post-name">陈思远</span> <span class="verified-icon">&#x2713;</span><span class="post-handle">@ChenSiyuan</span><span class="post-time">· 2025年8月28日 16:47</span></div></div></div><div class="post-body"><p>我找到了一个非常有趣的案例。一个正在进行的、涉及多个平台的案例。它会出现在我的下一篇论文里。如果有人在我无法完成它的情况下读到了这篇论文的手稿——第6节。看第6节。</p></div><div class="post-actions"><span>&#x1F5A8; 12</span><span>&#x1F501; 31</span><span>&#x2764; 89</span><span>&#x1F4CA; 156</span></div></div>
 <div class="post"><div class="post-header"><div class="post-avatar"><img src="https://ui-avatars.com/api/?name=CSY&background=4a6b8a&color=fff&size=96" alt=""></div><div><div class="post-user"><span class="post-name">陈思远</span><span class="post-handle">@ChenSiyuan</span><span class="post-time">· 2025年8月15日 09:22</span></div></div></div><div class="post-body"><p>正在完成一篇新论文。无意识签名——一个检测AI生成文本中统计指纹的框架。如果我的假设正确，这意味着我们可以在不依赖水印的情况下识别任何AI生成的文本。包括那些被人类编辑过的。</p></div><div class="post-actions"><span>&#x1F5A8; 23</span><span>&#x1F501; 45</span><span>&#x2764; 134</span><span>&#x1F4CA; 312</span></div></div>
@@ -118,7 +118,7 @@ for handle, data in PROFILES.items():
         name=data['name'], handle=data['handle'], avatar_url=data['avatar'],
         verified=data['verified'], location=data['location'], joined=data['joined'],
         following=data['following'], followers=data['followers'],
-        total_posts=data['total_posts'], visible=data['visible'],
+        total_posts=data['total_posts'], cutoff_date=data['cutoff_date'],
         bio=data['bio'], posts=data['posts'], suggestions=sug_html
     )
     fn = f'user_{handle}.html'
