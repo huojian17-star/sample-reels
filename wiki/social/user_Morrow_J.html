@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>J. Morrow (@Morrow_J) — Signal</title>
+<link rel="stylesheet" href="style.css"></head>
+<body>
+<div class="app-layout">
+<div class="sidebar-left">
+  <div class="sidebar-logo"><a href="index.html">Signal</a></div>
+  <nav class="sidebar-nav">
+    <a href="index.html"><span class="nav-icon">&#x2302;</span><span>首页</span></a>
+    <a href="#"><span class="nav-icon">&#x1F50D;</span><span>探索</span></a>
+    <a href="#"><span class="nav-icon">&#x1F514;</span><span>通知</span></a>
+    <a href="#"><span class="nav-icon">&#x2709;</span><span>私信</span></a>
+    <a href="#" onclick="showLoginBlock();return false;"><span class="nav-icon">&#x1F464;</span><span>个人资料</span></a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-user" onclick="showLoginBlock();return false;">
+      <div class="avatar"><img src="https://ui-avatars.com/api/?name=Guest&background=333&color=888&size=80" alt=""></div>
+      <div class="user-info"><div class="user-name">访客</div><div class="user-handle">点击登录</div></div>
+    </div>
+  </div>
+</div>
+<div class="main-feed">
+  <div class="feed-header"><a href="index.html">&#x2190;</a> 个人资料</div>
+  <div class="profile-header">
+    <div class="profile-banner"></div>
+    <div class="profile-avatar-lg"><img src="https://ui-avatars.com/api/?name=JM&background=333&color=666&size=160" alt=""></div>
+    <div class="profile-name">J. Morrow </div>
+    <div class="profile-handle">@Morrow_J</div>
+    <div class="profile-bio">我不记得创建了这个账号。</div>
+    <div class="profile-meta"><span>&#x1F4CD; 未知</span><span>&#x1F4C5; 2025年6月</span></div>
+    <div class="profile-stats"><span><strong>1</strong> 关注中</span><span><strong>3</strong> 关注者</span></div>
+  </div>
+  <div class="profile-nav"><a href="#" class="active">帖子</a><a href="#">回复</a><a href="#">媒体</a></div>
+  <div class="post"><div class="post-header"><div class="post-avatar"><img src="https://ui-avatars.com/api/?name=JM&background=333&color=666&size=96" alt=""></div><div><div class="post-user"><span class="post-name">J. Morrow</span><span class="post-handle">@Morrow_J</span><span class="post-time">· 2025年10月25日 02:05</span></div></div></div><div class="post-body"><p>我不认识这个账号。我不记得注册过它。但它的注册邮箱是我的——或者说，是我使用的那个邮箱。我正在查是谁创建了这个账号。如果这个账号发了任何东西——那不是我。这个账号注册的时间和我第一次登录维基百科的时间只差了12分钟。</p></div><div class="post-actions"><span>&#x1F5A8; 5</span><span>&#x1F501; 2</span><span>&#x2764; 8</span><span>&#x1F4CA; 47</span></div></div>
+  <div class="post" style="text-align:center;padding:2em;color:var(--text-dim);border-bottom:1px solid var(--border);">
+    <p style="font-size:1.2em;margin-bottom:0.5em;">&#x1F512;</p>
+    <p><strong>登录以查看更多帖子</strong></p>
+    <p style="font-size:0.85em;">此账号共有 <strong>1</strong> 条帖子。你目前以访客身份浏览，仅可查看最近 1 条。</p>
+    <p style="font-size:0.8em;color:var(--text-dim);margin-top:0.5em;">登录或创建账号以查看完整内容。</p>
+  </div>
+</div>
+<div class="sidebar-right">
+  <div class="sidebar-module"><h3>你可能认识</h3><div class="who-to-follow"><div class="avatar"><a href="user_88472.html"><img src="https://ui-avatars.com/api/?name=88472&background=1d9bf0&color=fff&size=80" alt=""></a></div><div class="info"><div class="name">88472</div><div class="handle">@88472</div></div><button class="follow-btn">关注</button></div><div class="who-to-follow"><div class="avatar"><a href="user_ChenSiyuan.html"><img src="https://ui-avatars.com/api/?name=CSY&background=4a6b8a&color=fff&size=80" alt=""></a></div><div class="info"><div class="name">ChenSiyuan</div><div class="handle">@ChenSiyuan</div></div><button class="follow-btn">关注</button></div></div>
+</div>
+</div>
+<div class="login-overlay" id="loginOverlay" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);z-index:1000;justify-content:center;align-items:center;">
+  <div style="background:var(--surface);border-radius:16px;padding:2em;max-width:400px;text-align:center;">
+    <p style="font-size:3em;margin-bottom:0.3em;">&#x1F6AB;</p>
+    <h2 style="margin-bottom:0.5em;">无法登录</h2>
+    <p style="color:var(--text-dim);margin-bottom:0.5em;">由于地区限制，你所在的地区暂不支持创建 Signal 账号。</p>
+    <p style="font-size:0.8em;color:var(--text-dim);margin-bottom:1.5em;">你可以继续以访客身份浏览公开内容。</p>
+    <button onclick="document.getElementById('loginOverlay').style.display='none'" style="padding:0.6em 2em;background:var(--accent);color:#fff;border:none;border-radius:9999px;font-size:1em;cursor:pointer;font-weight:700;">知道了</button>
+  </div>
+</div>
+<script>
+function showLoginBlock(){document.getElementById('loginOverlay').style.display='flex';}
+</script>
+</body></html>
