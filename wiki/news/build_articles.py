@@ -10,7 +10,7 @@ ARTICLE_TEMPLATE = '''<!DOCTYPE html>
 <div class="top-bar"><div class="top-bar-inner"><span>{date}</span><span><a href="index.html">首页</a> · <a href="#">订阅</a></span></div></div>
 <header class="site-header"><div class="header-inner">
 <div class="masthead"><div class="site-name"><a href="index.html">Tech Observer</a></div><div class="site-tagline">科技观察 · Independent Since 2018</div></div>
-<nav class="cat-nav"><a href="index.html">首页</a><a href="category.html?section=ai">AI</a><a href="category.html?section=fintech">金融科技</a><a href="category.html?section=policy">政策</a><a href="category.html?section=investigation">调查</a><a href="category.html?section=opinion">评论</a></nav>
+<nav class="cat-nav"><a href="index.html">首页</a><a href="category.html?section=ai">AI</a><a href="category.html?section=fintech">金融科技</a><a href="category.html?section=policy">政策</a><a href="category.html?section=investigation">调查</a><a href="category.html?section=opinion">评论</a><a href="../social/index.html" style="color:var(--accent);">社群</a></nav>
 </div></header>
 <div class="main-content">
 <div class="article-layout">
