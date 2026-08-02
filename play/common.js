@@ -751,3 +751,293 @@ window.__MASCOT_QA = (function() {
     });
   }
 })();
+
+
+/* ====== 动效增强 v2（滚动进度条 / 导航状态 / 视差 / 震动反馈） ====== */
+(function () {
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // 1) 顶部滚动进度条（原生 rAF，不依赖 GSAP，故障时自动消失）
+  var bar = document.createElement('div');
+  bar.id = 'scroll-progress';
+  document.head.insertAdjacentHTML('beforeend', '<style>#scroll-progress{position:fixed;top:0;left:0;height:2px;width:100%;transform:scaleX(0);transform-origin:0 50%;background:linear-gradient(90deg,#a98446,#c9a24d,#7266ba);z-index:200;pointer-events:none;}</style>');
+  document.body.appendChild(bar);
+  var ticking = false;
+  function updateBar() {
+    ticking = false;
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    var p = max > 0 ? (window.scrollY / max) : 0;
+    bar.style.transform = 'scaleX(' + p + ')';
+  }
+  function onScroll() {
+    // 导航滚动状态
+    var nav = document.querySelector('nav');
+    if (nav) nav.classList.toggle('nav-scrolled', window.scrollY > 10);
+    if (!ticking) { ticking = true; requestAnimationFrame(updateBar); }
+  }
+  if (!reduced) window.addEventListener('scroll', onScroll, { passive: true });
+  updateBar();
+
+  // 2) Hero 视差：GSAP 可用时启用（滚动时 hero 内容轻微上移淡出）
+  if (!reduced && window.gsap && window.ScrollTrigger) {
+    try {
+      var heroContent = document.querySelector('.hero .hero-content');
+      if (heroContent) {
+        gsap.to(heroContent, {
+          y: -40, autoAlpha: 0.25, ease: 'none',
+          scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 0.6 }
+        });
+      }
+    } catch (e) { /* 视差失败不影响其他功能 */ }
+  }
+
+  // 3) 震动反馈工具（detail.design 参考：Feedback for the dead end）
+  // 用法：__shake(selectorOrEl) —— 无结果/错误/死路时给出视觉震动
+  var shakeCss = '#shake-anim-style{display:none}';
+  if (!document.getElementById('shake-anim-style')) {
+    var st = document.createElement('style');
+    st.id = 'shake-anim-style';
+    st.textContent = '@keyframes uiShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}.shake-anim{animation:uiShake 0.4s cubic-bezier(0.36,0.07,0.19,0.97) both}';
+    document.head.appendChild(st);
+  }
+  window.__shake = function (target) {
+    if (reduced) return;
+    var el = typeof target === 'string' ? document.querySelector(target) : (target || document.body);
+    if (!el) return;
+    el.classList.remove('shake-anim');
+    void el.offsetWidth;
+    el.classList.add('shake-anim');
+  };
+})();
+
+
+/* ====== Hero 3D 像素方块群（Three.js，八位游戏风） ====== */
+/* 安全设计：装饰层为 body 直系子元素（fixed + z-index:-1 + pointer-events:none），
+   不在吉祥物的祖先链上，不影响其 absolute/fixed 定位参考系。
+   滚动行为：视差跟随（30%）+ 随 hero 滚出视口平滑淡出。 */
+(function () {
+  var hero = document.querySelector('.hero');
+  if (!hero) return; // 仅含 hero 的页面（首页）初始化
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var container = document.createElement('div');
+  container.id = 'hero-3d-bg';
+  container.style.cssText = 'position:fixed;inset:0;z-index:-1;pointer-events:none;will-change:transform,opacity;';
+  document.body.appendChild(container);
+
+  var SCRIPT_DIRS = ['', '../', '../../'];
+  function loadOne(name, dirIdx, onDone) {
+    if (dirIdx >= SCRIPT_DIRS.length) return onDone(false);
+    var s = document.createElement('script');
+    s.src = SCRIPT_DIRS[dirIdx] + name;
+    s.async = true;
+    s.onload = function () { onDone(!!window.THREE); };
+    s.onerror = function () { loadOne(name, dirIdx + 1, onDone); };
+    document.head.appendChild(s);
+  }
+
+  loadOne('three.min.js', 0, function (ok) {
+    if (!ok) { container.remove(); return; }
+    try { init(); } catch (e) { container.remove(); }
+  });
+
+  function init() {
+    var THREE = window.THREE;
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 46;
+
+    var renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    container.appendChild(renderer.domElement);
+
+    // 像素方块群（InstancedMesh）
+    var geo = new THREE.BoxGeometry(1, 1, 1);
+    var mat = new THREE.MeshBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.85 });
+    var count = window.innerWidth < 768 ? 55 : 140;
+    var mesh = new THREE.InstancedMesh(geo, mat, count);
+    var colors = [0xa98446, 0xc9a24d, 0x8a6a3a, 0x5c4a2e, 0x7266ba, 0xd1bfa7];
+    var c3 = new THREE.Color();
+    var dummy = new THREE.Object3D();
+    var data = [];
+    for (var i = 0; i < count; i++) {
+      var x = (Math.random() - 0.5) * 130;
+      var y = (Math.random() - 0.5) * 72;
+      var z = (Math.random() - 0.5) * 34;
+      var s = 0.5 + Math.random() * 1.25;
+      dummy.position.set(x, y, z);
+      dummy.scale.set(s, s, s);
+      dummy.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
+      dummy.updateMatrix();
+      mesh.setMatrixAt(i, dummy.matrix);
+      c3.setHex(colors[Math.floor(Math.random() * colors.length)]);
+      mesh.setColorAt(i, c3);
+      data.push({
+        x: x, y: y, z: z, s: s,
+        rx: 0.15 + Math.random() * 0.35,
+        ry: 0.2 + Math.random() * 0.5,
+        float: 0.4 + Math.random() * 0.9,
+        phase: Math.random() * Math.PI * 2
+      });
+    }
+    mesh.instanceMatrix.needsUpdate = true;
+    if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
+    scene.add(mesh);
+
+    // 鼠标视差
+    var mx = 0, my = 0, tx = 0, ty = 0;
+    window.addEventListener('mousemove', function (e) {
+      mx = e.clientX / window.innerWidth - 0.5;
+      my = e.clientY / window.innerHeight - 0.5;
+    });
+
+    // 全站固定粒子背景：不随滚动淡出/位移，视口内恒定可见
+    // （各 section 背景已半透明化，粒子在内容之间贯穿显现）
+
+    function animate() {
+      requestAnimationFrame(animate);
+      var t = Date.now() * 0.001;
+      for (var i = 0; i < count; i++) {
+        var d = data[i];
+        dummy.position.set(d.x, d.y + Math.sin(t * d.float + d.phase) * 1.4, d.z);
+        dummy.rotation.set(t * d.rx + d.phase, t * d.ry, 0);
+        dummy.scale.set(d.s, d.s, d.s);
+        dummy.updateMatrix();
+        mesh.setMatrixAt(i, dummy.matrix);
+      }
+      mesh.instanceMatrix.needsUpdate = true;
+      mesh.rotation.y += 0.0003;
+      tx += (mx - tx) * 0.03;
+      ty += (my - ty) * 0.03;
+      camera.position.x = tx * 5;
+      camera.position.y = -ty * 3.5;
+      camera.lookAt(0, 0, 0);
+      renderer.render(scene, camera);
+    }
+    if (reduced) {
+      var rt = Date.now() * 0.001;
+      for (var j = 0; j < count; j++) {
+        var dj = data[j];
+        dummy.position.set(dj.x, dj.y, dj.z);
+        dummy.rotation.set(rt * dj.rx + dj.phase, rt * dj.ry, 0);
+        dummy.scale.set(dj.s, dj.s, dj.s);
+        dummy.updateMatrix();
+        mesh.setMatrixAt(j, dummy.matrix);
+      }
+      mesh.instanceMatrix.needsUpdate = true;
+      renderer.render(scene, camera);
+    } else {
+      animate();
+    }
+
+    window.addEventListener('resize', function () {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  }
+})();
+
+
+/* ====== 酷炫特效实验（2026-08）：像素点击爆裂 + 卡片 3D Tilt ====== */
+(function () {
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+
+  /* ---- 1) 像素点击爆裂：点击处爆出琥珀色像素方块 ---- */
+  (function () {
+    if (reduced) return;
+    var layer = document.createElement('div');
+    layer.id = 'pixel-burst-layer';
+    layer.style.cssText = 'position:fixed;inset:0;z-index:99999;pointer-events:none;overflow:hidden;';
+    document.body.appendChild(layer);
+
+    var COLORS = ['#a98446', '#c9a24d', '#8a6a3a', '#5c4a2e', '#7266ba', '#d1bfa7'];
+    var POOL = 100; // 同时存在上限；超限时自动清理最旧的，不阻塞新点击
+    var alive = 0;
+
+    function spawn(e) {
+      var x = e.clientX, y = e.clientY;
+      var n = 14 + Math.floor(Math.random() * 8);
+      // 超限：先清掉最旧的方块腾位，保证每次点击都有反馈
+      while (alive + n > POOL && layer.firstChild) {
+        layer.removeChild(layer.firstChild);
+        alive--;
+      }
+      for (var i = 0; i < n; i++) {
+        var s = document.createElement('div');
+        var size = 5 + Math.random() * 8;
+        var ang = Math.random() * Math.PI * 2;
+        var dist = 30 + Math.random() * 90;
+        var vx = Math.cos(ang) * dist;
+        var vy = Math.sin(ang) * dist - 30; // 轻微上抛
+        var rot = (Math.random() - 0.5) * 720;
+        s.style.cssText =
+          'position:absolute;left:' + x + 'px;top:' + y + 'px;' +
+          'width:' + size + 'px;height:' + size + 'px;' +
+          'background:' + COLORS[Math.floor(Math.random() * COLORS.length)] + ';' +
+          'box-shadow:0 0 6px rgba(169,132,70,0.35);' +
+          'transition:transform 0.7s cubic-bezier(0.22,1,0.36,1),opacity 0.7s ease;';
+        layer.appendChild(s);
+        alive++;
+        // 下一帧起飞
+        requestAnimationFrame(function (el, tx, ty, tr) {
+          return function () {
+            el.style.transform = 'translate(' + tx + 'px,' + ty + 'px) rotate(' + tr + 'deg)';
+            el.style.opacity = '0';
+          };
+        }(s, vx, vy, rot));
+        setTimeout(function (el) {
+          if (el.parentNode) el.parentNode.removeChild(el);
+          alive--;
+        }, 720);
+      }
+    }
+
+    document.addEventListener('click', function (e) {
+      // 跳过小人及其气泡上的点击（避免干扰吉祥物交互）
+      if (e.target && (e.target.closest('#pixel-mascot') || e.target.closest('.pixel-mascot') || e.target.closest('#hero-3d-bg'))) return;
+      spawn(e);
+    });
+  })();
+
+  /* ---- 2) 卡片 3D Tilt：鼠标悬停时卡片立体倾斜（Linear/Stripe 式） ---- */
+  (function () {
+    if (reduced || isTouch) return; // 触屏无 hover，跳过
+    var SEL = '.nav-card, .about-card, .video-card, .world-card, .split-card, .contact-card';
+    var cards = document.querySelectorAll(SEL);
+    if (!cards.length) return;
+
+    // 注入基础 CSS（perspective + 复位过渡）
+    var st = document.createElement('style');
+    st.textContent =
+      SEL + '{transform-style:preserve-3d;will-change:transform;}' +
+      SEL + '{transition:transform 0.3s cubic-bezier(0.22,1,0.36,1),box-shadow 0.3s ease,border-color 0.3s ease;}' +
+      SEL + '.tilt-active{transition:transform 0.08s linear,box-shadow 0.3s ease,border-color 0.3s ease;}';
+    document.head.appendChild(st);
+
+    var MAX = 7; // 最大倾斜角度（度）
+
+    function onMove(e, card) {
+      var r = card.getBoundingClientRect();
+      var px = (e.clientX - r.left) / r.width - 0.5; // -0.5..0.5
+      var py = (e.clientY - r.top) / r.height - 0.5;
+      card.classList.add('tilt-active');
+      card.style.transform =
+        'perspective(900px) rotateX(' + (-py * MAX).toFixed(2) + 'deg) rotateY(' + (px * MAX).toFixed(2) + 'deg) translateY(-3px)';
+    }
+    function onLeave(card) {
+      card.classList.remove('tilt-active');
+      card.style.transform = '';
+    }
+
+    for (var i = 0; i < cards.length; i++) {
+      (function (card) {
+        card.addEventListener('mousemove', function (e) { onMove(e, card); });
+        card.addEventListener('mouseleave', function () { onLeave(card); });
+      })(cards[i]);
+    }
+  })();
+})();
+
