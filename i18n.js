@@ -53,3 +53,26 @@
     if (LANG === 'en') apply();
   });
 })();
+
+M['nav-doc-tool']={zh:'论文工具',en:'Doc Tool'};
+M['doc-title']={zh:'论文排版工具 DocFormatTool · BEST-辣椒',en:'Paper Format Tool · BEST-辣椒'};
+M['xdoc-back']={zh:'← 返回首页',en:'← Back'};
+M['doc-hero-h1']={zh:'论文排版工具 DocFormatTool',en:'Paper Format Tool'};
+M['doc-hero-p']={zh:'论文格式一键排版 · 自动识别学校模板 · 本地运行不上传',en:'One-click paper formatting · auto school-template parsing · runs locally'};
+M['doc-intro-h2']={zh:'这是什么',en:'What is it'};
+M['doc-intro-p']={zh:'把任意格式的论文（Word / Markdown / 文本）排成符合规范要求的 Word 文档：自动解析学校模板的格式规则（字体/字号/页边距/标题层级），一键排版，自动质检，并生成改动报告。',en:'Formats papers from any source (Word / Markdown / text) into a standards-compliant Word document: auto-parses school template rules (fonts, sizes, margins, heading levels), one-click formatting, auto quality check, and a change report.'};
+M['doc-feat-h2']={zh:'功能',en:'Features'};
+M['doc-f1']={zh:'任意学校模板自适应：上传学校模板自动识别格式',en:'Auto-adapts to any school template: upload and auto-detect'};
+M['doc-f2']={zh:'改写式排版：图片/表格/公式原样保留，只规范格式',en:'Reformat-only: images/tables/formulas preserved, only styles normalized'};
+M['doc-f3']={zh:'Markdown 增强：表格、代码块、LaTeX 公式转 Word 原生公式',en:'Markdown enhanced: tables, code blocks, LaTeX to native Word formulas'};
+M['doc-f4']={zh:'自动质检 + 改动报告：排完自动检查，改了啥一目了然',en:'Auto quality check + change report'};
+M['doc-f5']={zh:'完全本地运行：论文不离开你的电脑，断网也能用',en:'Fully local: your paper never leaves your computer'};
+M['doc-fig-h2']={zh:'效果',en:'Screenshots'};
+M['doc-fig1']={zh:'Markdown 排版前后对比',en:'Before / after (Markdown)'};
+M['doc-fig2']={zh:'软件界面',en:'App UI'};
+M['doc-fig3']={zh:'排版后的规范文档',en:'Formatted document'};
+M['doc-fig4']={zh:'排版改动报告（覆盖率一目了然）',en:'Change report'};
+M['doc-open-h2']={zh:'开源',en:'Open Source'};
+M['doc-open-p']={zh:'排版引擎核心已开源：',en:'The formatting engine is open source:'};
+M['doc-contact-h2']={zh:'获取与联系',en:'Get It'};
+M['doc-contact-p']={zh:'软件内测中，想试用请私信 B站 @BEST-辣椒 或评论区留言，免费测试。',en:'Currently in beta — DM @BEST-辣椒 on Bilibili to try it for free.'};

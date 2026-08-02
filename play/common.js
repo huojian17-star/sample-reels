@@ -675,3 +675,79 @@ window.__MASCOT_QA = (function() {
   return { match: match, dbSize: DB.length };
 })();
 
+
+
+/* ====== 全站动效增强（GSAP + ScrollTrigger，本地加载，离线可用） ====== */
+(function () {
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function ready(fn) {
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
+    else fn();
+  }
+
+  // 初始隐藏状态一律由 JS 设置：GSAP 加载失败或无 JS 时页面保持原样，不会白屏
+  function boot() {
+    if (reduced || !window.gsap || !window.ScrollTrigger) return;
+    try {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // 1) Hero 入场（首页等含 .hero-content 的页面）
+      var heroContent = document.querySelector('.hero .hero-content');
+      if (heroContent && heroContent.children.length) {
+        gsap.set(heroContent.children, { autoAlpha: 0, y: 18 });
+        gsap.to(heroContent.children, {
+          autoAlpha: 1, y: 0, duration: 0.7, ease: 'power2.out',
+          stagger: 0.09, delay: 0.1, overwrite: 'auto'
+        });
+      }
+
+      // 2) 滚动入场：通用区块标题/说明 + 各页卡片网格
+      var revealSel = '.section-title, .section-desc, .nav-card, .featured-banner, .about-grid > *, .video-grid > *, .world-grid > *';
+      var items = gsap.utils.toArray(revealSel);
+      if (items.length) {
+        gsap.set(items, { autoAlpha: 0, y: 24 });
+        items.forEach(function (el) {
+          gsap.to(el, {
+            autoAlpha: 1, y: 0, duration: 0.65, ease: 'power2.out',
+            overwrite: 'auto',
+            scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
+          });
+        });
+      }
+    } catch (e) {
+      // 任何异常都清掉初始隐藏，保证内容可见
+      var els = document.querySelectorAll('.section-title, .section-desc, .nav-card, .featured-banner, .about-grid > *, .video-grid > *, .world-grid > *, .hero .hero-content > *');
+      for (var i = 0; i < els.length; i++) {
+        els[i].style.opacity = '';
+        els[i].style.visibility = '';
+        els[i].style.transform = '';
+      }
+    }
+  }
+
+  // 本地加载 GSAP / ScrollTrigger：多级目录回退，兼容根目录与 wiki/、play/ 等子目录页面
+  var SCRIPT_DIRS = ['', '../', '../../'];
+  var loaded = { gsap: !!window.gsap, st: !!window.ScrollTrigger };
+
+  function loadOne(name, check, dirIdx, onDone) {
+    if (check()) return onDone(true);
+    if (dirIdx >= SCRIPT_DIRS.length) return onDone(false);
+    var s = document.createElement('script');
+    s.src = SCRIPT_DIRS[dirIdx] + name;
+    s.async = true;
+    s.onload = function () { onDone(check()); };
+    s.onerror = function () { loadOne(name, check, dirIdx + 1, onDone); };
+    document.head.appendChild(s);
+  }
+
+  if (!reduced) {
+    loadOne('gsap.min.js', function () { return !!window.gsap; }, 0, function (okG) {
+      loaded.gsap = okG;
+      loadOne('ScrollTrigger.min.js', function () { return !!window.ScrollTrigger; }, 0, function (okS) {
+        loaded.st = okS;
+        if (okG && okS) ready(boot);
+      });
+    });
+  }
+})();
