@@ -99,7 +99,7 @@ nav {
   text-align: center;
   padding: 100px 32px;
   /* 移除生硬的深色渐变，改用极其温柔的淡雅微渐变 */
-  background: linear-gradient(180deg, #f4f1eb 0%, var(--bg) 100%);
+  background: linear-gradient(180deg, rgba(244, 241, 235, 0.78) 0%, rgba(250, 249, 246, 0.88) 100%);
 }
 
 .hero-content {
@@ -170,7 +170,7 @@ nav {
 }
 
 .section-alt {
-  background: var(--bg-alt);
+  background: rgba(244, 241, 235, 0.78);
   max-width: none;
 }
 
@@ -308,7 +308,7 @@ nav {
 .contact-card p { font-size: 13px; color: var(--text-dim); }
 
 /* ====== 页脚 ====== */
-footer { text-align: center; padding: 60px 32px; background: var(--bg-alt); border-top: 1px solid var(--border); }
+footer { text-align: center; padding: 60px 32px; background: rgba(244, 241, 235, 0.78); border-top: 1px solid var(--border); }
 footer p { font-size: 12px; color: var(--text-dim); }
 
 /* ====== 导航入口卡片（首页用） ====== */
@@ -377,7 +377,7 @@ footer p { font-size: 12px; color: var(--text-dim); }
 .page-hero {
   text-align: center;
   padding: 60px 32px 40px;
-  background: linear-gradient(180deg, #f4f1eb 0%, var(--bg) 100%);
+  background: linear-gradient(180deg, rgba(244, 241, 235, 0.78) 0%, rgba(250, 249, 246, 0.88) 100%);
 }
 
 .page-hero h1 {
@@ -459,7 +459,7 @@ footer p { font-size: 12px; color: var(--text-dim); }
 
 /* 引用块 */
 .quote-block {
-  background: var(--bg-alt);
+  background: rgba(244, 241, 235, 0.72);
   border-left: 2px solid var(--accent);
   padding: 24px 28px;
   margin: 28px 0;
@@ -743,3 +743,211 @@ span[title*="设计意图"]:active { opacity: 0.8; }
   min-width: 62px;
   writing-mode: horizontal-tb;
 }
+
+
+/* ====== V2 视觉增强层（2026-08 迭代：暖纸基调 + 游戏档案馆质感） ====== */
+/* 原则：保留全部现有类名与设计语言，只做叠加增强；内容与布局结构不变 */
+
+/* 1. 纸张纹理：极淡颗粒感，全站统一质感（不干扰阅读） */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* 2. 顶部滚动进度条（JS 驱动 scaleX） */
+#scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, var(--accent), #c9a24d, var(--accent-magic));
+  z-index: 200;
+  pointer-events: none;
+}
+
+/* 3. 导航栏滚动状态（JS 加 .nav-scrolled） */
+nav.nav-scrolled {
+  background: rgba(250, 249, 246, 0.94);
+  box-shadow: 0 1px 0 var(--border), 0 8px 28px rgba(60, 40, 20, 0.06);
+}
+nav.nav-scrolled .nav-inner { height: 62px; }
+nav .nav-inner { transition: height 0.3s ease; }
+
+.hero h1 {
+  background: linear-gradient(180deg, var(--text-bright) 30%, #5c4a2e);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--text-bright);
+}
+
+/* 5. 区块标题：左侧琥珀饰条（二级页面自动生效） */
+.section-title {
+  position: relative;
+  padding-left: 16px;
+}
+.section-title::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 6px; bottom: 6px;
+  width: 3px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--accent), var(--accent-dim));
+}
+
+/* 6. 卡片系统：统一更细腻的 hover 微交互 + 顶部饰条滑入 */
+.nav-card, .about-card, .video-card, .world-card, .split-card, .contact-card {
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+  position: relative;
+}
+.nav-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 12px; right: 12px;
+  height: 2px;
+  border-radius: 0 0 2px 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-magic));
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.nav-card:hover::before { transform: scaleX(1); }
+.nav-card:hover, .about-card:hover, .video-card:hover, .world-card:hover, .split-card:hover, .contact-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 44px rgba(80, 55, 25, 0.12);
+}
+
+/* 7. 卡片图标微动（nav-card 图标悬浮时轻微上浮） */
+.nav-card .card-icon, .nav-card-icon {
+  display: inline-block;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.nav-card:hover .card-icon, .nav-card:hover .nav-card-icon { transform: translateY(-4px) scale(1.06); }
+
+/* 8. 卡片的箭头提示：hover 右移（首页 .card-arrow 与通用 .card-arrow） */
+.card-arrow { display: inline-block; transition: transform 0.3s ease; }
+.nav-card:hover .card-arrow { transform: translateX(5px); }
+
+/* 9. 按钮按压反馈 */
+.banner-cta:active, .back-to-top:active { transform: translateY(0) scale(0.97); }
+
+/* 10. 无障碍：全局可见焦点环（detail.design 参考：明确的可聚焦反馈） */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* 11. 回到顶部：hover 放大提示 */
+.back-to-top:hover { transform: translateY(-3px) scale(1.06); }
+.back-to-top.show { transform: translateY(0); }
+.back-to-top.show:hover { transform: translateY(-3px) scale(1.06); }
+
+/* 12. 访客小人气泡增强（二级页面） */
+#guest-bubble { box-shadow: 0 8px 28px rgba(60, 40, 20, 0.10); }
+
+/* 13. 减少动态效果：系统偏好时关闭一切动画 */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .nav-card::before, #scroll-progress { display: none; }
+}
+
+
+/* 16. 全站搜索框聚焦高亮（detail.design 参考：明确的交互反馈） */
+#site-search-section > div:first-of-type:focus-within {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px rgba(169, 132, 70, 0.12), 0 4px 16px rgba(0,0,0,0.06) !important;
+}
+
+/* 17. 特色横幅：hover 光晕 + 装饰角 */
+.featured-banner {
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+.featured-banner:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 44px rgba(60, 30, 10, 0.28);
+}
+
+
+/* ====== V2.1 卡片：Linear 式细边框现代纸卡（2026-08 迭代） ====== */
+/* 保留暖纸底色与全部类名；升级圆角/边框/阴影工艺，全站卡片统一 */
+
+/* 1. 卡片基础：大圆角 + 细边框 + 双层柔和阴影 */
+.nav-card,
+.about-card,
+.video-card,
+.world-card,
+.split-card,
+.contact-card,
+.audience-box,
+.world-intro-card {
+  border-radius: 10px;
+  background: var(--bg-card);
+  border: 1px solid #eae4da;
+  box-shadow:
+    0 1px 2px rgba(80, 55, 25, 0.03),
+    0 4px 18px rgba(80, 55, 25, 0.045);
+  transition:
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+/* 2. hover：轻上浮 + 琥珀边框 + 阴影加深（Linear 式状态反馈） */
+.nav-card:hover,
+.about-card:hover,
+.video-card:hover,
+.world-card:hover,
+.split-card:hover,
+.contact-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-dim);
+  box-shadow:
+    0 2px 4px rgba(80, 55, 25, 0.04),
+    0 16px 36px rgba(169, 132, 70, 0.11);
+}
+
+/* 3. 视频封面圆角与卡片协调 */
+.video-cover img {
+  border-radius: 7px;
+}
+
+/* 4. 卡片徽章：浅色底 + 小圆角（Linear 式标签） */
+.card-badge {
+  border-radius: 6px;
+  padding: 3px 9px;
+}
+
+
+/* 6. 卡片标题字距微调（更现代的疏朗感） */
+.nav-card h3,
+.about-card h3,
+.world-card h3 {
+  letter-spacing: 0.02em;
+}
+
+/* 7. 主卡（首页导航卡）内边距节奏：更透气 */
+.nav-card {
+  padding: 34px 30px;
+}
+
+/* 8. 移动端微调：圆角略收、图标缩小 */
+@media (max-width: 500px) {
+  .nav-card, .about-card, .world-card, .split-card { border-radius: 9px; }
+  }
+
